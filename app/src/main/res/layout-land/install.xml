@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="1" android:id="@id/topLayout" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-    <LinearLayout android:orientation="1" android:id="@id/fullScreen" android:background="#020202" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-        <LinearLayout android:orientation="0" android:id="@id/actionBar" android:background="#eeeeee" android:layout_width="-1" android:layout_height="64dp" android:weightSum="1.0">
+<LinearLayout android:visibility="visible" android:id="@id/topLayout" android:layout_width="match_parent" android:layout_height="match_parent" android:weightSum="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:visibility="visible" android:id="@id/fullScreen" android:background="#020202" android:layout_width="match_parent" android:layout_height="match_parent" android:weightSum="1.0">
+        <LinearLayout android:orientation="horizontal" android:id="@id/actionBar" android:background="#eeeeee" android:layout_width="match_parent" android:layout_height="64dp" android:weightSum="1.0">
             <ImageButton android:id="@id/idlesmartHomeButton" android:background="#00000000" android:clickable="true" android:layout_width="80dp" android:layout_height="60dp" android:layout_marginLeft="30dp" android:layout_marginTop="2dp" android:src="@mipmap/ic_idlesmart_home" />
-            <LinearLayout android:orientation="1" android:id="@id/dashboardButton" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:layout_marginLeft="90dp" android:weightSum="1.0">
+            <LinearLayout android:visibility="visible" android:id="@id/dashboardButton" android:clickable="true" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="90dp" android:weightSum="1.0">
                 <ImageButton android:id="@id/dashboardButtonImage" android:background="#00000000" android:clickable="false" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="15dp" android:layout_marginTop="6dp" android:src="@mipmap/ic_house" />
-                <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:layout_width="-2" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Dashboard" />
+                <TextView android:textSize="14sp" android:textStyle="bold" android:textColor="#4a4a4a" android:gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Dashboard" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/settingsButton" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:layout_marginLeft="50dp" android:weightSum="1.0">
+            <LinearLayout android:visibility="visible" android:id="@id/settingsButton" android:clickable="true" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="50dp" android:weightSum="1.0">
                 <ImageButton android:id="@id/settingsButtonImage" android:background="#00000000" android:clickable="false" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="8dp" android:layout_marginTop="6dp" android:src="@mipmap/ic_settings" />
-                <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:layout_width="-2" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Settings" />
+                <TextView android:textSize="14sp" android:textStyle="bold" android:textColor="#4a4a4a" android:gravity="center_horizontal" android:layout_width="wrap_content" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Settings" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/killSwitchButton" android:background="#f5a623" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:layout_marginLeft="550dp" android:weightSum="1.0">
+            <LinearLayout android:visibility="visible" android:id="@id/killSwitchButton" android:background="#f5a623" android:clickable="true" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="550dp" android:weightSum="1.0">
                 <ImageButton android:id="@id/killSwitchButtonImage" android:background="#00000000" android:clickable="false" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="28dp" android:layout_marginTop="5dp" android:src="@mipmap/ic_power" />
-                <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#000000" android:gravity="1" android:layout_width="100dp" android:layout_height="64dp" android:text="KILL SWITCH" />
+                <TextView android:textSize="14sp" android:textStyle="bold" android:textColor="#000000" android:gravity="center_horizontal" android:layout_width="100dp" android:layout_height="64dp" android:text="KILL SWITCH" />
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout android:orientation="0" android:id="@id/statusBar" android:background="#020202" android:layout_width="-1" android:layout_height="40dp" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:textColor="#f4f4f4" android:gravity="11" android:id="@id/cabinComfortStatus" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8dp" android:text="" />
+        <LinearLayout android:orientation="horizontal" android:id="@id/statusBar" android:background="#020202" android:layout_width="match_parent" android:layout_height="40dp" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:textColor="#f4f4f4" android:gravity="center" android:id="@id/cabinComfortStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/installFragment" android:background="@color/enabledFunction" android:visibility="0" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="48sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="36dp" android:text="Installation Verification Checks" />
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installDetail1" android:layout_width="-1" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="18dp" android:weightSum="1.0">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installDetail1Text" android:layout_width="400dp" android:layout_height="-1" android:text="1. Hardware Checks" />
-                <CheckBox android:id="@id/installDetail1CheckBox" android:visibility="0" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-30dp" android:checked="false" android:text="New CheckBox" />
-                <ProgressBar android:id="@id/installDetail1Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
+        <LinearLayout android:orientation="vertical" android:visibility="visible" android:id="@id/installFragment" android:background="@color/enabledFunction" android:inputType="numberDecimal" android:layout_width="match_parent" android:layout_height="477dp" android:weightSum="1.0">
+            <TextView android:textSize="48sp" android:textColor="#5c5c5c" android:gravity="center_horizontal" android:layout_width="match_parent" android:layout_height="50dp" android:layout_marginTop="36dp" android:text="Installation Verification Checks" />
+            <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/installDetail1" android:layout_width="match_parent" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="18dp" android:weightSum="1.0">
+                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installDetail1Text" android:layout_width="400dp" android:layout_height="match_parent" android:text="1. Hardware Checks" />
+                <CheckBox android:id="@id/installDetail1CheckBox" android:inputType="numberDecimal" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-30dp" android:checked="false" android:text="New CheckBox" />
+                <ProgressBar android:id="@id/installDetail1Progress" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:indeterminate="true" android:layout_centerHorizontal="true" />
             </LinearLayout>
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installationDetail2" android:layout_width="-1" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="12dp">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail2Text" android:layout_width="400dp" android:layout_height="-1" android:text="2. Software Checks" />
+            <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/installationDetail2" android:layout_width="match_parent" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="12dp">
+                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail2Text" android:layout_width="400dp" android:layout_height="match_parent" android:text="2. Software Checks" />
                 <CheckBox android:id="@id/installDetail2CheckBox" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-30dp" android:checked="false" android:text="New CheckBox" />
-                <ProgressBar android:id="@id/installDetail2Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
+                <ProgressBar android:id="@id/installDetail2Progress" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:indeterminate="true" android:layout_centerHorizontal="true" />
             </LinearLayout>
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installationDetail3" android:layout_width="-1" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="12dp">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail3Text" android:layout_width="400dp" android:layout_height="-1" android:text="3. Ignition Checks" />
+            <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/installationDetail3" android:layout_width="match_parent" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="12dp">
+                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail3Text" android:layout_width="400dp" android:layout_height="match_parent" android:text="3. Ignition Checks" />
                 <CheckBox android:id="@id/installDetail3CheckBox" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-30dp" android:checked="false" android:text="New CheckBox" />
-                <ProgressBar android:id="@id/installDetail3Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
+                <ProgressBar android:id="@id/installDetail3Progress" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:indeterminate="true" android:layout_centerHorizontal="true" />
             </LinearLayout>
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installationDetail4" android:layout_width="-1" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="12dp">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail4Text" android:layout_width="400dp" android:layout_height="-1" android:text="4. Connectivity Checks" />
+            <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/installationDetail4" android:layout_width="match_parent" android:layout_height="45dp" android:layout_marginLeft="40dp" android:layout_marginTop="12dp">
+                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail4Text" android:layout_width="400dp" android:layout_height="match_parent" android:text="4. Connectivity Checks" />
                 <CheckBox android:id="@id/installDetail4CheckBox" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-30dp" android:checked="false" android:text="New CheckBox" />
-                <ProgressBar android:id="@id/installDetail4Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
+                <ProgressBar android:id="@id/installDetail4Progress" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:indeterminate="true" android:layout_centerHorizontal="true" />
             </LinearLayout>
-            <Button android:enabled="false" android:textSize="30sp" android:layout_gravity="1" android:id="@id/installDoneButton" android:background="@drawable/disabled_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="40dp" android:text="CHECKING" android:layout_weight="0.09" />
+            <Button android:enabled="false" android:textSize="30sp" android:layout_gravity="center_horizontal" android:id="@id/installDoneButton" android:background="@drawable/disabled_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="40dp" android:text="CHECKING" android:layout_weight="0.09" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
