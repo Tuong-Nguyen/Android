@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="1" android:id="@id/topLayout" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
+    <LinearLayout android:orientation="1" android:id="@id/fullScreen" android:background="#020202" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
+        <LinearLayout android:orientation="1" android:id="@id/activationFragment" android:background="@color/enabledFunction" android:visibility="0" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
+            <TextView android:textSize="48sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="46dp" android:text="Activation" />
+            <TextView android:textSize="36sp" android:textStyle="1" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="36dp" android:text="@string/activation_header" />
+            <TextView android:textSize="26sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="600dp" android:layout_height="-2" android:layout_marginLeft="212dp" android:layout_marginTop="30dp" android:text="@string/activation_verbiage" />
+            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/activationEnterCodeButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="46dp" android:text="ENTER CODE" android:layout_weight="0.09" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

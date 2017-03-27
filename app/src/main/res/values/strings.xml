@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">IdleSmart</string>
+    <string name="activation_header">Idle Smart needs to be activated.</string>
+    <string name="activation_verbiage">Please contact Idle Smart at (913) 774-4353 to receive your activation code.</string>
+    <string name="app_name">Idle Smart</string>
+    <string name="install_header">Thanks for choosing IdleSmart</string>
+    <string name="install_verbiage">After the installation has been completed, please run the following verification to ensure the device was installed correctly.</string>
+    <string name="kill_verbiage">The Kill Switch will disable all the features and will prevent Idle Smart from monitoring and starting your vehicle.</string>
+    <string name="packagemanager_verbiage">Idle Smart needs permission to enhance your experience. Click \"OK\" on the next screen.</string>
+    <string name="poweroff_verbiage">"By pushing Power Off, Idle Smart won't monitor or start your vehicle."</string>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@id/commLayout" android:layout_width="-1" android:layout_height="-2"
+    <LinearLayout android:orientation="1" android:background="@color/enabledFunction" android:layout_width="900dp" android:layout_height="600dp" android:weightSum="1.0"
+        <LinearLayout android:orientation="0" android:background="@color/enabledFunction" android:layout_width="-1" android:layout_height="-2" android:weightSum="1.0"
+            <LinearLayout android:orientation="1" android:background="@color/enabledFunction" android:layout_width="800dp" android:layout_height="420dp" android:weightSum="1.0">
+                <EditText android:textSize="18sp" android:gravity="33" android:id="@id/commlog_Text" android:layout_width="800dp" android:layout_height="-2" android:text="asdf" android:ems="10" android:layout_weight="0.82" android:inputType="20001" />
+            </LinearLayout>
+        </LinearLayout>
+        <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:id="@id/commDoneButton" android:background="@drawable/enabled_button_shape" android:visibility="0" android:clickable="true" android:layout_width="200dp" android:layout_height="40dp" android:layout_marginLeft="200dp" android:layout_marginTop="0dp" android:text="DONE" android:layout_weight="0.09" />
+    </LinearLayout>
+</LinearLayout>

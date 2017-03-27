@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="1" android:id="@id/topLayout" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
+    <LinearLayout android:orientation="1" android:id="@id/fullScreen" android:background="#020202" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
+        <LinearLayout android:orientation="1" android:id="@id/activationCodeFragment" android:background="@color/enabledFunction" android:visibility="0" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
+            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="46dp" android:text="Customer Activation Code" />
+            <EditText android:layout_gravity="1" android:id="@id/activationCodeEditText" android:layout_width="250dp" android:layout_height="-2" android:ems="10" android:inputType="81" />
+            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/activationCodeContinueButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="250dp" android:layout_height="40dp" android:layout_marginTop="30dp" android:text="CONTINUE" android:layout_weight="0.09" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

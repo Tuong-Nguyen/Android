@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="1" android:id="@id/topLayout" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
+    <LinearLayout android:orientation="1" android:id="@id/fullScreen" android:background="#020202" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
+        <LinearLayout android:orientation="1" android:id="@id/verificationFragment" android:background="@color/enabledFunction" android:visibility="0" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
+            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="96dp" android:text="@string/install_header" />
+            <TextView android:textSize="26sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="800dp" android:layout_height="-2" android:layout_marginLeft="112dp" android:layout_marginTop="30dp" android:text="@string/install_verbiage" />
+            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/verificationBeginVerificationButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="46dp" android:text="BEGIN VERIFICATION" android:layout_weight="0.09" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

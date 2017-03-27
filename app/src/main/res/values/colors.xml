@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="active">#ff7ed321</color>
+    <color name="activeButton">#ff7ed321</color>
+    <color name="badConnectivity">#fffc3852</color>
+    <color name="disabled">#fffc3852</color>
+    <color name="disabledButton">#ffdddddd</color>
+    <color name="disabledFunction">#ffdddddd</color>
+    <color name="enabled">#fff5a623</color>
+    <color name="enabledButton">#fff5a623</color>
+    <color name="enabledFunction">#ffeeeeee</color>
+    <color name="goodConnectivity">#ff7ed321</color>
+    <color name="menu1Active">#fff5a623</color>
+    <color name="menu1Deselected">#ff4a4a4a</color>
+    <color name="menu1Selected">#ff717171</color>
+    <color name="menu2Active">#fff5a623</color>
+    <color name="menu2Deselected">#ff717171</color>
+    <color name="menu2Selected">#ff999999</color>
+    <color name="unknownConnectivity">#fff5a623</color>
 </resources>
