@@ -1,144 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="1" android:id="@id/topLayout" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-    <LinearLayout android:orientation="1" android:background="#020202" android:layout_width="-1" android:layout_height="115dp" android:weightSum="1.0">
-        <TextView android:textAppearance="?unknown_attr_ref: 1010040" android:id="@id/logdataView" android:layout_width="-1" android:layout_height="35dp" android:layout_marginTop="10px" android:text="" />
-        <TextView android:textAppearance="?unknown_attr_ref: 1010040" android:id="@id/systemstatusView" android:layout_width="-1" android:layout_height="35dp" android:layout_marginTop="2px" android:text="" />
-        <LinearLayout android:id="@id/linearLayout31" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <ToggleButton android:id="@id/API1Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="1" android:textOff="1" android:text="1" />
-            <ToggleButton android:id="@id/API2Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="2" android:textOff="2" android:text="2" />
-            <ToggleButton android:id="@id/API3Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="3" android:textOff="3" android:text="3" />
-            <ToggleButton android:id="@id/API4Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="4" android:textOff="4" android:text="4" />
-            <ToggleButton android:id="@id/API5Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="5" android:textOff="5" android:text="5" />
-            <ToggleButton android:id="@id/API6Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="6" android:textOff="6" android:text="6" />
-            <ToggleButton android:id="@id/API7Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="7" android:textOff="7" android:text="7" />
-            <ToggleButton android:id="@id/API8Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="8" android:textOff="8" android:text="8" />
-            <ToggleButton android:id="@id/API9Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="9" android:textOff="9" android:text="9" />
-            <ToggleButton android:id="@id/API10Btn" android:layout_width="45dp" android:layout_height="-1" android:checked="false" android:textOn="10" android:textOff="10" android:text="10" />
+<LinearLayout android:orientation="horizontal" android:visibility="visible" android:id="@id/topLayout" android:layout_width="match_parent" android:layout_height="match_parent" android:weightSum="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:visibility="visible" android:background="#020202" android:layout_width="match_parent" android:layout_height="115dp" android:weightSum="1.0">
+        <TextView android:textAppearance="@color/active" android:id="@id/logdataView" android:layout_width="match_parent" android:layout_height="35dp" android:layout_marginTop="10px" android:text="" />
+        <TextView android:textAppearance="@color/active" android:id="@id/systemstatusView" android:layout_width="match_parent" android:layout_height="35dp" android:layout_marginTop="2px" android:text="" />
+        <LinearLayout android:id="@id/linearLayout31" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <ToggleButton android:id="@id/API1Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="1" android:textOff="1" android:text="1" />
+            <ToggleButton android:id="@id/API2Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="2" android:textOff="2" android:text="2" />
+            <ToggleButton android:id="@id/API3Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="3" android:textOff="3" android:text="3" />
+            <ToggleButton android:id="@id/API4Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="4" android:textOff="4" android:text="4" />
+            <ToggleButton android:id="@id/API5Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="5" android:textOff="5" android:text="5" />
+            <ToggleButton android:id="@id/API6Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="6" android:textOff="6" android:text="6" />
+            <ToggleButton android:id="@id/API7Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="7" android:textOff="7" android:text="7" />
+            <ToggleButton android:id="@id/API8Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="8" android:textOff="8" android:text="8" />
+            <ToggleButton android:id="@id/API9Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="9" android:textOff="9" android:text="9" />
+            <ToggleButton android:id="@id/API10Btn" android:layout_width="45dp" android:layout_height="match_parent" android:checked="false" android:textOn="10" android:textOff="10" android:text="10" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:id="@id/linearLayout1" android:layout_width="-1" android:layout_height="-2" android:weightSum="1.0"
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout11" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5px" android:weightSum="0.2" android:layout_weight="0.15">
-            <TextView android:id="@id/therm1Label" android:layout_width="58dp" android:layout_height="-2" android:text="Cabin Temp" />
-            <TextView android:textSize="25sp" android:id="@id/therm1Value" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:text="00" />
+    <LinearLayout android:id="@id/linearLayout1" android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="1.0">
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout11" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5px" android:weightSum="0.2" android:layout_weight="0.15">
+            <TextView android:id="@id/therm1Label" android:layout_width="58dp" android:layout_height="wrap_content" android:text="Cabin Temp" />
+            <TextView android:textSize="25sp" android:id="@id/therm1Value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:text="00" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout12" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.15">
-            <TextView android:id="@id/therm2Label" android:layout_width="58dp" android:layout_height="-2" android:text="Ambient Temp" />
-            <TextView android:textSize="25sp" android:id="@id/therm2Value" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:text="00" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout12" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.15">
+            <TextView android:id="@id/therm2Label" android:layout_width="58dp" android:layout_height="wrap_content" android:text="Ambient Temp" />
+            <TextView android:textSize="25sp" android:id="@id/therm2Value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:text="00" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout13" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
-            <TextView android:id="@id/coolanttempLabel" android:layout_width="52dp" android:layout_height="-2" android:text="Coolant Temp" />
-            <TextView android:textSize="25dp" android:id="@id/coolanttempValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="2px" android:text="000" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout13" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
+            <TextView android:id="@id/coolanttempLabel" android:layout_width="52dp" android:layout_height="wrap_content" android:text="Coolant Temp" />
+            <TextView android:textSize="25dp" android:id="@id/coolanttempValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2px" android:text="000" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout14" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
-            <TextView android:id="@id/safetysw1Label" android:layout_width="57dp" android:layout_height="-2" android:text="Safety Sw1" />
-            <TextView android:textSize="25dp" android:id="@id/safetysw1Value" android:layout_width="50dp" android:layout_height="-2" android:layout_marginLeft="10px" android:text="0" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout14" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
+            <TextView android:id="@id/safetysw1Label" android:layout_width="57dp" android:layout_height="wrap_content" android:text="Safety Sw1" />
+            <TextView android:textSize="25dp" android:id="@id/safetysw1Value" android:layout_width="50dp" android:layout_height="wrap_content" android:layout_marginLeft="10px" android:text="0" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout15" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
-            <TextView android:id="@id/safety2Label" android:layout_width="52dp" android:layout_height="-2" android:text="Safety Sw2" />
-            <TextView android:textSize="25dp" android:id="@id/safetysw2Value" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="10px" android:text="0" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout15" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
+            <TextView android:id="@id/safety2Label" android:layout_width="52dp" android:layout_height="wrap_content" android:text="Safety Sw2" />
+            <TextView android:textSize="25dp" android:id="@id/safetysw2Value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10px" android:text="0" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout16" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
-            <ToggleButton android:id="@id/ActivateBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Activate" android:textOff="Activate" android:text="Activate" android:layout_weight="0.5" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout16" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
+            <ToggleButton android:id="@id/ActivateBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Activate" android:textOff="Activate" android:text="Activate" android:layout_weight="0.5" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout17" android:layout_width="-2" android:layout_height="-2" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
-            <ToggleButton android:id="@id/KillBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Power On" android:textOff="Kill" android:text="Kill" android:layout_weight="0.5" />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout android:orientation="1" android:id="@id/linearLayout2" android:layout_width="-1" android:layout_height="-2" android:weightSum="1.0">
-        <TextView android:textAppearance="?unknown_attr_ref: 1010041" android:id="@id/textView2" android:layout_width="-2" android:layout_height="2dp" android:text="Ignition Control Overrides (Diagnostic Mode Only)" android:layout_weight="0.19" />
-        <LinearLayout android:id="@id/linearLayout21" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <ToggleButton android:textColor="#ff1a11" android:id="@id/AccessoryBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Accessory" android:textOff="Accessory" android:text="Accessory" android:layout_weight="0.25" />
-            <ToggleButton android:textColor="#ff0f0f" android:id="@id/IgnitionOnBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Ignition On" android:textOff="Ignition On" android:text="IgnitionOn" android:layout_weight="0.25" />
-            <ToggleButton android:textColor="#ff110e" android:id="@id/StartBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Start" android:textOff="Start" android:text="Start" android:layout_weight="0.25" />
-            <ToggleButton android:textColor="#ff120e" android:id="@id/ExtRelayBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Ext Relay" android:textOff="Ext Relay" android:text="Ext Relay" android:layout_weight="0.25" />
-            <ToggleButton android:textColor="#ff120e" android:id="@id/TestModeBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Test Mode" android:textOff="Test Mode" android:text="Test Mode" android:layout_weight="0.25" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout17" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="5px" android:weightSum="1.0" android:layout_weight="0.05">
+            <ToggleButton android:id="@id/KillBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Power On" android:textOff="Kill" android:text="Kill" android:layout_weight="0.5" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:orientation="1" android:id="@id/linearLayout3" android:layout_width="-1" android:layout_height="-2">
-        <TextView android:textAppearance="?unknown_attr_ref: 1010041" android:id="@id/textView2a" android:layout_width="-2" android:layout_height="2dp" android:text="Operational Modes" android:layout_weight="0.19" />
-        <LinearLayout android:id="@id/linearLayout31a" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <ToggleButton android:id="@id/CabinBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Cabin Comfort" android:textOff="Cabin Comfort" android:text="Cabin Comfort" android:layout_weight="0.25" />
-            <ToggleButton android:id="@id/ColdBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Cold Weather Guard" android:textOff="Cold Weather Guard" android:text="Cold Weather Guard" android:layout_weight="0.25" />
-            <ToggleButton android:id="@id/BatteryBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Battery Protect" android:textOff="Battery Protect" android:text="Battery Protect" android:layout_weight="0.25" />
-            <ToggleButton android:id="@id/StopBtn" android:layout_width="-2" android:layout_height="-1" android:checked="false" android:textOn="Stop" android:textOff="Stop" android:text="Stop" android:layout_weight="0.25" />
+    <LinearLayout android:visibility="visible" android:id="@id/linearLayout2" android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="1.0">
+        <TextView android:textAppearance="@color/disabled" android:id="@id/textView2" android:layout_width="wrap_content" android:layout_height="2dp" android:text="Ignition Control Overrides (Diagnostic Mode Only)" android:layout_weight="0.19" />
+        <LinearLayout android:id="@id/linearLayout21" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <ToggleButton android:textColor="#ff1a11" android:id="@id/AccessoryBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Accessory" android:textOff="Accessory" android:text="Accessory" android:layout_weight="0.25" />
+            <ToggleButton android:textColor="#ff0f0f" android:id="@id/IgnitionOnBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Ignition On" android:textOff="Ignition On" android:text="IgnitionOn" android:layout_weight="0.25" />
+            <ToggleButton android:textColor="#ff110e" android:id="@id/StartBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Start" android:textOff="Start" android:text="Start" android:layout_weight="0.25" />
+            <ToggleButton android:textColor="#ff120e" android:id="@id/ExtRelayBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Ext Relay" android:textOff="Ext Relay" android:text="Ext Relay" android:layout_weight="0.25" />
+            <ToggleButton android:textColor="#ff120e" android:id="@id/TestModeBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Test Mode" android:textOff="Test Mode" android:text="Test Mode" android:layout_weight="0.25" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:id="@id/linearLayout5" android:layout_width="-1" android:layout_height="-2"
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout51" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/enginerpmLabel" android:layout_width="-2" android:layout_height="-1" android:text="Idle RPMs" />
-            <EditText android:textSize="25sp" android:id="@id/enginerpmValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:text="0000" android:editable="true" android:inputType="2" android:imeOptions="6" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout52" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/enginerestartintervalLabel" android:layout_width="-2" android:layout_height="-1" android:text="Engine Restart Intvl" />
-            <EditText android:textSize="25sp" android:id="@id/enginerestartintervalValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="55px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
-        </LinearLayout>
-        <LinearLayout android:layout_gravity="5" android:orientation="1" android:id="@id/linearLayout53" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:layout_marginTop="15px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/autoshutofftimeoutLabel" android:layout_width="-2" android:layout_height="-1" android:text="Auto Shutoff" android:layout_weight="0.5" />
-            <EditText android:textSize="25sp" android:id="@id/autoshutofftimeoutValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="45px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+    <LinearLayout android:visibility="visible" android:id="@id/linearLayout3" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textAppearance="@color/disabled" android:id="@id/textView2a" android:layout_width="wrap_content" android:layout_height="2dp" android:text="Operational Modes" android:layout_weight="0.19" />
+        <LinearLayout android:id="@id/linearLayout31a" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <ToggleButton android:id="@id/CabinBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Cabin Comfort" android:textOff="Cabin Comfort" android:text="Cabin Comfort" android:layout_weight="0.25" />
+            <ToggleButton android:id="@id/ColdBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Cold Weather Guard" android:textOff="Cold Weather Guard" android:text="Cold Weather Guard" android:layout_weight="0.25" />
+            <ToggleButton android:id="@id/BatteryBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Battery Protect" android:textOff="Battery Protect" android:text="Battery Protect" android:layout_weight="0.25" />
+            <ToggleButton android:id="@id/StopBtn" android:layout_width="wrap_content" android:layout_height="match_parent" android:checked="false" android:textOn="Stop" android:textOff="Stop" android:text="Stop" android:layout_weight="0.25" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:id="@id/linearLayout6" android:layout_width="-1" android:layout_height="-2"
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout61" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/cabintempsetptLabel" android:layout_width="-2" android:layout_height="-1" android:text="Cabin Setpt" />
-            <EditText android:textSize="25sp" android:id="@id/cabintempsetptValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+    <LinearLayout android:id="@id/linearLayout5" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout51" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/enginerpmLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Idle RPMs" />
+            <EditText android:textSize="25sp" android:id="@id/enginerpmValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:text="0000" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout62" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="25px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/cabintemprangeLabel" android:layout_width="-2" android:layout_height="-1" android:text="Cabin Range" />
-            <EditText android:textSize="25sp" android:id="@id/cabintemprangeValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="45px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout52" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/enginerestartintervalLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Engine Restart Intvl" />
+            <EditText android:textSize="25sp" android:id="@id/enginerestartintervalValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="55px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout63" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="25px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/ambienttempsetptLabel" android:layout_width="-2" android:layout_height="-1" android:text="Amb Setpt" />
-            <EditText android:textSize="25sp" android:id="@id/ambienttempsetptValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout64" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="25px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/ambienttemprangeLabel" android:layout_width="-2" android:layout_height="-1" android:text="Amb Range" />
-            <EditText android:textSize="25sp" android:id="@id/ambienttemprangeValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+        <LinearLayout android:layout_gravity="right" android:visibility="visible" android:id="@id/linearLayout53" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:layout_marginTop="15px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/autoshutofftimeoutLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Auto Shutoff" android:layout_weight="0.5" />
+            <EditText android:textSize="25sp" android:id="@id/autoshutofftimeoutValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="45px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:id="@id/linearLayout7" android:layout_width="-1" android:layout_height="-2"
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout71" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/systemtimerLabel" android:layout_width="-2" android:layout_height="-1" android:text="System Timer" />
-            <EditText android:textSize="25sp" android:id="@id/systemtimerValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/linearLayout6" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout61" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/cabintempsetptLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Cabin Setpt" />
+            <EditText android:textSize="25sp" android:id="@id/cabintempsetptValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout72" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/enginestartoncabintempchangeLabel" android:layout_width="-2" android:layout_height="-1" android:text="StartonTempChg" />
-            <EditText android:textSize="25sp" android:id="@id/enginestartoncabintempchangeValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="55px" android:text="0" android:editable="true" android:inputType="2" android:imeOptions="6" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout62" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/cabintemprangeLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Cabin Range" />
+            <EditText android:textSize="25sp" android:id="@id/cabintemprangeValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="45px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout73" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/uncomfortablerestartintervalLabel" android:layout_width="-2" android:layout_height="-1" android:text="Uncomfort Intv" />
-            <EditText android:textSize="25sp" android:id="@id/uncomfortablerestartintervalValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="55px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout63" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/ambienttempsetptLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Amb Setpt" />
+            <EditText android:textSize="25sp" android:id="@id/ambienttempsetptValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout android:id="@id/linearLayout8" android:layout_width="-1" android:layout_height="-2"
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout81" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/batterymonitorvoltageLabel" android:layout_width="-2" android:layout_height="-1" android:text="Batt Mon Voltage" />
-            <EditText android:textSize="25sp" android:id="@id/batterymonitorvoltageValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:text="000" android:editable="true" android:inputType="2" android:imeOptions="6" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout82" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="15px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/batterymonitorruntimeLabel" android:layout_width="-2" android:layout_height="-1" android:text="Batt Mon Runtime" />
-            <EditText android:textSize="25sp" android:id="@id/batterymonitorruntimeValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="55px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout83" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="15px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/batteryvoltageLabel" android:layout_width="-2" android:layout_height="-1" android:text="Battery Voltage" />
-            <TextView android:textSize="25sp" android:id="@id/batteryvoltageValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="45px" android:text="000" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout64" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/ambienttemprangeLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Amb Range" />
+            <EditText android:textSize="25sp" android:id="@id/ambienttemprangeValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:id="@id/linearLayout9" android:layout_width="-1" android:layout_height="-2"
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout91" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/coldweatherguardstarttempLabel" android:layout_width="85dp" android:layout_height="-1" android:text="Cold Start Temp" />
-            <EditText android:textSize="25sp" android:id="@id/coldweatherguardstarttempValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="15px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+    <LinearLayout android:id="@id/linearLayout7" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout71" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/systemtimerLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="System Timer" />
+            <EditText android:textSize="25sp" android:id="@id/systemtimerValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout93" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="15px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/coldweatherguardrestartintervalLabel" android:layout_width="65dp" android:layout_height="-1" android:text="Restart Intv" />
-            <EditText android:textSize="25sp" android:id="@id/coldweatherguardrestartintervalValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="1px" android:text="0000" android:editable="true" android:inputType="2" android:imeOptions="6" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout72" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/enginestartoncabintempchangeLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="StartonTempChg" />
+            <EditText android:textSize="25sp" android:id="@id/enginestartoncabintempchangeValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="55px" android:text="0" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout94" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/coldweatherguardmincoolantLabel" android:layout_width="65dp" android:layout_height="-1" android:text="Min Coolant" />
-            <EditText android:textSize="25sp" android:id="@id/coldweatherguardmincoolantValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="15px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout73" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/uncomfortablerestartintervalLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Uncomfort Intv" />
+            <EditText android:textSize="25sp" android:id="@id/uncomfortablerestartintervalValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="55px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/linearLayout95" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="35px" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:id="@id/coldweatherguardidealcoolantLabel" android:layout_width="65dp" android:layout_height="-1" android:text="Ideal Coolant" />
-            <EditText android:textSize="25sp" android:id="@id/coldweatherguardidealcoolantValue" android:layout_width="-2" android:layout_height="-2" android:layout_marginLeft="5px" android:text="00" android:editable="true" android:inputType="2" android:imeOptions="6" />
+    </LinearLayout>
+    <LinearLayout android:id="@id/linearLayout8" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout81" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/batterymonitorvoltageLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Batt Mon Voltage" />
+            <EditText android:textSize="25sp" android:id="@id/batterymonitorvoltageValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:text="000" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
+        </LinearLayout>
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout82" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/batterymonitorruntimeLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Batt Mon Runtime" />
+            <EditText android:textSize="25sp" android:id="@id/batterymonitorruntimeValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="55px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
+        </LinearLayout>
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout83" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/batteryvoltageLabel" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="Battery Voltage" />
+            <TextView android:textSize="25sp" android:id="@id/batteryvoltageValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="45px" android:text="000" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@id/linearLayout9" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout91" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/coldweatherguardstarttempLabel" android:layout_width="85dp" android:layout_height="match_parent" android:text="Cold Start Temp" />
+            <EditText android:textSize="25sp" android:id="@id/coldweatherguardstarttempValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
+        </LinearLayout>
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout93" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/coldweatherguardrestartintervalLabel" android:layout_width="65dp" android:layout_height="match_parent" android:text="Restart Intv" />
+            <EditText android:textSize="25sp" android:id="@id/coldweatherguardrestartintervalValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="1px" android:text="0000" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
+        </LinearLayout>
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout94" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/coldweatherguardmincoolantLabel" android:layout_width="65dp" android:layout_height="match_parent" android:text="Min Coolant" />
+            <EditText android:textSize="25sp" android:id="@id/coldweatherguardmincoolantValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
+        </LinearLayout>
+        <LinearLayout android:visibility="visible" android:id="@id/linearLayout95" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="35px" android:weightSum="1.0">
+            <TextView android:textSize="18sp" android:id="@id/coldweatherguardidealcoolantLabel" android:layout_width="65dp" android:layout_height="match_parent" android:text="Ideal Coolant" />
+            <EditText android:textSize="25sp" android:id="@id/coldweatherguardidealcoolantValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5px" android:text="00" android:editable="true" android:inputType="number" android:imeOptions="actionDone" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

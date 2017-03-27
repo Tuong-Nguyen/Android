@@ -1,48 +1,359 @@
-<?xml version="1.0" encoding="utf-8"?>>
-<LinearLayout android:orientation="1" android:id="@id/topLayout" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-    <LinearLayout android:orientation="1" android:id="@id/fullScreen" android:background="#020202" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-        <LinearLayout android:orientation="0" android:id="@id/dashboard" android:background="#020202" android:visibility="0" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0"
-            <LinearLayout android:orientation="1" android:id="@id/functionSummary" android:background="#eeeeee" android:layout_width="129dp" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:id="@id/cabinComfortFunction" android:background="#ff717171" android:clickable="true" android:layout_width="-1" android:layout_height="159dp" android:weightSum="1.0">
-                    <ImageButton android:id="@id/cabinComfortFunctionButton" android:background="#00000000" android:clickable="false" android:layout_width="60dp" android:layout_height="80dp" android:layout_marginLeft="35dp" android:layout_marginTop="10dp" android:src="@mipmap/ic_thermometer" />
-                    <TextView android:textSize="18sp" android:gravity="1" android:id="@id/cabinComfortFunctionLabel" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8dp" android:text="Cabin Comfort" />
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/topLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    android:weightSum="1.0">
+
+    <LinearLayout
+        android:id="@id/fullScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#020202"
+        android:visibility="visible"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:id="@id/dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="477dp"
+            android:background="#020202"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/functionSummary"
+                android:layout_width="129dp"
+                android:layout_height="match_parent"
+                android:background="#eeeeee"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:weightSum="1.0">
+
+                <LinearLayout
+                    android:id="@id/cabinComfortFunction"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:background="#ff717171"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageButton
+                        android:id="@id/cabinComfortFunctionButton"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#00000000"
+                        android:clickable="false"
+                        android:src="@mipmap/ic_thermometer" />
+
+                    <TextView
+                        android:id="@id/cabinComfortFunctionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="Cabin Comfort"
+                        android:textSize="18sp" />
                 </LinearLayout>
-                <LinearLayout android:orientation="1" android:id="@id/coldWeatherGuardFunction" android:background="#717171" android:clickable="true" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" android:weightSum="1.0">
-                    <ImageButton android:id="@id/coldWeatherGuardFunctionButton" android:background="#00000000" android:clickable="false" android:layout_width="60dp" android:layout_height="80dp" android:layout_marginLeft="35dp" android:layout_marginTop="10dp" android:src="@mipmap/ic_snowflake" />
-                    <TextView android:textSize="18sp" android:gravity="1" android:id="@id/coldWeatherGuardFunctionLabel" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8dp" android:text="Cold Weather Guard" />
+
+                <LinearLayout
+                    android:id="@id/coldWeatherGuardFunction"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#717171"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageButton
+                        android:id="@id/coldWeatherGuardFunctionButton"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#00000000"
+                        android:clickable="false"
+                        android:src="@mipmap/ic_snowflake" />
+
+                    <TextView
+                        android:id="@id/coldWeatherGuardFunctionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="Cold Weather Guard"
+                        android:textSize="18sp" />
                 </LinearLayout>
-                <LinearLayout android:orientation="1" android:id="@id/batteryProtectFunction" android:background="#717171" android:clickable="true" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" android:weightSum="1.0">
-                    <ImageButton android:id="@id/batteryProtectFunctionButton" android:background="#00000000" android:clickable="false" android:layout_width="60dp" android:layout_height="80dp" android:layout_marginLeft="35dp" android:layout_marginTop="10dp" android:src="@mipmap/ic_battery" />
-                    <TextView android:textSize="18sp" android:gravity="1" android:id="@id/batteryProtectFunctionLabel" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8dp" android:text="Battery Protect" />
+
+                <LinearLayout
+                    android:id="@id/batteryProtectFunction"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#717171"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageButton
+                        android:id="@id/batteryProtectFunctionButton"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#00000000"
+                        android:clickable="false"
+                        android:src="@mipmap/ic_battery" />
+
+                    <TextView
+                        android:id="@id/batteryProtectFunctionLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="Battery Protect"
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/functionStatus" android:background="#ffffffff" android:layout_width="8dp" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:gravity="1" android:id="@id/cabinComfortFunctionIndicator" android:background="@color/disabled" android:layout_width="-1" android:layout_height="159dp" />
-                <LinearLayout android:gravity="1" android:id="@id/coldWeatherGuardFunctionIndicator" android:background="@color/disabled" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" />
-                <LinearLayout android:gravity="1" android:id="@id/batteryProtectFunctionIndicator" android:background="@color/disabled" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" /> />
-            <LinearLayout android:orientation="0" android:id="@id/cabinComfortFragment" android:background="@color/enabledFunction" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:layout_width="560dp" android:layout_height="-1" android:weightSum="1.0">
-                    <TextView android:textSize="30sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="10dp" android:text="Cold Weather Guard" />
-                    <TextView android:textSize="24dp" android:textColor="#848484" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="40dp" android:text="Cabin Temperature" />
-                    <TextView android:textSize="144dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/ccFragTemperatureValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="20dp" android:layout_marginTop="-15dp" android:text="68°" />
-                    <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:textColor="#4a4a4a" android:layout_gravity="1" android:id="@id/ccFragStopButton" android:background="@drawable/active_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="47dp" android:text="STOP ENGINE" android:layout_weight="0.09" />
-                </LinearLayout>
-                <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="32dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Coolant Set Point" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/ccFragSetpointValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="40°" />
+
+            <LinearLayout
+                android:id="@id/functionStatus"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="#ffffffff"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="1.0">
+
+                <LinearLayout
+                    android:id="@id/cabinComfortFunctionIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:background="@color/disabled"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:id="@id/coldWeatherGuardFunctionIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/disabled"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:id="@id/batteryProtectFunctionIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/disabled"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:id="@id/cabinComfortFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/enabledFunction"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:layout_width="560dp"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="Cold Weather Guard"
+                            android:textColor="#717171"
+                            android:textSize="30sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:gravity="center_horizontal"
+                            android:text="Cabin Temperature"
+                            android:textColor="#848484"
+                            android:textSize="24dp" />
+
+                        <TextView
+                            android:id="@id/ccFragTemperatureValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="-15dp"
+                            android:gravity="center_horizontal"
+                            android:text="68°"
+                            android:textColor="#4a4a4a"
+                            android:textSize="144dp" />
+
+                        <Button
+                            android:id="@id/ccFragStopButton"
+                            android:layout_width="226dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="47dp"
+                            android:layout_weight="0.09"
+                            android:background="@drawable/active_button_shape"
+                            android:clickable="true"
+                            android:enabled="true"
+                            android:text="STOP ENGINE"
+                            android:textColor="#4a4a4a"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="190dp" android:layout_height="48dp" android:layout_marginLeft="74dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                        <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/ccFragSetpointDecrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                        <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/ccFragSetpointIncrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
-                    </LinearLayout>
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="40dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Ideal Coolant Temp" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/ccFragCoolantTempValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="20min" />
-                    </LinearLayout>
-                    <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="190dp" android:layout_height="48dp" android:layout_marginLeft="74dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                        <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/ccFragCoolantTempDecrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                        <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/ccFragCoolantTempIncrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="32dp"
+                            android:background="@drawable/round_button_shape"
+                            android:orientation="horizontal"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Coolant Set Point"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/ccFragSetpointValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="40°"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="74dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#eeeeee"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <Button
+                                android:id="@id/ccFragSetpointDecrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="-20dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="-"
+                                android:textColor="#eeeeee"
+                                android:textSize="60dp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@id/ccFragSetpointIncrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="-12dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="+"
+                                android:textColor="#eeeeee"
+                                android:textSize="50dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/round_button_shape"
+                            android:orientation="horizontal"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Ideal Coolant Temp"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/ccFragCoolantTempValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="20min"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="74dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#eeeeee"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <Button
+                                android:id="@id/ccFragCoolantTempDecrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="-20dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="-"
+                                android:textColor="#eeeeee"
+                                android:textSize="60dp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@id/ccFragCoolantTempIncrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="-12dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="+"
+                                android:textColor="#eeeeee"
+                                android:textSize="50dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

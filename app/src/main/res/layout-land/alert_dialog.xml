@@ -1,14 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@id/alertLayout" android:layout_width="match_parent" android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:visibility="visible" android:background="@color/enabledFunction" android:layout_width="900dp" android:layout_height="500dp" android:weightSum="1.0">
-        <LinearLayout android:orientation="horizontal" android:background="@color/enabledFunction" android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="1.0">
-            <ImageView android:background="#f5f3da1e" android:clickable="true" android:layout_width="180dp" android:layout_height="160dp" android:layout_marginLeft="30dp" android:layout_marginTop="50dp" android:src="0x1080027" />
-            <LinearLayout android:visibility="visible" android:background="@color/enabledFunction" android:layout_width="800dp" android:layout_height="240dp" android:weightSum="1.0">
-                <TextView android:textSize="30sp" android:textColor="#5c5c5c" android:gravity="center_horizontal" android:layout_width="600dp" android:layout_height="100dp" android:layout_marginLeft="40dp" android:layout_marginTop="26dp" android:text="Idle Smart cannot run your vehicle because of the following error:" />
-                <TextView android:textSize="42sp" android:textStyle="bold" android:textColor="#5c5c5c" android:gravity="center" android:id="@id/alertName" android:layout_width="650dp" android:layout_height="100dp" android:layout_marginLeft="40dp" android:layout_marginTop="0dp" android:text="Engine Coolant Temperature is Too High" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/alertLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="900dp"
+        android:layout_height="500dp"
+        android:background="@color/enabledFunction"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/enabledFunction"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <ImageView
+                android:layout_width="180dp"
+                android:layout_height="160dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="50dp"
+                android:background="#f5f3da1e"
+                android:clickable="true"
+                android:src="@mipmap/is_launcher" />
+
+            <LinearLayout
+                android:layout_width="800dp"
+                android:layout_height="240dp"
+                android:background="@color/enabledFunction"
+                android:visibility="visible"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="600dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="26dp"
+                    android:gravity="center_horizontal"
+                    android:text="Idle Smart cannot run your vehicle because of the following error:"
+                    android:textColor="#5c5c5c"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@id/alertName"
+                    android:layout_width="650dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center"
+                    android:text="Engine Coolant Temperature is Too High"
+                    android:textColor="#5c5c5c"
+                    android:textSize="42sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-        <TextView android:textSize="26sp" android:textColor="#5c5c5c" android:gravity="center_horizontal" android:id="@id/alertDescription" android:layout_width="810dp" android:layout_height="wrap_content" android:layout_marginLeft="52dp" android:layout_marginTop="10dp" android:text="Alert Description asdf asdf asdf asdfasd;lkfj asdf;lkj asdf;lkj asdf;lkj asdf;lkj asdf;lkj asdf;lkja sdf;l kj asdf;lkj asdf;lkja sdf;lk jasdf;lk jasdf;lk jasdfkjfhasld kfaslkdjf asl dkfjasldkjf asdf qwert dfb asdgt wqert afdb asdfg eqrg s." />
-        <Button android:enabled="true" android:textSize="36sp" android:textStyle="bold" android:layout_gravity="center_horizontal" android:id="@id/alertRefreshButton" android:background="@drawable/enabled_button_shape" android:inputType="numberDecimal" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="36dp" android:text="REFRESH" android:layout_weight="0.09" />
+
+        <TextView
+            android:id="@id/alertDescription"
+            android:layout_width="810dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="52dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Alert Description asdf asdf asdf asdfasd;lkfj asdf;lkj asdf;lkj asdf;lkj asdf;lkj asdf;lkj asdf;lkja sdf;l kj asdf;lkj asdf;lkja sdf;lk jasdf;lk jasdf;lk jasdfkjfhasld kfaslkdjf asl dkfjasldkjf asdf qwert dfb asdgt wqert afdb asdfg eqrg s."
+            android:textColor="#5c5c5c"
+            android:textSize="26sp" />
+
+        <Button
+            android:id="@id/alertRefreshButton"
+            android:layout_width="400dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="36dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/enabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:inputType="numberDecimal"
+            android:text="REFRESH"
+            android:textSize="36sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

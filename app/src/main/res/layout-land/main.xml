@@ -1,325 +1,2461 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="1" android:id="@id/topLayout" android:focusableInTouchMode="true" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-    <LinearLayout android:orientation="1" android:id="@id/poweronFragment" android:background="#000000" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-        <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/poweronButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="226dp" android:text="POWER ON" android:layout_weight="0.09" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/topLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:weightSum="1.0">
+
+    <LinearLayout
+        android:id="@id/poweronFragment"
+        android:layout_width="match_parent"
+        android:layout_height="477dp"
+        android:background="#000000"
+        android:visibility="gone"
+        android:weightSum="1.0">
+
+        <Button
+            android:id="@id/poweronButton"
+            android:layout_width="400dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="226dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/enabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="POWER ON"
+            android:textSize="36sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    <LinearLayout android:orientation="1" android:id="@id/fullScreen" android:background="#020202" android:visibility="0" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-        <LinearLayout android:orientation="0" android:id="@id/actionBar" android:background="#eeeeee" android:layout_width="-1" android:layout_height="64dp" android:weightSum="1.0">
-            <ImageView android:id="@id/idlesmartButton" android:background="#00000000" android:clickable="true" android:layout_width="160dp" android:layout_height="120dp" android:layout_marginLeft="-20dp" android:layout_marginTop="-30dp" android:src="@mipmap/ic_idlesmart_home" />
-            <LinearLayout android:orientation="0" android:id="@id/actionButtons" android:visibility="0" android:layout_width="653dp" android:layout_height="64dp" android:layout_marginLeft="0dp"
-                <LinearLayout android:orientation="1" android:id="@id/dashboardButton" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:layout_marginLeft="90dp" android:weightSum="1.0">
-                    <ImageView android:background="#00000000" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="15dp" android:layout_marginTop="6dp" android:src="@mipmap/ic_house" />
-                    <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:layout_width="-2" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Dashboard" />
+
+    <LinearLayout
+        android:id="@id/fullScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#020202"
+        android:inputType="numberDecimal"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:id="@id/actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="#eeeeee"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <ImageView
+                android:id="@id/idlesmartButton"
+                android:layout_width="160dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="-20dp"
+                android:layout_marginTop="-30dp"
+                android:background="#00000000"
+                android:clickable="true"
+                android:src="@mipmap/ic_idlesmart_home" />
+
+            <LinearLayout
+                android:id="@id/actionButtons"
+                android:layout_width="653dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="0dp"
+                android:inputType="numberDecimal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@id/dashboardButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="90dp"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="6dp"
+                        android:background="#00000000"
+                        android:src="@mipmap/ic_house" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="0dp"
+                        android:gravity="center_horizontal"
+                        android:text="Dashboard"
+                        android:textColor="#4a4a4a"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
-                <LinearLayout android:orientation="1" android:id="@id/settingsButton" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:layout_marginLeft="50dp" android:weightSum="1.0">
-                    <ImageView android:background="#00000000" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="8dp" android:layout_marginTop="6dp" android:src="@mipmap/ic_settings" />
-                    <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:layout_width="-2" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Settings" />
+
+                <LinearLayout
+                    android:id="@id/settingsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="50dp"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="6dp"
+                        android:background="#00000000"
+                        android:src="@mipmap/ic_settings" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="0dp"
+                        android:gravity="center_horizontal"
+                        android:text="Settings"
+                        android:textColor="#4a4a4a"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:orientation="0" android:id="@id/updateButtons" android:visibility="2" android:layout_width="653dp" android:layout_height="64dp" android:layout_marginLeft="0dp"
-                <LinearLayout android:orientation="0" android:id="@id/updateRequiredButton" android:background="#f5a623" android:visibility="0" android:clickable="true" android:layout_width="590dp" android:layout_height="-1" android:layout_marginLeft="30dp" android:weightSum="1.0">
-                    <TextView android:textSize="20sp" android:textStyle="1" android:textColor="#000000" android:gravity="10" android:layout_width="290dp" android:layout_height="64dp" android:layout_marginLeft="120dp" android:text="Software Update Required" />
-                    <TextView android:textSize="18sp" android:textStyle="1" android:textColor="#ffffff" android:gravity="10" android:id="@id/updateInstallButton" android:background="#23ff08" android:layout_width="85dp" android:layout_height="32dp" android:layout_marginLeft="0dp" android:layout_marginTop="0dp" android:text="   Install" />
+
+            <LinearLayout
+                android:id="@id/updateButtons"
+                android:layout_width="653dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="0dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@id/updateRequiredButton"
+                    android:layout_width="590dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:background="#f5a623"
+                    android:clickable="true"
+                    android:inputType="numberDecimal"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:layout_width="290dp"
+                        android:layout_height="64dp"
+                        android:layout_marginLeft="120dp"
+                        android:gravity="center_vertical"
+                        android:text="Software Update Required"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@id/updateInstallButton"
+                        android:layout_width="85dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="0dp"
+                        android:background="#23ff08"
+                        android:gravity="center_vertical"
+                        android:text="   Install"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/maintButton" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:layout_marginLeft="20dp" android:weightSum="1.0">
-                <ImageView android:background="#00000000" android:visibility="1" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="8dp" android:layout_marginTop="6dp" android:src="@mipmap/ic_settings" />
-                <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:visibility="1" android:layout_width="-2" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Maintenance" />
+
+            <LinearLayout
+                android:id="@id/maintButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:clickable="true"
+                android:visibility="visible"
+                android:weightSum="1.0">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="6dp"
+                    android:background="#00000000"
+                    android:src="@mipmap/ic_settings"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center_horizontal"
+                    android:text="Maintenance"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/killSwitchButton" android:background="#f5a623" android:clickable="true" android:layout_width="-2" android:layout_height="-1" android:layout_marginLeft="28dp" android:weightSum="1.0">
-                <ImageView android:background="#00000000" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="28dp" android:layout_marginTop="5dp" android:src="@mipmap/ic_power" />
-                <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#000000" android:gravity="1" android:layout_width="100dp" android:layout_height="64dp" android:text="KILL SWITCH" />
+
+            <LinearLayout
+                android:id="@id/killSwitchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="28dp"
+                android:background="#f5a623"
+                android:clickable="true"
+                android:visibility="visible"
+                android:weightSum="1.0">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#00000000"
+                    android:src="@mipmap/ic_power" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="64dp"
+                    android:gravity="center_horizontal"
+                    android:text="KILL SWITCH"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout android:orientation="0" android:id="@id/statusBar" android:background="#020202" android:visibility="0" android:layout_width="-1" android:layout_height="40dp" android:weightSum="1.0">
-            <TextView android:textSize="18sp" android:textColor="#f4f4f4" android:gravity="13" android:id="@id/gatewayStatus" android:visibility="0" android:layout_width="300dp" android:layout_height="-2" android:layout_marginTop="8dp" android:text="" />
-            <TextView android:textSize="18sp" android:textColor="#f4f4f4" android:gravity="11" android:id="@id/engineStatus" android:visibility="0" android:layout_width="500dp" android:layout_height="-2" android:layout_marginTop="8dp" android:text="" />
-            <TextView android:textSize="18sp" android:textColor="#07f40f" android:gravity="15" android:id="@id/connectivityStatus" android:visibility="0" android:layout_width="220dp" android:layout_height="-2" android:layout_marginTop="8dp" android:text="Server: Offline" />
+
+        <LinearLayout
+            android:id="@id/statusBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#020202"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <TextView
+                android:id="@id/gatewayStatus"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="left|center_vertical"
+                android:inputType="numberDecimal"
+                android:text=""
+                android:textColor="#f4f4f4"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@id/engineStatus"
+                android:layout_width="500dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:text=""
+                android:textColor="#f4f4f4"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@id/connectivityStatus"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="right|center_vertical"
+                android:inputType="numberDecimal"
+                android:text="Server: Offline"
+                android:textColor="#07f40f"
+                android:textSize="18sp" />
         </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/passwordFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <Button android:enabled="true" android:textSize="24sp" android:layout_gravity="3" android:id="@id/passwordReturnButton" android:background="#eeeeee" android:clickable="true" android:layout_width="150dp" android:layout_height="30dp" android:layout_marginLeft="20dp" android:layout_marginTop="30dp" android:text="Return" android:layout_weight="0.09" />
-            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="-40dp" android:text="Password Required" />
-            <EditText android:layout_gravity="1" android:id="@id/passwordEditText" android:layout_width="250dp" android:layout_height="-2" android:ems="10" android:inputType="81" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/passwordContinueButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="250dp" android:layout_height="40dp" android:layout_marginTop="30dp" android:text="CONTINUE" android:layout_weight="0.09" />
+
+        <LinearLayout
+            android:id="@id/passwordFragment"
+            android:layout_width="match_parent"
+            android:layout_height="477dp"
+            android:background="@color/enabledFunction"
+            android:visibility="gone"
+            android:weightSum="1.0">
+
+            <Button
+                android:id="@id/passwordReturnButton"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="0.09"
+                android:background="#eeeeee"
+                android:clickable="true"
+                android:enabled="true"
+                android:text="Return"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="-40dp"
+                android:gravity="center_horizontal"
+                android:text="Password Required"
+                android:textColor="#5c5c5c"
+                android:textSize="36sp" />
+
+            <EditText
+                android:id="@id/passwordEditText"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@id/passwordContinueButton"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_weight="0.09"
+                android:background="@drawable/enabled_button_shape"
+                android:clickable="true"
+                android:enabled="true"
+                android:text="CONTINUE"
+                android:textSize="36sp"
+                android:textStyle="bold" />
         </LinearLayout>
-        <LinearLayout android:orientation="0" android:id="@id/dashboardFragment" android:background="#020202" android:visibility="0" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0"
-            <LinearLayout android:orientation="1" android:id="@id/functionSummary" android:background="#eeeeee" android:layout_width="129dp" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:id="@id/cabinComfortFunction" android:background="#ff717171" android:clickable="true" android:layout_width="-1" android:layout_height="159dp" android:weightSum="1.0">
-                    <ImageView android:background="#00000000" android:layout_width="60dp" android:layout_height="80dp" android:layout_marginLeft="35dp" android:layout_marginTop="10dp" android:src="@mipmap/ic_thermometer" />
-                    <TextView android:textSize="18sp" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8dp" android:text="Cabin Comfort" />
+
+        <LinearLayout
+            android:id="@id/dashboardFragment"
+            android:layout_width="match_parent"
+            android:layout_height="477dp"
+            android:background="#020202"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/functionSummary"
+                android:layout_width="129dp"
+                android:layout_height="match_parent"
+                android:background="#eeeeee"
+                android:visibility="visible"
+                android:weightSum="1.0">
+
+                <LinearLayout
+                    android:id="@id/cabinComfortFunction"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:background="#ff717171"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#00000000"
+                        android:src="@mipmap/ic_thermometer" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="Cabin Comfort"
+                        android:textSize="18sp" />
                 </LinearLayout>
-                <LinearLayout android:orientation="1" android:id="@id/coldWeatherGuardFunction" android:background="#717171" android:clickable="true" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" android:weightSum="1.0">
-                    <ImageView android:background="#00000000" android:layout_width="60dp" android:layout_height="80dp" android:layout_marginLeft="35dp" android:layout_marginTop="10dp" android:src="@mipmap/ic_snowflake" />
-                    <TextView android:textSize="18sp" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8dp" android:text="Cold Weather Guard" />
+
+                <LinearLayout
+                    android:id="@id/coldWeatherGuardFunction"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#717171"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#00000000"
+                        android:src="@mipmap/ic_snowflake" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="Cold Weather Guard"
+                        android:textSize="18sp" />
                 </LinearLayout>
-                <LinearLayout android:orientation="1" android:id="@id/batteryProtectFunction" android:background="#717171" android:clickable="true" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" android:weightSum="1.0">
-                    <ImageView android:background="#00000000" android:layout_width="60dp" android:layout_height="80dp" android:layout_marginLeft="35dp" android:layout_marginTop="10dp" android:src="@mipmap/ic_battery" />
-                    <TextView android:textSize="18sp" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="8dp" android:text="Battery Protect" />
+
+                <LinearLayout
+                    android:id="@id/batteryProtectFunction"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#717171"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#00000000"
+                        android:src="@mipmap/ic_battery" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        android:text="Battery Protect"
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/functionStatus" android:background="#ffffffff" android:layout_width="8dp" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:gravity="1" android:orientation="1" android:id="@id/cabinComfortFunctionIndicator" android:background="@color/disabled" android:layout_width="-1" android:layout_height="159dp" />
-                <LinearLayout android:gravity="1" android:orientation="1" android:id="@id/coldWeatherGuardFunctionIndicator" android:background="@color/disabled" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" />
-                <LinearLayout android:gravity="1" android:orientation="1" android:id="@id/batteryProtectFunctionIndicator" android:background="@color/disabled" android:layout_width="-1" android:layout_height="159dp" android:layout_marginTop="2dp" /> />
-            <LinearLayout android:orientation="0" android:id="@id/runningFragment" android:visibility="0" android:layout_width="-1" android:layout_height="-1"
-                <LinearLayout android:orientation="1" android:id="@id/cabinComfortControl" android:background="@color/enabledFunction" android:clickable="true" android:layout_width="294dp" android:layout_height="-1" android:weightSum="1.0">
-                    <TextView android:textSize="30sp" android:textColor="#717171" android:gravity="1" android:id="@id/cabinComfortLabel" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="16dp" android:text="Cabin Comfort" />
-                    <LinearLayout android:gravity="1" android:orientation="1" android:id="@id/cabinComfortIndicator" android:background="@drawable/disabled_indicator_shape" android:layout_width="64dp" android:layout_height="6dp" android:layout_marginLeft="118dp" android:layout_marginTop="32dp" />
-                    <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/cabinComfortStatus" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12dp" android:text="RUNNING ENGINE" />
-                    <TextView android:textSize="100dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/cabinComfortValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="35dp" android:text="68°" />
-                    <TextView android:textSize="18dp" android:textColor="#848484" android:gravity="1" android:id="@id/cabinComfortDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="0dp" android:text="Cabin Temperature" />
-                    <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:textColor="#4a4a4a" android:layout_gravity="1" android:id="@id/cabinComfortEnableButton" android:background="@drawable/active_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="67dp" android:text="STOP ENGINE" android:layout_weight="0.09" />
-                </LinearLayout>
-                <LinearLayout android:orientation="1" android:id="@id/coldWeatherGuardControl" android:background="@color/enabledFunction" android:clickable="true" android:layout_width="298dp" android:layout_height="-1" android:layout_marginLeft="1dp" android:weightSum="1.0">
-                    <TextView android:textSize="30sp" android:textColor="#717171" android:gravity="1" android:id="@id/coldWeatherGuardLabel" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="16dp" android:text="Cold Weather Guard" />
-                    <LinearLayout android:gravity="1" android:orientation="1" android:id="@id/coldWeatherGuardIndicator" android:background="@drawable/disabled_indicator_shape" android:layout_width="64dp" android:layout_height="6dp" android:layout_marginLeft="118dp" android:layout_marginTop="32dp" />
-                    <TextView android:textSize="14dp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/coldWeatherGuardStatus" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12dp" android:text="MONITORING" />
-                    <TextView android:textSize="100dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/coldWeatherGuardValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="35dp" android:text="101°" />
-                    <TextView android:textSize="18dp" android:textColor="#848484" android:gravity="1" android:id="@id/coldWeatherGuardDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="0dp" android:text="Coolant Temperature" />
-                    <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:textColor="#4a4a4a" android:layout_gravity="1" android:id="@id/coldWeatherGuardEnableButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="67dp" android:text="DISABLE" android:layout_weight="0.09" />
-                </LinearLayout>
-                <LinearLayout android:orientation="1" android:id="@id/batteryProtectControl" android:background="@color/disabledFunction" android:clickable="true" android:layout_width="294dp" android:layout_height="-1" android:layout_marginLeft="1dp" android:weightSum="1.0">
-                    <TextView android:textSize="30sp" android:textColor="#717171" android:gravity="1" android:id="@id/batteryProtectLabel" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="16dp" android:text="Battery Protect" />
-                    <LinearLayout android:gravity="1" android:orientation="1" android:id="@id/batteryProtectIndicator" android:background="@drawable/disabled_indicator_shape" android:layout_width="64dp" android:layout_height="6dp" android:layout_marginLeft="118dp" android:layout_marginTop="32dp" />
-                    <TextView android:textSize="14dp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/batteryProtectStatus" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="12dp" android:text="DISABLED" />
-                    <TextView android:textSize="100dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/batteryProtectValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="35dp" android:text="12.2v" />
-                    <TextView android:textSize="18dp" android:textColor="#848484" android:gravity="1" android:id="@id/batteryProtectDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="0dp" android:text="Battery Voltage" />
-                    <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/batteryProtectEnableButton" android:background="@drawable/disabled_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="67dp" android:text="ENABLE" android:layout_weight="0.09" />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout android:orientation="0" android:id="@id/cabinComfortFragment" android:background="@color/enabledFunction" android:visibility="2" android:clickable="true" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:layout_width="560dp" android:layout_height="-1" android:weightSum="1.0">
-                    <TextView android:textSize="24dp" android:textColor="#848484" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="87dp" android:text="Cabin Temperature" />
-                    <TextView android:textSize="144dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/ccFragTemperatureValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="20dp" android:layout_marginTop="-15dp" android:text="68°" />
-                    <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:textColor="#4a4a4a" android:layout_gravity="1" android:id="@id/ccFragStopButton" android:background="@drawable/active_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="47dp" android:text="STOP ENGINE" android:layout_weight="0.09" />
-                </LinearLayout>
-                <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="32dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Target Temperature" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/ccFragTargetTemperatureValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="40°" />
+
+            <LinearLayout
+                android:id="@id/functionStatus"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="#ffffffff"
+                android:visibility="visible"
+                android:weightSum="1.0">
+
+                <LinearLayout
+                    android:id="@id/cabinComfortFunctionIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:background="@color/disabled"
+                    android:gravity="center_horizontal"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@id/coldWeatherGuardFunctionIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/disabled"
+                    android:gravity="center_horizontal"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@id/batteryProtectFunctionIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/disabled"
+                    android:gravity="center_horizontal"
+                    android:visibility="visible" />
+                />
+
+                <LinearLayout
+                    android:id="@id/runningFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="numberDecimal"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@id/cabinComfortControl"
+                        android:layout_width="294dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/enabledFunction"
+                        android:clickable="true"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@id/cabinComfortLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_horizontal"
+                            android:text="Cabin Comfort"
+                            android:textColor="#717171"
+                            android:textSize="30sp" />
+
+                        <LinearLayout
+                            android:id="@id/cabinComfortIndicator"
+                            android:layout_width="64dp"
+                            android:layout_height="6dp"
+                            android:layout_marginLeft="118dp"
+                            android:layout_marginTop="32dp"
+                            android:background="@drawable/disabled_indicator_shape"
+                            android:gravity="center_horizontal"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/cabinComfortStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center_horizontal"
+                            android:text="RUNNING ENGINE"
+                            android:textColor="#4a4a4a"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@id/cabinComfortValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="35dp"
+                            android:gravity="center_horizontal"
+                            android:text="68°"
+                            android:textColor="#4a4a4a"
+                            android:textSize="100dp" />
+
+                        <TextView
+                            android:id="@id/cabinComfortDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center_horizontal"
+                            android:text="Cabin Temperature"
+                            android:textColor="#848484"
+                            android:textSize="18dp" />
+
+                        <Button
+                            android:id="@id/cabinComfortEnableButton"
+                            android:layout_width="226dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="67dp"
+                            android:layout_weight="0.09"
+                            android:background="@drawable/active_button_shape"
+                            android:clickable="true"
+                            android:enabled="true"
+                            android:text="STOP ENGINE"
+                            android:textColor="#4a4a4a"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="190dp" android:layout_height="48dp" android:layout_marginLeft="74dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                        <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/ccFragTargetTemperatureDecrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                        <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/ccFragTargetTemperatureIncrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
+
+                    <LinearLayout
+                        android:id="@id/coldWeatherGuardControl"
+                        android:layout_width="298dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="1dp"
+                        android:background="@color/enabledFunction"
+                        android:clickable="true"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@id/coldWeatherGuardLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_horizontal"
+                            android:text="Cold Weather Guard"
+                            android:textColor="#717171"
+                            android:textSize="30sp" />
+
+                        <LinearLayout
+                            android:id="@id/coldWeatherGuardIndicator"
+                            android:layout_width="64dp"
+                            android:layout_height="6dp"
+                            android:layout_marginLeft="118dp"
+                            android:layout_marginTop="32dp"
+                            android:background="@drawable/disabled_indicator_shape"
+                            android:gravity="center_horizontal"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/coldWeatherGuardStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center_horizontal"
+                            android:text="MONITORING"
+                            android:textColor="#4a4a4a"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@id/coldWeatherGuardValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="35dp"
+                            android:gravity="center_horizontal"
+                            android:text="101°"
+                            android:textColor="#4a4a4a"
+                            android:textSize="100dp" />
+
+                        <TextView
+                            android:id="@id/coldWeatherGuardDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center_horizontal"
+                            android:text="Coolant Temperature"
+                            android:textColor="#848484"
+                            android:textSize="18dp" />
+
+                        <Button
+                            android:id="@id/coldWeatherGuardEnableButton"
+                            android:layout_width="226dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="67dp"
+                            android:layout_weight="0.09"
+                            android:background="@drawable/enabled_button_shape"
+                            android:clickable="true"
+                            android:enabled="true"
+                            android:text="DISABLE"
+                            android:textColor="#4a4a4a"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="40dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Outside Temperature" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/ccFragAmbientTempValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="50°" />
+
+                    <LinearLayout
+                        android:id="@id/batteryProtectControl"
+                        android:layout_width="294dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="1dp"
+                        android:background="@color/disabledFunction"
+                        android:clickable="true"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@id/batteryProtectLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_horizontal"
+                            android:text="Battery Protect"
+                            android:textColor="#717171"
+                            android:textSize="30sp" />
+
+                        <LinearLayout
+                            android:id="@id/batteryProtectIndicator"
+                            android:layout_width="64dp"
+                            android:layout_height="6dp"
+                            android:layout_marginLeft="118dp"
+                            android:layout_marginTop="32dp"
+                            android:background="@drawable/disabled_indicator_shape"
+                            android:gravity="center_horizontal"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/batteryProtectStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center_horizontal"
+                            android:text="DISABLED"
+                            android:textColor="#4a4a4a"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@id/batteryProtectValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="35dp"
+                            android:gravity="center_horizontal"
+                            android:text="12.2v"
+                            android:textColor="#4a4a4a"
+                            android:textSize="100dp" />
+
+                        <TextView
+                            android:id="@id/batteryProtectDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center_horizontal"
+                            android:text="Battery Voltage"
+                            android:textColor="#848484"
+                            android:textSize="18dp" />
+
+                        <Button
+                            android:id="@id/batteryProtectEnableButton"
+                            android:layout_width="226dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="67dp"
+                            android:layout_weight="0.09"
+                            android:background="@drawable/disabled_button_shape"
+                            android:clickable="true"
+                            android:enabled="true"
+                            android:text="ENABLE"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/cabinComfortFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/enabledFunction"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:layout_width="560dp"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="87dp"
+                            android:gravity="center_horizontal"
+                            android:text="Cabin Temperature"
+                            android:textColor="#848484"
+                            android:textSize="24dp" />
+
+                        <TextView
+                            android:id="@id/ccFragTemperatureValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="-15dp"
+                            android:gravity="center_horizontal"
+                            android:text="68°"
+                            android:textColor="#4a4a4a"
+                            android:textSize="144dp" />
+
+                        <Button
+                            android:id="@id/ccFragStopButton"
+                            android:layout_width="226dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="47dp"
+                            android:layout_weight="0.09"
+                            android:background="@drawable/active_button_shape"
+                            android:clickable="true"
+                            android:enabled="true"
+                            android:text="STOP ENGINE"
+                            android:textColor="#4a4a4a"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="32dp"
+                            android:background="@drawable/round_button_shape"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Target Temperature"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/ccFragTargetTemperatureValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="40°"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="74dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#eeeeee"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <Button
+                                android:id="@id/ccFragTargetTemperatureDecrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="-20dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="-"
+                                android:textColor="#eeeeee"
+                                android:textSize="60dp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@id/ccFragTargetTemperatureIncrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="-12dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="+"
+                                android:textColor="#eeeeee"
+                                android:textSize="50dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/round_button_shape"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Outside Temperature"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/ccFragAmbientTempValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="50°"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/coldWeatherGuardFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/enabledFunction"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:layout_width="560dp"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="87dp"
+                            android:gravity="center_horizontal"
+                            android:text="Latest Coolant Temperature"
+                            android:textColor="#848484"
+                            android:textSize="24dp" />
+
+                        <TextView
+                            android:id="@id/cwgFragTemperatureValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="-15dp"
+                            android:gravity="center_horizontal"
+                            android:text="101°"
+                            android:textColor="#4a4a4a"
+                            android:textSize="144dp" />
+
+                        <Button
+                            android:id="@id/cwgFragStopButton"
+                            android:layout_width="226dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="47dp"
+                            android:layout_weight="0.09"
+                            android:background="@drawable/active_button_shape"
+                            android:clickable="true"
+                            android:enabled="true"
+                            android:text="STOP ENGINE"
+                            android:textColor="#4a4a4a"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="32dp"
+                            android:background="@drawable/round_button_shape"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Minimum Coolant Temp"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/cwgFragMinTempValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="40°"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="74dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#eeeeee"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <Button
+                                android:id="@id/cwgFragMinTempDecrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="-20dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="-"
+                                android:textColor="#eeeeee"
+                                android:textSize="60dp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@id/cwgFragMinTempIncrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="-12dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="+"
+                                android:textColor="#eeeeee"
+                                android:textSize="50dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/round_button_shape"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Ideal Coolant Temp"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/cwgFragIdealTempValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="110°"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="74dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#eeeeee"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <Button
+                                android:id="@id/cwgFragIdealTempDecrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="-20dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="-"
+                                android:textColor="#eeeeee"
+                                android:textSize="60dp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@id/cwgFragIdealTempIncrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="-12dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="+"
+                                android:textColor="#eeeeee"
+                                android:textSize="50dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/batteryProtectFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/enabledFunction"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:layout_width="560dp"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="87dp"
+                            android:gravity="center_horizontal"
+                            android:text="Time Remaining"
+                            android:textColor="#848484"
+                            android:textSize="24dp" />
+
+                        <TextView
+                            android:id="@id/bpFragTimeRemainingValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="-15dp"
+                            android:gravity="center_horizontal"
+                            android:text="18:36"
+                            android:textColor="#4a4a4a"
+                            android:textSize="144dp" />
+
+                        <Button
+                            android:id="@id/bpFragStopButton"
+                            android:layout_width="226dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="47dp"
+                            android:layout_weight="0.09"
+                            android:background="@drawable/active_button_shape"
+                            android:clickable="true"
+                            android:enabled="true"
+                            android:text="STOP ENGINE"
+                            android:textColor="#4a4a4a"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="32dp"
+                            android:background="@drawable/round_button_shape"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Battery Voltage Set Point"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/bpFragSetpointValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="12.2v"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="74dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#eeeeee"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <Button
+                                android:id="@id/bpFragSetpointDecrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="-20dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="-"
+                                android:textColor="#eeeeee"
+                                android:textSize="60dp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@id/bpFragSetpointIncrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="-12dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="+"
+                                android:textColor="#eeeeee"
+                                android:textSize="50dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="256dp"
+                            android:layout_height="120dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/round_button_shape"
+                            android:visibility="visible"
+                            android:weightSum="1.0">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center_horizontal"
+                                android:text="Engine Run Time"
+                                android:textColor="#717171"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@id/bpEngineRuntimeValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-5dp"
+                                android:gravity="center_horizontal"
+                                android:text="20min"
+                                android:textColor="#717171"
+                                android:textSize="72dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="190dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="74dp"
+                            android:layout_marginTop="0dp"
+                            android:background="#eeeeee"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0">
+
+                            <Button
+                                android:id="@id/bpEngineRuntimeDecrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="-20dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="-"
+                                android:textColor="#eeeeee"
+                                android:textSize="60dp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@id/bpEngineRuntimeIncrButton"
+                                android:layout_width="94dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginTop="-12dp"
+                                android:background="#717171"
+                                android:clickable="true"
+                                android:text="+"
+                                android:textColor="#eeeeee"
+                                android:textSize="50dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:orientation="0" android:id="@id/coldWeatherGuardFragment" android:background="@color/enabledFunction" android:visibility="2" android:clickable="true" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:layout_width="560dp" android:layout_height="-1" android:weightSum="1.0">
-                    <TextView android:textSize="24dp" android:textColor="#848484" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="87dp" android:text="Latest Coolant Temperature" />
-                    <TextView android:textSize="144dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/cwgFragTemperatureValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="20dp" android:layout_marginTop="-15dp" android:text="101°" />
-                    <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:textColor="#4a4a4a" android:layout_gravity="1" android:id="@id/cwgFragStopButton" android:background="@drawable/active_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="47dp" android:text="STOP ENGINE" android:layout_weight="0.09" />
-                </LinearLayout>
-                <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="32dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Minimum Coolant Temp" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/cwgFragMinTempValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="40°" />
+
+            <LinearLayout
+                android:id="@id/settingsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="#eeeeee"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <LinearLayout
+                    android:id="@id/settingsMenu1"
+                    android:layout_width="193dp"
+                    android:layout_height="477dp"
+                    android:background="#dddddd"
+                    android:inputType="numberDecimal"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu11"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/menu1Selected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu11Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Active"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu11Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Cabin Comfort"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="190dp" android:layout_height="48dp" android:layout_marginLeft="74dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                        <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/cwgFragMinTempDecrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                        <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/cwgFragMinTempIncrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu12"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu1Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu12Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu12Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Battery Protect"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="40dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Ideal Coolant Temp" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/cwgFragIdealTempValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="110°" />
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu13"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu1Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu13Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu13Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Cold Weather Guard"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="190dp" android:layout_height="48dp" android:layout_marginLeft="74dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                        <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/cwgFragIdealTempDecrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                        <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/cwgFragIdealTempIncrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu14"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu1Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu14Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu14Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Password"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu15"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu1Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu15Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu15Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Vehicle"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu16"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu1Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu16Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu16Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="About Device"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu17"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu1Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu17Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu17Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Refresh Device"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu18"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu1Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu18Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu1Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu18Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-            <LinearLayout android:orientation="0" android:id="@id/batteryProtectFragment" android:background="@color/enabledFunction" android:visibility="2" android:clickable="true" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:layout_width="560dp" android:layout_height="-1" android:weightSum="1.0">
-                    <TextView android:textSize="24dp" android:textColor="#848484" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="87dp" android:text="Time Remaining" />
-                    <TextView android:textSize="144dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/bpFragTimeRemainingValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="20dp" android:layout_marginTop="-15dp" android:text="18:36" />
-                    <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:textColor="#4a4a4a" android:layout_gravity="1" android:id="@id/bpFragStopButton" android:background="@drawable/active_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="47dp" android:text="STOP ENGINE" android:layout_weight="0.09" />
-                </LinearLayout>
-                <LinearLayout android:orientation="1" android:layout_width="-1" android:layout_height="-1" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="32dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Battery Voltage Set Point" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/bpFragSetpointValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="12.2v" />
+
+                <LinearLayout
+                    android:id="@id/settingsMenu2"
+                    android:layout_width="193dp"
+                    android:layout_height="477dp"
+                    android:background="#dddddd"
+                    android:inputType="numberDecimal"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu21"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/menu2Selected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu21Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Active"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu21Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Feature On/Off"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="190dp" android:layout_height="48dp" android:layout_marginLeft="74dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                        <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/bpFragSetpointDecrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                        <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/bpFragSetpointIncrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu22"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu2Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu22Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu22Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Cabin Target Temp"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="256dp" android:layout_height="120dp" android:layout_marginLeft="40dp" android:layout_marginTop="40dp" android:weightSum="1.0">
-                        <TextView android:textSize="18sp" android:textColor="#717171" android:gravity="1" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Engine Run Time" />
-                        <TextView android:textSize="72dp" android:textColor="#717171" android:gravity="1" android:id="@id/bpEngineRuntimeValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="-5dp" android:text="20min" />
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu23"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu2Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu23Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu23Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Cabin Temp Range"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
                     </LinearLayout>
-                    <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="190dp" android:layout_height="48dp" android:layout_marginLeft="74dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                        <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/bpEngineRuntimeDecrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                        <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/bpEngineRuntimeIncrButton" android:background="#717171" android:clickable="true" android:layout_width="94dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu24"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu2Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu24Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu24Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Outside Target Temp"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu25"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu2Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu25Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu25Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Outside Temp Range"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu26"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu2Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu26Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu26Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text="Timer Settings"
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu27"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu2Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu27Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu27Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="#f4f4f4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/settingsMenu28"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/menu2Deselected"
+                        android:clickable="true"
+                        android:inputType="numberDecimal"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <LinearLayout
+                            android:id="@id/settingsMenu28Indicator"
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/menu2Deselected"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@id/settingsMenu28Item"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="#eeeeee"
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/settingsEntryEnable"
+                    android:layout_width="match_parent"
+                    android:layout_height="477dp"
+                    android:background="#eeeeee"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:id="@id/settingsEntryEnableDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="64dp"
+                        android:gravity="center_horizontal"
+                        android:text="Cabin Comfort feature is currently disabled."
+                        android:textColor="#848484"
+                        android:textSize="36dp" />
+
+                    <Button
+                        android:id="@id/settingsEntryEnableButton"
+                        android:layout_width="226dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="64dp"
+                        android:layout_weight="0.09"
+                        android:background="@drawable/enabled_button_shape"
+                        android:clickable="true"
+                        android:enabled="true"
+                        android:text="ENABLE"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/settingsEntryDisable"
+                    android:layout_width="match_parent"
+                    android:layout_height="477dp"
+                    android:background="#eeeeee"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:id="@id/settingsEntryDisableDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="64dp"
+                        android:gravity="center_horizontal"
+                        android:text="Cabin Comfort feature is currently enabled."
+                        android:textColor="#848484"
+                        android:textSize="36dp" />
+
+                    <Button
+                        android:id="@id/settingsEntryDisableButton"
+                        android:layout_width="226dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="64dp"
+                        android:layout_weight="0.09"
+                        android:background="@drawable/enabled_button_shape"
+                        android:clickable="true"
+                        android:enabled="true"
+                        android:text="DISABLE"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/settingsEntryNumeric"
+                    android:layout_width="match_parent"
+                    android:layout_height="477dp"
+                    android:background="#eeeeee"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:layout_width="384dp"
+                        android:layout_height="256dp"
+                        android:layout_marginLeft="124dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/round_button_shape"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@id/settingsEntryDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:gravity="center_horizontal"
+                            android:text="Target Temp"
+                            android:textColor="#848484"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:id="@id/settingsEntryValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:gravity="center_horizontal"
+                            android:text="70°"
+                            android:textColor="#4a4a4a"
+                            android:textSize="144dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="260dp"
+                        android:layout_height="64dp"
+                        android:layout_marginLeft="174dp"
+                        android:layout_marginTop="0dp"
+                        android:background="#eeeeee"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <Button
+                            android:id="@id/settingsEntryDecrementButton"
+                            android:layout_width="129dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="-20dp"
+                            android:background="#4a4a4a"
+                            android:clickable="true"
+                            android:text="-"
+                            android:textColor="#eeeeee"
+                            android:textSize="60dp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@id/settingsEntryIncrementButton"
+                            android:layout_width="129dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="-12dp"
+                            android:background="#4a4a4a"
+                            android:clickable="true"
+                            android:text="+"
+                            android:textColor="#eeeeee"
+                            android:textSize="50dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@id/settingsEntryDoneButton"
+                        android:layout_width="257dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="34dp"
+                        android:layout_weight="0.09"
+                        android:background="@drawable/enabled_button_shape"
+                        android:clickable="true"
+                        android:enabled="true"
+                        android:text="DONE"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/settingsEntryPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="477dp"
+                    android:background="#eeeeee"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <LinearLayout
+                        android:layout_width="384dp"
+                        android:layout_height="256dp"
+                        android:layout_marginLeft="124dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/round_button_shape"
+                        android:visibility="visible"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@id/settingsPasswordDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:gravity="center_horizontal"
+                            android:text="Password"
+                            android:textColor="#848484"
+                            android:textSize="25sp" />
+
+                        <EditText
+                            android:id="@id/settingsPasswordValue"
+                            android:layout_width="372dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="15dp"
+                            android:editable="true"
+                            android:gravity="center_horizontal"
+                            android:text=""
+                            android:textColor="#4a4a4a"
+                            android:textSize="80dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="260dp"
+                        android:layout_height="64dp"
+                        android:layout_marginLeft="174dp"
+                        android:layout_marginTop="0dp"
+                        android:background="#eeeeee"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0" />
+
+                    <Button
+                        android:id="@id/settingsPasswordDoneButton"
+                        android:layout_width="257dp"
+                        android:layout_height="64dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="34dp"
+                        android:layout_weight="0.09"
+                        android:background="@drawable/enabled_button_shape"
+                        android:clickable="true"
+                        android:enabled="true"
+                        android:text="DONE"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@id/settingsEntryRefresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="477dp"
+                    android:background="#eeeeee"
+                    android:visibility="gone"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:id="@id/settingsRefreshDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="124dp"
+                        android:gravity="center_horizontal"
+                        android:text="Refreshing data from Server.."
+                        android:textColor="#848484"
+                        android:textSize="36dp" />
+
+                    <TextView
+                        android:id="@id/settingsRefreshDescription2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="64dp"
+                        android:gravity="center_horizontal"
+                        android:text="Please wait"
+                        android:textColor="#848484"
+                        android:textSize="36dp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-        <LinearLayout android:orientation="0" android:id="@id/settingsFragment" android:background="#eeeeee" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0"
-            <LinearLayout android:orientation="1" android:id="@id/settingsMenu1" android:background="#dddddd" android:visibility="0" android:layout_width="193dp" android:layout_height="477dp" android:weightSum="1.0"
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu11" android:background="@color/menu1Selected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu11Indicator" android:background="@color/menu1Active" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu11Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Cabin Comfort" />
+
+            <LinearLayout
+                android:id="@id/packagemanagerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <LinearLayout
+                    android:id="@id/packagemanagernagEscapeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="0dp"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:weightSum="1.0">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="6dp"
+                        android:background="#00000000"
+                        android:src="@mipmap/ic_settings"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="0dp"
+                        android:gravity="center_horizontal"
+                        android:text="Maintenance"
+                        android:textColor="#4a4a4a"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:visibility="invisible" />
                 </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu12" android:background="@color/menu1Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu12Indicator" android:background="@color/menu1Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu12Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Battery Protect" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu13" android:background="@color/menu1Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu13Indicator" android:background="@color/menu1Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu13Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Cold Weather Guard" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu14" android:background="@color/menu1Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu14Indicator" android:background="@color/menu1Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu14Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Password" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu15" android:background="@color/menu1Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu15Indicator" android:background="@color/menu1Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu15Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Vehicle" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu16" android:background="@color/menu1Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu16Indicator" android:background="@color/menu1Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu16Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="About Device" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu17" android:background="@color/menu1Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu17Indicator" android:background="@color/menu1Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu17Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Refresh Device" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu18" android:background="@color/menu1Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu18Indicator" android:background="@color/menu1Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu18Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="" />
-                </LinearLayout>
+
+                <TextView
+                    android:layout_width="800dp"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/packagemanager_verbiage"
+                    android:textColor="#5c5c5c"
+                    android:textSize="36sp" />
+
+                <Button
+                    android:id="@id/packagemanagerButton"
+                    android:layout_width="400dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/enabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:text="I UNDERSTAND"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/settingsMenu2" android:background="#dddddd" android:visibility="0" android:layout_width="193dp" android:layout_height="477dp" android:weightSum="1.0"
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu21" android:background="@color/menu2Selected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu21Indicator" android:background="@color/menu2Active" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu21Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Feature On/Off" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu22" android:background="@color/menu2Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu22Indicator" android:background="@color/menu2Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu22Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Cabin Target Temp" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu23" android:background="@color/menu2Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu23Indicator" android:background="@color/menu2Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu23Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Cabin Temp Range" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu24" android:background="@color/menu2Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu24Indicator" android:background="@color/menu2Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu24Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Outside Target Temp" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu25" android:background="@color/menu2Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu25Indicator" android:background="@color/menu2Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu25Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Outside Temp Range" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu26" android:background="@color/menu2Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu26Indicator" android:background="@color/menu2Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu26Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="Timer Settings" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu27" android:background="@color/menu2Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu27Indicator" android:background="@color/menu2Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#f4f4f4" android:gravity="10" android:id="@id/settingsMenu27Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="" />
-                </LinearLayout>
-                <LinearLayout android:orientation="0" android:id="@id/settingsMenu28" android:background="@color/menu2Deselected" android:visibility="0" android:clickable="true" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="2dp" android:weightSum="1.0"
-                    <LinearLayout android:orientation="1" android:id="@id/settingsMenu28Indicator" android:background="@color/menu2Deselected" android:layout_width="8dp" android:layout_height="-1" />
-                    <TextView android:textSize="14sp" android:textColor="#eeeeee" android:gravity="10" android:id="@id/settingsMenu28Item" android:layout_width="-1" android:layout_height="64dp" android:layout_marginLeft="30dp" android:layout_marginTop="5dp" android:text="" />
-                </LinearLayout>
+
+            <LinearLayout
+                android:id="@id/killswitchFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="800dp"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="100dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/kill_verbiage"
+                    android:textColor="#5c5c5c"
+                    android:textSize="36sp" />
+
+                <Button
+                    android:id="@id/killswitchButton"
+                    android:layout_width="400dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="76dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/enabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:text="I UNDERSTAND"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/settingsEntryEnable" android:background="#eeeeee" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-                <TextView android:textSize="36dp" android:textColor="#848484" android:gravity="1" android:id="@id/settingsEntryEnableDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="8dp" android:layout_marginTop="64dp" android:text="Cabin Comfort feature is currently disabled." />
-                <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/settingsEntryEnableButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="64dp" android:text="ENABLE" android:layout_weight="0.09" />
+
+            <LinearLayout
+                android:id="@id/poweroffFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="800dp"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="100dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/poweroff_verbiage"
+                    android:textColor="#5c5c5c"
+                    android:textSize="36sp" />
+
+                <Button
+                    android:id="@id/poweroffButton"
+                    android:layout_width="400dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="26dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/enabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:text="POWER OFF"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/settingsEntryDisable" android:background="#eeeeee" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-                <TextView android:textSize="36dp" android:textColor="#848484" android:gravity="1" android:id="@id/settingsEntryDisableDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="8dp" android:layout_marginTop="64dp" android:text="Cabin Comfort feature is currently enabled." />
-                <Button android:enabled="true" android:textSize="30sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/settingsEntryDisableButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="226dp" android:layout_height="64dp" android:layout_marginTop="64dp" android:text="DISABLE" android:layout_weight="0.09" />
+
+            <LinearLayout
+                android:id="@id/verificationFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="96dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/install_header"
+                    android:textColor="#5c5c5c"
+                    android:textSize="36sp" />
+
+                <TextView
+                    android:layout_width="800dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="112dp"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/install_verbiage"
+                    android:textColor="#5c5c5c"
+                    android:textSize="26sp" />
+
+                <Button
+                    android:id="@id/verificationBeginVerificationButton"
+                    android:layout_width="400dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="46dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/enabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:text="BEGIN VERIFICATION"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/settingsEntryNumeric" android:background="#eeeeee" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="384dp" android:layout_height="256dp" android:layout_marginLeft="124dp" android:layout_marginTop="40dp" android:weightSum="1.0">
-                    <TextView android:textSize="25sp" android:textColor="#848484" android:gravity="1" android:id="@id/settingsEntryDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Target Temp" />
-                    <TextView android:textSize="144dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/settingsEntryValue" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="70°" />
+
+            <LinearLayout
+                android:id="@id/installFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center_horizontal"
+                    android:text="Installation Verification Checks"
+                    android:textColor="#5c5c5c"
+                    android:textSize="48sp" />
+
+                <LinearLayout
+                    android:id="@id/installDetail1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="7dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+
+                    <TextView
+                        android:id="@id/installDetail1Text"
+                        android:layout_width="400dp"
+                        android:layout_height="match_parent"
+                        android:text="1. Hardware Checks"
+                        android:textColor="#5c5c5c"
+                        android:textSize="36sp" />
+
+                    <CheckBox
+                        android:id="@id/installDetail1CheckBox"
+                        android:layout_width="46dp"
+                        android:layout_height="65dp"
+                        android:layout_marginTop="-12dp"
+                        android:checked="false"
+                        android:inputType="numberDecimal" />
+
+                    <ProgressBar
+                        android:id="@id/installDetail1Progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:indeterminate="true"
+                        android:visibility="invisible" />
                 </LinearLayout>
-                <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="260dp" android:layout_height="64dp" android:layout_marginLeft="174dp" android:layout_marginTop="0dp" android:weightSum="1.0">
-                    <Button android:textSize="60dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/settingsEntryDecrementButton" android:background="#4a4a4a" android:clickable="true" android:layout_width="129dp" android:layout_height="-1" android:layout_marginLeft="0dp" android:layout_marginTop="-20dp" android:text="-" />
-                    <Button android:textSize="50dp" android:textStyle="1" android:textColor="#eeeeee" android:id="@id/settingsEntryIncrementButton" android:background="#4a4a4a" android:clickable="true" android:layout_width="129dp" android:layout_height="-1" android:layout_marginLeft="2dp" android:layout_marginTop="-12dp" android:text="+" />
+
+                <LinearLayout
+                    android:id="@id/installationDetail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="7dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@id/installationDetail2Text"
+                        android:layout_width="400dp"
+                        android:layout_height="match_parent"
+                        android:text="2. Software Checks"
+                        android:textColor="#5c5c5c"
+                        android:textSize="36sp" />
+
+                    <CheckBox
+                        android:id="@id/installDetail2CheckBox"
+                        android:layout_width="46dp"
+                        android:layout_height="65dp"
+                        android:layout_marginTop="-12dp"
+                        android:checked="false" />
+
+                    <ProgressBar
+                        android:id="@id/installDetail2Progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:indeterminate="true"
+                        android:visibility="invisible" />
                 </LinearLayout>
-                <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/settingsEntryDoneButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="257dp" android:layout_height="64dp" android:layout_marginTop="34dp" android:text="DONE" android:layout_weight="0.09" />
-            </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/settingsEntryPassword" android:background="#eeeeee" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0"
-                <LinearLayout android:orientation="1" android:background="@drawable/round_button_shape" android:layout_width="384dp" android:layout_height="256dp" android:layout_marginLeft="124dp" android:layout_marginTop="40dp" android:weightSum="1.0">
-                    <TextView android:textSize="25sp" android:textColor="#848484" android:gravity="1" android:id="@id/settingsPasswordDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginTop="15dp" android:text="Password" />
-                    <EditText android:textSize="80dp" android:textColor="#4a4a4a" android:gravity="1" android:id="@id/settingsPasswordValue" android:layout_width="372dp" android:layout_height="-2" android:layout_marginLeft="10dp" android:layout_marginTop="15dp" android:text="" android:editable="true" />
+
+                <LinearLayout
+                    android:id="@id/installationDetail3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="7dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@id/installationDetail3Text"
+                        android:layout_width="400dp"
+                        android:layout_height="match_parent"
+                        android:text="3. Ignition Checks"
+                        android:textColor="#5c5c5c"
+                        android:textSize="36sp" />
+
+                    <CheckBox
+                        android:id="@id/installDetail3CheckBox"
+                        android:layout_width="46dp"
+                        android:layout_height="65dp"
+                        android:layout_marginTop="-12dp"
+                        android:checked="false" />
+
+                    <ProgressBar
+                        android:id="@id/installDetail3Progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:indeterminate="true"
+                        android:visibility="invisible" />
                 </LinearLayout>
-                <LinearLayout android:orientation="0" android:background="#eeeeee" android:layout_width="260dp" android:layout_height="64dp" android:layout_marginLeft="174dp" android:layout_marginTop="0dp" android:weightSum="1.0" />
-                <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/settingsPasswordDoneButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="257dp" android:layout_height="64dp" android:layout_marginTop="34dp" android:text="DONE" android:layout_weight="0.09" />
+
+                <LinearLayout
+                    android:id="@id/installationDetail4"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="7dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@id/installationDetail4Text"
+                        android:layout_width="400dp"
+                        android:layout_height="match_parent"
+                        android:text="4. Connectivity Checks"
+                        android:textColor="#5c5c5c"
+                        android:textSize="36sp" />
+
+                    <CheckBox
+                        android:id="@id/installDetail4CheckBox"
+                        android:layout_width="46dp"
+                        android:layout_height="65dp"
+                        android:layout_marginTop="-12dp"
+                        android:checked="false" />
+
+                    <ProgressBar
+                        android:id="@id/installDetail4Progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:indeterminate="true"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@id/installDoneButton"
+                    android:layout_width="326dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/disabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="false"
+                    android:text="CHECKING"
+                    android:textSize="30sp" />
             </LinearLayout>
-            <LinearLayout android:orientation="1" android:id="@id/settingsEntryRefresh" android:background="#eeeeee" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-                <TextView android:textSize="36dp" android:textColor="#848484" android:gravity="1" android:id="@id/settingsRefreshDescription" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="8dp" android:layout_marginTop="124dp" android:text="Refreshing data from Server.." />
-                <TextView android:textSize="36dp" android:textColor="#848484" android:gravity="1" android:id="@id/settingsRefreshDescription2" android:layout_width="-1" android:layout_height="-2" android:layout_marginLeft="8dp" android:layout_marginTop="64dp" android:text="Please wait" />
+
+            <LinearLayout
+                android:id="@id/activationFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="41dp"
+                    android:gravity="center_horizontal"
+                    android:text="Activation"
+                    android:textColor="#5c5c5c"
+                    android:textSize="48sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="31dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/activation_header"
+                    android:textColor="#5c5c5c"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="600dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="212dp"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/activation_verbiage"
+                    android:textColor="#5c5c5c"
+                    android:textSize="26sp" />
+
+                <Button
+                    android:id="@id/activationEnterCodeButton"
+                    android:layout_width="400dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="46dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/enabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:text="ENTER CODE"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/packagemanagerFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0"
-            <LinearLayout android:orientation="1" android:id="@id/packagemanagernagEscapeButton" android:clickable="true" android:layout_width="-2" android:layout_height="80dp" android:layout_marginLeft="0dp" android:weightSum="1.0">
-                <ImageView android:background="#00000000" android:visibility="1" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginLeft="8dp" android:layout_marginTop="6dp" android:src="@mipmap/ic_settings" />
-                <TextView android:textSize="14sp" android:textStyle="1" android:textColor="#4a4a4a" android:gravity="1" android:visibility="1" android:layout_width="-2" android:layout_height="30dp" android:layout_marginTop="0dp" android:text="Maintenance" />
+
+            <LinearLayout
+                android:id="@id/activationCodeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="46dp"
+                    android:gravity="center_horizontal"
+                    android:text="Customer Activation Code"
+                    android:textColor="#5c5c5c"
+                    android:textSize="36sp" />
+
+                <EditText
+                    android:id="@id/activationCodeEditText"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+
+                <Button
+                    android:id="@id/activationCodeContinueButton"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/enabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:text="CONTINUE"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="800dp" android:layout_height="150dp" android:layout_marginLeft="100dp" android:layout_marginTop="20dp" android:text="@string/packagemanager_verbiage" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/packagemanagerButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="0dp" android:text="I UNDERSTAND" android:layout_weight="0.09" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/killswitchFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="800dp" android:layout_height="150dp" android:layout_marginLeft="100dp" android:layout_marginTop="100dp" android:text="@string/kill_verbiage" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/killswitchButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="76dp" android:text="I UNDERSTAND" android:layout_weight="0.09" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/poweroffFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="800dp" android:layout_height="150dp" android:layout_marginLeft="100dp" android:layout_marginTop="100dp" android:text="@string/poweroff_verbiage" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/poweroffButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="26dp" android:text="POWER OFF" android:layout_weight="0.09" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/verificationFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="96dp" android:text="@string/install_header" />
-            <TextView android:textSize="26sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="800dp" android:layout_height="-2" android:layout_marginLeft="112dp" android:layout_marginTop="30dp" android:text="@string/install_verbiage" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/verificationBeginVerificationButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="46dp" android:text="BEGIN VERIFICATION" android:layout_weight="0.09" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/installFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="48sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="25dp" android:text="Installation Verification Checks" />
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installDetail1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginLeft="40dp" android:layout_marginTop="7dp" android:weightSum="1.0">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installDetail1Text" android:layout_width="400dp" android:layout_height="-1" android:text="1. Hardware Checks" />
-                <CheckBox android:id="@id/installDetail1CheckBox" android:visibility="0" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-12dp" android:checked="false" />
-                <ProgressBar android:id="@id/installDetail1Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
+
+            <LinearLayout
+                android:id="@id/VINCodeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="477dp"
+                android:background="@color/enabledFunction"
+                android:visibility="gone"
+                android:weightSum="1.0">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="56dp"
+                    android:gravity="center_horizontal"
+                    android:text="Vehicle ID Number (Last 8 of VIN)"
+                    android:textColor="#5c5c5c"
+                    android:textSize="36sp" />
+
+                <EditText
+                    android:id="@id/VINCodeEditText"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:ems="10"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@id/VINCodeContinueButton"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.09"
+                    android:background="@drawable/enabled_button_shape"
+                    android:clickable="true"
+                    android:enabled="true"
+                    android:text="CONTINUE"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installationDetail2" android:layout_width="-1" android:layout_height="50dp" android:layout_marginLeft="40dp" android:layout_marginTop="7dp">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail2Text" android:layout_width="400dp" android:layout_height="-1" android:text="2. Software Checks" />
-                <CheckBox android:id="@id/installDetail2CheckBox" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-12dp" android:checked="false" />
-                <ProgressBar android:id="@id/installDetail2Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
-            </LinearLayout>
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installationDetail3" android:layout_width="-1" android:layout_height="50dp" android:layout_marginLeft="40dp" android:layout_marginTop="7dp">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail3Text" android:layout_width="400dp" android:layout_height="-1" android:text="3. Ignition Checks" />
-                <CheckBox android:id="@id/installDetail3CheckBox" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-12dp" android:checked="false" />
-                <ProgressBar android:id="@id/installDetail3Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
-            </LinearLayout>
-            <LinearLayout android:gravity="1" android:orientation="0" android:id="@id/installationDetail4" android:layout_width="-1" android:layout_height="50dp" android:layout_marginLeft="40dp" android:layout_marginTop="7dp">
-                <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:id="@id/installationDetail4Text" android:layout_width="400dp" android:layout_height="-1" android:text="4. Connectivity Checks" />
-                <CheckBox android:id="@id/installDetail4CheckBox" android:layout_width="46dp" android:layout_height="65dp" android:layout_marginTop="-12dp" android:checked="false" />
-                <ProgressBar android:id="@id/installDetail4Progress" android:visibility="1" android:layout_width="-2" android:layout_height="-2" android:indeterminate="true" android:layout_centerHorizontal="true" />
-            </LinearLayout>
-            <Button android:enabled="false" android:textSize="30sp" android:layout_gravity="1" android:id="@id/installDoneButton" android:background="@drawable/disabled_button_shape" android:clickable="true" android:layout_width="326dp" android:layout_height="64dp" android:layout_marginTop="30dp" android:text="CHECKING" android:layout_weight="0.09" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/activationFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="48sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="60dp" android:layout_marginTop="41dp" android:text="Activation" />
-            <TextView android:textSize="36sp" android:textStyle="1" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="31dp" android:text="@string/activation_header" />
-            <TextView android:textSize="26sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="600dp" android:layout_height="-2" android:layout_marginLeft="212dp" android:layout_marginTop="30dp" android:text="@string/activation_verbiage" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/activationEnterCodeButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="400dp" android:layout_height="80dp" android:layout_marginTop="46dp" android:text="ENTER CODE" android:layout_weight="0.09" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/activationCodeFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="46dp" android:text="Customer Activation Code" />
-            <EditText android:layout_gravity="1" android:id="@id/activationCodeEditText" android:layout_width="250dp" android:layout_height="-2" android:ems="10" android:inputType="81" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/activationCodeContinueButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="250dp" android:layout_height="40dp" android:layout_marginTop="30dp" android:text="CONTINUE" android:layout_weight="0.09" />
-        </LinearLayout>
-        <LinearLayout android:orientation="1" android:id="@id/VINCodeFragment" android:background="@color/enabledFunction" android:visibility="2" android:layout_width="-1" android:layout_height="477dp" android:weightSum="1.0">
-            <TextView android:textSize="36sp" android:textColor="#5c5c5c" android:gravity="1" android:layout_width="-1" android:layout_height="50dp" android:layout_marginTop="56dp" android:text="Vehicle ID Number (Last 8 of VIN)" />
-            <EditText android:layout_gravity="1" android:id="@id/VINCodeEditText" android:layout_width="250dp" android:layout_height="-2" android:ems="10" android:inputType="1" />
-            <Button android:enabled="true" android:textSize="36sp" android:textStyle="1" android:layout_gravity="1" android:id="@id/VINCodeContinueButton" android:background="@drawable/enabled_button_shape" android:clickable="true" android:layout_width="250dp" android:layout_height="40dp" android:layout_marginTop="30dp" android:text="CONTINUE" android:layout_weight="0.09" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
