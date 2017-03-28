@@ -909,9 +909,9 @@ public class MainActivity extends Activity implements OnClickListener {
         if (packagemanagernag) {
             if (isAnyBloatware()) {
                 Log.i(TAG, "   Bloatware exists - turn on nag screen");
-                findViewById(R.id.packagemanagerFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.packagemanagerFragment).setVisibility(View.VISIBLE);
             } else {
-                findViewById(R.id.packagemanagerFragment).setVisibility(8);
+                findViewById(R.id.packagemanagerFragment).setVisibility(View.GONE);
             }
         }
         isRefreshAvailable();
@@ -1208,9 +1208,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void setScreenOn(boolean enable) {
         if (enable) {
-            findViewById(R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.fullScreen).setVisibility(8);
+            findViewById(R.id.fullScreen).setVisibility(View.GONE);
         }
         this.ScreenOn = enable;
     }
@@ -1279,12 +1279,12 @@ public class MainActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.activationEnterCodeButton /*2131361795*/:
                 selectActivationFragment(4);
-                findViewById(R.id.activationFragment).setVisibility(8);
-                findViewById(R.id.activationCodeFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.activationFragment).setVisibility(View.GONE);
+                findViewById(R.id.activationCodeFragment).setVisibility(View.VISIBLE);
             case R.id.activationCodeContinueButton /*2131361798*/:
                 selectActivationFragment(5);
-                findViewById(R.id.activationCodeFragment).setVisibility(8);
-                findViewById(R.id.VINCodeFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.activationCodeFragment).setVisibility(View.GONE);
+                findViewById(R.id.VINCodeFragment).setVisibility(View.VISIBLE);
             case R.id.dashboardButton /*2131361812*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
@@ -1319,7 +1319,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     selectKillswitchMode(GOOD_CONNECTIVITY);
                 }
             case R.id.installDoneButton /*2131361837*/:
-                findViewById(R.id.installFragment).setVisibility(8);
+                findViewById(R.id.installFragment).setVisibility(View.GONE);
                 if (ValidActivationProcess) {
                     this.accessoryControl.writeCommand(15, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     Log.i(TAG, "APICMD_ACTIVATE = 1");
@@ -1333,7 +1333,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectKillswitchMode(UNKNOWN_CONNECTIVITY);
                 enableStatusBar(enableKioskMode);
                 enableDashboard(enableKioskMode);
-                findViewById(R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
                 this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
             case R.id.idlesmartButton /*2131361944*/:
                 this.test_mark_counter += GOOD_CONNECTIVITY;
@@ -1506,7 +1506,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 saveParamValue(this.param_id);
             case R.id.packagemanagernagEscapeButton /*2131362083*/:
                 packagemanagernag = false;
-                findViewById(R.id.packagemanagerFragment).setVisibility(8);
+                findViewById(R.id.packagemanagerFragment).setVisibility(View.GONE);
             case R.id.packagemanagerButton /*2131362084*/:
                 removeBloatware();
             case R.id.killswitchButton /*2131362086*/:
@@ -1514,18 +1514,18 @@ public class MainActivity extends Activity implements OnClickListener {
             case R.id.poweroffButton /*2131362088*/:
                 this.accessoryControl.writeCommand(22, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 selectKillswitchMode(3);
-                findViewById(R.id.fullScreen).setVisibility(8);
+                findViewById(R.id.fullScreen).setVisibility(View.GONE);
                 this.accessoryControl.writeCommand(21, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
             case R.id.verificationBeginVerificationButton /*2131362090*/:
                 selectActivationFragment(BAD_CONNECTIVITY);
-                findViewById(R.id.verificationFragment).setVisibility(8);
-                findViewById(R.id.installFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.verificationFragment).setVisibility(View.GONE);
+                findViewById(R.id.installFragment).setVisibility(View.VISIBLE);
                 ValidActivationProcess = false;
                 StartVerificationProcess();
             case R.id.VINCodeContinueButton /*2131362093*/:
                 selectActivationFragment(GOOD_CONNECTIVITY);
-                findViewById(R.id.VINCodeFragment).setVisibility(8);
-                findViewById(R.id.verificationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.VINCodeFragment).setVisibility(View.GONE);
+                findViewById(R.id.verificationFragment).setVisibility(View.VISIBLE);
             default:
         }
     }
@@ -1597,28 +1597,28 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void enableStatusBar(boolean enable) {
         CurrentStatusBarFlag = enable;
-        findViewById(R.id.statusBar).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.statusBar).setVisibility(View.VISIBLE);
     }
 
     private void enableDashboard(boolean enable) {
         CurrentDashboardFlag = enable;
         enableStatusBar(enableKioskMode);
         if (!gateway_connected && !demo_mode) {
-            findViewById(R.id.dashboardFragment).setVisibility(8);
+            findViewById(R.id.dashboardFragment).setVisibility(View.GONE);
         } else if (enable) {
-            findViewById(R.id.dashboardFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.dashboardFragment).setVisibility(View.VISIBLE);
             selectSettingsMode(UNKNOWN_CONNECTIVITY);
         } else {
-            findViewById(R.id.dashboardFragment).setVisibility(8);
+            findViewById(R.id.dashboardFragment).setVisibility(View.GONE);
         }
     }
 
     private void selectRunning(int fragment) {
         CurrentDashboardFragment = fragment;
-        findViewById(R.id.runningFragment).setVisibility(8);
-        findViewById(R.id.cabinComfortFragment).setVisibility(8);
-        findViewById(R.id.coldWeatherGuardFragment).setVisibility(8);
-        findViewById(R.id.batteryProtectFragment).setVisibility(8);
+        findViewById(R.id.runningFragment).setVisibility(View.GONE);
+        findViewById(R.id.cabinComfortFragment).setVisibility(View.GONE);
+        findViewById(R.id.coldWeatherGuardFragment).setVisibility(View.GONE);
+        findViewById(R.id.batteryProtectFragment).setVisibility(View.GONE);
         updateFunctionModes();
         viewFragmentParamValue(GOOD_CONNECTIVITY);
         viewFragmentParamValue(BAD_CONNECTIVITY);
@@ -1628,16 +1628,16 @@ public class MainActivity extends Activity implements OnClickListener {
             enableDashboard(enableKioskMode);
             switch (fragment) {
                 case GOOD_CONNECTIVITY /*1*/:
-                    findViewById(R.id.runningFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.runningFragment).setVisibility(View.VISIBLE);
                     break;
                 case BAD_CONNECTIVITY /*2*/:
-                    findViewById(R.id.cabinComfortFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.cabinComfortFragment).setVisibility(View.VISIBLE);
                     break;
                 case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                    findViewById(R.id.coldWeatherGuardFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.coldWeatherGuardFragment).setVisibility(View.VISIBLE);
                     break;
                 case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                    findViewById(R.id.batteryProtectFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.batteryProtectFragment).setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -1650,28 +1650,28 @@ public class MainActivity extends Activity implements OnClickListener {
     private void selectKillswitchMode(int mode) {
         switch (mode) {
             case UNKNOWN_CONNECTIVITY /*0*/:
-                findViewById(R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(R.id.killswitchFragment).setVisibility(8);
-                findViewById(R.id.poweroffFragment).setVisibility(8);
-                findViewById(R.id.poweronFragment).setVisibility(8);
+                findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
+                findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
+                findViewById(R.id.poweroffFragment).setVisibility(View.GONE);
+                findViewById(R.id.poweronFragment).setVisibility(View.GONE);
             case GOOD_CONNECTIVITY /*1*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
-                findViewById(R.id.killswitchFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.killswitchFragment).setVisibility(View.VISIBLE);
             case BAD_CONNECTIVITY /*2*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
-                findViewById(R.id.killswitchFragment).setVisibility(8);
-                findViewById(R.id.poweroffFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
+                findViewById(R.id.poweroffFragment).setVisibility(View.VISIBLE);
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
-                findViewById(R.id.fullScreen).setVisibility(8);
-                findViewById(R.id.poweroffFragment).setVisibility(8);
-                findViewById(R.id.poweronFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.fullScreen).setVisibility(View.GONE);
+                findViewById(R.id.poweroffFragment).setVisibility(View.GONE);
+                findViewById(R.id.poweronFragment).setVisibility(View.VISIBLE);
             default:
         }
     }
@@ -1920,12 +1920,12 @@ public class MainActivity extends Activity implements OnClickListener {
     private void enableSettings(boolean enable) {
         CurrentSettingsFlag = enable;
         if (!gateway_connected && !demo_mode) {
-            findViewById(R.id.settingsFragment).setVisibility(8);
+            findViewById(R.id.settingsFragment).setVisibility(View.GONE);
         } else if (enable) {
             enableStatusBar(false);
-            findViewById(R.id.settingsFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsFragment).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.settingsFragment).setVisibility(8);
+            findViewById(R.id.settingsFragment).setVisibility(View.GONE);
         }
     }
 
@@ -1942,112 +1942,112 @@ public class MainActivity extends Activity implements OnClickListener {
         switch (level) {
             case GOOD_CONNECTIVITY /*1*/:
                 initMenu1();
-                findViewById(R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(R.id.settingsMenu2).setVisibility(8);
+                findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
+                findViewById(R.id.settingsMenu2).setVisibility(View.GONE);
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
                 this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
                 selectMenu1Entry(UNKNOWN_CONNECTIVITY);
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(R.id.settingsMenu2).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
+                findViewById(R.id.settingsMenu2).setVisibility(View.VISIBLE);
                 initMenu2();
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
                 this.settings_menu2_index = UNKNOWN_CONNECTIVITY;
                 selectMenu2Entry(UNKNOWN_CONNECTIVITY);
                 this.settings_entrytype = UNKNOWN_CONNECTIVITY;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(R.id.settingsMenu2).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
+                findViewById(R.id.settingsMenu2).setVisibility(View.VISIBLE);
                 viewParamValue();
             default:
-                findViewById(R.id.settingsMenu1).setVisibility(8);
-                findViewById(R.id.settingsMenu2).setVisibility(8);
+                findViewById(R.id.settingsMenu1).setVisibility(View.GONE);
+                findViewById(R.id.settingsMenu2).setVisibility(View.GONE);
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
         }
     }
 
     private void initMenu1() {
-        findViewById(R.id.settingsMenu11).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu11).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         ((TextView) findViewById(R.id.settingsMenu11Item)).setText(this.menus.aMainMenu[UNKNOWN_CONNECTIVITY]);
-        findViewById(R.id.settingsMenu12).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu12).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         ((TextView) findViewById(R.id.settingsMenu12Item)).setText(this.menus.aMainMenu[GOOD_CONNECTIVITY]);
-        findViewById(R.id.settingsMenu13).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu13).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         ((TextView) findViewById(R.id.settingsMenu13Item)).setText(this.menus.aMainMenu[BAD_CONNECTIVITY]);
-        findViewById(R.id.settingsMenu14).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu14).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         ((TextView) findViewById(R.id.settingsMenu14Item)).setText(this.menus.aMainMenu[3]);
-        findViewById(R.id.settingsMenu15).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu15).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         ((TextView) findViewById(R.id.settingsMenu15Item)).setText(this.menus.aMainMenu[4]);
-        findViewById(R.id.settingsMenu16).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu16).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         ((TextView) findViewById(R.id.settingsMenu16Item)).setText(this.menus.aMainMenu[5]);
-        findViewById(R.id.settingsMenu17).setVisibility(4);
+        findViewById(R.id.settingsMenu17).setVisibility(View.INVISIBLE);
         findViewById(R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
-        findViewById(R.id.settingsMenu18).setVisibility(4);
+        findViewById(R.id.settingsMenu18).setVisibility(View.INVISIBLE);
         findViewById(R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
     }
 
     private void initMenu2() {
         findViewById(R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, GOOD_CONNECTIVITY) >= 0) {
-            findViewById(R.id.settingsMenu21).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu21).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu21Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, GOOD_CONNECTIVITY));
         } else {
-            findViewById(R.id.settingsMenu21).setVisibility(4);
+            findViewById(R.id.settingsMenu21).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, BAD_CONNECTIVITY) >= 0) {
-            findViewById(R.id.settingsMenu22).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu22).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu22Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, BAD_CONNECTIVITY));
         } else {
-            findViewById(R.id.settingsMenu22).setVisibility(4);
+            findViewById(R.id.settingsMenu22).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 3) >= 0) {
-            findViewById(R.id.settingsMenu23).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu23).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu23Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 3));
         } else {
-            findViewById(R.id.settingsMenu23).setVisibility(4);
+            findViewById(R.id.settingsMenu23).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 4) >= 0) {
-            findViewById(R.id.settingsMenu24).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu24).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu24Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 4));
         } else {
-            findViewById(R.id.settingsMenu24).setVisibility(4);
+            findViewById(R.id.settingsMenu24).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 5) >= 0) {
-            findViewById(R.id.settingsMenu25).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu25).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu25Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 5));
         } else {
-            findViewById(R.id.settingsMenu25).setVisibility(4);
+            findViewById(R.id.settingsMenu25).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 6) >= 0) {
-            findViewById(R.id.settingsMenu26).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu26).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu26Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 6));
         } else {
-            findViewById(R.id.settingsMenu26).setVisibility(4);
+            findViewById(R.id.settingsMenu26).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 7) >= 0) {
-            findViewById(R.id.settingsMenu27).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu27).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu27Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 7));
         } else {
-            findViewById(R.id.settingsMenu27).setVisibility(4);
+            findViewById(R.id.settingsMenu27).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 8) >= 0) {
-            findViewById(R.id.settingsMenu28).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsMenu28).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu28Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 8));
             return;
         }
-        findViewById(R.id.settingsMenu28).setVisibility(4);
+        findViewById(R.id.settingsMenu28).setVisibility(View.INVISIBLE);
     }
 
     private void selectMenu1Entry(int level) {
@@ -2166,26 +2166,26 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void selectSettingsEntry(int datatype) {
         this.settings_entrytype = datatype;
-        findViewById(R.id.settingsEntryEnable).setVisibility(8);
-        findViewById(R.id.settingsEntryDisable).setVisibility(8);
-        findViewById(R.id.settingsEntryNumeric).setVisibility(8);
-        findViewById(R.id.settingsEntryPassword).setVisibility(8);
-        findViewById(R.id.settingsEntryRefresh).setVisibility(8);
+        findViewById(R.id.settingsEntryEnable).setVisibility(View.GONE);
+        findViewById(R.id.settingsEntryDisable).setVisibility(View.GONE);
+        findViewById(R.id.settingsEntryNumeric).setVisibility(View.GONE);
+        findViewById(R.id.settingsEntryPassword).setVisibility(View.GONE);
+        findViewById(R.id.settingsEntryRefresh).setVisibility(View.GONE);
         switch (datatype) {
             case GOOD_CONNECTIVITY /*1*/:
-                findViewById(R.id.settingsEntryEnable).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryEnable).setVisibility(View.VISIBLE);
                 break;
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(R.id.settingsEntryDisable).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryDisable).setVisibility(View.VISIBLE);
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(R.id.settingsEntryNumeric).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryNumeric).setVisibility(View.VISIBLE);
                 break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                findViewById(R.id.settingsEntryPassword).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryPassword).setVisibility(View.VISIBLE);
                 break;
             case httpClient.PHONEHOME_NONE /*5*/:
-                findViewById(R.id.settingsEntryRefresh).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryRefresh).setVisibility(View.VISIBLE);
                 break;
         }
         PasswordValid = false;
@@ -2517,24 +2517,24 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void selectActivationFragment(int fragment) {
-        findViewById(R.id.verificationFragment).setVisibility(8);
-        findViewById(R.id.installFragment).setVisibility(8);
-        findViewById(R.id.activationFragment).setVisibility(8);
-        findViewById(R.id.activationCodeFragment).setVisibility(8);
-        findViewById(R.id.VINCodeFragment).setVisibility(8);
+        findViewById(R.id.verificationFragment).setVisibility(View.GONE);
+        findViewById(R.id.installFragment).setVisibility(View.GONE);
+        findViewById(R.id.activationFragment).setVisibility(View.GONE);
+        findViewById(R.id.activationCodeFragment).setVisibility(View.GONE);
+        findViewById(R.id.VINCodeFragment).setVisibility(View.GONE);
         if (fragment != 0) {
             enableStatusBar(false);
             enableDashboard(false);
-            selectRunning(UNKNOWN_CONNECTIVITY);
+            selectRunning(0);
             EditText activationcodeArea;
             switch (fragment) {
                 case GOOD_CONNECTIVITY /*1*/:
-                    findViewById(R.id.verificationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.verificationFragment).setVisibility(View.VISIBLE);
                 case BAD_CONNECTIVITY /*2*/:
-                    findViewById(R.id.installFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.installFragment).setVisibility(View.VISIBLE);
                     StartVerificationProcess();
                 case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                    findViewById(R.id.activationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.activationFragment).setVisibility(View.VISIBLE);
                 case httpClient.PHONEHOME_APK_PENDING /*4*/:
                     activationcodeArea = (EditText) findViewById(R.id.activationCodeEditText);
                     activationcodeArea.setText(BuildConfig.FLAVOR);
@@ -2566,35 +2566,35 @@ public class MainActivity extends Activity implements OnClickListener {
                 ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(false);
                 ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(false);
                 ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(false);
-                findViewById(R.id.installDetail1Progress).setVisibility(4);
-                findViewById(R.id.installDetail2Progress).setVisibility(4);
-                findViewById(R.id.installDetail3Progress).setVisibility(4);
-                findViewById(R.id.installDetail4Progress).setVisibility(4);
+                findViewById(R.id.installDetail1Progress).setVisibility(View.INVISIBLE);
+                findViewById(R.id.installDetail2Progress).setVisibility(View.INVISIBLE);
+                findViewById(R.id.installDetail3Progress).setVisibility(View.INVISIBLE);
+                findViewById(R.id.installDetail4Progress).setVisibility(View.INVISIBLE);
                 doneButton = (Button) findViewById(R.id.installDoneButton);
                 doneButton.setText("CHECKING");
                 doneButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 doneButton.setEnabled(false);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 100);
             case GOOD_CONNECTIVITY /*1*/:
-                findViewById(R.id.installDetail1Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail1Progress).setVisibility(View.VISIBLE);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                 } else {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 5000);
                 }
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(R.id.installDetail1Progress).setVisibility(4);
+                findViewById(R.id.installDetail1Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(enableKioskMode);
-                findViewById(R.id.installDetail2Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail2Progress).setVisibility(View.VISIBLE);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                 } else {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 2000);
                 }
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(R.id.installDetail2Progress).setVisibility(4);
+                findViewById(R.id.installDetail2Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(enableKioskMode);
-                findViewById(R.id.installDetail3Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail3Progress).setVisibility(View.VISIBLE);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                     return;
@@ -2603,12 +2603,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 Log.i(TAG, "APICMD_GET_VEHICLE_INFO = 1");
                 this.verificationHandler.postDelayed(this.verificationRunnable, 15000);
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                findViewById(R.id.installDetail3Progress).setVisibility(4);
+                findViewById(R.id.installDetail3Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(enableKioskMode);
-                findViewById(R.id.installDetail4Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail4Progress).setVisibility(View.VISIBLE);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 500);
             case httpClient.PHONEHOME_NONE /*5*/:
-                findViewById(R.id.installDetail4Progress).setVisibility(4);
+                findViewById(R.id.installDetail4Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(enableKioskMode);
                 this.activation_step = UNKNOWN_CONNECTIVITY;
                 doneButton = (Button) findViewById(R.id.installDoneButton);
@@ -2988,11 +2988,11 @@ public class MainActivity extends Activity implements OnClickListener {
     public boolean isRefreshAvailable() {
         Boolean UpdateAvail = Boolean.valueOf(isServerUpdateAvailable());
         if (UpdateAvail.booleanValue()) {
-            findViewById(R.id.actionButtons).setVisibility(8);
-            findViewById(R.id.updateButtons).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.actionButtons).setVisibility(View.GONE);
+            findViewById(R.id.updateButtons).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.actionButtons).setVisibility(UNKNOWN_CONNECTIVITY);
-            findViewById(R.id.updateButtons).setVisibility(8);
+            findViewById(R.id.actionButtons).setVisibility(View.VISIBLE);
+            findViewById(R.id.updateButtons).setVisibility(View.GONE);
         }
         return UpdateAvail.booleanValue();
     }
@@ -3016,8 +3016,8 @@ public class MainActivity extends Activity implements OnClickListener {
     public void installUpdate() {
         if (isRefreshAvailable()) {
             httpclient.PhoneHome(3, false);
-            findViewById(R.id.actionButtons).setVisibility(UNKNOWN_CONNECTIVITY);
-            findViewById(R.id.updateButtons).setVisibility(8);
+            findViewById(R.id.actionButtons).setVisibility(View.VISIBLE);
+            findViewById(R.id.updateButtons).setVisibility(View.GONE);
         }
     }
 
