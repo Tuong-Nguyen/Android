@@ -15,6 +15,8 @@ import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class KioskService extends Service {
     private static final String AndroidPackageInstaller = "com.android.packageinstaller";
     private static final long CHECKINTERVAL;
@@ -247,7 +249,7 @@ public class KioskService extends Service {
 
     public void mystartActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(268435456);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 1073741824);
         AlarmManager alarmManager = (AlarmManager) getSystemService("alarm");
         long now = Calendar.getInstance().getTimeInMillis();
@@ -261,7 +263,7 @@ public class KioskService extends Service {
     public void bringActivityToFront() {
         Log.i(TAG, "bringActivityToFront");
         Intent intent = new Intent(this, BringToFront.class);
-        intent.addFlags(268435456);
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

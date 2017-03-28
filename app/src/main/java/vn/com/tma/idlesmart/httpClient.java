@@ -35,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class httpClient extends Activity {
     private static final String APKpath = "APKupdates";
     private static boolean APKupdate_exists = false;
@@ -461,7 +463,7 @@ public class httpClient extends Activity {
                         KioskService.restartcount = httpClient.STATE_IDLE;
                         Intent intent = new Intent("android.intent.action.VIEW");
                         intent.setDataAndType(Uri.fromFile(new File(path, lfn)), "application/vnd.android.package-archive");
-                        intent.setFlags(268435456);
+                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                         MainActivity.PackageUpdatePending = httpClient.PHONEHOME_RESCHEDULE;
                         Log.i(TAG, "******* startActivity::PackageManager::package-archive");
                         this.context.startActivity(intent);
