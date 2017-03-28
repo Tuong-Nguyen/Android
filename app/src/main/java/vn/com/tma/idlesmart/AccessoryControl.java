@@ -8,8 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import com.android.future.usb.UsbAccessory;
-import com.android.future.usb.UsbManager;
+import android.hardware.usb.*;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -246,7 +245,7 @@ public class AccessoryControl {
                     int reclth = AccessoryControl.USB_CLOSE_EXCEPTION + (((buffer[AccessoryControl.APICMD_BASE] & 255) << AccessoryControl.SYNC_LAST_MAX) + (buffer[AccessoryControl.USB_OPEN_EXCEPTION] & 255));
                     while (pos < reclth) {
                         try {
-                            rdlth = this.inputStream.read(buffer, pos, reclth - pos);
+                            int rdlth = this.inputStream.read(buffer, pos, reclth - pos);
                             if (rdlth > 0) {
                                 pos += rdlth;
                             }
@@ -562,7 +561,7 @@ public class AccessoryControl {
         this();
         this.handler = handler;
         this.context = context;
-        this.usbManager = UsbManager.getInstance(context);
+        this.usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
     }
 
     public OpenStatus open() {

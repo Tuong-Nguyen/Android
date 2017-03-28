@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.hardware.usb.UsbAccessory;
+import android.hardware.usb.UsbManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -36,12 +38,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
 
 public class MainActivity extends Activity implements OnClickListener {
     public static String APIroute = null;
@@ -588,12 +592,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (AccessoryControl.ACTION_USB_PERMISSION.equals(action)) {
                     Log.i(MainActivity.TAG, "==> UsbReceiver::Recv Intent=ACTION_USB_PERMISSION");
                     synchronized (this) {
-                        UsbAccessory accessory = UsbManager.getAccessory(intent);
+                        UsbAccessory accessory = intent.getParcelableExtra(UsbManager.EXTRA_ACCESSORY);
                         if (intent.getBooleanExtra("permission", false)) {
                             Log.i(MainActivity.TAG, "    UsbReceiver::Permission Granted");
                             if (accessory != null) {
-                                OpenStatus status = MainActivity.this.accessoryControl.open(accessory);
-                                if (status == OpenStatus.CONNECTED) {
+                                AccessoryControl.OpenStatus status = MainActivity.this.accessoryControl.open(accessory);
+                                if (status == AccessoryControl.OpenStatus.CONNECTED) {
                                     Log.d(MainActivity.TAG, "    UsbReceiver::Gateway is connected");
                                     MainActivity.gateway_connected = MainActivity.enableKioskMode;
                                     MainActivity.demo_mode = false;
@@ -922,9 +926,9 @@ public class MainActivity extends Activity implements OnClickListener {
         Log.i(TAG, "      PackageUpdatePending:" + (PackageUpdatePending ? "true" : "false"));
         if (!(PackageUpdatePending || gateway_connected)) {
             Log.w(TAG, "        connectUSB::Not connected - open AccessoryControl and attempt to reconnect to gateway..");
-            OpenStatus status = this.accessoryControl.open();
+            AccessoryControl.OpenStatus status = this.accessoryControl.open();
             Log.i(TAG, "        connectUSB::status=" + status.toString());
-            if (status == OpenStatus.CONNECTED) {
+            if (status == AccessoryControl.OpenStatus.CONNECTED) {
                 Log.i(TAG, "        connectUSB::we are now connected to gateway");
                 gateway_connected = enableKioskMode;
                 Log.i(TAG, "        connectUSB::send APICMD_POWERON..");
@@ -935,10 +939,10 @@ public class MainActivity extends Activity implements OnClickListener {
                 enableSettings(false);
                 Log.i(TAG, "        connectUSB::send APICMD_SYNC.. (Request data from Gateway");
                 this.accessoryControl.writeCommand(5, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
-            } else if (status == OpenStatus.REQUESTING_PERMISSION) {
+            } else if (status == AccessoryControl.OpenStatus.REQUESTING_PERMISSION) {
                 Log.w(TAG, "        connectUSB::Requesting Permission");
                 disconnected();
-            } else if (status == OpenStatus.NO_ACCESSORY) {
+            } else if (status == AccessoryControl.OpenStatus.NO_ACCESSORY) {
                 Log.e(TAG, "        connectUSB::*** Error: Cannot connect to Gateway: NO ACCESSORY");
                 disconnected();
             } else {
@@ -1022,7 +1026,7 @@ public class MainActivity extends Activity implements OnClickListener {
         AppContext.instance.stopKioskService();
         moveTaskToBack(enableKioskMode);
         Process.killProcess(Process.myPid());
-        System.exit(UNKNOWN_CONNECTIVITY);
+        java.lang.System.exit(UNKNOWN_CONNECTIVITY);
     }
 
     public void abort() {
@@ -1030,7 +1034,7 @@ public class MainActivity extends Activity implements OnClickListener {
         AppContext.instance.stopKioskService();
         moveTaskToBack(enableKioskMode);
         Process.killProcess(Process.myPid());
-        System.exit(GOOD_CONNECTIVITY);
+        java.lang.System.exit(GOOD_CONNECTIVITY);
     }
 
     protected void onDestroy() {
@@ -1583,7 +1587,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    private void showError(OpenStatus status) {
+    private void showError(AccessoryControl.OpenStatus status) {
         Log.i(TAG, "showError: status =" + status.toString());
         if (!demo_mode) {
             setGatewayStatus("Cannot connect to Gateway");
@@ -2908,7 +2912,7 @@ public class MainActivity extends Activity implements OnClickListener {
             i = UNKNOWN_CONNECTIVITY;
             while (i < vin.length()) {
                 bytestring[i] = (byte) vin.charAt(i);
-                if (bytestring[i] == null) {
+                if (bytestring[i] == 0) {
                     break;
                 }
                 i += GOOD_CONNECTIVITY;
@@ -2926,7 +2930,7 @@ public class MainActivity extends Activity implements OnClickListener {
             i = UNKNOWN_CONNECTIVITY;
             while (i < fleet.length()) {
                 bytestring[i] = (byte) fleet.charAt(i);
-                if (bytestring[i] == null) {
+                if (bytestring[i] == 0) {
                     break;
                 }
                 i += GOOD_CONNECTIVITY;
@@ -3022,7 +3026,7 @@ public class MainActivity extends Activity implements OnClickListener {
         int i = UNKNOWN_CONNECTIVITY;
         while (i < str.length()) {
             bytestring[i] = (byte) str.charAt(i);
-            if (bytestring[i] == null) {
+            if (bytestring[i] == 0) {
                 break;
             }
             i += GOOD_CONNECTIVITY;

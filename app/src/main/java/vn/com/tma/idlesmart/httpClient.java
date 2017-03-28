@@ -133,9 +133,7 @@ public class httpClient extends Activity {
             switch (httpClient.phonehome_state) {
                 case httpClient.STATE_IDLE /*0*/:
                     httpClient.result = httpClient.STATE_ACTIVATE;
-                    httpClient.this.mInstance;
                     MainActivity.SyncLast_Status = httpClient.STATE_ACTIVATE;
-                    httpClient.this.mInstance;
                     MainActivity.SyncLast = Calendar.getInstance();
                     httpClient.this.mInstance.UpdateConnectivityStatus();
                     httpClient.this.dialog = new ProgressDialog(httpClient.this.mInstance);
@@ -293,7 +291,6 @@ public class httpClient extends Activity {
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 case httpClient.STATE_DONE /*90*/:
                 case httpClient.STATE_ERROR /*99*/:
-                    httpClient.this.mInstance;
                     MainActivity.SyncLast_Status = httpClient.result;
                     httpClient.this.mInstance.UpdateConnectivityStatus();
                     String resched_msg = httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE ? "\n\nRefresh has been rescheduled" : BuildConfig.FLAVOR;
@@ -308,11 +305,9 @@ public class httpClient extends Activity {
                             httpClient.this.dialog.setMessage("Errors encountered during refresh" + resched_msg);
                             break;
                         case httpClient.STATE_CONNECT /*1*/:
-                            httpClient.this.mInstance;
                             MainActivity.SyncLast = Calendar.getInstance();
                             httpClient com_idlesmarter_aoa_httpClient = httpClient.this;
                             int access$100 = httpClient.result;
-                            httpClient.this.mInstance;
                             com_idlesmarter_aoa_httpClient.sendSyncLast(access$100, MainActivity.SyncLast);
                             httpClient.this.dialog.setMessage("Refresh completed");
                             break;
@@ -1673,7 +1668,7 @@ public class httpClient extends Activity {
     }
 
     public void ParseCSC(String file) {
-        FileInputStream is;
+        FileInputStream is = null;
         String TAG = "IdleSmart.UpdateGateway";
         try {
             Log.i("IdleSmart.UpdateGateway", "     ParseCSC and send to Gateway..");
@@ -1694,7 +1689,13 @@ public class httpClient extends Activity {
             Log.e("IdleSmart.UpdateGateway", "     ParseCSC IOException");
             e.printStackTrace();
         } catch (Throwable th) {
-            is.close();
+            if(is!=null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         Log.i("IdleSmart.UpdateGateway", "     CSC has been sent to Gateway");
         CommLog(STATE_APKUPDATE, "     CSC has been sent to Gateway");
