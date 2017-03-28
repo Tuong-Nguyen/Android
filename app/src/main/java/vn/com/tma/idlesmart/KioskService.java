@@ -275,7 +275,7 @@ public class KioskService extends Service {
         }
         this.restoreDialog = new Dialog(this);
         this.restoreDialog.requestWindowFeature(1);
-        this.restoreDialog.setContentView(C0010R.layout.restore_dialog);
+        this.restoreDialog.setContentView(R.layout.restore_dialog);
         this.restoreDialog.getWindow().setSoftInputMode(3);
         this.restoreDialog.show();
     }

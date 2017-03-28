@@ -290,14 +290,14 @@ public class MainActivity extends Activity implements OnClickListener {
             byte[] data = new byte[MainActivity.BAD_CONNECTIVITY];
             if (actionId == 6) {
                 switch (v.getId()) {
-                    case C0010R.id.activationCodeEditText /*2131361797*/:
+                    case R.id.activationCodeEditText /*2131361797*/:
                         MainActivity.ActivationCode = Integer.valueOf(((EditText) v).getText().toString()).intValue();
                         data[MainActivity.UNKNOWN_CONNECTIVITY] = (byte) ((MainActivity.ActivationCode >> 8) & 255);
                         data[MainActivity.GOOD_CONNECTIVITY] = (byte) (MainActivity.ActivationCode & 255);
                         MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, data[MainActivity.UNKNOWN_CONNECTIVITY], data[MainActivity.GOOD_CONNECTIVITY]);
                         Log.i(MainActivity.TAG, "(send) APIDATA_ACTIVATION_CODE=" + MainActivity.ActivationCode);
                         break;
-                    case C0010R.id.VINCodeEditText /*2131362092*/:
+                    case R.id.VINCodeEditText /*2131362092*/:
                         MainActivity.Gateway_VIN = ((EditText) v).getText().toString();
                         MainActivity.this.sendVIN(MainActivity.Gateway_VIN);
                         Log.i(MainActivity.TAG, "(send) APICMD_VIN=" + MainActivity.Gateway_VIN);
@@ -326,7 +326,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         public void onClick(View v) {
             MainActivity.this.passwordDialog.dismiss();
-            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(C0010R.id.passwordEditText)).getText().toString());
+            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
             MainActivity.PasswordValid = pwtemp == MainActivity.Password ? MainActivity.enableKioskMode : false;
             if (MainActivity.test_mode && pwtemp == 8800) {
                 MainActivity.PasswordEnable = false;
@@ -467,13 +467,13 @@ public class MainActivity extends Activity implements OnClickListener {
                         mainActivityClass.accessoryControl.close();
                     case AccessoryControl.APIDATA_CABIN_TEMP /*136*/:
                         str = Integer.toString(msg.arg1) + "\u00b0";
-                        ((TextView) mainActivityClass.findViewById(C0010R.id.cabinComfortValue)).setText(str);
-                        ((TextView) mainActivityClass.findViewById(C0010R.id.ccFragTemperatureValue)).setText(str);
+                        ((TextView) mainActivityClass.findViewById(R.id.cabinComfortValue)).setText(str);
+                        ((TextView) mainActivityClass.findViewById(R.id.ccFragTemperatureValue)).setText(str);
                     case AccessoryControl.APIDATA_AMBIENT_TEMP /*137*/:
-                        ((TextView) mainActivityClass.findViewById(C0010R.id.ccFragAmbientTempValue)).setText(Integer.toString(msg.arg1) + "\u00b0");
+                        ((TextView) mainActivityClass.findViewById(R.id.ccFragAmbientTempValue)).setText(Integer.toString(msg.arg1) + "\u00b0");
                     case AccessoryControl.APIDATA_BATTERY_VOLTAGE /*138*/:
                         str = Integer.toString(msg.arg1);
-                        ((TextView) mainActivityClass.findViewById(C0010R.id.batteryProtectValue)).setText(str.substring(MainActivity.UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + mainActivityClass.params.aParamSfx[8]);
+                        ((TextView) mainActivityClass.findViewById(R.id.batteryProtectValue)).setText(str.substring(MainActivity.UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + mainActivityClass.params.aParamSfx[8]);
                     case AccessoryControl.APIDATA_SYNC_LAST /*142*/:
                         if (MainActivity.SyncLast_Status == MainActivity.BAD_CONNECTIVITY) {
                             MainActivity.SyncLast_Status = MainActivity.GOOD_CONNECTIVITY;
@@ -486,7 +486,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         } else {
                             str = mainActivityClass.Time2MinsSecsStr(msg.arg1);
                         }
-                        ((TextView) mainActivityClass.findViewById(C0010R.id.bpFragTimeRemainingValue)).setText(str);
+                        ((TextView) mainActivityClass.findViewById(R.id.bpFragTimeRemainingValue)).setText(str);
                     case AccessoryControl.APIDATA_FLEET_CABIN_COMFORT_ENABLE /*159*/:
                         if (msg.arg1 == 0) {
                             MainActivity.aParam[23] = MainActivity.UNKNOWN_CONNECTIVITY;
@@ -497,8 +497,8 @@ public class MainActivity extends Activity implements OnClickListener {
                         MainActivity.aParam[24] = msg.arg1;
                     case AccessoryControl.APICAN_ENGINE_COOLANT_TEMP /*193*/:
                         str = Integer.toString(msg.arg1) + "\u00b0";
-                        ((TextView) mainActivityClass.findViewById(C0010R.id.cwgFragTemperatureValue)).setText(str);
-                        ((TextView) mainActivityClass.findViewById(C0010R.id.coldWeatherGuardValue)).setText(str);
+                        ((TextView) mainActivityClass.findViewById(R.id.cwgFragTemperatureValue)).setText(str);
+                        ((TextView) mainActivityClass.findViewById(R.id.coldWeatherGuardValue)).setText(str);
                     default:
                 }
             }
@@ -698,12 +698,12 @@ public class MainActivity extends Activity implements OnClickListener {
             showRestartParams();
         }
         getWindow().addFlags(4194304);
-        if (getResources().getBoolean(C0010R.bool.portrait_only)) {
+        if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(GOOD_CONNECTIVITY);
         } else {
             setRequestedOrientation(6);
         }
-        setContentView(C0010R.layout.main);
+        setContentView(R.layout.main);
         if (!Restart) {
             KioskMode = enableKioskMode;
             PrefUtils.setKioskModeActive(KioskMode, getApplicationContext());
@@ -712,66 +712,66 @@ public class MainActivity extends Activity implements OnClickListener {
             clearMaintInfo();
         }
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new C00011());
-        findViewById(C0010R.id.idlesmartButton).setOnClickListener(this);
-        findViewById(C0010R.id.dashboardButton).setOnClickListener(this);
-        findViewById(C0010R.id.settingsButton).setOnClickListener(this);
-        findViewById(C0010R.id.maintButton).setOnClickListener(this);
-        findViewById(C0010R.id.killSwitchButton).setOnClickListener(this);
-        findViewById(C0010R.id.cabinComfortFunction).setOnClickListener(this);
-        findViewById(C0010R.id.coldWeatherGuardFunction).setOnClickListener(this);
-        findViewById(C0010R.id.batteryProtectFunction).setOnClickListener(this);
-        findViewById(C0010R.id.cabinComfortEnableButton).setOnClickListener(this);
-        findViewById(C0010R.id.coldWeatherGuardEnableButton).setOnClickListener(this);
-        findViewById(C0010R.id.batteryProtectEnableButton).setOnClickListener(this);
-        findViewById(C0010R.id.ccFragStopButton).setOnClickListener(this);
-        findViewById(C0010R.id.cwgFragStopButton).setOnClickListener(this);
-        findViewById(C0010R.id.bpFragStopButton).setOnClickListener(this);
-        findViewById(C0010R.id.ccFragTargetTemperatureDecrButton).setOnClickListener(this);
-        findViewById(C0010R.id.ccFragTargetTemperatureIncrButton).setOnClickListener(this);
-        findViewById(C0010R.id.cwgFragMinTempDecrButton).setOnClickListener(this);
-        findViewById(C0010R.id.cwgFragMinTempIncrButton).setOnClickListener(this);
-        findViewById(C0010R.id.cwgFragIdealTempDecrButton).setOnClickListener(this);
-        findViewById(C0010R.id.cwgFragIdealTempIncrButton).setOnClickListener(this);
-        findViewById(C0010R.id.bpFragSetpointDecrButton).setOnClickListener(this);
-        findViewById(C0010R.id.bpFragSetpointIncrButton).setOnClickListener(this);
-        findViewById(C0010R.id.bpEngineRuntimeDecrButton).setOnClickListener(this);
-        findViewById(C0010R.id.bpEngineRuntimeIncrButton).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu11).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu12).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu13).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu14).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu15).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu16).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu17).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu21).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu22).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu23).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu24).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu25).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu26).setOnClickListener(this);
-        findViewById(C0010R.id.settingsMenu27).setOnClickListener(this);
-        findViewById(C0010R.id.settingsEntryEnableButton).setOnClickListener(this);
-        findViewById(C0010R.id.settingsEntryDisableButton).setOnClickListener(this);
-        findViewById(C0010R.id.settingsEntryDecrementButton).setOnClickListener(this);
-        findViewById(C0010R.id.settingsEntryIncrementButton).setOnClickListener(this);
-        findViewById(C0010R.id.settingsEntryDoneButton).setOnClickListener(this);
-        findViewById(C0010R.id.settingsPasswordDoneButton).setOnClickListener(this);
-        findViewById(C0010R.id.killswitchButton).setOnClickListener(this);
-        findViewById(C0010R.id.poweroffButton).setOnClickListener(this);
-        findViewById(C0010R.id.poweronButton).setOnClickListener(this);
-        findViewById(C0010R.id.packagemanagerButton).setOnClickListener(this);
-        findViewById(C0010R.id.updateInstallButton).setOnClickListener(this);
-        findViewById(C0010R.id.packagemanagernagEscapeButton).setOnClickListener(this);
-        findViewById(C0010R.id.passwordContinueButton).setOnClickListener(this);
-        findViewById(C0010R.id.passwordReturnButton).setOnClickListener(this);
-        findViewById(C0010R.id.activationEnterCodeButton).setOnClickListener(this);
-        findViewById(C0010R.id.activationCodeContinueButton).setOnClickListener(this);
-        findViewById(C0010R.id.VINCodeContinueButton).setOnClickListener(this);
-        findViewById(C0010R.id.verificationBeginVerificationButton).setOnClickListener(this);
-        findViewById(C0010R.id.installDoneButton).setOnClickListener(this);
+        findViewById(R.id.idlesmartButton).setOnClickListener(this);
+        findViewById(R.id.dashboardButton).setOnClickListener(this);
+        findViewById(R.id.settingsButton).setOnClickListener(this);
+        findViewById(R.id.maintButton).setOnClickListener(this);
+        findViewById(R.id.killSwitchButton).setOnClickListener(this);
+        findViewById(R.id.cabinComfortFunction).setOnClickListener(this);
+        findViewById(R.id.coldWeatherGuardFunction).setOnClickListener(this);
+        findViewById(R.id.batteryProtectFunction).setOnClickListener(this);
+        findViewById(R.id.cabinComfortEnableButton).setOnClickListener(this);
+        findViewById(R.id.coldWeatherGuardEnableButton).setOnClickListener(this);
+        findViewById(R.id.batteryProtectEnableButton).setOnClickListener(this);
+        findViewById(R.id.ccFragStopButton).setOnClickListener(this);
+        findViewById(R.id.cwgFragStopButton).setOnClickListener(this);
+        findViewById(R.id.bpFragStopButton).setOnClickListener(this);
+        findViewById(R.id.ccFragTargetTemperatureDecrButton).setOnClickListener(this);
+        findViewById(R.id.ccFragTargetTemperatureIncrButton).setOnClickListener(this);
+        findViewById(R.id.cwgFragMinTempDecrButton).setOnClickListener(this);
+        findViewById(R.id.cwgFragMinTempIncrButton).setOnClickListener(this);
+        findViewById(R.id.cwgFragIdealTempDecrButton).setOnClickListener(this);
+        findViewById(R.id.cwgFragIdealTempIncrButton).setOnClickListener(this);
+        findViewById(R.id.bpFragSetpointDecrButton).setOnClickListener(this);
+        findViewById(R.id.bpFragSetpointIncrButton).setOnClickListener(this);
+        findViewById(R.id.bpEngineRuntimeDecrButton).setOnClickListener(this);
+        findViewById(R.id.bpEngineRuntimeIncrButton).setOnClickListener(this);
+        findViewById(R.id.settingsMenu11).setOnClickListener(this);
+        findViewById(R.id.settingsMenu12).setOnClickListener(this);
+        findViewById(R.id.settingsMenu13).setOnClickListener(this);
+        findViewById(R.id.settingsMenu14).setOnClickListener(this);
+        findViewById(R.id.settingsMenu15).setOnClickListener(this);
+        findViewById(R.id.settingsMenu16).setOnClickListener(this);
+        findViewById(R.id.settingsMenu17).setOnClickListener(this);
+        findViewById(R.id.settingsMenu21).setOnClickListener(this);
+        findViewById(R.id.settingsMenu22).setOnClickListener(this);
+        findViewById(R.id.settingsMenu23).setOnClickListener(this);
+        findViewById(R.id.settingsMenu24).setOnClickListener(this);
+        findViewById(R.id.settingsMenu25).setOnClickListener(this);
+        findViewById(R.id.settingsMenu26).setOnClickListener(this);
+        findViewById(R.id.settingsMenu27).setOnClickListener(this);
+        findViewById(R.id.settingsEntryEnableButton).setOnClickListener(this);
+        findViewById(R.id.settingsEntryDisableButton).setOnClickListener(this);
+        findViewById(R.id.settingsEntryDecrementButton).setOnClickListener(this);
+        findViewById(R.id.settingsEntryIncrementButton).setOnClickListener(this);
+        findViewById(R.id.settingsEntryDoneButton).setOnClickListener(this);
+        findViewById(R.id.settingsPasswordDoneButton).setOnClickListener(this);
+        findViewById(R.id.killswitchButton).setOnClickListener(this);
+        findViewById(R.id.poweroffButton).setOnClickListener(this);
+        findViewById(R.id.poweronButton).setOnClickListener(this);
+        findViewById(R.id.packagemanagerButton).setOnClickListener(this);
+        findViewById(R.id.updateInstallButton).setOnClickListener(this);
+        findViewById(R.id.packagemanagernagEscapeButton).setOnClickListener(this);
+        findViewById(R.id.passwordContinueButton).setOnClickListener(this);
+        findViewById(R.id.passwordReturnButton).setOnClickListener(this);
+        findViewById(R.id.activationEnterCodeButton).setOnClickListener(this);
+        findViewById(R.id.activationCodeContinueButton).setOnClickListener(this);
+        findViewById(R.id.VINCodeContinueButton).setOnClickListener(this);
+        findViewById(R.id.verificationBeginVerificationButton).setOnClickListener(this);
+        findViewById(R.id.installDoneButton).setOnClickListener(this);
         this.accessoryControl = new AccessoryControl(this, getUIHandler());
         httpclient = new httpClient(this);
-        this.topLayout = (LinearLayout) findViewById(C0010R.id.topLayout);
+        this.topLayout = (LinearLayout) findViewById(R.id.topLayout);
         this.topLayout.setBackgroundColor(-16777216);
         if (!Restart) {
             Features.initFeatureCodeTable();
@@ -807,7 +807,7 @@ public class MainActivity extends Activity implements OnClickListener {
         if (DebugLog) {
             Log.i(TAG, "==>>onConfigurationChanged");
         }
-        if (getResources().getBoolean(C0010R.bool.portrait_only)) {
+        if (getResources().getBoolean(R.bool.portrait_only)) {
             setRequestedOrientation(GOOD_CONNECTIVITY);
         } else {
             setRequestedOrientation(6);
@@ -908,9 +908,9 @@ public class MainActivity extends Activity implements OnClickListener {
         if (packagemanagernag) {
             if (isAnyBloatware()) {
                 Log.i(TAG, "   Bloatware exists - turn on nag screen");
-                findViewById(C0010R.id.packagemanagerFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.packagemanagerFragment).setVisibility(UNKNOWN_CONNECTIVITY);
             } else {
-                findViewById(C0010R.id.packagemanagerFragment).setVisibility(8);
+                findViewById(R.id.packagemanagerFragment).setVisibility(8);
             }
         }
         isRefreshAvailable();
@@ -1207,9 +1207,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void setScreenOn(boolean enable) {
         if (enable) {
-            findViewById(C0010R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
         } else {
-            findViewById(C0010R.id.fullScreen).setVisibility(8);
+            findViewById(R.id.fullScreen).setVisibility(8);
         }
         this.ScreenOn = enable;
     }
@@ -1276,15 +1276,15 @@ public class MainActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         int i;
         switch (v.getId()) {
-            case C0010R.id.activationEnterCodeButton /*2131361795*/:
+            case R.id.activationEnterCodeButton /*2131361795*/:
                 selectActivationFragment(4);
-                findViewById(C0010R.id.activationFragment).setVisibility(8);
-                findViewById(C0010R.id.activationCodeFragment).setVisibility(UNKNOWN_CONNECTIVITY);
-            case C0010R.id.activationCodeContinueButton /*2131361798*/:
+                findViewById(R.id.activationFragment).setVisibility(8);
+                findViewById(R.id.activationCodeFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+            case R.id.activationCodeContinueButton /*2131361798*/:
                 selectActivationFragment(5);
-                findViewById(C0010R.id.activationCodeFragment).setVisibility(8);
-                findViewById(C0010R.id.VINCodeFragment).setVisibility(UNKNOWN_CONNECTIVITY);
-            case C0010R.id.dashboardButton /*2131361812*/:
+                findViewById(R.id.activationCodeFragment).setVisibility(8);
+                findViewById(R.id.VINCodeFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+            case R.id.dashboardButton /*2131361812*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 if (SystemActivationFlag || demo_mode) {
@@ -1296,7 +1296,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     selectActivationFragment(UNKNOWN_CONNECTIVITY);
                     PasswordValid = false;
                 }
-            case C0010R.id.settingsButton /*2131361814*/:
+            case R.id.settingsButton /*2131361814*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 if (SystemActivationFlag || demo_mode) {
@@ -1311,14 +1311,14 @@ public class MainActivity extends Activity implements OnClickListener {
                     selectSettingsMode(GOOD_CONNECTIVITY);
                     PasswordValid = false;
                 }
-            case C0010R.id.killSwitchButton /*2131361816*/:
+            case R.id.killSwitchButton /*2131361816*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 if (SystemActivationFlag) {
                     selectKillswitchMode(GOOD_CONNECTIVITY);
                 }
-            case C0010R.id.installDoneButton /*2131361837*/:
-                findViewById(C0010R.id.installFragment).setVisibility(8);
+            case R.id.installDoneButton /*2131361837*/:
+                findViewById(R.id.installFragment).setVisibility(8);
                 if (ValidActivationProcess) {
                     this.accessoryControl.writeCommand(15, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     Log.i(TAG, "APICMD_ACTIVATE = 1");
@@ -1328,13 +1328,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     return;
                 }
                 InstallAndActivate(SystemActivationFlag);
-            case C0010R.id.poweronButton /*2131361943*/:
+            case R.id.poweronButton /*2131361943*/:
                 selectKillswitchMode(UNKNOWN_CONNECTIVITY);
                 enableStatusBar(enableKioskMode);
                 enableDashboard(enableKioskMode);
-                findViewById(C0010R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
                 this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
-            case C0010R.id.idlesmartButton /*2131361944*/:
+            case R.id.idlesmartButton /*2131361944*/:
                 this.test_mark_counter += GOOD_CONNECTIVITY;
                 Log.i(TAG, "************************************ TEST MARK: " + this.test_mark_counter);
                 if (gateway_connected) {
@@ -1375,156 +1375,156 @@ public class MainActivity extends Activity implements OnClickListener {
                         enableSettings(false);
                     }
                 }
-            case C0010R.id.updateInstallButton /*2131361948*/:
+            case R.id.updateInstallButton /*2131361948*/:
                 installUpdate();
-            case C0010R.id.maintButton /*2131361949*/:
+            case R.id.maintButton /*2131361949*/:
                 i = this.maint_mode_counter + GOOD_CONNECTIVITY;
                 this.maint_mode_counter = i;
                 if (i >= 3) {
                     openMaintDialog();
                     this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 }
-            case C0010R.id.passwordReturnButton /*2131361954*/:
+            case R.id.passwordReturnButton /*2131361954*/:
                 PasswordValid = false;
-            case C0010R.id.cabinComfortFunction /*2131361959*/:
+            case R.id.cabinComfortFunction /*2131361959*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == BAD_CONNECTIVITY) {
                     selectRunning(GOOD_CONNECTIVITY);
                 } else {
                     selectRunning(BAD_CONNECTIVITY);
                 }
-            case C0010R.id.coldWeatherGuardFunction /*2131361960*/:
+            case R.id.coldWeatherGuardFunction /*2131361960*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == 3) {
                     selectRunning(GOOD_CONNECTIVITY);
                 } else {
                     selectRunning(3);
                 }
-            case C0010R.id.batteryProtectFunction /*2131361961*/:
+            case R.id.batteryProtectFunction /*2131361961*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == 4) {
                     selectRunning(GOOD_CONNECTIVITY);
                 } else {
                     selectRunning(4);
                 }
-            case C0010R.id.cabinComfortEnableButton /*2131361972*/:
-            case C0010R.id.ccFragStopButton /*2131361989*/:
+            case R.id.cabinComfortEnableButton /*2131361972*/:
+            case R.id.ccFragStopButton /*2131361989*/:
                 Log.i(TAG, "-->cabinComfortEnableButton");
                 if (aParam[23] != 0 || this.CabinComfortMode == BAD_CONNECTIVITY || ValidPassword()) {
                     setFunctionMode(GOOD_CONNECTIVITY, toggleFunctionMode(this.CabinComfortMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
-            case C0010R.id.coldWeatherGuardEnableButton /*2131361979*/:
-            case C0010R.id.cwgFragStopButton /*2131361996*/:
+            case R.id.coldWeatherGuardEnableButton /*2131361979*/:
+            case R.id.cwgFragStopButton /*2131361996*/:
                 Log.i(TAG, "-->coldWeatherGuardEnableButton");
                 if (this.ColdWeatherGuardMode == BAD_CONNECTIVITY || ValidPassword()) {
                     setFunctionMode(BAD_CONNECTIVITY, toggleFunctionMode(this.ColdWeatherGuardMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
-            case C0010R.id.batteryProtectEnableButton /*2131361986*/:
-            case C0010R.id.bpFragStopButton /*2131362005*/:
+            case R.id.batteryProtectEnableButton /*2131361986*/:
+            case R.id.bpFragStopButton /*2131362005*/:
                 Log.i(TAG, "-->batteryProtectEnableButton");
                 if (this.BatteryProtectMode == BAD_CONNECTIVITY || ValidPassword()) {
                     setFunctionMode(3, toggleFunctionMode(this.BatteryProtectMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
-            case C0010R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
+            case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
                 if (isCabinTempCommonDecrValid(aParam[3]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
-            case C0010R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
+            case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
                 if (isCabinTempCommonIncrValid(aParam[3]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
-            case C0010R.id.cwgFragMinTempDecrButton /*2131361998*/:
-            case C0010R.id.cwgFragMinTempIncrButton /*2131361999*/:
+            case R.id.cwgFragMinTempDecrButton /*2131361998*/:
+            case R.id.cwgFragMinTempIncrButton /*2131361999*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 11);
                 }
-            case C0010R.id.cwgFragIdealTempDecrButton /*2131362001*/:
-            case C0010R.id.cwgFragIdealTempIncrButton /*2131362002*/:
+            case R.id.cwgFragIdealTempDecrButton /*2131362001*/:
+            case R.id.cwgFragIdealTempIncrButton /*2131362002*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 10);
                 }
-            case C0010R.id.bpFragSetpointDecrButton /*2131362007*/:
-            case C0010R.id.bpFragSetpointIncrButton /*2131362008*/:
+            case R.id.bpFragSetpointDecrButton /*2131362007*/:
+            case R.id.bpFragSetpointIncrButton /*2131362008*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 8);
                 }
-            case C0010R.id.bpEngineRuntimeDecrButton /*2131362010*/:
-            case C0010R.id.bpEngineRuntimeIncrButton /*2131362011*/:
+            case R.id.bpEngineRuntimeDecrButton /*2131362010*/:
+            case R.id.bpEngineRuntimeIncrButton /*2131362011*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 9);
                 }
-            case C0010R.id.settingsMenu11 /*2131362014*/:
+            case R.id.settingsMenu11 /*2131362014*/:
                 selectMenu1Entry(GOOD_CONNECTIVITY);
-            case C0010R.id.settingsMenu12 /*2131362017*/:
+            case R.id.settingsMenu12 /*2131362017*/:
                 selectMenu1Entry(BAD_CONNECTIVITY);
-            case C0010R.id.settingsMenu13 /*2131362020*/:
+            case R.id.settingsMenu13 /*2131362020*/:
                 selectMenu1Entry(3);
-            case C0010R.id.settingsMenu14 /*2131362023*/:
+            case R.id.settingsMenu14 /*2131362023*/:
                 selectMenu1Entry(4);
-            case C0010R.id.settingsMenu15 /*2131362026*/:
+            case R.id.settingsMenu15 /*2131362026*/:
                 selectMenu1Entry(5);
-            case C0010R.id.settingsMenu16 /*2131362029*/:
+            case R.id.settingsMenu16 /*2131362029*/:
                 selectMenu1Entry(6);
-            case C0010R.id.settingsMenu17 /*2131362032*/:
+            case R.id.settingsMenu17 /*2131362032*/:
                 selectMenu1Entry(7);
-            case C0010R.id.settingsMenu21 /*2131362039*/:
+            case R.id.settingsMenu21 /*2131362039*/:
                 selectMenu2Entry(GOOD_CONNECTIVITY);
-            case C0010R.id.settingsMenu22 /*2131362042*/:
+            case R.id.settingsMenu22 /*2131362042*/:
                 selectMenu2Entry(BAD_CONNECTIVITY);
-            case C0010R.id.settingsMenu23 /*2131362045*/:
+            case R.id.settingsMenu23 /*2131362045*/:
                 selectMenu2Entry(3);
-            case C0010R.id.settingsMenu24 /*2131362048*/:
+            case R.id.settingsMenu24 /*2131362048*/:
                 selectMenu2Entry(4);
-            case C0010R.id.settingsMenu25 /*2131362051*/:
+            case R.id.settingsMenu25 /*2131362051*/:
                 selectMenu2Entry(5);
-            case C0010R.id.settingsMenu26 /*2131362054*/:
+            case R.id.settingsMenu26 /*2131362054*/:
                 selectMenu2Entry(6);
-            case C0010R.id.settingsMenu27 /*2131362057*/:
+            case R.id.settingsMenu27 /*2131362057*/:
                 selectMenu2Entry(7);
-            case C0010R.id.settingsEntryEnableButton /*2131362065*/:
+            case R.id.settingsEntryEnableButton /*2131362065*/:
                 if (PasswordEnable && ValidPassword()) {
                     updateParamValue(v.getId(), this.param_id);
                     saveParamValue(this.param_id);
                 }
-            case C0010R.id.settingsEntryDisableButton /*2131362068*/:
+            case R.id.settingsEntryDisableButton /*2131362068*/:
                 if (PasswordEnable && ValidPassword()) {
                     updateParamValue(v.getId(), this.param_id);
                     saveParamValue(this.param_id);
                 }
-            case C0010R.id.settingsEntryDecrementButton /*2131362072*/:
+            case R.id.settingsEntryDecrementButton /*2131362072*/:
                 updateParamValue(v.getId(), this.param_id);
-            case C0010R.id.settingsEntryIncrementButton /*2131362073*/:
+            case R.id.settingsEntryIncrementButton /*2131362073*/:
                 updateParamValue(v.getId(), this.param_id);
-            case C0010R.id.settingsEntryDoneButton /*2131362074*/:
+            case R.id.settingsEntryDoneButton /*2131362074*/:
                 saveParamValue(this.param_id);
-            case C0010R.id.packagemanagernagEscapeButton /*2131362083*/:
+            case R.id.packagemanagernagEscapeButton /*2131362083*/:
                 packagemanagernag = false;
-                findViewById(C0010R.id.packagemanagerFragment).setVisibility(8);
-            case C0010R.id.packagemanagerButton /*2131362084*/:
+                findViewById(R.id.packagemanagerFragment).setVisibility(8);
+            case R.id.packagemanagerButton /*2131362084*/:
                 removeBloatware();
-            case C0010R.id.killswitchButton /*2131362086*/:
+            case R.id.killswitchButton /*2131362086*/:
                 selectKillswitchMode(BAD_CONNECTIVITY);
-            case C0010R.id.poweroffButton /*2131362088*/:
+            case R.id.poweroffButton /*2131362088*/:
                 this.accessoryControl.writeCommand(22, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 selectKillswitchMode(3);
-                findViewById(C0010R.id.fullScreen).setVisibility(8);
+                findViewById(R.id.fullScreen).setVisibility(8);
                 this.accessoryControl.writeCommand(21, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
-            case C0010R.id.verificationBeginVerificationButton /*2131362090*/:
+            case R.id.verificationBeginVerificationButton /*2131362090*/:
                 selectActivationFragment(BAD_CONNECTIVITY);
-                findViewById(C0010R.id.verificationFragment).setVisibility(8);
-                findViewById(C0010R.id.installFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.verificationFragment).setVisibility(8);
+                findViewById(R.id.installFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                 ValidActivationProcess = false;
                 StartVerificationProcess();
-            case C0010R.id.VINCodeContinueButton /*2131362093*/:
+            case R.id.VINCodeContinueButton /*2131362093*/:
                 selectActivationFragment(GOOD_CONNECTIVITY);
-                findViewById(C0010R.id.VINCodeFragment).setVisibility(8);
-                findViewById(C0010R.id.verificationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.VINCodeFragment).setVisibility(8);
+                findViewById(R.id.verificationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
             default:
         }
     }
@@ -1565,25 +1565,25 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void setGatewayStatus(String str) {
         CurrentGatewayStatus = str;
-        ((TextView) findViewById(C0010R.id.gatewayStatus)).setText(str);
+        ((TextView) findViewById(R.id.gatewayStatus)).setText(str);
         Log.i(TAG, "setGatewayStatus = " + str);
     }
 
     private void setEngineStatus(String str) {
         CurrentEngineStatus = str;
-        ((TextView) findViewById(C0010R.id.engineStatus)).setText(str);
+        ((TextView) findViewById(R.id.engineStatus)).setText(str);
     }
 
     private void setConnectivityStatus(String str, int indicator) {
         CurrentConnectivityStatus = str;
         ConnectivityIndicator = indicator;
-        ((TextView) findViewById(C0010R.id.connectivityStatus)).setText(str);
+        ((TextView) findViewById(R.id.connectivityStatus)).setText(str);
         if (ConnectivityIndicator == GOOD_CONNECTIVITY) {
-            ((TextView) findViewById(C0010R.id.connectivityStatus)).setTextColor(getResources().getColor(C0010R.color.goodConnectivity));
+            ((TextView) findViewById(R.id.connectivityStatus)).setTextColor(getResources().getColor(R.color.goodConnectivity));
         } else if (ConnectivityIndicator == BAD_CONNECTIVITY) {
-            ((TextView) findViewById(C0010R.id.connectivityStatus)).setTextColor(getResources().getColor(C0010R.color.badConnectivity));
+            ((TextView) findViewById(R.id.connectivityStatus)).setTextColor(getResources().getColor(R.color.badConnectivity));
         } else {
-            ((TextView) findViewById(C0010R.id.connectivityStatus)).setTextColor(getResources().getColor(C0010R.color.unknownConnectivity));
+            ((TextView) findViewById(R.id.connectivityStatus)).setTextColor(getResources().getColor(R.color.unknownConnectivity));
         }
     }
 
@@ -1596,28 +1596,28 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void enableStatusBar(boolean enable) {
         CurrentStatusBarFlag = enable;
-        findViewById(C0010R.id.statusBar).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.statusBar).setVisibility(UNKNOWN_CONNECTIVITY);
     }
 
     private void enableDashboard(boolean enable) {
         CurrentDashboardFlag = enable;
         enableStatusBar(enableKioskMode);
         if (!gateway_connected && !demo_mode) {
-            findViewById(C0010R.id.dashboardFragment).setVisibility(8);
+            findViewById(R.id.dashboardFragment).setVisibility(8);
         } else if (enable) {
-            findViewById(C0010R.id.dashboardFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.dashboardFragment).setVisibility(UNKNOWN_CONNECTIVITY);
             selectSettingsMode(UNKNOWN_CONNECTIVITY);
         } else {
-            findViewById(C0010R.id.dashboardFragment).setVisibility(8);
+            findViewById(R.id.dashboardFragment).setVisibility(8);
         }
     }
 
     private void selectRunning(int fragment) {
         CurrentDashboardFragment = fragment;
-        findViewById(C0010R.id.runningFragment).setVisibility(8);
-        findViewById(C0010R.id.cabinComfortFragment).setVisibility(8);
-        findViewById(C0010R.id.coldWeatherGuardFragment).setVisibility(8);
-        findViewById(C0010R.id.batteryProtectFragment).setVisibility(8);
+        findViewById(R.id.runningFragment).setVisibility(8);
+        findViewById(R.id.cabinComfortFragment).setVisibility(8);
+        findViewById(R.id.coldWeatherGuardFragment).setVisibility(8);
+        findViewById(R.id.batteryProtectFragment).setVisibility(8);
         updateFunctionModes();
         viewFragmentParamValue(GOOD_CONNECTIVITY);
         viewFragmentParamValue(BAD_CONNECTIVITY);
@@ -1627,16 +1627,16 @@ public class MainActivity extends Activity implements OnClickListener {
             enableDashboard(enableKioskMode);
             switch (fragment) {
                 case GOOD_CONNECTIVITY /*1*/:
-                    findViewById(C0010R.id.runningFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.runningFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                     break;
                 case BAD_CONNECTIVITY /*2*/:
-                    findViewById(C0010R.id.cabinComfortFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.cabinComfortFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                     break;
                 case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                    findViewById(C0010R.id.coldWeatherGuardFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.coldWeatherGuardFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                     break;
                 case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                    findViewById(C0010R.id.batteryProtectFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.batteryProtectFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                     break;
                 default:
                     break;
@@ -1649,28 +1649,28 @@ public class MainActivity extends Activity implements OnClickListener {
     private void selectKillswitchMode(int mode) {
         switch (mode) {
             case UNKNOWN_CONNECTIVITY /*0*/:
-                findViewById(C0010R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(C0010R.id.killswitchFragment).setVisibility(8);
-                findViewById(C0010R.id.poweroffFragment).setVisibility(8);
-                findViewById(C0010R.id.poweronFragment).setVisibility(8);
+                findViewById(R.id.fullScreen).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.killswitchFragment).setVisibility(8);
+                findViewById(R.id.poweroffFragment).setVisibility(8);
+                findViewById(R.id.poweronFragment).setVisibility(8);
             case GOOD_CONNECTIVITY /*1*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
-                findViewById(C0010R.id.killswitchFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.killswitchFragment).setVisibility(UNKNOWN_CONNECTIVITY);
             case BAD_CONNECTIVITY /*2*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
-                findViewById(C0010R.id.killswitchFragment).setVisibility(8);
-                findViewById(C0010R.id.poweroffFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.killswitchFragment).setVisibility(8);
+                findViewById(R.id.poweroffFragment).setVisibility(UNKNOWN_CONNECTIVITY);
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
-                findViewById(C0010R.id.fullScreen).setVisibility(8);
-                findViewById(C0010R.id.poweroffFragment).setVisibility(8);
-                findViewById(C0010R.id.poweronFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.fullScreen).setVisibility(8);
+                findViewById(R.id.poweroffFragment).setVisibility(8);
+                findViewById(R.id.poweronFragment).setVisibility(UNKNOWN_CONNECTIVITY);
             default:
         }
     }
@@ -1681,11 +1681,11 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         this.passwordDialog = new Dialog(this);
         this.passwordDialog.requestWindowFeature(GOOD_CONNECTIVITY);
-        this.passwordDialog.setContentView(C0010R.layout.password_dialog);
+        this.passwordDialog.setContentView(R.layout.password_dialog);
         this.passwordDialog.getWindow().setSoftInputMode(3);
-        ((TextView) this.passwordDialog.findViewById(C0010R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
-        this.passwordDialog.findViewById(C0010R.id.passwordReturnButton).setOnClickListener(new C00088());
-        this.passwordDialog.findViewById(C0010R.id.passwordContinueButton).setOnClickListener(new C00099());
+        ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
+        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new C00088());
+        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new C00099());
         this.passwordDialog.show();
     }
 
@@ -1698,115 +1698,115 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void updateFunctionModes() {
-        Button ccEnableButton = (Button) findViewById(C0010R.id.cabinComfortEnableButton);
-        Button cwEnableButton = (Button) findViewById(C0010R.id.coldWeatherGuardEnableButton);
-        Button bpEnableButton = (Button) findViewById(C0010R.id.batteryProtectEnableButton);
-        Button ccFragStopButton = (Button) findViewById(C0010R.id.ccFragStopButton);
-        Button cwFragStopButton = (Button) findViewById(C0010R.id.cwgFragStopButton);
-        Button bpFragStopButton = (Button) findViewById(C0010R.id.bpFragStopButton);
+        Button ccEnableButton = (Button) findViewById(R.id.cabinComfortEnableButton);
+        Button cwEnableButton = (Button) findViewById(R.id.coldWeatherGuardEnableButton);
+        Button bpEnableButton = (Button) findViewById(R.id.batteryProtectEnableButton);
+        Button ccFragStopButton = (Button) findViewById(R.id.ccFragStopButton);
+        Button cwFragStopButton = (Button) findViewById(R.id.cwgFragStopButton);
+        Button bpFragStopButton = (Button) findViewById(R.id.bpFragStopButton);
         switch (this.CabinComfortMode) {
             case UNKNOWN_CONNECTIVITY /*0*/:
-                findViewById(C0010R.id.cabinComfortControl).setBackground(getResources().getDrawable(C0010R.color.disabledFunction));
-                findViewById(C0010R.id.cabinComfortFragment).setBackground(getResources().getDrawable(C0010R.color.disabledFunction));
-                findViewById(C0010R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.disabled));
-                findViewById(C0010R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(C0010R.drawable.disabled_indicator_shape));
-                ((TextView) findViewById(C0010R.id.cabinComfortStatus)).setText("DISABLED");
-                ccEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.disabled_button_shape));
+                findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
+                findViewById(R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(R.drawable.disabled_indicator_shape));
+                ((TextView) findViewById(R.id.cabinComfortStatus)).setText("DISABLED");
+                ccEnableButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 ccEnableButton.setText("ENABLE");
-                ccFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.disabled_button_shape));
+                ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 ccFragStopButton.setText("ENABLE");
                 break;
             case GOOD_CONNECTIVITY /*1*/:
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.cabinComfortControl).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.cabinComfortFragment).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.enabled));
-                findViewById(C0010R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(C0010R.drawable.enabled_indicator_shape));
-                ((TextView) findViewById(C0010R.id.cabinComfortStatus)).setText("MONITORING");
-                ccEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.enabled_button_shape));
+                findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
+                findViewById(R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(R.drawable.enabled_indicator_shape));
+                ((TextView) findViewById(R.id.cabinComfortStatus)).setText("MONITORING");
+                ccEnableButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 ccEnableButton.setText("DISABLE");
-                ccFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.enabled_button_shape));
+                ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 ccFragStopButton.setText("DISABLE");
                 break;
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.cabinComfortControl).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.cabinComfortFragment).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.active));
-                findViewById(C0010R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(C0010R.drawable.active_indicator_shape));
-                ((TextView) findViewById(C0010R.id.cabinComfortStatus)).setText("RUNNING ENGINE");
-                ccEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.active_button_shape));
+                findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
+                findViewById(R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(R.drawable.active_indicator_shape));
+                ((TextView) findViewById(R.id.cabinComfortStatus)).setText("RUNNING ENGINE");
+                ccEnableButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 ccEnableButton.setText("STOP ENGINE");
-                ccFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.active_button_shape));
+                ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 ccFragStopButton.setText("STOP ENGINE");
                 break;
         }
         switch (this.ColdWeatherGuardMode) {
             case UNKNOWN_CONNECTIVITY /*0*/:
-                findViewById(C0010R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(C0010R.color.disabledFunction));
-                findViewById(C0010R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(C0010R.color.disabledFunction));
-                findViewById(C0010R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.disabled));
-                findViewById(C0010R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(C0010R.drawable.disabled_indicator_shape));
-                ((TextView) findViewById(C0010R.id.coldWeatherGuardStatus)).setText("DISABLED");
-                cwEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.disabled_button_shape));
+                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
+                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.disabled_indicator_shape));
+                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("DISABLED");
+                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 cwEnableButton.setText("ENABLE");
-                cwFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.disabled_button_shape));
+                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 cwFragStopButton.setText("ENABLE");
                 break;
             case GOOD_CONNECTIVITY /*1*/:
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.enabled));
-                findViewById(C0010R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(C0010R.drawable.enabled_indicator_shape));
-                ((TextView) findViewById(C0010R.id.coldWeatherGuardStatus)).setText("MONITORING");
-                cwEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.enabled_button_shape));
+                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
+                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.enabled_indicator_shape));
+                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("MONITORING");
+                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 cwEnableButton.setText("DISABLE");
-                cwFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.enabled_button_shape));
+                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 cwFragStopButton.setText("DISABLE");
                 break;
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.active));
-                findViewById(C0010R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(C0010R.drawable.active_indicator_shape));
-                ((TextView) findViewById(C0010R.id.coldWeatherGuardStatus)).setText("RUNNING ENGINE");
-                cwEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.active_button_shape));
+                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
+                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.active_indicator_shape));
+                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("RUNNING ENGINE");
+                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 cwEnableButton.setText("STOP ENGINE");
-                cwFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.active_button_shape));
+                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 cwFragStopButton.setText("STOP ENGINE");
                 break;
         }
         switch (this.BatteryProtectMode) {
             case UNKNOWN_CONNECTIVITY /*0*/:
-                findViewById(C0010R.id.batteryProtectControl).setBackground(getResources().getDrawable(C0010R.color.disabledFunction));
-                findViewById(C0010R.id.batteryProtectFragment).setBackground(getResources().getDrawable(C0010R.color.disabledFunction));
-                findViewById(C0010R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.disabled));
-                findViewById(C0010R.id.batteryProtectIndicator).setBackground(getResources().getDrawable(C0010R.drawable.disabled_indicator_shape));
-                ((TextView) findViewById(C0010R.id.batteryProtectStatus)).setText("DISABLED");
-                bpEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.disabled_button_shape));
+                findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
+                findViewById(R.id.batteryProtectIndicator).setBackground(getResources().getDrawable(R.drawable.disabled_indicator_shape));
+                ((TextView) findViewById(R.id.batteryProtectStatus)).setText("DISABLED");
+                bpEnableButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 bpEnableButton.setText("ENABLE");
-                bpFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.disabled_button_shape));
+                bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 bpFragStopButton.setText("ENABLE");
             case GOOD_CONNECTIVITY /*1*/:
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.batteryProtectControl).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.batteryProtectFragment).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.enabled));
-                findViewById(C0010R.id.batteryProtectIndicator).setBackground(getResources().getDrawable(C0010R.drawable.enabled_indicator_shape));
-                ((TextView) findViewById(C0010R.id.batteryProtectStatus)).setText("MONITORING");
-                bpEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.enabled_button_shape));
+                findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
+                findViewById(R.id.batteryProtectIndicator).setBackground(getResources().getDrawable(R.drawable.enabled_indicator_shape));
+                ((TextView) findViewById(R.id.batteryProtectStatus)).setText("MONITORING");
+                bpEnableButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 bpEnableButton.setText("DISABLE");
-                bpFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.enabled_button_shape));
+                bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 bpFragStopButton.setText("DISABLE");
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.batteryProtectControl).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.batteryProtectFragment).setBackground(getResources().getDrawable(C0010R.color.enabledFunction));
-                findViewById(C0010R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(C0010R.color.active));
-                findViewById(C0010R.id.batteryProtectIndicator).setBackground(getResources().getDrawable(C0010R.drawable.active_indicator_shape));
-                ((TextView) findViewById(C0010R.id.batteryProtectStatus)).setText("RUNNING ENGINE");
-                bpEnableButton.setBackground(getResources().getDrawable(C0010R.drawable.active_button_shape));
+                findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
+                findViewById(R.id.batteryProtectIndicator).setBackground(getResources().getDrawable(R.drawable.active_indicator_shape));
+                ((TextView) findViewById(R.id.batteryProtectStatus)).setText("RUNNING ENGINE");
+                bpEnableButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 bpEnableButton.setText("STOP ENGINE");
-                bpFragStopButton.setBackground(getResources().getDrawable(C0010R.drawable.active_button_shape));
+                bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 bpFragStopButton.setText("STOP ENGINE");
             default:
         }
@@ -1919,12 +1919,12 @@ public class MainActivity extends Activity implements OnClickListener {
     private void enableSettings(boolean enable) {
         CurrentSettingsFlag = enable;
         if (!gateway_connected && !demo_mode) {
-            findViewById(C0010R.id.settingsFragment).setVisibility(8);
+            findViewById(R.id.settingsFragment).setVisibility(8);
         } else if (enable) {
             enableStatusBar(false);
-            findViewById(C0010R.id.settingsFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.settingsFragment).setVisibility(UNKNOWN_CONNECTIVITY);
         } else {
-            findViewById(C0010R.id.settingsFragment).setVisibility(8);
+            findViewById(R.id.settingsFragment).setVisibility(8);
         }
     }
 
@@ -1941,164 +1941,164 @@ public class MainActivity extends Activity implements OnClickListener {
         switch (level) {
             case GOOD_CONNECTIVITY /*1*/:
                 initMenu1();
-                findViewById(C0010R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(C0010R.id.settingsMenu2).setVisibility(8);
+                findViewById(R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsMenu2).setVisibility(8);
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
                 this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
                 selectMenu1Entry(UNKNOWN_CONNECTIVITY);
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(C0010R.id.settingsMenu2).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsMenu2).setVisibility(UNKNOWN_CONNECTIVITY);
                 initMenu2();
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
                 this.settings_menu2_index = UNKNOWN_CONNECTIVITY;
                 selectMenu2Entry(UNKNOWN_CONNECTIVITY);
                 this.settings_entrytype = UNKNOWN_CONNECTIVITY;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
-                findViewById(C0010R.id.settingsMenu2).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsMenu1).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsMenu2).setVisibility(UNKNOWN_CONNECTIVITY);
                 viewParamValue();
             default:
-                findViewById(C0010R.id.settingsMenu1).setVisibility(8);
-                findViewById(C0010R.id.settingsMenu2).setVisibility(8);
+                findViewById(R.id.settingsMenu1).setVisibility(8);
+                findViewById(R.id.settingsMenu2).setVisibility(8);
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
         }
     }
 
     private void initMenu1() {
-        findViewById(C0010R.id.settingsMenu11).setVisibility(UNKNOWN_CONNECTIVITY);
-        findViewById(C0010R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        ((TextView) findViewById(C0010R.id.settingsMenu11Item)).setText(this.menus.aMainMenu[UNKNOWN_CONNECTIVITY]);
-        findViewById(C0010R.id.settingsMenu12).setVisibility(UNKNOWN_CONNECTIVITY);
-        findViewById(C0010R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        ((TextView) findViewById(C0010R.id.settingsMenu12Item)).setText(this.menus.aMainMenu[GOOD_CONNECTIVITY]);
-        findViewById(C0010R.id.settingsMenu13).setVisibility(UNKNOWN_CONNECTIVITY);
-        findViewById(C0010R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        ((TextView) findViewById(C0010R.id.settingsMenu13Item)).setText(this.menus.aMainMenu[BAD_CONNECTIVITY]);
-        findViewById(C0010R.id.settingsMenu14).setVisibility(UNKNOWN_CONNECTIVITY);
-        findViewById(C0010R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        ((TextView) findViewById(C0010R.id.settingsMenu14Item)).setText(this.menus.aMainMenu[3]);
-        findViewById(C0010R.id.settingsMenu15).setVisibility(UNKNOWN_CONNECTIVITY);
-        findViewById(C0010R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        ((TextView) findViewById(C0010R.id.settingsMenu15Item)).setText(this.menus.aMainMenu[4]);
-        findViewById(C0010R.id.settingsMenu16).setVisibility(UNKNOWN_CONNECTIVITY);
-        findViewById(C0010R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        ((TextView) findViewById(C0010R.id.settingsMenu16Item)).setText(this.menus.aMainMenu[5]);
-        findViewById(C0010R.id.settingsMenu17).setVisibility(4);
-        findViewById(C0010R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu18).setVisibility(4);
-        findViewById(C0010R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu11).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        ((TextView) findViewById(R.id.settingsMenu11Item)).setText(this.menus.aMainMenu[UNKNOWN_CONNECTIVITY]);
+        findViewById(R.id.settingsMenu12).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        ((TextView) findViewById(R.id.settingsMenu12Item)).setText(this.menus.aMainMenu[GOOD_CONNECTIVITY]);
+        findViewById(R.id.settingsMenu13).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        ((TextView) findViewById(R.id.settingsMenu13Item)).setText(this.menus.aMainMenu[BAD_CONNECTIVITY]);
+        findViewById(R.id.settingsMenu14).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        ((TextView) findViewById(R.id.settingsMenu14Item)).setText(this.menus.aMainMenu[3]);
+        findViewById(R.id.settingsMenu15).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        ((TextView) findViewById(R.id.settingsMenu15Item)).setText(this.menus.aMainMenu[4]);
+        findViewById(R.id.settingsMenu16).setVisibility(UNKNOWN_CONNECTIVITY);
+        findViewById(R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        ((TextView) findViewById(R.id.settingsMenu16Item)).setText(this.menus.aMainMenu[5]);
+        findViewById(R.id.settingsMenu17).setVisibility(4);
+        findViewById(R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu18).setVisibility(4);
+        findViewById(R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
     }
 
     private void initMenu2() {
-        findViewById(C0010R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, GOOD_CONNECTIVITY) >= 0) {
-            findViewById(C0010R.id.settingsMenu21).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu21Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, GOOD_CONNECTIVITY));
+            findViewById(R.id.settingsMenu21).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu21Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, GOOD_CONNECTIVITY));
         } else {
-            findViewById(C0010R.id.settingsMenu21).setVisibility(4);
+            findViewById(R.id.settingsMenu21).setVisibility(4);
         }
-        findViewById(C0010R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, BAD_CONNECTIVITY) >= 0) {
-            findViewById(C0010R.id.settingsMenu22).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu22Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, BAD_CONNECTIVITY));
+            findViewById(R.id.settingsMenu22).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu22Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, BAD_CONNECTIVITY));
         } else {
-            findViewById(C0010R.id.settingsMenu22).setVisibility(4);
+            findViewById(R.id.settingsMenu22).setVisibility(4);
         }
-        findViewById(C0010R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 3) >= 0) {
-            findViewById(C0010R.id.settingsMenu23).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu23Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 3));
+            findViewById(R.id.settingsMenu23).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu23Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 3));
         } else {
-            findViewById(C0010R.id.settingsMenu23).setVisibility(4);
+            findViewById(R.id.settingsMenu23).setVisibility(4);
         }
-        findViewById(C0010R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 4) >= 0) {
-            findViewById(C0010R.id.settingsMenu24).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu24Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 4));
+            findViewById(R.id.settingsMenu24).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu24Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 4));
         } else {
-            findViewById(C0010R.id.settingsMenu24).setVisibility(4);
+            findViewById(R.id.settingsMenu24).setVisibility(4);
         }
-        findViewById(C0010R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 5) >= 0) {
-            findViewById(C0010R.id.settingsMenu25).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu25Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 5));
+            findViewById(R.id.settingsMenu25).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu25Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 5));
         } else {
-            findViewById(C0010R.id.settingsMenu25).setVisibility(4);
+            findViewById(R.id.settingsMenu25).setVisibility(4);
         }
-        findViewById(C0010R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 6) >= 0) {
-            findViewById(C0010R.id.settingsMenu26).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu26Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 6));
+            findViewById(R.id.settingsMenu26).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu26Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 6));
         } else {
-            findViewById(C0010R.id.settingsMenu26).setVisibility(4);
+            findViewById(R.id.settingsMenu26).setVisibility(4);
         }
-        findViewById(C0010R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 7) >= 0) {
-            findViewById(C0010R.id.settingsMenu27).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu27Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 7));
+            findViewById(R.id.settingsMenu27).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu27Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 7));
         } else {
-            findViewById(C0010R.id.settingsMenu27).setVisibility(4);
+            findViewById(R.id.settingsMenu27).setVisibility(4);
         }
-        findViewById(C0010R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 8) >= 0) {
-            findViewById(C0010R.id.settingsMenu28).setVisibility(UNKNOWN_CONNECTIVITY);
-            ((TextView) findViewById(C0010R.id.settingsMenu28Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 8));
+            findViewById(R.id.settingsMenu28).setVisibility(UNKNOWN_CONNECTIVITY);
+            ((TextView) findViewById(R.id.settingsMenu28Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 8));
             return;
         }
-        findViewById(C0010R.id.settingsMenu28).setVisibility(4);
+        findViewById(R.id.settingsMenu28).setVisibility(4);
     }
 
     private void selectMenu1Entry(int level) {
         this.settings_menu1_index = level;
-        findViewById(C0010R.id.settingsMenu11).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu12).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu13).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu14).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu15).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu16).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu17).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu18).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
-        findViewById(C0010R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu11).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu12).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu13).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu14).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu15).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu16).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu17).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu18).setBackground(getResources().getDrawable(R.color.menu1Deselected));
+        findViewById(R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         switch (level) {
             case GOOD_CONNECTIVITY /*1*/:
-                findViewById(C0010R.id.settingsMenu11).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu11).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.settingsMenu12).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu12).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.settingsMenu13).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu13).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                findViewById(C0010R.id.settingsMenu14).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu14).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             case httpClient.PHONEHOME_NONE /*5*/:
-                findViewById(C0010R.id.settingsMenu15).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu15).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             case Params.PasswordType /*6*/:
-                findViewById(C0010R.id.settingsMenu16).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu16).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             case Params.ProcessType /*7*/:
-                findViewById(C0010R.id.settingsMenu17).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu17).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             case Params.PARAM_VoltageSetPoint /*8*/:
-                findViewById(C0010R.id.settingsMenu18).setBackground(getResources().getDrawable(C0010R.color.menu1Selected));
-                findViewById(C0010R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(C0010R.color.menu1Active));
+                findViewById(R.id.settingsMenu18).setBackground(getResources().getDrawable(R.color.menu1Selected));
+                findViewById(R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
             default:
                 return;
@@ -2108,54 +2108,54 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void selectMenu2Entry(int level) {
         this.settings_menu2_index = level;
-        findViewById(C0010R.id.settingsMenu21).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu22).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu23).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu24).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu25).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu26).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu27).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu28).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
-        findViewById(C0010R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu21).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu22).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu23).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu24).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu25).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu26).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu27).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu28).setBackground(getResources().getDrawable(R.color.menu2Deselected));
+        findViewById(R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         switch (level) {
             case GOOD_CONNECTIVITY /*1*/:
-                findViewById(C0010R.id.settingsMenu21).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu21).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.settingsMenu22).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu22).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.settingsMenu23).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu23).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                findViewById(C0010R.id.settingsMenu24).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu24).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             case httpClient.PHONEHOME_NONE /*5*/:
-                findViewById(C0010R.id.settingsMenu25).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu25).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             case Params.PasswordType /*6*/:
-                findViewById(C0010R.id.settingsMenu26).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu26).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             case Params.ProcessType /*7*/:
-                findViewById(C0010R.id.settingsMenu27).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu27).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             case Params.PARAM_VoltageSetPoint /*8*/:
-                findViewById(C0010R.id.settingsMenu28).setBackground(getResources().getDrawable(C0010R.color.menu2Selected));
-                findViewById(C0010R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(C0010R.color.menu2Active));
+                findViewById(R.id.settingsMenu28).setBackground(getResources().getDrawable(R.color.menu2Selected));
+                findViewById(R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
             default:
                 return;
@@ -2165,26 +2165,26 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void selectSettingsEntry(int datatype) {
         this.settings_entrytype = datatype;
-        findViewById(C0010R.id.settingsEntryEnable).setVisibility(8);
-        findViewById(C0010R.id.settingsEntryDisable).setVisibility(8);
-        findViewById(C0010R.id.settingsEntryNumeric).setVisibility(8);
-        findViewById(C0010R.id.settingsEntryPassword).setVisibility(8);
-        findViewById(C0010R.id.settingsEntryRefresh).setVisibility(8);
+        findViewById(R.id.settingsEntryEnable).setVisibility(8);
+        findViewById(R.id.settingsEntryDisable).setVisibility(8);
+        findViewById(R.id.settingsEntryNumeric).setVisibility(8);
+        findViewById(R.id.settingsEntryPassword).setVisibility(8);
+        findViewById(R.id.settingsEntryRefresh).setVisibility(8);
         switch (datatype) {
             case GOOD_CONNECTIVITY /*1*/:
-                findViewById(C0010R.id.settingsEntryEnable).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryEnable).setVisibility(UNKNOWN_CONNECTIVITY);
                 break;
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.settingsEntryDisable).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryDisable).setVisibility(UNKNOWN_CONNECTIVITY);
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.settingsEntryNumeric).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryNumeric).setVisibility(UNKNOWN_CONNECTIVITY);
                 break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                findViewById(C0010R.id.settingsEntryPassword).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryPassword).setVisibility(UNKNOWN_CONNECTIVITY);
                 break;
             case httpClient.PHONEHOME_NONE /*5*/:
-                findViewById(C0010R.id.settingsEntryRefresh).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.settingsEntryRefresh).setVisibility(UNKNOWN_CONNECTIVITY);
                 break;
         }
         PasswordValid = false;
@@ -2207,23 +2207,23 @@ public class MainActivity extends Activity implements OnClickListener {
             switch (this.params.aParamType[this.param_id]) {
                 case GOOD_CONNECTIVITY /*1*/:
                     if (aParam[this.param_id] != 0) {
-                        ((TextView) findViewById(C0010R.id.settingsEntryDisableDescription)).setText(pName + " feature is currently Enabled.");
+                        ((TextView) findViewById(R.id.settingsEntryDisableDescription)).setText(pName + " feature is currently Enabled.");
                         selectSettingsEntry(BAD_CONNECTIVITY);
                         return;
                     }
-                    ((TextView) findViewById(C0010R.id.settingsEntryEnableDescription)).setText(pName + " feature is currently Disabled.");
+                    ((TextView) findViewById(R.id.settingsEntryEnableDescription)).setText(pName + " feature is currently Disabled.");
                     selectSettingsEntry(GOOD_CONNECTIVITY);
                     return;
                 case BAD_CONNECTIVITY /*2*/:
                 case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                    ((TextView) findViewById(C0010R.id.settingsEntryDescription)).setText(pName);
-                    ((TextView) findViewById(C0010R.id.settingsEntryValue)).setText(pPfx + Integer.toString(aParam[this.param_id]) + pSfx);
+                    ((TextView) findViewById(R.id.settingsEntryDescription)).setText(pName);
+                    ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(aParam[this.param_id]) + pSfx);
                     selectSettingsEntry(3);
                     return;
                 case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                    ((TextView) findViewById(C0010R.id.settingsEntryDescription)).setText(pName);
+                    ((TextView) findViewById(R.id.settingsEntryDescription)).setText(pName);
                     String str = Integer.toString(aParam[this.param_id]);
-                    ((TextView) findViewById(C0010R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
+                    ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                     selectSettingsEntry(3);
                     return;
                 case Params.ProcessType /*7*/:
@@ -2254,25 +2254,25 @@ public class MainActivity extends Activity implements OnClickListener {
             bypass = enableKioskMode;
         }
         if (pId == 3) {
-            if (vId == C0010R.id.settingsEntryIncrementButton && isCabinTempCommonIncrValid(pValue)) {
+            if (vId == R.id.settingsEntryIncrementButton && isCabinTempCommonIncrValid(pValue)) {
                 bypass = enableKioskMode;
             }
-            if (vId == C0010R.id.settingsEntryDecrementButton && isCabinTempCommonDecrValid(pValue)) {
+            if (vId == R.id.settingsEntryDecrementButton && isCabinTempCommonDecrValid(pValue)) {
                 bypass = enableKioskMode;
             }
         }
         if (bypass || ValidPassword()) {
             String str;
             switch (vId) {
-                case C0010R.id.settingsEntryEnableButton /*2131362065*/:
+                case R.id.settingsEntryEnableButton /*2131362065*/:
                     if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
                         pValue = GOOD_CONNECTIVITY;
                     }
-                case C0010R.id.settingsEntryDisableButton /*2131362068*/:
+                case R.id.settingsEntryDisableButton /*2131362068*/:
                     if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
                         pValue = UNKNOWN_CONNECTIVITY;
                     }
-                case C0010R.id.settingsEntryDecrementButton /*2131362072*/:
+                case R.id.settingsEntryDecrementButton /*2131362072*/:
                     decrValue(pId);
                     if (pId == 18 && pValue < 4) {
                         pValue = UNKNOWN_CONNECTIVITY;
@@ -2280,13 +2280,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     switch (this.params.aParamType[pId]) {
                         case BAD_CONNECTIVITY /*2*/:
                         case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                            ((TextView) findViewById(C0010R.id.settingsEntryValue)).setText(pPfx + Integer.toString(pValue) + pSfx);
+                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(pValue) + pSfx);
                         case httpClient.PHONEHOME_APK_PENDING /*4*/:
                             str = Integer.toString(pValue);
-                            ((TextView) findViewById(C0010R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
+                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                         default:
                     }
-                case C0010R.id.settingsEntryIncrementButton /*2131362073*/:
+                case R.id.settingsEntryIncrementButton /*2131362073*/:
                     incrValue(pId);
                     if (pId == 18 && pValue < 4) {
                         pValue = 4;
@@ -2294,10 +2294,10 @@ public class MainActivity extends Activity implements OnClickListener {
                     switch (this.params.aParamType[pId]) {
                         case BAD_CONNECTIVITY /*2*/:
                         case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                            ((TextView) findViewById(C0010R.id.settingsEntryValue)).setText(Integer.toString(pValue) + pSfx);
+                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(Integer.toString(pValue) + pSfx);
                         case httpClient.PHONEHOME_APK_PENDING /*4*/:
                             str = Integer.toString(pValue);
-                            ((TextView) findViewById(C0010R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
+                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                         default:
                     }
                 default:
@@ -2428,15 +2428,15 @@ public class MainActivity extends Activity implements OnClickListener {
     private void viewFragmentParamValue(int fragmentId) {
         switch (fragmentId) {
             case BAD_CONNECTIVITY /*2*/:
-                ((TextView) findViewById(C0010R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(aParam[3]) + this.params.aParamSfx[3]);
+                ((TextView) findViewById(R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(aParam[3]) + this.params.aParamSfx[3]);
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                ((TextView) findViewById(C0010R.id.cwgFragMinTempValue)).setText(Integer.toString(aParam[11]) + this.params.aParamSfx[11]);
-                ((TextView) findViewById(C0010R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[10]) + this.params.aParamSfx[10]);
+                ((TextView) findViewById(R.id.cwgFragMinTempValue)).setText(Integer.toString(aParam[11]) + this.params.aParamSfx[11]);
+                ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[10]) + this.params.aParamSfx[10]);
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                ((TextView) findViewById(C0010R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[9] * 60));
+                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[9] * 60));
                 String str = Integer.toString(aParam[8]);
-                ((TextView) findViewById(C0010R.id.bpFragSetpointValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[8]);
-                ((TextView) findViewById(C0010R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[9]) + this.params.aParamSfx[9]);
+                ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[8]);
+                ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[9]) + this.params.aParamSfx[9]);
             default:
         }
     }
@@ -2453,43 +2453,43 @@ public class MainActivity extends Activity implements OnClickListener {
     private void updateFragmentParamValue(int vId, int pId) {
         byte[] data = new byte[BAD_CONNECTIVITY];
         switch (vId) {
-            case C0010R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
+            case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
                 decrParam(pId);
                 viewFragmentParamValue(BAD_CONNECTIVITY);
                 break;
-            case C0010R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
+            case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
                 incrParam(pId);
                 viewFragmentParamValue(BAD_CONNECTIVITY);
                 break;
-            case C0010R.id.cwgFragMinTempDecrButton /*2131361998*/:
+            case R.id.cwgFragMinTempDecrButton /*2131361998*/:
                 decrParam(pId);
                 viewFragmentParamValue(3);
                 break;
-            case C0010R.id.cwgFragMinTempIncrButton /*2131361999*/:
+            case R.id.cwgFragMinTempIncrButton /*2131361999*/:
                 incrParam(pId);
                 viewFragmentParamValue(3);
                 break;
-            case C0010R.id.cwgFragIdealTempDecrButton /*2131362001*/:
+            case R.id.cwgFragIdealTempDecrButton /*2131362001*/:
                 decrParam(pId);
                 viewFragmentParamValue(3);
                 break;
-            case C0010R.id.cwgFragIdealTempIncrButton /*2131362002*/:
+            case R.id.cwgFragIdealTempIncrButton /*2131362002*/:
                 incrParam(pId);
                 viewFragmentParamValue(3);
                 break;
-            case C0010R.id.bpFragSetpointDecrButton /*2131362007*/:
+            case R.id.bpFragSetpointDecrButton /*2131362007*/:
                 decrParam(pId);
                 viewFragmentParamValue(4);
                 break;
-            case C0010R.id.bpFragSetpointIncrButton /*2131362008*/:
+            case R.id.bpFragSetpointIncrButton /*2131362008*/:
                 incrParam(pId);
                 viewFragmentParamValue(4);
                 break;
-            case C0010R.id.bpEngineRuntimeDecrButton /*2131362010*/:
+            case R.id.bpEngineRuntimeDecrButton /*2131362010*/:
                 decrParam(pId);
                 viewFragmentParamValue(4);
                 break;
-            case C0010R.id.bpEngineRuntimeIncrButton /*2131362011*/:
+            case R.id.bpEngineRuntimeIncrButton /*2131362011*/:
                 incrParam(pId);
                 viewFragmentParamValue(4);
                 break;
@@ -2516,11 +2516,11 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void selectActivationFragment(int fragment) {
-        findViewById(C0010R.id.verificationFragment).setVisibility(8);
-        findViewById(C0010R.id.installFragment).setVisibility(8);
-        findViewById(C0010R.id.activationFragment).setVisibility(8);
-        findViewById(C0010R.id.activationCodeFragment).setVisibility(8);
-        findViewById(C0010R.id.VINCodeFragment).setVisibility(8);
+        findViewById(R.id.verificationFragment).setVisibility(8);
+        findViewById(R.id.installFragment).setVisibility(8);
+        findViewById(R.id.activationFragment).setVisibility(8);
+        findViewById(R.id.activationCodeFragment).setVisibility(8);
+        findViewById(R.id.VINCodeFragment).setVisibility(8);
         if (fragment != 0) {
             enableStatusBar(false);
             enableDashboard(false);
@@ -2528,18 +2528,18 @@ public class MainActivity extends Activity implements OnClickListener {
             EditText activationcodeArea;
             switch (fragment) {
                 case GOOD_CONNECTIVITY /*1*/:
-                    findViewById(C0010R.id.verificationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.verificationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                 case BAD_CONNECTIVITY /*2*/:
-                    findViewById(C0010R.id.installFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.installFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                     StartVerificationProcess();
                 case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                    findViewById(C0010R.id.activationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
+                    findViewById(R.id.activationFragment).setVisibility(UNKNOWN_CONNECTIVITY);
                 case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                    activationcodeArea = (EditText) findViewById(C0010R.id.activationCodeEditText);
+                    activationcodeArea = (EditText) findViewById(R.id.activationCodeEditText);
                     activationcodeArea.setText(BuildConfig.FLAVOR);
                     activationcodeArea.setOnEditorActionListener(this.mEditorActionListener);
                 case httpClient.PHONEHOME_NONE /*5*/:
-                    activationcodeArea = (EditText) findViewById(C0010R.id.VINCodeEditText);
+                    activationcodeArea = (EditText) findViewById(R.id.VINCodeEditText);
                     activationcodeArea.setText(BuildConfig.FLAVOR);
                     activationcodeArea.setOnEditorActionListener(this.mEditorActionListener);
                 default:
@@ -2561,39 +2561,39 @@ public class MainActivity extends Activity implements OnClickListener {
         Button doneButton;
         switch (i) {
             case UNKNOWN_CONNECTIVITY /*0*/:
-                ((CheckBox) findViewById(C0010R.id.installDetail1CheckBox)).setChecked(false);
-                ((CheckBox) findViewById(C0010R.id.installDetail2CheckBox)).setChecked(false);
-                ((CheckBox) findViewById(C0010R.id.installDetail3CheckBox)).setChecked(false);
-                ((CheckBox) findViewById(C0010R.id.installDetail4CheckBox)).setChecked(false);
-                findViewById(C0010R.id.installDetail1Progress).setVisibility(4);
-                findViewById(C0010R.id.installDetail2Progress).setVisibility(4);
-                findViewById(C0010R.id.installDetail3Progress).setVisibility(4);
-                findViewById(C0010R.id.installDetail4Progress).setVisibility(4);
-                doneButton = (Button) findViewById(C0010R.id.installDoneButton);
+                ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(false);
+                ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(false);
+                ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(false);
+                ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(false);
+                findViewById(R.id.installDetail1Progress).setVisibility(4);
+                findViewById(R.id.installDetail2Progress).setVisibility(4);
+                findViewById(R.id.installDetail3Progress).setVisibility(4);
+                findViewById(R.id.installDetail4Progress).setVisibility(4);
+                doneButton = (Button) findViewById(R.id.installDoneButton);
                 doneButton.setText("CHECKING");
-                doneButton.setBackground(getResources().getDrawable(C0010R.drawable.disabled_button_shape));
+                doneButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 doneButton.setEnabled(false);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 100);
             case GOOD_CONNECTIVITY /*1*/:
-                findViewById(C0010R.id.installDetail1Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail1Progress).setVisibility(UNKNOWN_CONNECTIVITY);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                 } else {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 5000);
                 }
             case BAD_CONNECTIVITY /*2*/:
-                findViewById(C0010R.id.installDetail1Progress).setVisibility(4);
-                ((CheckBox) findViewById(C0010R.id.installDetail1CheckBox)).setChecked(enableKioskMode);
-                findViewById(C0010R.id.installDetail2Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail1Progress).setVisibility(4);
+                ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(enableKioskMode);
+                findViewById(R.id.installDetail2Progress).setVisibility(UNKNOWN_CONNECTIVITY);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                 } else {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 2000);
                 }
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                findViewById(C0010R.id.installDetail2Progress).setVisibility(4);
-                ((CheckBox) findViewById(C0010R.id.installDetail2CheckBox)).setChecked(enableKioskMode);
-                findViewById(C0010R.id.installDetail3Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail2Progress).setVisibility(4);
+                ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(enableKioskMode);
+                findViewById(R.id.installDetail3Progress).setVisibility(UNKNOWN_CONNECTIVITY);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                     return;
@@ -2602,15 +2602,15 @@ public class MainActivity extends Activity implements OnClickListener {
                 Log.i(TAG, "APICMD_GET_VEHICLE_INFO = 1");
                 this.verificationHandler.postDelayed(this.verificationRunnable, 15000);
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                findViewById(C0010R.id.installDetail3Progress).setVisibility(4);
-                ((CheckBox) findViewById(C0010R.id.installDetail3CheckBox)).setChecked(enableKioskMode);
-                findViewById(C0010R.id.installDetail4Progress).setVisibility(UNKNOWN_CONNECTIVITY);
+                findViewById(R.id.installDetail3Progress).setVisibility(4);
+                ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(enableKioskMode);
+                findViewById(R.id.installDetail4Progress).setVisibility(UNKNOWN_CONNECTIVITY);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 500);
             case httpClient.PHONEHOME_NONE /*5*/:
-                findViewById(C0010R.id.installDetail4Progress).setVisibility(4);
-                ((CheckBox) findViewById(C0010R.id.installDetail4CheckBox)).setChecked(enableKioskMode);
+                findViewById(R.id.installDetail4Progress).setVisibility(4);
+                ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(enableKioskMode);
                 this.activation_step = UNKNOWN_CONNECTIVITY;
-                doneButton = (Button) findViewById(C0010R.id.installDoneButton);
+                doneButton = (Button) findViewById(R.id.installDoneButton);
                 if (Gateway_VIN.isEmpty()) {
                     doneButton.setText("ERROR! No VIN number");
                 } else if (ActivationCode < 1000) {
@@ -2619,7 +2619,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     doneButton.setText("DONE");
                     ValidActivationProcess = enableKioskMode;
                 }
-                doneButton.setBackground(getResources().getDrawable(C0010R.drawable.enabled_button_shape));
+                doneButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 doneButton.setEnabled(enableKioskMode);
                 this.verificationHandler.removeCallbacks(this.verificationRunnable);
                 ActivationProcessPending = false;
@@ -2635,11 +2635,11 @@ public class MainActivity extends Activity implements OnClickListener {
             }
             this.alertDialog = new Dialog(this);
             this.alertDialog.requestWindowFeature(GOOD_CONNECTIVITY);
-            this.alertDialog.setContentView(C0010R.layout.alert_dialog);
+            this.alertDialog.setContentView(R.layout.alert_dialog);
             HasFocus = enableKioskMode;
-            ((TextView) this.alertDialog.findViewById(C0010R.id.alertName)).setText(this.faults.aFaultMessage[faultId]);
-            ((TextView) this.alertDialog.findViewById(C0010R.id.alertDescription)).setText(this.faults.aFaultDesc[faultId]);
-            this.alertDialog.findViewById(C0010R.id.alertRefreshButton).setOnClickListener(new AnonymousClass11(faultId));
+            ((TextView) this.alertDialog.findViewById(R.id.alertName)).setText(this.faults.aFaultMessage[faultId]);
+            ((TextView) this.alertDialog.findViewById(R.id.alertDescription)).setText(this.faults.aFaultDesc[faultId]);
+            this.alertDialog.findViewById(R.id.alertRefreshButton).setOnClickListener(new AnonymousClass11(faultId));
             this.alertDialog.show();
             wakeup();
             if (aParam[15] != 0) {
@@ -2675,7 +2675,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 closeMediaPlayer();
             }
             try {
-                MediaPlayer.create(this, C0010R.raw.iridium).start();
+                MediaPlayer.create(this, R.raw.iridium).start();
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
@@ -2696,12 +2696,12 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         this.serialDialog = new Dialog(this);
         this.serialDialog.requestWindowFeature(GOOD_CONNECTIVITY);
-        this.serialDialog.setContentView(C0010R.layout.serial_dialog);
+        this.serialDialog.setContentView(R.layout.serial_dialog);
         this.serialDialog.getWindow().setSoftInputMode(3);
-        ((TextView) this.serialDialog.findViewById(C0010R.id.serialVIN_Text)).setText(Gateway_VIN);
-        ((TextView) this.serialDialog.findViewById(C0010R.id.serialGWSerialID_Text)).setText(Gateway_SerialID);
-        ((TextView) this.serialDialog.findViewById(C0010R.id.serialLDRversion_Text)).setText(Gateway_LDRversion);
-        ((TextView) this.serialDialog.findViewById(C0010R.id.serialGWversion_Text)).setText(Gateway_FWversion);
+        ((TextView) this.serialDialog.findViewById(R.id.serialVIN_Text)).setText(Gateway_VIN);
+        ((TextView) this.serialDialog.findViewById(R.id.serialGWSerialID_Text)).setText(Gateway_SerialID);
+        ((TextView) this.serialDialog.findViewById(R.id.serialLDRversion_Text)).setText(Gateway_LDRversion);
+        ((TextView) this.serialDialog.findViewById(R.id.serialGWversion_Text)).setText(Gateway_FWversion);
         PackageInfo pInfo = null;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), UNKNOWN_CONNECTIVITY);
@@ -2709,9 +2709,9 @@ public class MainActivity extends Activity implements OnClickListener {
             e.printStackTrace();
         }
         if (pInfo != null) {
-            ((TextView) this.serialDialog.findViewById(C0010R.id.serialAndroidVersion_Text)).setText(pInfo.versionName);
+            ((TextView) this.serialDialog.findViewById(R.id.serialAndroidVersion_Text)).setText(pInfo.versionName);
         }
-        this.serialDialog.findViewById(C0010R.id.serialDoneButton).setOnClickListener(new OnClickListener() {
+        this.serialDialog.findViewById(R.id.serialDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 MainActivity.this.serialDialog.dismiss();
             }
@@ -2726,54 +2726,54 @@ public class MainActivity extends Activity implements OnClickListener {
         this.kiosk_mode_counter = UNKNOWN_CONNECTIVITY;
         this.maintDialog = new Dialog(this);
         this.maintDialog.requestWindowFeature(GOOD_CONNECTIVITY);
-        this.maintDialog.setContentView(C0010R.layout.maint_dialog);
+        this.maintDialog.setContentView(R.layout.maint_dialog);
         this.maintDialog.getWindow().setSoftInputMode(3);
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_1)).setChecked(aMaintEnable[UNKNOWN_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_1)).setText(Integer.toString(aMaintValue[UNKNOWN_CONNECTIVITY]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_2)).setChecked(aMaintEnable[GOOD_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_2)).setText(Integer.toString(aMaintValue[GOOD_CONNECTIVITY]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_3)).setChecked(aMaintEnable[BAD_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_3)).setText(Integer.toString(aMaintValue[BAD_CONNECTIVITY]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_4)).setChecked(aMaintEnable[3]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_4)).setText(Integer.toString(aMaintValue[3]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_5)).setChecked(aMaintEnable[4]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_5)).setText(Integer.toString(aMaintValue[4]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_6)).setChecked(aMaintEnable[5]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_6)).setText(Integer.toString(aMaintValue[5]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_7)).setChecked(aMaintEnable[6]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_7)).setText(Integer.toString(aMaintValue[6]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_8)).setChecked(aMaintEnable[7]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_8)).setText(APIroute);
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_9)).setChecked(aMaintEnable[8]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_9)).setText(Integer.toString(aMaintValue[8]));
-        ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_10)).setChecked(aMaintEnable[9]);
-        ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_10)).setText(Integer.toString(aMaintValue[9]));
-        this.maintDialog.findViewById(C0010R.id.maintDoneButton).setOnClickListener(new OnClickListener() {
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[UNKNOWN_CONNECTIVITY]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[UNKNOWN_CONNECTIVITY]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[GOOD_CONNECTIVITY]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[GOOD_CONNECTIVITY]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[BAD_CONNECTIVITY]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[BAD_CONNECTIVITY]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_4)).setChecked(aMaintEnable[3]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_4)).setText(Integer.toString(aMaintValue[3]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_5)).setChecked(aMaintEnable[4]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_5)).setText(Integer.toString(aMaintValue[4]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_6)).setChecked(aMaintEnable[5]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_6)).setText(Integer.toString(aMaintValue[5]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_7)).setChecked(aMaintEnable[6]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_7)).setText(Integer.toString(aMaintValue[6]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(aMaintEnable[7]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_8)).setText(APIroute);
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(aMaintEnable[8]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_9)).setText(Integer.toString(aMaintValue[8]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_10)).setChecked(aMaintEnable[9]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_10)).setText(Integer.toString(aMaintValue[9]));
+        this.maintDialog.findViewById(R.id.maintDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                MainActivity.aMaintEnable[MainActivity.UNKNOWN_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_1)).isChecked();
-                MainActivity.aMaintValue[MainActivity.UNKNOWN_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_1)).getText().toString());
-                MainActivity.aMaintEnable[MainActivity.GOOD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_2)).isChecked();
-                MainActivity.aMaintValue[MainActivity.GOOD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_2)).getText().toString());
-                MainActivity.aMaintEnable[MainActivity.BAD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_3)).isChecked();
-                MainActivity.aMaintValue[MainActivity.BAD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_3)).getText().toString());
-                MainActivity.aMaintEnable[3] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_4)).isChecked();
-                MainActivity.aMaintValue[3] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_4)).getText().toString());
-                MainActivity.aMaintEnable[4] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_5)).isChecked();
-                MainActivity.aMaintValue[4] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_5)).getText().toString());
-                MainActivity.aMaintEnable[5] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_6)).isChecked();
-                MainActivity.aMaintValue[5] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_6)).getText().toString());
-                MainActivity.aMaintEnable[6] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_7)).isChecked();
-                MainActivity.aMaintValue[6] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_7)).getText().toString());
-                MainActivity.aMaintEnable[7] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_8)).isChecked();
-                MainActivity.aMaintEnable[8] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_9)).isChecked();
-                MainActivity.aMaintValue[8] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_9)).getText().toString());
-                MainActivity.aMaintEnable[9] = ((CheckBox) MainActivity.this.maintDialog.findViewById(C0010R.id.maintCheckBox_10)).isChecked();
-                MainActivity.aMaintValue[9] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(C0010R.id.maintText_10)).getText().toString());
+                MainActivity.aMaintEnable[MainActivity.UNKNOWN_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
+                MainActivity.aMaintValue[MainActivity.UNKNOWN_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
+                MainActivity.aMaintEnable[MainActivity.GOOD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
+                MainActivity.aMaintValue[MainActivity.GOOD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
+                MainActivity.aMaintEnable[MainActivity.BAD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
+                MainActivity.aMaintValue[MainActivity.BAD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
+                MainActivity.aMaintEnable[3] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_4)).isChecked();
+                MainActivity.aMaintValue[3] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
+                MainActivity.aMaintEnable[4] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_5)).isChecked();
+                MainActivity.aMaintValue[4] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_5)).getText().toString());
+                MainActivity.aMaintEnable[5] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_6)).isChecked();
+                MainActivity.aMaintValue[5] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_6)).getText().toString());
+                MainActivity.aMaintEnable[6] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_7)).isChecked();
+                MainActivity.aMaintValue[6] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_7)).getText().toString());
+                MainActivity.aMaintEnable[7] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_8)).isChecked();
+                MainActivity.aMaintEnable[8] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_9)).isChecked();
+                MainActivity.aMaintValue[8] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_9)).getText().toString());
+                MainActivity.aMaintEnable[9] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_10)).isChecked();
+                MainActivity.aMaintValue[9] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_10)).getText().toString());
                 MainActivity.this.sendMaintInfo();
                 MainActivity.this.maintDialog.dismiss();
             }
         });
-        this.maintDialog.findViewById(C0010R.id.maintSuperExitButton).setOnClickListener(new OnClickListener() {
+        this.maintDialog.findViewById(R.id.maintSuperExitButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Log.w(MainActivity.TAG, "Kiosk SuperExit button pressed");
                 MainActivity mainActivity = MainActivity.this;
@@ -2865,7 +2865,7 @@ public class MainActivity extends Activity implements OnClickListener {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
         }
         if (aMaintEnable[7]) {
-            String ServerRoute = ((EditText) this.maintDialog.findViewById(C0010R.id.maintText_8)).getText().toString();
+            String ServerRoute = ((EditText) this.maintDialog.findViewById(R.id.maintText_8)).getText().toString();
             if (ServerRoute.trim().isEmpty()) {
                 ServerRoute = DefaultAPIroute;
             }
@@ -2877,7 +2877,7 @@ public class MainActivity extends Activity implements OnClickListener {
             APIroute = ServerRoute.trim();
             Log.w(TAG, "(send) APIDATA_SERVER_ROUTE=" + APIroute);
             sendCmdString(AccessoryControl.APIDATA_SERVER_ROUTE, APIroute);
-            ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_8)).setChecked(false);
+            ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(false);
             aMaintEnable[7] = false;
         }
         if (aMaintEnable[8]) {
@@ -2892,7 +2892,7 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.i(TAG, "(send) APIDATA_ACTIVATION_CODE= " + ActivationCode);
             this.accessoryControl.writeCommand(15, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
             Log.i(TAG, "(send) APICMD_ACTIVATE= 0");
-            ((CheckBox) this.maintDialog.findViewById(C0010R.id.maintCheckBox_9)).setChecked(false);
+            ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(false);
             aMaintEnable[8] = false;
         }
         if (aMaintEnable[9]) {
@@ -2987,11 +2987,11 @@ public class MainActivity extends Activity implements OnClickListener {
     public boolean isRefreshAvailable() {
         Boolean UpdateAvail = Boolean.valueOf(isServerUpdateAvailable());
         if (UpdateAvail.booleanValue()) {
-            findViewById(C0010R.id.actionButtons).setVisibility(8);
-            findViewById(C0010R.id.updateButtons).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.actionButtons).setVisibility(8);
+            findViewById(R.id.updateButtons).setVisibility(UNKNOWN_CONNECTIVITY);
         } else {
-            findViewById(C0010R.id.actionButtons).setVisibility(UNKNOWN_CONNECTIVITY);
-            findViewById(C0010R.id.updateButtons).setVisibility(8);
+            findViewById(R.id.actionButtons).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.updateButtons).setVisibility(8);
         }
         return UpdateAvail.booleanValue();
     }
@@ -3015,8 +3015,8 @@ public class MainActivity extends Activity implements OnClickListener {
     public void installUpdate() {
         if (isRefreshAvailable()) {
             httpclient.PhoneHome(3, false);
-            findViewById(C0010R.id.actionButtons).setVisibility(UNKNOWN_CONNECTIVITY);
-            findViewById(C0010R.id.updateButtons).setVisibility(8);
+            findViewById(R.id.actionButtons).setVisibility(UNKNOWN_CONNECTIVITY);
+            findViewById(R.id.updateButtons).setVisibility(8);
         }
     }
 
@@ -3089,12 +3089,12 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         commDialog = new Dialog(this);
         commDialog.requestWindowFeature(GOOD_CONNECTIVITY);
-        commDialog.setContentView(C0010R.layout.comm_dialog);
+        commDialog.setContentView(R.layout.comm_dialog);
         commDialog.getWindow().setSoftInputMode(3);
-        commlogtext = (TextView) commDialog.findViewById(C0010R.id.commlog_Text);
+        commlogtext = (TextView) commDialog.findViewById(R.id.commlog_Text);
         commlogstr = BuildConfig.FLAVOR;
         commlogtext.setText(commlogstr);
-        commDialog.findViewById(C0010R.id.commDoneButton).setOnClickListener(new OnClickListener() {
+        commDialog.findViewById(R.id.commDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 MainActivity.commDialog.dismiss();
             }

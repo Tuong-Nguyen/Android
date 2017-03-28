@@ -39,6 +39,6 @@ public class Dashboard extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(C0010R.layout.dashboard, container, false);
+        return inflater.inflate(R.layout.dashboard, container, false);
     }
 }
