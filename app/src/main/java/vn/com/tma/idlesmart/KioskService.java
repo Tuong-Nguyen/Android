@@ -89,7 +89,7 @@ public class KioskService extends Service {
         this.ctx = this;
         this.f0t = new Thread(new C00001());
         this.f0t.start();
-        return 2;
+        return START_NOT_STICKY;
     }
 
     /* JADX WARNING: inconsistent code. */
