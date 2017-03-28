@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
@@ -46,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -360,7 +363,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         public void handleMessage(Message msg) {
             boolean z = MainActivity.enableKioskMode;
-            MainActivity mainActivityClass = (MainActivity) this.mainActivityClassWeakReference.get();
+            MainActivity mainActivityClass = this.mainActivityClassWeakReference.get();
             if (mainActivityClass != null) {
                 String str;
                 switch (msg.what) {
@@ -698,11 +701,11 @@ public class MainActivity extends Activity implements OnClickListener {
         if (DebugLog) {
             showRestartParams();
         }
-        getWindow().addFlags(4194304);
+        getWindow().addFlags(FLAG_DISMISS_KEYGUARD);
         if (getResources().getBoolean(R.bool.portrait_only)) {
-            setRequestedOrientation(GOOD_CONNECTIVITY);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
-            setRequestedOrientation(6);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         }
         setContentView(R.layout.main);
         if (!Restart) {
@@ -809,9 +812,9 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.i(TAG, "==>>onConfigurationChanged");
         }
         if (getResources().getBoolean(R.bool.portrait_only)) {
-            setRequestedOrientation(GOOD_CONNECTIVITY);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
-            setRequestedOrientation(6);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         }
         if (DebugLog) {
             Log.i(TAG, "<<==onConfigurationChanged");
