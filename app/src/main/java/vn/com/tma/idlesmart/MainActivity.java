@@ -31,6 +31,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -1682,7 +1683,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.passwordDialog = new Dialog(this);
         this.passwordDialog.requestWindowFeature(GOOD_CONNECTIVITY);
         this.passwordDialog.setContentView(R.layout.password_dialog);
-        this.passwordDialog.getWindow().setSoftInputMode(3);
+        this.passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
         this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new C00088());
         this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new C00099());
@@ -2697,7 +2698,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.serialDialog = new Dialog(this);
         this.serialDialog.requestWindowFeature(GOOD_CONNECTIVITY);
         this.serialDialog.setContentView(R.layout.serial_dialog);
-        this.serialDialog.getWindow().setSoftInputMode(3);
+        this.serialDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) this.serialDialog.findViewById(R.id.serialVIN_Text)).setText(Gateway_VIN);
         ((TextView) this.serialDialog.findViewById(R.id.serialGWSerialID_Text)).setText(Gateway_SerialID);
         ((TextView) this.serialDialog.findViewById(R.id.serialLDRversion_Text)).setText(Gateway_LDRversion);
@@ -2727,7 +2728,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.maintDialog = new Dialog(this);
         this.maintDialog.requestWindowFeature(GOOD_CONNECTIVITY);
         this.maintDialog.setContentView(R.layout.maint_dialog);
-        this.maintDialog.getWindow().setSoftInputMode(3);
+        this.maintDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[UNKNOWN_CONNECTIVITY]);
         ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[UNKNOWN_CONNECTIVITY]));
         ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[GOOD_CONNECTIVITY]);
@@ -3090,7 +3091,7 @@ public class MainActivity extends Activity implements OnClickListener {
         commDialog = new Dialog(this);
         commDialog.requestWindowFeature(GOOD_CONNECTIVITY);
         commDialog.setContentView(R.layout.comm_dialog);
-        commDialog.getWindow().setSoftInputMode(3);
+        commDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         commlogtext = (TextView) commDialog.findViewById(R.id.commlog_Text);
         commlogstr = BuildConfig.FLAVOR;
         commlogtext.setText(commlogstr);

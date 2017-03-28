@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.WindowManager;
+
 import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -278,7 +280,7 @@ public class KioskService extends Service {
         this.restoreDialog = new Dialog(this);
         this.restoreDialog.requestWindowFeature(1);
         this.restoreDialog.setContentView(R.layout.restore_dialog);
-        this.restoreDialog.getWindow().setSoftInputMode(3);
+        this.restoreDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         this.restoreDialog.show();
     }
 }
