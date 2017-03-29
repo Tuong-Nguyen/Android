@@ -566,44 +566,7 @@ public class AccessoryControl {
 
     public OpenStatus open() {
         Log.i(TAG, "   --> AccessoryControl.open..");
-        if (this.isOpen) {
-            Log.i(TAG, "   <-- AccessoryControl.open");
-            return OpenStatus.CONNECTED;
-        }
-        Log.i(TAG, "   get USBAccessoryList..");
-        UsbAccessory[] accList = this.usbManager.getAccessoryList();
-        if (accList == null) {
-            Log.e(TAG, "   accList is NULL");
-        } else {
-            Log.i(TAG, "   accList=" + accList.toString());
-        }
-        if (accList == null || accList.length <= 0) {
-            Log.e(TAG, "   *** Error: Open: Accessory mode not available ***");
-        } else {
-            MainActivity.demo_mode = false;
-            if (this.usbManager.hasPermission(accList[APICMD_BASE])) {
-                Log.i(TAG, "   Open: we have Permission to use the USB");
-                Log.i(TAG, "      -->Call to open device: " + accList[APICMD_BASE].toString());
-                OpenStatus status = open(accList[APICMD_BASE]);
-                Log.i(TAG, "      <--status of open request: " + status.toString());
-                Log.i(TAG, "   <-- AccessoryControl.open");
-                return status;
-            }
-            Log.i(TAG, "   Open: we do NOT have Permission to use the USB");
-            if (this.permissionRequested) {
-                Log.e(TAG, "   Open: USB premission has been requested, but not [yet] granted");
-                Log.e(TAG, "   ******* ERROR: Open: known bug in Android - AOA Receiver not terminating properly.");
-            } else {
-                PendingIntent permissionIntent = PendingIntent.getBroadcast(this.context, APICMD_BASE, new Intent(ACTION_USB_PERMISSION), APICMD_BASE);
-                Log.i(TAG, "   Open: Requesting USB permission..");
-                this.usbManager.requestPermission(accList[APICMD_BASE], permissionIntent);
-                this.permissionRequested = true;
-                Log.i(TAG, "   <-- AccessoryControl.open");
-                return OpenStatus.REQUESTING_PERMISSION;
-            }
-        }
-        Log.i(TAG, "   <-- AccessoryControl.open");
-        return OpenStatus.NO_ACCESSORY;
+        return ValidConfig.status;
     }
 
     public OpenStatus open(UsbAccessory accessory) {
