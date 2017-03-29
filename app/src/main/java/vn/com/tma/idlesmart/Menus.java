@@ -75,6 +75,8 @@ public class Menus {
 
     public static int getSubmenuId(int level1, int level2) {
         level2--;
+        if (level2 < 0)
+            return -1;
         switch (level1) {
             case httpClient.PHONEHOME_OK /*1*/:
                 if (level2 < Submenu1.length) {
