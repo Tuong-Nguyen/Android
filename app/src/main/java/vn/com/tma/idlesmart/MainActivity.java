@@ -1,5 +1,6 @@
 package vn.com.tma.idlesmart;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
@@ -17,6 +18,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
@@ -202,6 +204,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     /* renamed from: com.idlesmarter.aoa.MainActivity.1 */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     class C00011 implements OnSystemUiVisibilityChangeListener {
         C00011() {
         }
@@ -689,6 +692,7 @@ public class MainActivity extends Activity implements OnClickListener {
         monitor_iter = UNKNOWN_CONNECTIVITY;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "#########################################################################################################################################");
@@ -776,7 +780,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.accessoryControl = new AccessoryControl(this, getUIHandler());
         httpclient = new httpClient(this);
         this.topLayout = (LinearLayout) findViewById(R.id.topLayout);
-        this.topLayout.setBackgroundColor(-16777216);
+        this.topLayout.setBackgroundColor(0b11111111000000000000000000000000);
         if (!Restart) {
             Features.initFeatureCodeTable();
             initializeRunningParams();
@@ -991,6 +995,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "==>>onPause");
@@ -1288,11 +1293,13 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectActivationFragment(4);
                 findViewById(R.id.activationFragment).setVisibility(View.GONE);
                 findViewById(R.id.activationCodeFragment).setVisibility(View.VISIBLE);
-            case R.id.activationCodeContinueButton /*2131361798*/:
+            	break;
+			case R.id.activationCodeContinueButton /*2131361798*/:
                 selectActivationFragment(5);
                 findViewById(R.id.activationCodeFragment).setVisibility(View.GONE);
                 findViewById(R.id.VINCodeFragment).setVisibility(View.VISIBLE);
-            case R.id.dashboardButton /*2131361812*/:
+            	break;
+			case R.id.dashboardButton /*2131361812*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 if (SystemActivationFlag || demo_mode) {
@@ -1304,7 +1311,8 @@ public class MainActivity extends Activity implements OnClickListener {
                     selectActivationFragment(UNKNOWN_CONNECTIVITY);
                     PasswordValid = false;
                 }
-            case R.id.settingsButton /*2131361814*/:
+            	break;
+			case R.id.settingsButton /*2131361814*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 if (SystemActivationFlag || demo_mode) {
@@ -1314,18 +1322,20 @@ public class MainActivity extends Activity implements OnClickListener {
                     selectRunning(UNKNOWN_CONNECTIVITY);
                     enableSettings(enableKioskMode);
                     selectActivationFragment(UNKNOWN_CONNECTIVITY);
-                    this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
-                    this.settings_menu2_index = UNKNOWN_CONNECTIVITY;
+                    this.settings_menu1_index = 0;
+                    this.settings_menu2_index = 0;
                     selectSettingsMode(GOOD_CONNECTIVITY);
                     PasswordValid = false;
                 }
-            case R.id.killSwitchButton /*2131361816*/:
+            	break;
+			case R.id.killSwitchButton /*2131361816*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 if (SystemActivationFlag) {
                     selectKillswitchMode(GOOD_CONNECTIVITY);
                 }
-            case R.id.installDoneButton /*2131361837*/:
+            	break;
+			case R.id.installDoneButton /*2131361837*/:
                 findViewById(R.id.installFragment).setVisibility(View.GONE);
                 if (ValidActivationProcess) {
                     this.accessoryControl.writeCommand(15, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
@@ -1336,13 +1346,15 @@ public class MainActivity extends Activity implements OnClickListener {
                     return;
                 }
                 InstallAndActivate(SystemActivationFlag);
-            case R.id.poweronButton /*2131361943*/:
+            	break;
+			case R.id.poweronButton /*2131361943*/:
                 selectKillswitchMode(UNKNOWN_CONNECTIVITY);
                 enableStatusBar(enableKioskMode);
                 enableDashboard(enableKioskMode);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
                 this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
-            case R.id.idlesmartButton /*2131361944*/:
+            	break;
+			case R.id.idlesmartButton /*2131361944*/:
                 this.test_mark_counter += GOOD_CONNECTIVITY;
                 Log.i(TAG, "************************************ TEST MARK: " + this.test_mark_counter);
                 if (gateway_connected) {
@@ -1383,153 +1395,200 @@ public class MainActivity extends Activity implements OnClickListener {
                         enableSettings(false);
                     }
                 }
-            case R.id.updateInstallButton /*2131361948*/:
+            	break;
+			case R.id.updateInstallButton /*2131361948*/:
                 installUpdate();
-            case R.id.maintButton /*2131361949*/:
+            	break;
+			case R.id.maintButton /*2131361949*/:
                 i = this.maint_mode_counter + GOOD_CONNECTIVITY;
                 this.maint_mode_counter = i;
                 if (i >= 3) {
                     openMaintDialog();
                     this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
                 }
-            case R.id.passwordReturnButton /*2131361954*/:
+            	break;
+			case R.id.passwordReturnButton /*2131361954*/:
                 PasswordValid = false;
-            case R.id.cabinComfortFunction /*2131361959*/:
+            	break;
+			case R.id.cabinComfortFunction /*2131361959*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == BAD_CONNECTIVITY) {
                     selectRunning(GOOD_CONNECTIVITY);
                 } else {
                     selectRunning(BAD_CONNECTIVITY);
                 }
-            case R.id.coldWeatherGuardFunction /*2131361960*/:
+            	break;
+			case R.id.coldWeatherGuardFunction /*2131361960*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == 3) {
                     selectRunning(GOOD_CONNECTIVITY);
                 } else {
                     selectRunning(3);
                 }
-            case R.id.batteryProtectFunction /*2131361961*/:
+            	break;
+			case R.id.batteryProtectFunction /*2131361961*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == 4) {
                     selectRunning(GOOD_CONNECTIVITY);
                 } else {
                     selectRunning(4);
                 }
-            case R.id.cabinComfortEnableButton /*2131361972*/:
-            case R.id.ccFragStopButton /*2131361989*/:
+            	break;
+			case R.id.cabinComfortEnableButton /*2131361972*/:
+            	break;
+			case R.id.ccFragStopButton /*2131361989*/:
                 Log.i(TAG, "-->cabinComfortEnableButton");
                 if (aParam[23] != 0 || this.CabinComfortMode == BAD_CONNECTIVITY || ValidPassword()) {
                     setFunctionMode(GOOD_CONNECTIVITY, toggleFunctionMode(this.CabinComfortMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
-            case R.id.coldWeatherGuardEnableButton /*2131361979*/:
-            case R.id.cwgFragStopButton /*2131361996*/:
+            	break;
+			case R.id.coldWeatherGuardEnableButton /*2131361979*/:
+            	break;
+			case R.id.cwgFragStopButton /*2131361996*/:
                 Log.i(TAG, "-->coldWeatherGuardEnableButton");
                 if (this.ColdWeatherGuardMode == BAD_CONNECTIVITY || ValidPassword()) {
                     setFunctionMode(BAD_CONNECTIVITY, toggleFunctionMode(this.ColdWeatherGuardMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
-            case R.id.batteryProtectEnableButton /*2131361986*/:
-            case R.id.bpFragStopButton /*2131362005*/:
+            	break;
+			case R.id.batteryProtectEnableButton /*2131361986*/:
+            	break;
+			case R.id.bpFragStopButton /*2131362005*/:
                 Log.i(TAG, "-->batteryProtectEnableButton");
                 if (this.BatteryProtectMode == BAD_CONNECTIVITY || ValidPassword()) {
                     setFunctionMode(3, toggleFunctionMode(this.BatteryProtectMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
-            case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
+            	break;
+			case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
                 if (isCabinTempCommonDecrValid(aParam[3]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
-            case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
+            	break;
+			case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
                 if (isCabinTempCommonIncrValid(aParam[3]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
-            case R.id.cwgFragMinTempDecrButton /*2131361998*/:
-            case R.id.cwgFragMinTempIncrButton /*2131361999*/:
+            	break;
+			case R.id.cwgFragMinTempDecrButton /*2131361998*/:
+            	break;
+			case R.id.cwgFragMinTempIncrButton /*2131361999*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 11);
                 }
-            case R.id.cwgFragIdealTempDecrButton /*2131362001*/:
-            case R.id.cwgFragIdealTempIncrButton /*2131362002*/:
+            	break;
+			case R.id.cwgFragIdealTempDecrButton /*2131362001*/:
+            	break;
+			case R.id.cwgFragIdealTempIncrButton /*2131362002*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 10);
                 }
-            case R.id.bpFragSetpointDecrButton /*2131362007*/:
-            case R.id.bpFragSetpointIncrButton /*2131362008*/:
+            	break;
+			case R.id.bpFragSetpointDecrButton /*2131362007*/:
+            	break;
+			case R.id.bpFragSetpointIncrButton /*2131362008*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 8);
                 }
-            case R.id.bpEngineRuntimeDecrButton /*2131362010*/:
-            case R.id.bpEngineRuntimeIncrButton /*2131362011*/:
+            	break;
+			case R.id.bpEngineRuntimeDecrButton /*2131362010*/:
+            	break;
+			case R.id.bpEngineRuntimeIncrButton /*2131362011*/:
                 if (ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 9);
                 }
-            case R.id.settingsMenu11 /*2131362014*/:
+            	break;
+			case R.id.settingsMenu11 /*2131362014*/:
                 selectMenu1Entry(GOOD_CONNECTIVITY);
-            case R.id.settingsMenu12 /*2131362017*/:
+            	break;
+			case R.id.settingsMenu12 /*2131362017*/:
                 selectMenu1Entry(BAD_CONNECTIVITY);
-            case R.id.settingsMenu13 /*2131362020*/:
+            	break;
+			case R.id.settingsMenu13 /*2131362020*/:
                 selectMenu1Entry(3);
-            case R.id.settingsMenu14 /*2131362023*/:
+            	break;
+			case R.id.settingsMenu14 /*2131362023*/:
                 selectMenu1Entry(4);
-            case R.id.settingsMenu15 /*2131362026*/:
+            	break;
+			case R.id.settingsMenu15 /*2131362026*/:
                 selectMenu1Entry(5);
-            case R.id.settingsMenu16 /*2131362029*/:
+            	break;
+			case R.id.settingsMenu16 /*2131362029*/:
                 selectMenu1Entry(6);
-            case R.id.settingsMenu17 /*2131362032*/:
+            	break;
+			case R.id.settingsMenu17 /*2131362032*/:
                 selectMenu1Entry(7);
-            case R.id.settingsMenu21 /*2131362039*/:
+            	break;
+			case R.id.settingsMenu21 /*2131362039*/:
                 selectMenu2Entry(GOOD_CONNECTIVITY);
-            case R.id.settingsMenu22 /*2131362042*/:
+            	break;
+			case R.id.settingsMenu22 /*2131362042*/:
                 selectMenu2Entry(BAD_CONNECTIVITY);
-            case R.id.settingsMenu23 /*2131362045*/:
+            	break;
+			case R.id.settingsMenu23 /*2131362045*/:
                 selectMenu2Entry(3);
-            case R.id.settingsMenu24 /*2131362048*/:
+            	break;
+			case R.id.settingsMenu24 /*2131362048*/:
                 selectMenu2Entry(4);
-            case R.id.settingsMenu25 /*2131362051*/:
+            	break;
+			case R.id.settingsMenu25 /*2131362051*/:
                 selectMenu2Entry(5);
-            case R.id.settingsMenu26 /*2131362054*/:
+            	break;
+			case R.id.settingsMenu26 /*2131362054*/:
                 selectMenu2Entry(6);
-            case R.id.settingsMenu27 /*2131362057*/:
+            	break;
+			case R.id.settingsMenu27 /*2131362057*/:
                 selectMenu2Entry(7);
-            case R.id.settingsEntryEnableButton /*2131362065*/:
+            	break;
+			case R.id.settingsEntryEnableButton /*2131362065*/:
                 if (PasswordEnable && ValidPassword()) {
                     updateParamValue(v.getId(), this.param_id);
                     saveParamValue(this.param_id);
                 }
-            case R.id.settingsEntryDisableButton /*2131362068*/:
+            	break;
+			case R.id.settingsEntryDisableButton /*2131362068*/:
                 if (PasswordEnable && ValidPassword()) {
                     updateParamValue(v.getId(), this.param_id);
                     saveParamValue(this.param_id);
                 }
-            case R.id.settingsEntryDecrementButton /*2131362072*/:
+            	break;
+			case R.id.settingsEntryDecrementButton /*2131362072*/:
                 updateParamValue(v.getId(), this.param_id);
-            case R.id.settingsEntryIncrementButton /*2131362073*/:
+            	break;
+			case R.id.settingsEntryIncrementButton /*2131362073*/:
                 updateParamValue(v.getId(), this.param_id);
-            case R.id.settingsEntryDoneButton /*2131362074*/:
+            	break;
+			case R.id.settingsEntryDoneButton /*2131362074*/:
                 saveParamValue(this.param_id);
-            case R.id.packagemanagernagEscapeButton /*2131362083*/:
+            	break;
+			case R.id.packagemanagernagEscapeButton /*2131362083*/:
                 packagemanagernag = false;
                 findViewById(R.id.packagemanagerFragment).setVisibility(View.GONE);
-            case R.id.packagemanagerButton /*2131362084*/:
+            	break;
+			case R.id.packagemanagerButton /*2131362084*/:
                 removeBloatware();
-            case R.id.killswitchButton /*2131362086*/:
+            	break;
+			case R.id.killswitchButton /*2131362086*/:
                 selectKillswitchMode(BAD_CONNECTIVITY);
-            case R.id.poweroffButton /*2131362088*/:
+            	break;
+			case R.id.poweroffButton /*2131362088*/:
                 this.accessoryControl.writeCommand(22, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 selectKillswitchMode(3);
                 findViewById(R.id.fullScreen).setVisibility(View.GONE);
                 this.accessoryControl.writeCommand(21, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
-            case R.id.verificationBeginVerificationButton /*2131362090*/:
+            	break;
+			case R.id.verificationBeginVerificationButton /*2131362090*/:
                 selectActivationFragment(BAD_CONNECTIVITY);
                 findViewById(R.id.verificationFragment).setVisibility(View.GONE);
                 findViewById(R.id.installFragment).setVisibility(View.VISIBLE);
                 ValidActivationProcess = false;
                 StartVerificationProcess();
-            case R.id.VINCodeContinueButton /*2131362093*/:
+            	break;
+			case R.id.VINCodeContinueButton /*2131362093*/:
                 selectActivationFragment(GOOD_CONNECTIVITY);
                 findViewById(R.id.VINCodeFragment).setVisibility(View.GONE);
                 findViewById(R.id.verificationFragment).setVisibility(View.VISIBLE);
@@ -1958,9 +2017,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.VISIBLE);
                 initMenu2();
-                selectSettingsEntry(UNKNOWN_CONNECTIVITY);
-                this.settings_menu2_index = UNKNOWN_CONNECTIVITY;
-                selectMenu2Entry(UNKNOWN_CONNECTIVITY);
+                selectSettingsEntry(0);
+                this.settings_menu2_index = 0;
+                selectMenu2Entry(0);
                 this.settings_entrytype = UNKNOWN_CONNECTIVITY;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
@@ -2000,14 +2059,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void initMenu2() {
         findViewById(R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
-        if (Menus.getSubmenuId(this.settings_menu1_index, GOOD_CONNECTIVITY) >= 0) {
+        if (Menus.getSubmenuId(this.settings_menu1_index, 1) >= 0) {
             findViewById(R.id.settingsMenu21).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu21Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, GOOD_CONNECTIVITY));
         } else {
             findViewById(R.id.settingsMenu21).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
-        if (Menus.getSubmenuId(this.settings_menu1_index, BAD_CONNECTIVITY) >= 0) {
+        if (Menus.getSubmenuId(this.settings_menu1_index, 2) >= 0) {
             findViewById(R.id.settingsMenu22).setVisibility(View.VISIBLE);
             ((TextView) findViewById(R.id.settingsMenu22Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, BAD_CONNECTIVITY));
         } else {
