@@ -48,6 +48,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.content.pm.PackageManager.GET_ACTIVITIES;
+import static android.view.Window.FEATURE_NO_TITLE;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
 
@@ -522,54 +524,54 @@ public class MainActivity extends Activity implements OnClickListener {
         this.menus = new Menus();
         this.params = new Params();
         this.faults = new Faults();
-        this.test_mode_counter = UNKNOWN_CONNECTIVITY;
-        this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
-        this.test_mark_counter = UNKNOWN_CONNECTIVITY;
-        this.Idle = UNKNOWN_CONNECTIVITY;
-        this.CabinComfort = GOOD_CONNECTIVITY;
-        this.ColdWeatherGuard = BAD_CONNECTIVITY;
+        this.test_mode_counter = 0;
+        this.maint_mode_counter = 0;
+        this.test_mark_counter = 0;
+        this.Idle = 0;
+        this.CabinComfort = 1;
+        this.ColdWeatherGuard = 2;
         this.BatteryProtect = 3;
-        this.GatewayMode = UNKNOWN_CONNECTIVITY;
-        this.RunningFragment = GOOD_CONNECTIVITY;
-        this.CabinComfortFragment = BAD_CONNECTIVITY;
+        this.GatewayMode = 0;
+        this.RunningFragment = 1;
+        this.CabinComfortFragment = 2;
         this.ColdWeatherGuardFragment = 3;
         this.BatteryProtectFragment = 4;
-        this.DisabledMode = UNKNOWN_CONNECTIVITY;
-        this.EnabledMode = GOOD_CONNECTIVITY;
-        this.RunMode = BAD_CONNECTIVITY;
+        this.DisabledMode = 0;
+        this.EnabledMode = 1;
+        this.RunMode = 2;
         this.StopMode = 3;
-        this.CabinComfortMode = UNKNOWN_CONNECTIVITY;
-        this.ColdWeatherGuardMode = UNKNOWN_CONNECTIVITY;
-        this.BatteryProtectMode = UNKNOWN_CONNECTIVITY;
-        this.None = UNKNOWN_CONNECTIVITY;
-        this.VerificationFragment = GOOD_CONNECTIVITY;
-        this.InstallationFragment = BAD_CONNECTIVITY;
+        this.CabinComfortMode = 0;
+        this.ColdWeatherGuardMode = 0;
+        this.BatteryProtectMode = 0;
+        this.None = 0;
+        this.VerificationFragment = 1;
+        this.InstallationFragment = 2;
         this.ActivationFragment = 3;
         this.ActivationCodeFragment = 4;
         this.VINCodeFragment = 5;
-        this.activation_step = UNKNOWN_CONNECTIVITY;
-        this.SettingsMenu1Mode = GOOD_CONNECTIVITY;
-        this.SettingsMenu2Mode = BAD_CONNECTIVITY;
+        this.activation_step = 0;
+        this.SettingsMenu1Mode = 1;
+        this.SettingsMenu2Mode = 2;
         this.SettingsEntryMode = 3;
-        this.SettingsEnableFragment = GOOD_CONNECTIVITY;
-        this.SettingsDisableFragment = BAD_CONNECTIVITY;
+        this.SettingsEnableFragment = 1;
+        this.SettingsDisableFragment = 2;
         this.SettingsNumericFragment = 3;
         this.SettingsPWFragment = 4;
         this.SettingsRefreshFragment = 5;
         this.SettingsSerialFragment = 6;
-        this.settings_entrytype = UNKNOWN_CONNECTIVITY;
-        this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
-        this.settings_menu2_index = UNKNOWN_CONNECTIVITY;
-        this.killswitch_active = GOOD_CONNECTIVITY;
-        this.killswitch_poweroff = BAD_CONNECTIVITY;
+        this.settings_entrytype = 0;
+        this.settings_menu1_index = 0;
+        this.settings_menu2_index = 0;
+        this.killswitch_active = 1;
+        this.killswitch_poweroff = 2;
         this.killswitch_poweron = 3;
-        this.initialScreenBrightness = UNKNOWN_CONNECTIVITY;
-        this.initialScreenTimeout = UNKNOWN_CONNECTIVITY;
+        this.initialScreenBrightness = 0;
+        this.initialScreenTimeout = 0;
         this.ScreenOn = enableKioskMode;
         this.USBReconnectRunnable = new C00022();
-        Integer[] numArr = new Integer[BAD_CONNECTIVITY];
-        numArr[UNKNOWN_CONNECTIVITY] = Integer.valueOf(25);
-        numArr[GOOD_CONNECTIVITY] = Integer.valueOf(24);
+        Integer[] numArr = new Integer[2];
+        numArr[0] = Integer.valueOf(25);
+        numArr[1] = Integer.valueOf(24);
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
         this.ETrunnable = new C00044();
         this.isScreenOn = enableKioskMode;
@@ -2914,16 +2916,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void sendVIN(String vin) {
         Log.i(TAG, "sendVIN.." + vin);
-        int i = UNKNOWN_CONNECTIVITY;
+        int i = 0;
         byte[] bytestring = new byte[41];
         if (vin.length() < 41) {
-            i = UNKNOWN_CONNECTIVITY;
+            i = 0;
             while (i < vin.length()) {
                 bytestring[i] = (byte) vin.charAt(i);
                 if (bytestring[i] == 0) {
                     break;
                 }
-                i += GOOD_CONNECTIVITY;
+                i += 1;
             }
         }
         bytestring[i] = (byte) 0;
@@ -2932,16 +2934,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void sendFleet(String fleet) {
         Log.i(TAG, "sendFleet.." + fleet);
-        int i = UNKNOWN_CONNECTIVITY;
+        int i = 0;
         byte[] bytestring = new byte[41];
         if (fleet.length() < 41) {
-            i = UNKNOWN_CONNECTIVITY;
+            i = 0;
             while (i < fleet.length()) {
                 bytestring[i] = (byte) fleet.charAt(i);
                 if (bytestring[i] == 0) {
                     break;
                 }
-                i += GOOD_CONNECTIVITY;
+                i += 1;
             }
         }
         bytestring[i] = (byte) 0;
@@ -2952,16 +2954,16 @@ public class MainActivity extends Activity implements OnClickListener {
         int i;
         Log.i(TAG, "sendFeatures..");
         byte[] bytestring = new byte[202];
-        for (i = UNKNOWN_CONNECTIVITY; i < 100; i += GOOD_CONNECTIVITY) {
-            bytestring[i * BAD_CONNECTIVITY] = (byte) (Features.feature_value[i] & 255);
-            bytestring[(i * BAD_CONNECTIVITY) + GOOD_CONNECTIVITY] = (byte) ((Features.feature_value[i] & 65280) >> 8);
+        for (i = 0; i < 100; i += 1) {
+            bytestring[i * 2] = (byte) (Features.feature_value[i] & 255);
+            bytestring[(i * 2) + 1] = (byte) ((Features.feature_value[i] & 65280) >> 8);
         }
         this.accessoryControl.writeCommandBlock(AccessoryControl.APIDATA_FEATURE_VALUES, 200, bytestring);
-        for (i = UNKNOWN_CONNECTIVITY; i < 100; i += GOOD_CONNECTIVITY) {
+        for (i = 0; i < 100; i += 1) {
             bytestring[i] = (byte) (Features.feature_status[i] & 255);
         }
         this.accessoryControl.writeCommandBlock(AccessoryControl.APIDATA_FEATURE_CODES, 100, bytestring);
-        for (i = UNKNOWN_CONNECTIVITY; i < 5; i += GOOD_CONNECTIVITY) {
+        for (i = 0; i < 5; i += 1) {
             Log.i(TAG, "****** Feature Code[" + i + "]: status=" + ((byte) (Features.feature_status[i] & 255)) + "   value=" + Features.feature_value[i]);
         }
     }
@@ -2976,7 +2978,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private boolean isAppInstalled(String uri) {
         try {
-            Log.w(TAG, "    Bloatware found: " + uri + "   Enabled?" + (getPackageManager().getPackageInfo(uri, GOOD_CONNECTIVITY).applicationInfo.enabled ? "Enabled" : "Disabled"));
+            Log.w(TAG, "    Bloatware found: " + uri + "   Enabled?" + (getPackageManager().getPackageInfo(uri, GET_ACTIVITIES).applicationInfo.enabled ? "Enabled" : "Disabled"));
             return enableKioskMode;
         } catch (NameNotFoundException e) {
             return false;
@@ -3006,7 +3008,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public boolean isServerUpdateAvailable() {
         try {
-            String version = getPackageManager().getPackageInfo(getPackageName(), UNKNOWN_CONNECTIVITY).versionName;
+            String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             Log.i(TAG, "   current APK version: " + version);
             String server_version = PrefUtils.getServerUpdateVersion(getApplicationContext());
             Log.i(TAG, "   server APK version: [" + server_version + "]");
@@ -3031,13 +3033,13 @@ public class MainActivity extends Activity implements OnClickListener {
     public void sendCmdString(int cmd, String str) {
         Log.i(TAG, "sendCmdString..cmd:" + cmd + " string:" + str);
         byte[] bytestring = new byte[81];
-        int i = UNKNOWN_CONNECTIVITY;
+        int i = 0;
         while (i < str.length()) {
             bytestring[i] = (byte) str.charAt(i);
             if (bytestring[i] == 0) {
                 break;
             }
-            i += GOOD_CONNECTIVITY;
+            i += 1;
         }
         bytestring[i] = (byte) 0;
         this.accessoryControl.writeCommandBlock(cmd, i, bytestring);
@@ -3056,7 +3058,7 @@ public class MainActivity extends Activity implements OnClickListener {
         if (isInteger(input)) {
             return Integer.valueOf(input).intValue();
         }
-        return UNKNOWN_CONNECTIVITY;
+        return 0;
     }
 
     public Handler getUIHandler() {
@@ -3096,7 +3098,7 @@ public class MainActivity extends Activity implements OnClickListener {
             commDialog.dismiss();
         }
         commDialog = new Dialog(this);
-        commDialog.requestWindowFeature(GOOD_CONNECTIVITY);
+        commDialog.requestWindowFeature(FEATURE_NO_TITLE);
         commDialog.setContentView(R.layout.comm_dialog);
         commDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         commlogtext = (TextView) commDialog.findViewById(R.id.commlog_Text);
