@@ -651,7 +651,7 @@ public class httpClient extends Activity {
     }
 
     public boolean isConnected() {
-        NetworkInfo networkInfo = ((ConnectivityManager) this.mInstance.getSystemService("connectivity")).getActiveNetworkInfo();
+        NetworkInfo networkInfo = ((ConnectivityManager) this.mInstance.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
             Log.e(TAG, "NOT Connected to Network");
             return PHONEHOME_NO_RESCHEDULE;

@@ -788,7 +788,8 @@ public class MainActivity extends Activity implements OnClickListener {
         filter.addAction("android.hardware.usb.action.USB_ACCESSORY_ATTACHED");
         Log.i(TAG, "register UsbReceiver..");
         registerReceiver(this.UsbReceiver, filter);
-        this.mWakeLock = ((PowerManager) getSystemService("power")).newWakeLock(536870913, "IdleSmartWakeLock");
+        this.mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE)).newWakeLock(
+                PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "IdleSmartWakeLock");
         if (DebugLog) {
             Log.i(TAG, "WakeLock acquired? " + this.mWakeLock);
         }
@@ -1000,7 +1001,7 @@ public class MainActivity extends Activity implements OnClickListener {
             showRestartParams();
         }
         if (KioskMode && !PackageUpdatePending && gateway_connected) {
-            ((ActivityManager) getSystemService("activity")).moveTaskToFront(getTaskId(), UNKNOWN_CONNECTIVITY);
+            ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).moveTaskToFront(getTaskId(), UNKNOWN_CONNECTIVITY);
         }
         closeMediaPlayer();
         if (DebugLog) {
@@ -1241,7 +1242,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void setSoundOn(boolean enable) {
-        AudioManager aManager = (AudioManager) getSystemService("audio");
+        AudioManager aManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         if (enable) {
             aManager.setRingerMode(BAD_CONNECTIVITY);
         } else {
@@ -1267,9 +1268,10 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void wakeup() {
-        PowerManager mPowerManager = (PowerManager) getSystemService("power");
+        PowerManager mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         if (this.mTempWakeLock == null) {
-            this.mTempWakeLock = mPowerManager.newWakeLock(805306394, "IdleSmartTempWakeLock");
+            this.mTempWakeLock = mPowerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK |
+                    PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "IdleSmartTempWakeLock");
         }
         if (this.mTempWakeLock.isHeld()) {
             this.mTempWakeLock.release();
