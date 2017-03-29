@@ -704,15 +704,21 @@ public class AccessoryControl {
         }
     }
 
+    /**
+     * Write a command - This is a 5-byte string
+     * @param cmd Command id
+     * @param hiVal High value
+     * @param loVal Low value
+     */
     public void writeCommand(int cmd, int hiVal, int loVal) {
         byte[] buffer = new byte[APICMD_SYNC];
         if (this.isOpen) {
             Log.i(TAG, "AccessoryControl::writeCommand: " + Integer.toString(cmd) + "  isOpen? true");
             buffer[APICMD_BASE] = (byte) 0;
-            buffer[USB_OPEN_EXCEPTION] = (byte) 3;
-            buffer[USB_CLOSE_EXCEPTION] = (byte) (cmd & 255);
-            buffer[USB_READ_EXCEPTION] = (byte) (hiVal & 255);
-            buffer[USB_WRITE_EXCEPTION] = (byte) (loVal & 255);
+            buffer[1] = (byte) 3;
+            buffer[2] = (byte) (cmd & 255);
+            buffer[3] = (byte) (hiVal & 255);
+            buffer[4] = (byte) (loVal & 255);
             try {
                 synchronized (this.accOutputStream) {
                     this.accOutputStream.write(buffer);
