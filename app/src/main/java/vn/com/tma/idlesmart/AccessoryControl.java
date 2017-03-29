@@ -29,6 +29,8 @@ public class AccessoryControl {
     public static final int APICAN_ENGINE_COOLANT_TEMP = 193;
     public static final int APICAN_ENGINE_OIL_PRESSURE = 195;
     public static final int APICAN_ENGINE_SPEED = 194;
+
+    // region Command ID
     public static final int APICMD_ACCESSORY = 23;
     public static final int APICMD_ACTIVATE = 15;
     public static final int APICMD_ALERT_ACK = 33;
@@ -89,6 +91,8 @@ public class AccessoryControl {
     public static final int APICMD_VIN = 14;
     public static final int APICMD_WARNING_ACK = 35;
     public static final int APICMD_WARNING_CLEARALL = 36;
+    // endregion
+
     public static final int APIDATA_ACCESSORY_FB = 130;
     public static final int APIDATA_ACTIVATION_CODE = 169;
     public static final int APIDATA_AMBIENT_TEMP = 137;
@@ -142,6 +146,8 @@ public class AccessoryControl {
     public static final int APIDEBUG7 = 209;
     public static final int APIDEBUG8 = 210;
     public static final int APIDEBUG9 = 211;
+
+    // region Event ID
     public static final int APIEVENT_ACTIVATED = 80;
     public static final int APIEVENT_ALERT = 94;
     public static final int APIEVENT_API_VERSION = 74;
@@ -179,6 +185,8 @@ public class AccessoryControl {
     public static final int APIEVENT_SYNC = 69;
     public static final int APIEVENT_SYSTEM_STATUS = 84;
     public static final int APIEVENT_WARNING = 97;
+    // endregion
+
     public static final int FLEET_ID_MAX = 41;
     public static final int SERVER_ROUTE_MAX = 41;
     public static final int SYNC_LAST_MAX = 8;
