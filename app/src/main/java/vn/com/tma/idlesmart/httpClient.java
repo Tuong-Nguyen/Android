@@ -162,7 +162,7 @@ public class httpClient extends Activity {
                         httpClient.this.mInstance.openCommDialog();
                     }
                     Log.w(httpClient.TAG, "send APICMD_FREEZE(true)..");
-                    httpClient.this.mInstance.accessoryControl.writeCommand(37, httpClient.STATE_IDLE, httpClient.STATE_CONNECT);
+                    httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, httpClient.STATE_IDLE, httpClient.STATE_CONNECT);
                     httpClient.this.dialog.setMessage("Identifying/Activating Vehicle");
                     httpClient.phonehome_state = httpClient.STATE_ACTIVATE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
@@ -244,7 +244,7 @@ public class httpClient extends Activity {
                     if (httpClient.APKupdate_exists) {
                         if (httpClient.CSCupdate_exists) {
                             Log.w(httpClient.TAG, "Send APICMD_DL(2)..(delayed CSC update)");
-                            httpClient.this.mInstance.accessoryControl.writeCommand(13, httpClient.STATE_IDLE, httpClient.STATE_CONNECT);
+                            httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_DL, httpClient.STATE_IDLE, httpClient.STATE_CONNECT);
                         }
                         status = httpClient.this.PerformAPKUpdate();
                         if (status == 0) {
@@ -329,7 +329,7 @@ public class httpClient extends Activity {
                     httpClient.PhoneHomePending = httpClient.PHONEHOME_NO_RESCHEDULE;
                     if (httpClient.result != httpClient.STATE_UPDATE) {
                         Log.w(httpClient.TAG, "send APICMD_FREEZE(false)..");
-                        httpClient.this.mInstance.accessoryControl.writeCommand(37, httpClient.STATE_IDLE, httpClient.STATE_IDLE);
+                        httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, httpClient.STATE_IDLE, httpClient.STATE_IDLE);
                     }
                     if (httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE) {
                         httpClient.this.mInstance.ReschedulePhoneHome(60);
@@ -966,7 +966,7 @@ public class httpClient extends Activity {
                         newSync = PHONEHOME_RESCHEDULE;
                         data[STATE_IDLE] = (byte) ((newSyncTTL >> STATE_CSCUPDATE) & 255);
                         data[STATE_CONNECT] = (byte) (newSyncTTL & 255);
-                        this.mInstance.accessoryControl.writeCommand(54, data[STATE_IDLE], data[STATE_CONNECT]);
+                        this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC_TTL, data[STATE_IDLE], data[STATE_CONNECT]);
                     }
                 }
                 if (jsonServerNode.has("COMMON_TIME_TO_START") && !jsonServerNode.isNull("COMMON_TIME_TO_START")) {
@@ -981,7 +981,7 @@ public class httpClient extends Activity {
                         newSync = PHONEHOME_RESCHEDULE;
                         data[STATE_IDLE] = (byte) ((newSyncStart >> STATE_CSCUPDATE) & 255);
                         data[STATE_CONNECT] = (byte) (newSyncStart & 255);
-                        this.mInstance.accessoryControl.writeCommand(53, data[STATE_IDLE], data[STATE_CONNECT]);
+                        this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC_START, data[STATE_IDLE], data[STATE_CONNECT]);
                     }
                 }
                 if (newSync) {

@@ -195,7 +195,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         public void onClick(View v) {
-            MainActivity.this.accessoryControl.writeCommand(33, MainActivity.UNKNOWN_CONNECTIVITY, this.val$faultId);
+            MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, MainActivity.UNKNOWN_CONNECTIVITY, this.val$faultId);
             MainActivity.this.alertDialog.dismiss();
             if (MainActivity.this.mTempWakeLock.isHeld()) {
                 MainActivity.this.mTempWakeLock.release();
@@ -921,7 +921,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         isRefreshAvailable();
         Log.i(TAG, "        (re-)connectUSB::send APICMD_SYNC.. (Request data from Gateway");
-        this.accessoryControl.writeCommand(5, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+        this.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
         if (DebugLog) {
             Log.i(TAG, "<<==end OnResume");
         }
@@ -938,13 +938,13 @@ public class MainActivity extends Activity implements OnClickListener {
                 Log.i(TAG, "        connectUSB::we are now connected to gateway");
                 gateway_connected = enableKioskMode;
                 Log.i(TAG, "        connectUSB::send APICMD_POWERON..");
-                this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 connected();
                 enableDashboard(enableKioskMode);
                 selectRunning(GOOD_CONNECTIVITY);
                 enableSettings(false);
                 Log.i(TAG, "        connectUSB::send APICMD_SYNC.. (Request data from Gateway");
-                this.accessoryControl.writeCommand(5, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
             } else if (status == AccessoryControl.OpenStatus.REQUESTING_PERMISSION) {
                 Log.w(TAG, "        connectUSB::Requesting Permission");
                 disconnected();
@@ -1052,7 +1052,7 @@ public class MainActivity extends Activity implements OnClickListener {
         Log.i(TAG, "Cancel PhoneHome()..");
         CancelPhoneHome();
         Log.w(TAG, "Send APICMD_DISCONNECT to Gateway..");
-        this.accessoryControl.writeCommand(BAD_CONNECTIVITY, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
+        this.accessoryControl.writeCommand(AccessoryControl.APICMD_DISCONNECT, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
         Log.i(TAG, "accessoryControl.appIsClosing()..");
         this.accessoryControl.appIsClosing();
         Log.i(TAG, "accessoryControl.close()..");
@@ -1330,7 +1330,7 @@ public class MainActivity extends Activity implements OnClickListener {
             case R.id.installDoneButton /*2131361837*/:
                 findViewById(R.id.installFragment).setVisibility(View.GONE);
                 if (ValidActivationProcess) {
-                    this.accessoryControl.writeCommand(15, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     Log.i(TAG, "APICMD_ACTIVATE = 1");
                     enableDashboard(enableKioskMode);
                     selectRunning(GOOD_CONNECTIVITY);
@@ -1343,7 +1343,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 enableStatusBar(enableKioskMode);
                 enableDashboard(enableKioskMode);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
-                this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
             case R.id.idlesmartButton /*2131361944*/:
                 this.test_mark_counter += GOOD_CONNECTIVITY;
                 Log.i(TAG, "************************************ TEST MARK: " + this.test_mark_counter);
@@ -1354,7 +1354,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         test_mode = false;
                         this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                         this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
-                        this.accessoryControl.writeCommand(16, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
+                        this.accessoryControl.writeCommand(AccessoryControl.APICMD_TESTMODE, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
                         return;
                     }
                     i = this.test_mode_counter + GOOD_CONNECTIVITY;
@@ -1362,7 +1362,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     if (i >= 5) {
                         setGatewayStatus("Test Mode");
                         test_mode = enableKioskMode;
-                        this.accessoryControl.writeCommand(16, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                        this.accessoryControl.writeCommand(AccessoryControl.APICMD_TESTMODE, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     }
                 } else if (demo_mode) {
                     demo_mode = false;
@@ -1521,10 +1521,10 @@ public class MainActivity extends Activity implements OnClickListener {
             case R.id.killswitchButton /*2131362086*/:
                 selectKillswitchMode(BAD_CONNECTIVITY);
             case R.id.poweroffButton /*2131362088*/:
-                this.accessoryControl.writeCommand(22, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_ENGINE_OFF, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 selectKillswitchMode(3);
                 findViewById(R.id.fullScreen).setVisibility(View.GONE);
-                this.accessoryControl.writeCommand(21, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWEROFF, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
             case R.id.verificationBeginVerificationButton /*2131362090*/:
                 selectActivationFragment(BAD_CONNECTIVITY);
                 findViewById(R.id.verificationFragment).setVisibility(View.GONE);
@@ -1830,7 +1830,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (this.GatewayMode != GOOD_CONNECTIVITY) {
                     this.CabinComfortMode = mode;
                 } else if (mode == 3) {
-                    this.accessoryControl.writeCommand(29, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     this.CabinComfortMode = 3;
                 }
                 iArr = aParam;
@@ -1838,14 +1838,14 @@ public class MainActivity extends Activity implements OnClickListener {
                     i = UNKNOWN_CONNECTIVITY;
                 }
                 iArr[UNKNOWN_CONNECTIVITY] = i;
-                this.accessoryControl.writeCommand(40, UNKNOWN_CONNECTIVITY, aParam[UNKNOWN_CONNECTIVITY] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, UNKNOWN_CONNECTIVITY, aParam[UNKNOWN_CONNECTIVITY] & 255);
                 break;
             case BAD_CONNECTIVITY /*2*/:
                 int i2;
                 if (this.GatewayMode != BAD_CONNECTIVITY) {
                     this.ColdWeatherGuardMode = mode;
                 } else if (mode == 3) {
-                    this.accessoryControl.writeCommand(29, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     this.ColdWeatherGuardMode = 3;
                 }
                 int[] iArr2 = aParam;
@@ -1855,13 +1855,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     i2 = GOOD_CONNECTIVITY;
                 }
                 iArr2[GOOD_CONNECTIVITY] = i2;
-                this.accessoryControl.writeCommand(55, UNKNOWN_CONNECTIVITY, aParam[GOOD_CONNECTIVITY] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, UNKNOWN_CONNECTIVITY, aParam[GOOD_CONNECTIVITY] & 255);
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 if (this.GatewayMode != 3) {
                     this.BatteryProtectMode = mode;
                 } else if (mode == 3) {
-                    this.accessoryControl.writeCommand(29, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     this.BatteryProtectMode = 3;
                 }
                 iArr = aParam;
@@ -1869,7 +1869,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     i = UNKNOWN_CONNECTIVITY;
                 }
                 iArr[BAD_CONNECTIVITY] = i;
-                this.accessoryControl.writeCommand(50, UNKNOWN_CONNECTIVITY, aParam[BAD_CONNECTIVITY] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, UNKNOWN_CONNECTIVITY, aParam[BAD_CONNECTIVITY] & 255);
                 break;
         }
         updateFunctionModes();
@@ -2608,7 +2608,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                     return;
                 }
-                this.accessoryControl.writeCommand(49, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_GET_VEHICLE_INFO, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 Log.i(TAG, "APICMD_GET_VEHICLE_INFO = 1");
                 this.verificationHandler.postDelayed(this.verificationRunnable, 15000);
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
@@ -2641,7 +2641,7 @@ public class MainActivity extends Activity implements OnClickListener {
         if (faultId != 0 && faultId <= 23) {
             if (this.alertDialog != null && this.alertDialog.isShowing()) {
                 this.alertDialog.dismiss();
-                this.accessoryControl.writeCommand(33, UNKNOWN_CONNECTIVITY, faultId);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, UNKNOWN_CONNECTIVITY, faultId);
             }
             this.alertDialog = new Dialog(this);
             this.alertDialog.requestWindowFeature(GOOD_CONNECTIVITY);
@@ -2900,7 +2900,7 @@ public class MainActivity extends Activity implements OnClickListener {
             ActivationCode = UNKNOWN_CONNECTIVITY;
             this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
             Log.i(TAG, "(send) APIDATA_ACTIVATION_CODE= " + ActivationCode);
-            this.accessoryControl.writeCommand(15, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
+            this.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, UNKNOWN_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
             Log.i(TAG, "(send) APICMD_ACTIVATE= 0");
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(false);
             aMaintEnable[8] = false;
@@ -2929,7 +2929,7 @@ public class MainActivity extends Activity implements OnClickListener {
             }
         }
         bytestring[i] = (byte) 0;
-        this.accessoryControl.writeCommandBlock(14, i, bytestring);
+        this.accessoryControl.writeCommandBlock(AccessoryControl.APICMD_VIN, i, bytestring);
     }
 
     public void sendFleet(String fleet) {
