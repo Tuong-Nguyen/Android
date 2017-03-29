@@ -2921,7 +2921,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private boolean isAppInstalled(String uri) {
         try {
             Log.w(TAG, "    Bloatware found: " + uri + "   Enabled?" + (getPackageManager().getPackageInfo(uri, GET_ACTIVITIES).applicationInfo.enabled ? "Enabled" : "Disabled"));
-            return enableKioskMode;
+            return true;
         } catch (NameNotFoundException e) {
             return false;
         }
@@ -2933,19 +2933,19 @@ public class MainActivity extends Activity implements OnClickListener {
             intent.setData(Uri.parse("package:" + uri));
             startActivity(intent);
         }
-        return enableKioskMode;
+        return true;
     }
 
     public boolean isRefreshAvailable() {
-        Boolean UpdateAvail = Boolean.valueOf(isServerUpdateAvailable());
-        if (UpdateAvail.booleanValue()) {
+        boolean isUpdateAvailable = isServerUpdateAvailable();
+        if (isUpdateAvailable) {
             findViewById(R.id.actionButtons).setVisibility(View.GONE);
             findViewById(R.id.updateButtons).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.actionButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.updateButtons).setVisibility(View.GONE);
         }
-        return UpdateAvail.booleanValue();
+        return isUpdateAvailable;
     }
 
     public boolean isServerUpdateAvailable() {
@@ -2957,7 +2957,7 @@ public class MainActivity extends Activity implements OnClickListener {
             if (server_version.isEmpty() || version.compareTo(server_version) >= 0) {
                 return false;
             }
-            return enableKioskMode;
+            return true;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             return false;
