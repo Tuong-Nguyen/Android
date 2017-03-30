@@ -29,6 +29,8 @@ public class AccessoryControl {
     public static final int APICAN_ENGINE_COOLANT_TEMP = 193;
     public static final int APICAN_ENGINE_OIL_PRESSURE = 195;
     public static final int APICAN_ENGINE_SPEED = 194;
+
+    // region Command ID
     public static final int APICMD_ACCESSORY = 23;
     public static final int APICMD_ACTIVATE = 15;
     public static final int APICMD_ALERT_ACK = 33;
@@ -89,6 +91,8 @@ public class AccessoryControl {
     public static final int APICMD_VIN = 14;
     public static final int APICMD_WARNING_ACK = 35;
     public static final int APICMD_WARNING_CLEARALL = 36;
+    // endregion
+
     public static final int APIDATA_ACCESSORY_FB = 130;
     public static final int APIDATA_ACTIVATION_CODE = 169;
     public static final int APIDATA_AMBIENT_TEMP = 137;
@@ -142,6 +146,8 @@ public class AccessoryControl {
     public static final int APIDEBUG7 = 209;
     public static final int APIDEBUG8 = 210;
     public static final int APIDEBUG9 = 211;
+
+    // region Event ID
     public static final int APIEVENT_ACTIVATED = 80;
     public static final int APIEVENT_ALERT = 94;
     public static final int APIEVENT_API_VERSION = 74;
@@ -179,6 +185,8 @@ public class AccessoryControl {
     public static final int APIEVENT_SYNC = 69;
     public static final int APIEVENT_SYSTEM_STATUS = 84;
     public static final int APIEVENT_WARNING = 97;
+    // endregion
+
     public static final int FLEET_ID_MAX = 41;
     public static final int SERVER_ROUTE_MAX = 41;
     public static final int SYNC_LAST_MAX = 8;
@@ -659,15 +667,21 @@ public class AccessoryControl {
         }
     }
 
+    /**
+     * Write a command - This is a 5-byte string
+     * @param cmd Command id
+     * @param hiVal High value
+     * @param loVal Low value
+     */
     public void writeCommand(int cmd, int hiVal, int loVal) {
         byte[] buffer = new byte[APICMD_SYNC];
         if (this.isOpen) {
             Log.i(TAG, "AccessoryControl::writeCommand: " + Integer.toString(cmd) + "  isOpen? true");
             buffer[APICMD_BASE] = (byte) 0;
-            buffer[USB_OPEN_EXCEPTION] = (byte) 3;
-            buffer[USB_CLOSE_EXCEPTION] = (byte) (cmd & 255);
-            buffer[USB_READ_EXCEPTION] = (byte) (hiVal & 255);
-            buffer[USB_WRITE_EXCEPTION] = (byte) (loVal & 255);
+            buffer[1] = (byte) 3;
+            buffer[2] = (byte) (cmd & 255);
+            buffer[3] = (byte) (hiVal & 255);
+            buffer[4] = (byte) (loVal & 255);
             try {
                 synchronized (this.accOutputStream) {
                     this.accOutputStream.write(buffer);

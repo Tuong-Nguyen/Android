@@ -213,7 +213,7 @@ public class KioskService extends Service {
             field = RunningAppProcessInfo.class.getDeclaredField("processState");
         } catch (Exception e) {
         }
-        for (RunningAppProcessInfo app : ((ActivityManager) getSystemService("activity")).getRunningAppProcesses()) {
+        for (RunningAppProcessInfo app : ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getRunningAppProcesses()) {
             if (app.importance == 100 && app.importanceReasonCode == 0) {
                 Integer state = null;
                 try {
@@ -254,7 +254,7 @@ public class KioskService extends Service {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService("alarm");
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         long now = Calendar.getInstance().getTimeInMillis();
         if (VERSION.SDK_INT >= 19) {
             alarmManager.setExact(0, now, pendingIntent);
