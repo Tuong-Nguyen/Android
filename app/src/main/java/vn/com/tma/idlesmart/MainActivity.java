@@ -1348,7 +1348,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 enableDashboard(true);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
                 findViewById(R.id.poweronButton).setVisibility(View.GONE);
-                this.accessoryControl.writeCommand(20, 0, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, 0, 1);
             	break;
 			case R.id.idlesmartButton /*2131361944*/:
                 this.test_mark_counter += GOOD_CONNECTIVITY;
