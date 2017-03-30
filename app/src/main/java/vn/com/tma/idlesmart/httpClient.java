@@ -1290,16 +1290,6 @@ public class httpClient extends Activity {
         }
     }
 
-    public int str2int(String str) {
-        int num = STATE_IDLE;
-        try {
-            num = Integer.parseInt(str);
-        } catch (NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
-        }
-        return num;
-    }
-
     /**
      * Check there is APK update or not
      * @return
