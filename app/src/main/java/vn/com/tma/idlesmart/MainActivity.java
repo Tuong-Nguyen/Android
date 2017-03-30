@@ -276,13 +276,13 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            byte[] data = new byte[MainActivity.BAD_CONNECTIVITY];
+            byte[] data = new byte[2];
             if (actionId == 6) {
                 switch (v.getId()) {
                     case R.id.activationCodeEditText /*2131361797*/:
-                        MainActivity.ActivationCode = Integer.valueOf(((EditText) v).getText().toString()).intValue();
-                        data[MainActivity.UNKNOWN_CONNECTIVITY] = (byte) ((MainActivity.ActivationCode >> 8) & 255);
-                        data[MainActivity.GOOD_CONNECTIVITY] = (byte) (MainActivity.ActivationCode & 255);
+                        MainActivity.ActivationCode = Integer.valueOf(((EditText) v).getText().toString());
+                        data[0] = (byte) ((MainActivity.ActivationCode >> 8) & 255);
+                        data[1] = (byte) (MainActivity.ActivationCode & 255);
                         MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, data[MainActivity.UNKNOWN_CONNECTIVITY], data[MainActivity.GOOD_CONNECTIVITY]);
                         Log.i(MainActivity.TAG, "(send) APIDATA_ACTIVATION_CODE=" + MainActivity.ActivationCode);
                         break;
@@ -567,8 +567,8 @@ public class MainActivity extends Activity implements OnClickListener {
         this.ScreenOn = true;
         this.USBReconnectRunnable = new C00022();
         Integer[] numArr = new Integer[2];
-        numArr[0] = Integer.valueOf(25);
-        numArr[1] = Integer.valueOf(24);
+        numArr[0] = 25;
+        numArr[1] = 24;
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
         this.ETrunnable = new C00044();
         this.isScreenOn = true;
