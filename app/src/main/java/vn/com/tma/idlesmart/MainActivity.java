@@ -2905,9 +2905,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     MainActivity.KioskMode = z;
                     PrefUtils.setKioskModeActive(MainActivity.KioskMode, ctx);
                     if (MainActivity.KioskMode) {
-                        Toast.makeText(ctx, "Shields are UP.", MainActivity.UNKNOWN_CONNECTIVITY).show();
+                        Toast.makeText(ctx, "Shields are UP.", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(ctx, "Shields are down Commander!", MainActivity.UNKNOWN_CONNECTIVITY).show();
+                        Toast.makeText(ctx, "Shields are down Commander!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
