@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/actionBar"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="#eeeeee"
+    android:orientation="horizontal"
+    android:weightSum="1.0"
+    tools:showIn="@layout/full_screen">
+
+    <ImageView
+        android:id="@id/idlesmartButton"
+        android:layout_width="160dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginTop="-30dp"
+        android:background="#00000000"
+        android:clickable="true"
+        android:src="@mipmap/ic_idlesmart_home" />
+
+    <LinearLayout
+        android:id="@id/actionButtons"
+        android:layout_width="653dp"
+        android:layout_height="64dp"
+        android:layout_marginLeft="0dp"
+        android:inputType="numberDecimal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@id/dashboardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="90dp"
+            android:clickable="true"
+            android:visibility="visible"
+            android:weightSum="1.0">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="6dp"
+                android:background="#00000000"
+                android:src="@mipmap/ic_house" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="0dp"
+                android:gravity="center_horizontal"
+                android:text="Dashboard"
+                android:textColor="#4a4a4a"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:clickable="true"
+            android:visibility="visible"
+            android:weightSum="1.0">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="6dp"
+                android:background="#00000000"
+                android:src="@mipmap/ic_settings" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="0dp"
+                android:gravity="center_horizontal"
+                android:text="Settings"
+                android:textColor="#4a4a4a"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/updateButtons"
+        android:layout_width="653dp"
+        android:layout_height="64dp"
+        android:layout_marginLeft="0dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@id/updateRequiredButton"
+            android:layout_width="590dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:background="#f5a623"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <TextView
+                android:layout_width="290dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="120dp"
+                android:gravity="center_vertical"
+                android:text="Software Update Required"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@id/updateInstallButton"
+                android:layout_width="85dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:background="#23ff08"
+                android:gravity="center_vertical"
+                android:text="   Install"
+                android:textColor="#ffffff"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/maintButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        android:visibility="visible"
+        android:weightSum="1.0">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="6dp"
+            android:background="#00000000"
+            android:src="@mipmap/ic_settings"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="0dp"
+            android:gravity="center_horizontal"
+            android:text="Maintenance"
+            android:textColor="#4a4a4a"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/killSwitchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="28dp"
+        android:background="#f5a623"
+        android:clickable="true"
+        android:visibility="visible"
+        android:weightSum="1.0">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="5dp"
+            android:background="#00000000"
+            android:src="@mipmap/ic_power" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="64dp"
+            android:gravity="center_horizontal"
+            android:text="KILL SWITCH"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
