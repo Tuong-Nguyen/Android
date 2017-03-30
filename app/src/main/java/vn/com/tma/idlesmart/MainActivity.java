@@ -2835,6 +2835,8 @@ public class MainActivity extends Activity implements OnClickListener {
         this.serialDialog.show();
     }
 
+    // region Maintenance Dialog
+
     public void openMaintDialog() {
         if (this.maintDialog != null && this.maintDialog.isShowing()) {
             this.maintDialog.dismiss();
@@ -2844,12 +2846,12 @@ public class MainActivity extends Activity implements OnClickListener {
         this.maintDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.maintDialog.setContentView(R.layout.maint_dialog);
         this.maintDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[UNKNOWN_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[UNKNOWN_CONNECTIVITY]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[GOOD_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[GOOD_CONNECTIVITY]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[BAD_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[BAD_CONNECTIVITY]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[0]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[0]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[1]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[1]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[2]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[2]));
         ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_4)).setChecked(aMaintEnable[3]);
         ((EditText) this.maintDialog.findViewById(R.id.maintText_4)).setText(Integer.toString(aMaintValue[3]));
         ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_5)).setChecked(aMaintEnable[4]);
@@ -2866,12 +2868,12 @@ public class MainActivity extends Activity implements OnClickListener {
         ((EditText) this.maintDialog.findViewById(R.id.maintText_10)).setText(Integer.toString(aMaintValue[9]));
         this.maintDialog.findViewById(R.id.maintDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                MainActivity.aMaintEnable[MainActivity.UNKNOWN_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
-                MainActivity.aMaintValue[MainActivity.UNKNOWN_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
-                MainActivity.aMaintEnable[MainActivity.GOOD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
-                MainActivity.aMaintValue[MainActivity.GOOD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
-                MainActivity.aMaintEnable[MainActivity.BAD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
-                MainActivity.aMaintValue[MainActivity.BAD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
+                MainActivity.aMaintEnable[0] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
+                MainActivity.aMaintValue[0] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
+                MainActivity.aMaintEnable[1] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
+                MainActivity.aMaintValue[1] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
+                MainActivity.aMaintEnable[2] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
+                MainActivity.aMaintValue[2] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
                 MainActivity.aMaintEnable[3] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_4)).isChecked();
                 MainActivity.aMaintValue[3] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
                 MainActivity.aMaintEnable[4] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_5)).isChecked();
@@ -2893,16 +2895,16 @@ public class MainActivity extends Activity implements OnClickListener {
             public void onClick(View v) {
                 Log.w(MainActivity.TAG, "Kiosk SuperExit button pressed");
                 MainActivity mainActivity = MainActivity.this;
-                int i = mainActivity.kiosk_mode_counter + MainActivity.GOOD_CONNECTIVITY;
+                int i = mainActivity.kiosk_mode_counter + 1;
                 mainActivity.kiosk_mode_counter = i;
-                if (i == 3) {
+                if (i == 3) { // Click 3 times for toggling Kiosk mode
                     boolean z;
-                    MainActivity.this.kiosk_mode_counter = MainActivity.UNKNOWN_CONNECTIVITY;
+                    MainActivity.this.kiosk_mode_counter = 0;
                     Context ctx = MainActivity.this.getApplicationContext();
                     if (PrefUtils.isKioskModeActive(ctx)) {
                         z = false;
                     } else {
-                        z = MainActivity.enableKioskMode;
+                        z = true;
                     }
                     MainActivity.KioskMode = z;
                     PrefUtils.setKioskModeActive(MainActivity.KioskMode, ctx);
@@ -3038,6 +3040,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, 0, 0);
     }
+    // endregion
 
     public void sendVIN(String vin) {
         Log.i(TAG, "sendVIN.." + vin);
