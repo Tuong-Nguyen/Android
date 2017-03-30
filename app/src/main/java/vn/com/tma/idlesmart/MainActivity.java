@@ -554,14 +554,14 @@ public class MainActivity extends Activity implements OnClickListener {
         this.settings_menu2_index = 0;
         this.initialScreenBrightness = 0;
         this.initialScreenTimeout = 0;
-        this.ScreenOn = enableKioskMode;
+        this.ScreenOn = true;
         this.USBReconnectRunnable = new C00022();
         Integer[] numArr = new Integer[2];
         numArr[0] = Integer.valueOf(25);
         numArr[1] = Integer.valueOf(24);
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
         this.ETrunnable = new C00044();
-        this.isScreenOn = enableKioskMode;
+        this.isScreenOn = true;
         this.timeoutRunnable = new C00066();
         this.mEditorActionListener = new C00077();
         this.verificationRunnable = new Runnable() {
@@ -626,17 +626,17 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     static {
-        DebugLog = enableKioskMode;
+        DebugLog = true;
         commDialog = null;
         KioskMode = false;
         Restart = false;
-        HasFocus = enableKioskMode;
+        HasFocus = true;
         SystemActivationFlag = false;
         gateway_connected = false;
         gateway_restarting = false;
         demo_mode = false;
         test_mode = false;
-        packagemanagernag = enableKioskMode;
+        packagemanagernag = true;
         CurrentStatusBarFlag = false;
         CurrentDashboardFlag = false;
         CurrentDashboardFragment = UNKNOWN_CONNECTIVITY;
@@ -699,7 +699,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         setContentView(R.layout.main);
         if (!Restart) {
-            KioskMode = enableKioskMode;
+            KioskMode = true;
             PrefUtils.setKioskModeActive(KioskMode, getApplicationContext());
         }
         if (!Restart) {
@@ -793,7 +793,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         startScreenHandler(aParam[14]);
         PrefUtils.setApkUpdateState(UNKNOWN_CONNECTIVITY, getApplicationContext());
-        Restart = enableKioskMode;
+        Restart = true;
         Log.i(TAG, "<<==onCreate done");
     }
 
@@ -841,7 +841,7 @@ public class MainActivity extends Activity implements OnClickListener {
         if (DebugLog) {
             Log.i(TAG, "==>>onRestart");
         }
-        Restart = enableKioskMode;
+        Restart = true;
         if (DebugLog) {
             Log.i(TAG, "<<==onRestart");
         }
@@ -854,7 +854,7 @@ public class MainActivity extends Activity implements OnClickListener {
             showRestartParams();
         }
         executeDelayed();
-        HasFocus = enableKioskMode;
+        HasFocus = true;
         if (!this.mWakeLock.isHeld()) {
             this.mWakeLock.acquire();
         }
@@ -873,7 +873,7 @@ public class MainActivity extends Activity implements OnClickListener {
         enableDashboard(CurrentDashboardFlag);
         selectRunning(CurrentDashboardFragment);
         if (CurrentSettingsFlag) {
-            enableDashboard(enableKioskMode);
+            enableDashboard(true);
             selectRunning(GOOD_CONNECTIVITY);
             enableSettings(false);
         } else {
@@ -925,11 +925,11 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.i(TAG, "        connectUSB::status=" + status.toString());
             if (status == AccessoryControl.OpenStatus.CONNECTED) {
                 Log.i(TAG, "        connectUSB::we are now connected to gateway");
-                gateway_connected = enableKioskMode;
+                gateway_connected = true;
                 Log.i(TAG, "        connectUSB::send APICMD_POWERON..");
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 connected();
-                enableDashboard(enableKioskMode);
+                enableDashboard(true);
                 selectRunning(GOOD_CONNECTIVITY);
                 enableSettings(false);
                 Log.i(TAG, "        connectUSB::send APICMD_SYNC.. (Request data from Gateway");
@@ -1020,7 +1020,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public void exitApp() {
         Log.e(TAG, "###################### exitApp() ##############################");
         AppContext.instance.stopKioskService();
-        moveTaskToBack(enableKioskMode);
+        moveTaskToBack(true);
         Process.killProcess(Process.myPid());
         java.lang.System.exit(UNKNOWN_CONNECTIVITY);
     }
@@ -1028,7 +1028,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public void abort() {
         Log.e(TAG, "###################### abort() ##############################");
         AppContext.instance.stopKioskService();
-        moveTaskToBack(enableKioskMode);
+        moveTaskToBack(true);
         Process.killProcess(Process.myPid());
         java.lang.System.exit(GOOD_CONNECTIVITY);
     }
@@ -1086,7 +1086,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (KioskMode && this.blockedKeys.contains(Integer.valueOf(event.getKeyCode()))) {
-            return enableKioskMode;
+            return true;
         }
         return super.dispatchKeyEvent(event);
     }
@@ -1125,10 +1125,10 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.i(TAG, "VerifyActivation: NOT ACTIVATED");
             selectActivationFragment(3);
         } else if (!SystemActivationFlag) {
-            SystemActivationFlag = enableKioskMode;
+            SystemActivationFlag = true;
             Log.i(TAG, "VerifyActivation: ACTIVATED");
-            enableStatusBar(enableKioskMode);
-            enableDashboard(enableKioskMode);
+            enableStatusBar(true);
+            enableDashboard(true);
             selectRunning(GOOD_CONNECTIVITY);
         }
     }
@@ -1240,7 +1240,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void startScreenHandler(int delay_secs) {
-        this.isScreenOn = enableKioskMode;
+        this.isScreenOn = true;
         this.screentimeoutHandler.postDelayed(new C00055(), (long) (delay_secs * 1000));
     }
 
@@ -1294,8 +1294,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
                     selectKillswitchMode(UNKNOWN_CONNECTIVITY);
-                    enableStatusBar(enableKioskMode);
-                    enableDashboard(enableKioskMode);
+                    enableStatusBar(true);
+                    enableDashboard(true);
                     selectRunning(GOOD_CONNECTIVITY);
                     enableSettings(false);
                     selectActivationFragment(UNKNOWN_CONNECTIVITY);
@@ -1310,7 +1310,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     enableStatusBar(false);
                     enableDashboard(false);
                     selectRunning(UNKNOWN_CONNECTIVITY);
-                    enableSettings(enableKioskMode);
+                    enableSettings(true);
                     selectActivationFragment(UNKNOWN_CONNECTIVITY);
                     this.settings_menu1_index = 0;
                     this.settings_menu2_index = 0;
@@ -1330,7 +1330,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (ValidActivationProcess) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     Log.i(TAG, "APICMD_ACTIVATE = 1");
-                    enableDashboard(enableKioskMode);
+                    enableDashboard(true);
                     selectRunning(GOOD_CONNECTIVITY);
                     httpclient.PhoneHome(UNKNOWN_CONNECTIVITY, false);
                     return;
@@ -1339,8 +1339,8 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case R.id.poweronButton /*2131361943*/:
                 selectKillswitchMode(UNKNOWN_CONNECTIVITY);
-                enableStatusBar(enableKioskMode);
-                enableDashboard(enableKioskMode);
+                enableStatusBar(true);
+                enableDashboard(true);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
                 findViewById(R.id.poweronButton).setVisibility(View.GONE);
                 this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
@@ -1362,7 +1362,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.test_mode_counter = i;
                     if (i >= 5) {
                         setGatewayStatus("Test Mode");
-                        test_mode = enableKioskMode;
+                        test_mode = true;
                         this.accessoryControl.writeCommand(AccessoryControl.APICMD_TESTMODE, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                     }
                 } else if (demo_mode) {
@@ -1378,10 +1378,10 @@ public class MainActivity extends Activity implements OnClickListener {
                     i = this.test_mode_counter + GOOD_CONNECTIVITY;
                     this.test_mode_counter = i;
                     if (i >= 5) {
-                        demo_mode = enableKioskMode;
+                        demo_mode = true;
                         setGatewayStatus("Demo Mode");
-                        enableDashboard(enableKioskMode);
-                        enableStatusBar(enableKioskMode);
+                        enableDashboard(true);
+                        enableStatusBar(true);
                         selectRunning(GOOD_CONNECTIVITY);
                         enableSettings(false);
                     }
@@ -1659,7 +1659,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void enableDashboard(boolean enable) {
         CurrentDashboardFlag = enable;
-        enableStatusBar(enableKioskMode);
+        enableStatusBar(true);
         if (!gateway_connected && !demo_mode) {
             findViewById(R.id.dashboardFragment).setVisibility(View.GONE);
         } else if (enable) {
@@ -1682,7 +1682,7 @@ public class MainActivity extends Activity implements OnClickListener {
         viewFragmentParamValue(3);
         viewFragmentParamValue(4);
         if (fragment != 0) {
-            enableDashboard(enableKioskMode);
+            enableDashboard(true);
             switch (fragment) {
                 case GOOD_CONNECTIVITY /*1*/:
                     findViewById(R.id.runningFragment).setVisibility(View.VISIBLE);
@@ -1754,7 +1754,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private boolean ValidPassword() {
         if (!PasswordEnable || PasswordValid) {
-            return enableKioskMode;
+            return true;
         }
         openPasswordDialog();
         return false;
@@ -2004,7 +2004,7 @@ public class MainActivity extends Activity implements OnClickListener {
             enableStatusBar(false);
             enableDashboard(false);
             selectActivationFragment(UNKNOWN_CONNECTIVITY);
-            enableSettings(enableKioskMode);
+            enableSettings(true);
         }
         switch (level) {
             case GOOD_CONNECTIVITY /*1*/:
@@ -2323,14 +2323,14 @@ public class MainActivity extends Activity implements OnClickListener {
         String pPfx = this.params.aParamPfx[this.param_id];
         boolean bypass = false;
         if (pId == 0 && aParam[23] == GOOD_CONNECTIVITY) {
-            bypass = enableKioskMode;
+            bypass = true;
         }
         if (pId == 3) {
             if (vId == R.id.settingsEntryIncrementButton && isCabinTempCommonIncrValid(pValue)) {
-                bypass = enableKioskMode;
+                bypass = true;
             }
             if (vId == R.id.settingsEntryDecrementButton && isCabinTempCommonDecrValid(pValue)) {
-                bypass = enableKioskMode;
+                bypass = true;
             }
         }
         if (bypass || ValidPassword()) {
@@ -2389,14 +2389,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private boolean isCabinTempCommonIncrValid(int value) {
         if (this.params.aParamIncr[3] + value <= aParam[24] + aParam[17]) {
-            return enableKioskMode;
+            return true;
         }
         return false;
     }
 
     private boolean isCabinTempCommonDecrValid(int value) {
         if (value - this.params.aParamIncr[3] >= aParam[24] - aParam[17]) {
-            return enableKioskMode;
+            return true;
         }
         return false;
     }
@@ -2452,7 +2452,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         break;
                     case Params.PARAM_AudibleSound /*15*/:
                         if (pValue != 0) {
-                            z = enableKioskMode;
+                            z = true;
                         } else {
                             z = false;
                         }
@@ -2461,7 +2461,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         break;
                     case Params.PARAM_PasswordEnable /*19*/:
                         if (pValue != 0) {
-                            z = enableKioskMode;
+                            z = true;
                         } else {
                             z = false;
                         }
@@ -2642,7 +2642,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private void StartVerificationProcess() {
         this.activation_step = UNKNOWN_CONNECTIVITY;
         ValidActivationProcess = false;
-        ActivationProcessPending = enableKioskMode;
+        ActivationProcessPending = true;
         this.verificationHandler.removeCallbacks(this.verificationRunnable);
         this.verificationHandler.postDelayed(this.verificationRunnable, 100);
     }
@@ -2677,7 +2677,7 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case BAD_CONNECTIVITY /*2*/:
                 findViewById(R.id.installDetail1Progress).setVisibility(View.INVISIBLE);
-                ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(enableKioskMode);
+                ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(true);
                 findViewById(R.id.installDetail2Progress).setVisibility(View.VISIBLE);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
@@ -2687,7 +2687,7 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 findViewById(R.id.installDetail2Progress).setVisibility(View.INVISIBLE);
-                ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(enableKioskMode);
+                ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(true);
                 findViewById(R.id.installDetail3Progress).setVisibility(View.VISIBLE);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
@@ -2699,13 +2699,13 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case httpClient.PHONEHOME_APK_PENDING /*4*/:
                 findViewById(R.id.installDetail3Progress).setVisibility(View.INVISIBLE);
-                ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(enableKioskMode);
+                ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(true);
                 findViewById(R.id.installDetail4Progress).setVisibility(View.VISIBLE);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 500);
             	break;
 			case httpClient.PHONEHOME_NONE /*5*/:
                 findViewById(R.id.installDetail4Progress).setVisibility(View.INVISIBLE);
-                ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(enableKioskMode);
+                ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(true);
                 this.activation_step = UNKNOWN_CONNECTIVITY;
                 doneButton = (Button) findViewById(R.id.installDoneButton);
                 if (Gateway_VIN.isEmpty()) {
@@ -2714,10 +2714,10 @@ public class MainActivity extends Activity implements OnClickListener {
                     doneButton.setText("ERROR! Invalid Activation Code");
                 } else {
                     doneButton.setText("DONE");
-                    ValidActivationProcess = enableKioskMode;
+                    ValidActivationProcess = true;
                 }
                 doneButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
-                doneButton.setEnabled(enableKioskMode);
+                doneButton.setEnabled(true);
                 this.verificationHandler.removeCallbacks(this.verificationRunnable);
                 ActivationProcessPending = false;
                 break;
@@ -2735,7 +2735,7 @@ public class MainActivity extends Activity implements OnClickListener {
             this.alertDialog = new Dialog(this);
             this.alertDialog.requestWindowFeature(FEATURE_NO_TITLE);
             this.alertDialog.setContentView(R.layout.alert_dialog);
-            HasFocus = enableKioskMode;
+            HasFocus = true;
             ((TextView) this.alertDialog.findViewById(R.id.alertName)).setText(this.faults.aFaultMessage[faultId]);
             ((TextView) this.alertDialog.findViewById(R.id.alertDescription)).setText(this.faults.aFaultDesc[faultId]);
             this.alertDialog.findViewById(R.id.alertRefreshButton).setOnClickListener(new AnonymousClass11(faultId));
@@ -3104,7 +3104,7 @@ public class MainActivity extends Activity implements OnClickListener {
             if (server_version.isEmpty() || version.compareTo(server_version) >= 0) {
                 return false;
             }
-            return enableKioskMode;
+            return true;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
             return false;
@@ -3137,7 +3137,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public boolean isInteger(String input) {
         try {
             Integer.parseInt(input);
-            return enableKioskMode;
+            return true;
         } catch (Exception e) {
             return false;
         }
