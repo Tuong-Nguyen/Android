@@ -1,8 +1,6 @@
 package vn.com.tma.idlesmart;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class AccessoryControl {
@@ -236,10 +235,12 @@ public class AccessoryControl {
             AccessoryControl.this.UsbReaderRunning = true;
             while (!this.done) {
                 int pos = AccessoryControl.APICMD_BASE;
-                while (pos < AccessoryControl.USB_CLOSE_EXCEPTION) {
+
+                // read header (2 bytes)
+                while (pos < AoaMessage.HEADER_LENGTH) {
                     int rdlth;
                     try {
-                        rdlth = this.inputStream.read(buffer, pos, AccessoryControl.USB_CLOSE_EXCEPTION - pos);
+                        rdlth = this.inputStream.read(buffer, pos, AoaMessage.HEADER_LENGTH - pos);
                         if (rdlth > 0) {
                             pos += rdlth;
                         }
@@ -249,8 +250,10 @@ public class AccessoryControl {
                         IOError = true;
                     }
                 }
+
                 if (!IOError) {
-                    int reclth = AccessoryControl.USB_CLOSE_EXCEPTION + (((buffer[AccessoryControl.APICMD_BASE] & 255) << AccessoryControl.SYNC_LAST_MAX) + (buffer[AccessoryControl.USB_OPEN_EXCEPTION] & 255));
+                    // Get message length = 2 bytes for header + length (represent by byte 0 and byte 1 -> interger value)
+                    int reclth = AoaMessage.HEADER_LENGTH + (((buffer[AccessoryControl.APICMD_BASE] & 255) << 8) + (buffer[AccessoryControl.USB_OPEN_EXCEPTION] & 255));
                     while (pos < reclth) {
                         try {
                             int rdlth = this.inputStream.read(buffer, pos, reclth - pos);
@@ -263,10 +266,11 @@ public class AccessoryControl {
                             IOError = true;
                         }
                     }
+
                     int numRead = reclth;
                     if (!IOError) {
-                        int len = numRead - AccessoryControl.USB_CLOSE_EXCEPTION;
-                        int resp = buffer[AccessoryControl.USB_CLOSE_EXCEPTION] & 255;
+                        int len = numRead - AoaMessage.HEADER_LENGTH;
+                        int resp = buffer[AoaMessage.MESSAGE_ID_POSITION] & 255;
                         Message m;
                         byte[] ts;
                         int i;
@@ -314,70 +318,60 @@ public class AccessoryControl {
                             case AccessoryControl.APIDATA_FLEET_CABIN_COMFORT_ENABLE /*159*/:
                             case AccessoryControl.APIDATA_FLEET_CABIN_TEMP_SETPOINT /*160*/:
                             case AccessoryControl.APICAN_ENGINE_COOLANT_TEMP /*193*/:
-                                if (len >= AccessoryControl.USB_CLOSE_EXCEPTION) {
+                                if (len >= AoaMessage.HEADER_LENGTH) {
                                     m = Message.obtain(AccessoryControl.this.handler, resp);
-                                    m.arg1 = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                    m.arg1 = AccessoryControl.this.toInt(buffer[3], buffer[4]);
                                     AccessoryControl.this.handler.sendMessage(m);
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + AccessoryControl.USB_CLOSE_EXCEPTION;
                                 break;
                             case AccessoryControl.APICMD_PASSWORD_ENABLE /*27*/:
-                                MainActivity.PasswordEnable = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]) != 0;
+                                MainActivity.PasswordEnable = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]) != 0;
                                 Log.i(TAG, "(Recv)APICMD_PASSWORD_ENABLE = " + MainActivity.PasswordEnable);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APICMD_PASSWORD /*28*/:
-                                MainActivity.Password = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                MainActivity.Password = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                 Log.i(TAG, "(Recv)APICMD_PASSWORD = " + MainActivity.Password);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APICMD_GUID /*38*/:
-                                MainActivity.Gateway_Guid = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                MainActivity.Gateway_Guid = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                 Log.i(TAG, "(Recv)APICMD_GUID = " + MainActivity.Gateway_Guid);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APICMD_SYNC_START /*53*/:
-                                MainActivity.SyncStart = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                MainActivity.SyncStart = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                 Log.i(TAG, "(Recv)APIDATA_SYNC_START= " + MainActivity.SyncStart);
                                 m = Message.obtain(AccessoryControl.this.handler, resp);
                                 m.arg1 = AccessoryControl.APICMD_BASE;
                                 AccessoryControl.this.handler.sendMessage(m);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APICMD_SYNC_TTL /*54*/:
-                                MainActivity.SyncTTL = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                MainActivity.SyncTTL = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                 Log.i(TAG, "(Recv)APIDATA_SYNC_TTL= " + MainActivity.SyncTTL);
                                 m = Message.obtain(AccessoryControl.this.handler, resp);
                                 m.arg1 = AccessoryControl.APICMD_BASE;
                                 AccessoryControl.this.handler.sendMessage(m);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIEVENT_SYNC /*69*/:
-                                if (len >= AccessoryControl.USB_CLOSE_EXCEPTION) {
+                                if (len >= AoaMessage.HEADER_LENGTH) {
                                     m = Message.obtain(AccessoryControl.this.handler, resp);
-                                    m.arg1 = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                    m.arg1 = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                     AccessoryControl.this.handler.sendMessage(m);
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIEVENT_HW_VERSION /*72*/:
-                                MainActivity.Gateway_HWver = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                MainActivity.Gateway_HWver = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                 Log.i(TAG, "(Recv)APIEVENT_HW_VERSION = " + MainActivity.Gateway_HWver);
                                 if (MainActivity.Gateway_LDRversion.isEmpty()) {
                                     MainActivity.Gateway_LDRversion = "1.0.1";
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + AccessoryControl.USB_CLOSE_EXCEPTION;
                                 break;
                             case AccessoryControl.APIEVENT_FW_VERSION /*73*/:
                                 MainActivity.GatewayUpdatePending = false;
-                                MainActivity.Gateway_FWversion = new String(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
+                                MainActivity.Gateway_FWversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                                 Log.i(TAG, "(Recv)APIEVENT_FW_VERSION = " + MainActivity.Gateway_FWversion);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIEVENT_API_VERSION /*74*/:
-                                MainActivity.Gateway_APIversion = new String(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
+                                MainActivity.Gateway_APIversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                                 Log.i(TAG, "(Recv)APIEVENT_API_VERSION = " + MainActivity.Gateway_APIversion);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIEVENT_CANLOG /*77*/:
                                 if (!MainActivity.aMaintEnable[AccessoryControl.APICMD_BASE]) {
@@ -387,7 +381,7 @@ public class AccessoryControl {
                                     break;
                                 }
                                 try {
-                                    AccessoryControl.this.canStream.write(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 1);
+                                    AccessoryControl.this.canStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                     AccessoryControl.this.canStream.flush();
                                     break;
                                 } catch (Exception e) {
@@ -401,30 +395,26 @@ public class AccessoryControl {
                             case AccessoryControl.APIDATA_SAFETY_SW1 /*133*/:
                             case AccessoryControl.APIDATA_SAFETY_SW2 /*134*/:
                             case AccessoryControl.APIDATA_SAFETY_SW3 /*135*/:
-                                if (len >= AccessoryControl.USB_CLOSE_EXCEPTION) {
+                                if (len >= AoaMessage.HEADER_LENGTH) {
                                     m = Message.obtain(AccessoryControl.this.handler, resp);
-                                    m.arg1 = AccessoryControl.this.toInt((byte) 0, buffer[AccessoryControl.USB_READ_EXCEPTION]);
+                                    m.arg1 = AccessoryControl.this.toInt((byte) 0, buffer[AoaMessage.START_DATA_POSITION]);
                                     AccessoryControl.this.handler.sendMessage(m);
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + AccessoryControl.USB_CLOSE_EXCEPTION;
                                 break;
                             case AccessoryControl.APIEVENT_GATEWAY_SERIALID /*79*/:
-                                MainActivity.Gateway_SerialID = new String(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
+                                MainActivity.Gateway_SerialID = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                                 Log.i(TAG, "(Recv)APIEVENT_GATEWAY_SERIALID = " + MainActivity.Gateway_SerialID);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIEVENT_ACTIVATED /*80*/:
-                                if (len >= AccessoryControl.USB_CLOSE_EXCEPTION) {
+                                if (len >= AoaMessage.HEADER_LENGTH) {
                                     m = Message.obtain(AccessoryControl.this.handler, resp);
-                                    m.arg1 = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                    m.arg1 = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                     AccessoryControl.this.handler.sendMessage(m);
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIEVENT_LDR_VERSION /*82*/:
-                                MainActivity.Gateway_LDRversion = new String(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
+                                MainActivity.Gateway_LDRversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                                 Log.i(TAG, "(Recv)APIEVENT_LDR_VERSION = " + MainActivity.Gateway_LDRversion);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
                                 if (AccessoryControl.this.logStream == null) {
@@ -432,11 +422,11 @@ public class AccessoryControl {
                                 }
                                 try {
                                     ts = AccessoryControl.getUTCdatetimeAsString().getBytes();
-                                    AccessoryControl.this.logStream.write(ts, AccessoryControl.APICMD_BASE, ts.length);
-                                    AccessoryControl.this.logStream.write(AccessoryControl.APICMD_AUTO_SHUTOFF_TIMEOUT);
-                                    AccessoryControl.this.logStream.write(buffer, AccessoryControl.USB_READ_EXCEPTION, (len - 1) - 2);
-                                    AccessoryControl.this.logStream.write(AccessoryControl.APICMD_DL);
-                                    AccessoryControl.this.logStream.write(AccessoryControl.APICMD_API_VERSION);
+                                    AccessoryControl.this.logStream.write(ts, 0, ts.length);
+                                    AccessoryControl.this.logStream.write(' ');
+                                    AccessoryControl.this.logStream.write(buffer, AoaMessage.START_DATA_POSITION, (len - 1) - 2);
+                                    AccessoryControl.this.logStream.write('\n');
+                                    AccessoryControl.this.logStream.write('\r');
                                     AccessoryControl.this.logStream.flush();
                                     break;
                                 } catch (Exception e2) {
@@ -449,11 +439,11 @@ public class AccessoryControl {
                                 }
                                 try {
                                     ts = AccessoryControl.getUTCdatetimeAsString().getBytes();
-                                    AccessoryControl.this.datumStream.write(ts, AccessoryControl.APICMD_BASE, ts.length);
-                                    AccessoryControl.this.datumStream.write(AccessoryControl.APICMD_AUTO_SHUTOFF_TIMEOUT);
-                                    AccessoryControl.this.datumStream.write(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
-                                    AccessoryControl.this.datumStream.write(AccessoryControl.APICMD_DL);
-                                    AccessoryControl.this.datumStream.write(AccessoryControl.APICMD_API_VERSION);
+                                    AccessoryControl.this.datumStream.write(ts, 0, ts.length);
+                                    AccessoryControl.this.datumStream.write(' ');
+                                    AccessoryControl.this.datumStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                    AccessoryControl.this.datumStream.write('\n');
+                                    AccessoryControl.this.datumStream.write('\r');
                                     AccessoryControl.this.datumStream.flush();
                                     break;
                                 } catch (Exception e22) {
@@ -466,73 +456,65 @@ public class AccessoryControl {
                             case AccessoryControl.APIDATA_SYNC_LAST /*142*/:
                                 Log.i(TAG, "(Recv)APIDATA_SYNC_LAST...");
                                 if (len >= AccessoryControl.APICMD_FW_VERSION) {
-                                    MainActivity.SyncLast_Status = buffer[AccessoryControl.USB_READ_EXCEPTION];
-                                    MainActivity.SyncLast.set(AccessoryControl.USB_OPEN_EXCEPTION, AccessoryControl.this.toInt(buffer[AccessoryControl.USB_WRITE_EXCEPTION], buffer[AccessoryControl.APICMD_SYNC]));
-                                    MainActivity.SyncLast.set(AccessoryControl.USB_CLOSE_EXCEPTION, AccessoryControl.this.toInt((byte) 0, buffer[AccessoryControl.APICMD_STATUS]));
-                                    MainActivity.SyncLast.set(AccessoryControl.APICMD_SYNC, AccessoryControl.this.toInt((byte) 0, buffer[AccessoryControl.APICMD_HW_MODEL]));
-                                    MainActivity.SyncLast.set(AccessoryControl.APICMD_QUERY, AccessoryControl.this.toInt((byte) 0, buffer[AccessoryControl.SYNC_LAST_MAX]));
-                                    MainActivity.SyncLast.set(AccessoryControl.APICMD_UL, AccessoryControl.this.toInt((byte) 0, buffer[AccessoryControl.APICMD_FW_VERSION]));
-                                    MainActivity.SyncLast.set(AccessoryControl.APICMD_DL, AccessoryControl.this.toInt((byte) 0, buffer[AccessoryControl.APICMD_API_VERSION]));
+                                    MainActivity.SyncLast_Status = buffer[AoaMessage.START_DATA_POSITION];
+                                    MainActivity.SyncLast.set(Calendar.YEAR, 10);
+                                    MainActivity.SyncLast.set(Calendar.YEAR, AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION + 1], buffer[AoaMessage.START_DATA_POSITION + 2]));
+                                    MainActivity.SyncLast.set(Calendar.MONTH, AccessoryControl.this.toInt((byte) 0, buffer[AoaMessage.START_DATA_POSITION + 3]));
+                                    MainActivity.SyncLast.set(Calendar.DATE, AccessoryControl.this.toInt((byte) 0, buffer[AoaMessage.START_DATA_POSITION + 4]));
+                                    MainActivity.SyncLast.set(Calendar.HOUR_OF_DAY, AccessoryControl.this.toInt((byte) 0, buffer[AoaMessage.START_DATA_POSITION + 5]));
+                                    MainActivity.SyncLast.set(Calendar.MINUTE, AccessoryControl.this.toInt((byte) 0, buffer[AoaMessage.START_DATA_POSITION + 6]));
+                                    MainActivity.SyncLast.set(Calendar.SECOND, AccessoryControl.this.toInt((byte) 0, buffer[AoaMessage.START_DATA_POSITION + 7]));
                                     m = Message.obtain(AccessoryControl.this.handler, resp);
                                     m.arg1 = AccessoryControl.APICMD_BASE;
                                     AccessoryControl.this.handler.sendMessage(m);
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIDATA_SYNC_NEXT /*143*/:
-                                MainActivity.SyncNext = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                MainActivity.SyncNext = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                 Log.i(TAG, "(Recv)APIDATA_SYNC_NEXT= " + MainActivity.SyncNext);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIDATA_VIN /*168*/:
-                                MainActivity.Gateway_VIN = new String(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
+                                MainActivity.Gateway_VIN = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                                 Log.i(TAG, "(Recv)APIDATA_VIN = " + MainActivity.Gateway_VIN);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIDATA_ACTIVATION_CODE /*169*/:
-                                MainActivity.ActivationCode = AccessoryControl.this.toInt(buffer[AccessoryControl.USB_READ_EXCEPTION], buffer[AccessoryControl.USB_WRITE_EXCEPTION]);
+                                MainActivity.ActivationCode = AccessoryControl.this.toInt(buffer[AoaMessage.START_DATA_POSITION], buffer[AoaMessage.START_DATA_POSITION + 1]);
                                 Log.i(TAG, "(Recv)APIDATA_ACTIVATION_CODE = " + MainActivity.ActivationCode);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIDATA_FLEET /*170*/:
-                                MainActivity.Gateway_Fleet = new String(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
+                                MainActivity.Gateway_Fleet = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                                 Log.i(TAG, "(Recv)APIDATA_FLEET = " + MainActivity.Gateway_Fleet);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             case AccessoryControl.APIDATA_SERVER_ROUTE /*180*/:
-                                MainActivity.APIroute = new String(buffer, AccessoryControl.USB_READ_EXCEPTION, len - 3);
+                                MainActivity.APIroute = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                                 MainActivity.APIroute = MainActivity.APIroute.trim();
                                 if (MainActivity.APIroute.trim().isEmpty()) {
                                     MainActivity.APIroute = MainActivity.DefaultAPIroute;
                                 }
                                 Log.i(TAG, "(Recv)APIDATA_SERVER_ROUTE = " + MainActivity.APIroute);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
-                            case AccessoryControl.APIDATA_FEATURE_CODES /*181*/:
+                            case AccessoryControl.APIDATA_FEATURE_CODES /*181*/: // Each feature takes 3 bytes
                                 Log.i(TAG, "(Recv)APIDATA_FEATURE_CODES...");
-                                for (i = AccessoryControl.APICMD_BASE; i < 100; i += AccessoryControl.USB_OPEN_EXCEPTION) {
+                                for (i = 0; i < 100; i += 1) {
                                     if (i < len - 1) {
-                                        Features.feature_status[i] = buffer[i + AccessoryControl.USB_READ_EXCEPTION];
+                                        Features.feature_status[i] = buffer[i + 3];
                                     } else {
                                         Features.feature_status[i] = (byte) 0;
                                     }
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
-                            case AccessoryControl.APIDATA_FEATURE_VALUES /*182*/:
+                            case AccessoryControl.APIDATA_FEATURE_VALUES /*182*/: // Each value takes 2 bytes
                                 Log.i(TAG, "(Recv)APIDATA_FEATURE_VALUES...");
-                                for (i = AccessoryControl.APICMD_BASE; i < 100; i += AccessoryControl.USB_OPEN_EXCEPTION) {
-                                    if (i * AccessoryControl.USB_CLOSE_EXCEPTION < len - 1) {
-                                        Features.feature_value[i] = AccessoryControl.this.toInt(buffer[(i * AccessoryControl.USB_CLOSE_EXCEPTION) + AccessoryControl.USB_READ_EXCEPTION], buffer[(i * AccessoryControl.USB_CLOSE_EXCEPTION) + AccessoryControl.USB_WRITE_EXCEPTION]);
+                                for (i = 0; i < 100; i += 1) {
+                                    if (i * 2 < len - 1) {
+                                        Features.feature_value[i] = AccessoryControl.this.toInt(buffer[(i * 2) + 3], buffer[(i * 2) + 4]);
                                     } else {
-                                        Features.feature_value[i] = AccessoryControl.APICMD_BASE;
+                                        Features.feature_value[i] = 0;
                                     }
                                 }
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                             default:
                                 Log.w(TAG, "Unknown command: " + resp);
-                                pos = AccessoryControl.USB_CLOSE_EXCEPTION + len;
                                 break;
                         }
                     }
