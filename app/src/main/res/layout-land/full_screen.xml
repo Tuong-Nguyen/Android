@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/fullScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#020202"
+    android:inputType="numberDecimal"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:weightSum="1.0"
+    tools:showIn="@layout/main">
+
+    <include layout="@layout/actionbar" />
+
+    <include layout="@layout/statusbar" />
+
+    <include layout="@layout/password_fragment" />
+
+    <include layout="@layout/dashbar_fragment" />
+</LinearLayout>
