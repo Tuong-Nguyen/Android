@@ -22,7 +22,8 @@ import vn.com.tma.idlesmart.params.UpdateTaskConfig;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
- * Created by lnthao on 3/30/2017.
+ * Class is used to download APK file from the server
+ * If the apk file is existed, delete it and store the new one.
  */
 public class UpdateApp extends AsyncTask<String, Void, Void> {
     private static final String TAG = "IdleSmart.UpdateApp";
@@ -33,7 +34,6 @@ public class UpdateApp extends AsyncTask<String, Void, Void> {
     }
 
     protected Void doInBackground(String... arg0) {
-        IOException e;
         byte[] buffer = new byte[16384];
         Log.i(TAG, "=====> UpdateApp thread is running in Bkgnd");
         try {
@@ -63,7 +63,6 @@ public class UpdateApp extends AsyncTask<String, Void, Void> {
                     }
                 }
                 File outputFile = new File(path, lfn);
-                File file;
                 try {
                     if (outputFile.exists()) {
                         outputFile.delete();
@@ -90,18 +89,14 @@ public class UpdateApp extends AsyncTask<String, Void, Void> {
                     MainActivity.PackageUpdatePending = httpClient.PHONEHOME_RESCHEDULE;
                     Log.i(TAG, "******* startActivity::PackageManager::package-archive");
                     this.context.startActivity(intent);
-                    file = outputFile;
-                } catch (IOException e2) {
-                    e = e2;
-                    file = outputFile;
+                } catch (IOException e) {
                     e.printStackTrace();
                     Log.i(TAG, "======> updateApk thread done");
                     return null;
                 }
             }
             return null;
-        } catch (IOException e3) {
-            e = e3;
+        } catch (IOException e) {
             e.printStackTrace();
             Log.i(TAG, "======> updateApk thread done");
             return null;
