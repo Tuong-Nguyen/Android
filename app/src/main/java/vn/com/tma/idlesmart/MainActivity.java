@@ -722,7 +722,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.accessoryControl = new AccessoryControl(this, getUIHandler());
         httpclient = new httpClient(this);
         this.topLayout = (LinearLayout) findViewById(R.id.topLayout);
-        this.topLayout.setBackgroundColor(0b11111111000000000000000000000000);
+        this.topLayout.setBackgroundColor(0xff000000);
         if (!Restart) {
             Features.initFeatureCodeTable();
             initializeRunningParams();
@@ -1246,6 +1246,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.dashboardButton /*2131361812*/:
                 this.test_mode_counter = UNKNOWN_CONNECTIVITY;
                 this.maint_mode_counter = UNKNOWN_CONNECTIVITY;
+                SystemActivationFlag =true;
+                demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
                     selectKillswitchMode(UNKNOWN_CONNECTIVITY);
                     enableStatusBar(enableKioskMode);
@@ -1296,7 +1298,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 enableStatusBar(enableKioskMode);
                 enableDashboard(enableKioskMode);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
-                //findViewById(R.id.poweronButton).setVisibility(View.GONE);
+                findViewById(R.id.poweronButton).setVisibility(View.GONE);
                 this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
             	break;
 			case R.id.idlesmartButton /*2131361944*/:
