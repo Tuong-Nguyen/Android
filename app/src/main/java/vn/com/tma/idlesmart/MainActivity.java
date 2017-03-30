@@ -1296,6 +1296,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 enableStatusBar(enableKioskMode);
                 enableDashboard(enableKioskMode);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
+                //findViewById(R.id.poweronButton).setVisibility(View.GONE);
                 this.accessoryControl.writeCommand(20, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
             	break;
 			case R.id.idlesmartButton /*2131361944*/:
