@@ -3,11 +3,9 @@ package vn.com.tma.idlesmart;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,7 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import vn.com.tma.idlesmart.tasks.UpdateApp;
 
 public class httpClient extends Activity {
     private static final String APKpath = "APKupdates";
@@ -417,88 +415,6 @@ public class httpClient extends Activity {
             }
             Log.i(TAG, "  ===> ServerTask::done");
             return result.toString();
-        }
-    }
-
-    public class UpdateApp extends AsyncTask<String, Void, Void> {
-        private static final String TAG = "IdleSmart.UpdateApp";
-        private Context context;
-
-        public void setContext(Context contextf) {
-            this.context = contextf;
-        }
-
-        protected Void doInBackground(String... arg0) {
-            IOException e;
-            byte[] buffer = new byte[16384];
-            Log.i(TAG, "=====> UpdateApp thread is running in Bkgnd");
-            try {
-                String APKlink = arg0[httpClient.STATE_IDLE];
-                URL url = new URL("http://" + MainActivity.APIroute + APKlink);
-                Log.i(TAG, "url=" + url);
-                httpClient.this.CommLog(httpClient.STATE_VERSION, "url=" + url);
-                HttpURLConnection c = (HttpURLConnection) url.openConnection();
-                c.setRequestMethod("POST");
-                c.setDoOutput(httpClient.PHONEHOME_RESCHEDULE);
-                c.connect();
-                String lfn = APKlink;
-                for (int i = lfn.length() + httpClient.PHONEHOME_ERROR; i >= 0; i += httpClient.PHONEHOME_ERROR) {
-                    if (lfn.charAt(i) == '/') {
-                        lfn = lfn.substring(i + httpClient.STATE_CONNECT);
-                        break;
-                    }
-                }
-                if ("mounted".equals(Environment.getExternalStorageState())) {
-                    File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), httpClient.APKpath);
-                    if (!path.exists()) {
-                        if (!path.mkdirs()) {
-                            Log.i(TAG, "ERROR: Cannot create APKupdates directory");
-                            httpClient.this.CommLog(httpClient.STATE_VERSION, "ERROR: Cannot create APKupdates directory");
-                        }
-                    }
-                    File outputFile = new File(path, lfn);
-                    File file;
-                    try {
-                        if (outputFile.exists()) {
-                            outputFile.delete();
-                        }
-                        outputFile.createNewFile();
-                        FileOutputStream fos = new FileOutputStream(outputFile);
-                        InputStream is = c.getInputStream();
-                        while (true) {
-                            int len1 = is.read(buffer);
-                            if (len1 == httpClient.PHONEHOME_ERROR) {
-                                break;
-                            }
-                            fos.write(buffer, httpClient.STATE_IDLE, len1);
-                        }
-                        fos.close();
-                        is.close();
-                        Log.i(TAG, "Download complete: " + lfn);
-                        httpClient.this.CommLog(httpClient.STATE_VERSION, "Download complete: " + lfn);
-                        KioskService.restartcount = httpClient.STATE_IDLE;
-                        Intent intent = new Intent("android.intent.action.VIEW");
-                        intent.setDataAndType(Uri.fromFile(new File(path, lfn)), "application/vnd.android.package-archive");
-                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                        MainActivity.PackageUpdatePending = httpClient.PHONEHOME_RESCHEDULE;
-                        Log.i(TAG, "******* startActivity::PackageManager::package-archive");
-                        this.context.startActivity(intent);
-                        file = outputFile;
-                    } catch (IOException e2) {
-                        e = e2;
-                        file = outputFile;
-                        e.printStackTrace();
-                        Log.i(TAG, "======> updateApk thread done");
-                        return null;
-                    }
-                }
-                return null;
-            } catch (IOException e3) {
-                e = e3;
-                e.printStackTrace();
-                Log.i(TAG, "======> updateApk thread done");
-                return null;
-            }
         }
     }
 

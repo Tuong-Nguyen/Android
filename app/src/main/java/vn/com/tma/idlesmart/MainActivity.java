@@ -881,7 +881,10 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         selectSettingsMode(0);
         selectActivationFragment(0);
-        selectKillswitchMode(0);
+
+        //TODO Display powerOn button,it was replaced by httpClient.PHONEHOME_TABLET_UPDATE - Original: selectKillswitchMode(httpClient.UNKNOWN_CONNECTIVITY);
+        selectKillswitchMode(httpClient.PHONEHOME_TABLET_UPDATE);
+
         Log.i(TAG, "   onResume::Do we need to update gateway connection...");
         if (gateway_connected) {
             Log.i(TAG, "onResume: we are still connected");
@@ -1290,6 +1293,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.dashboardButton /*2131361812*/:
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
+
+                // Enable dashboardButton to access dashboard
                 SystemActivationFlag =true;
                 demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
@@ -1711,21 +1716,21 @@ public class MainActivity extends Activity implements OnClickListener {
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweronFragment).setVisibility(View.GONE);
-            	break;
-			case GOOD_CONNECTIVITY /*1*/:
+                break;
+            case GOOD_CONNECTIVITY /*1*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.VISIBLE);
-            	break;
-			case BAD_CONNECTIVITY /*2*/:
+                break;
+            case BAD_CONNECTIVITY /*2*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.VISIBLE);
-            	break;
-			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+                break;
+            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
