@@ -1388,6 +1388,13 @@ public class httpClient extends Activity {
         }
     }
 
+    /**
+     * Check there is firmware update or not
+     * @return
+     * 0 if no update
+     * 1 if has update
+     * -1 if there is an exception
+     */
     public int CSCUpdateExist() {
         Log.i(TAG, "<<CSCUpdateExist>>");
         CommLog(STATE_APKUPDATE, "CSCUpdateExist");
@@ -1396,7 +1403,8 @@ public class httpClient extends Activity {
         try {
             if (this.jsonCscVersionStack != null) {
                 this.jsonCscVersion = null;
-                for (int i = STATE_IDLE; i < this.jsonCscVersionStack.length(); i += STATE_CONNECT) {
+                // get first valid csc in stack (latest)
+                for (int i = 0; i < this.jsonCscVersionStack.length(); i += 1) {
                     JSONObject jentry = this.jsonCscVersionStack.getJSONObject(i);
                     String feature_list = jentry.getString("feature_codes");
                     if (feature_list.trim().isEmpty() || Features.ValidateFeatureIdentityList(feature_list)) {
@@ -1405,30 +1413,39 @@ public class httpClient extends Activity {
                     }
                 }
             } else {
+                // get recent csc
                 this.jsonCscVersion = this.jsonVersion.getJSONObject("recent_csc");
             }
             if (this.jsonCscVersion != null) {
                 String server_version = this.jsonCscVersion.getString("version");
                 Log.i(TAG, "   server version: " + server_version);
                 CommLog(STATE_APKUPDATE, "   server version: " + server_version);
+                // if current firmware version is different to server
                 if (!MainActivity.Gateway_FWversion.equals(server_version)) {
-                    return STATE_CONNECT;
+                    return 1;
                 }
             }
-            return STATE_IDLE;
+            return 0;
         } catch (JSONException e) {
             e.printStackTrace();
-            return PHONEHOME_ERROR;
+            return -1;
         }
     }
 
+    /**
+     * Execute UpdateGateway task
+     * @return
+     * 0 if CSC_PATH not existed
+     * 1 if task finished
+     * -1 if there is an exception
+     */
     public int PerformCSCUpdate() {
         Log.i(TAG, "PerformCSCUpdate");
         CommLog(STATE_APKUPDATE, "PerformCSCUpdate");
         Log.i(TAG, "current CSC version: " + MainActivity.Gateway_FWversion);
         CommLog(STATE_APKUPDATE, "current CSC version: " + MainActivity.Gateway_FWversion);
         if (!CSCupdate_exists) {
-            return STATE_IDLE;
+            return 0;
         }
         Log.i(TAG, "-----> New CSC firmware exists, update the CSC <-----");
         try {
@@ -1436,26 +1453,23 @@ public class httpClient extends Activity {
             UpdateGateway updateGateway = new UpdateGateway();
             updateGateway.setContext(this.mInstance.getApplicationContext());
             Log.i(TAG, "CSCupdate::updateGateway.execute..");
-            String[] strArr = new String[STATE_CONNECT];
-            strArr[STATE_IDLE] = CSClink;
+            String[] strArr = new String[1];
+            strArr[0] = CSClink;
             updateGateway.execute(strArr);
             Log.i(TAG, "CSCupdate::updateGateway.get.. <==================================================================");
             updateGateway.get(60, TimeUnit.SECONDS);
             Log.i(TAG, "CSCupdate::updateGateway.get - finished");
             CommLog(STATE_APKUPDATE, "updateGateway.get - finished");
-            return STATE_CONNECT;
+            return 1;
         } catch (JSONException e) {
             e.printStackTrace();
-            return PHONEHOME_ERROR;
         } catch (InterruptedException e2) {
             e2.printStackTrace();
-            return PHONEHOME_ERROR;
         } catch (ExecutionException e3) {
             e3.printStackTrace();
-            return PHONEHOME_ERROR;
         } catch (TimeoutException e4) {
             e4.printStackTrace();
-            return PHONEHOME_ERROR;
         }
+        return -1;
     }
 }
