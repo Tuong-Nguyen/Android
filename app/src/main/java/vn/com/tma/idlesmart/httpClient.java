@@ -147,7 +147,8 @@ public class httpClient extends Activity {
                     httpClient.this.dialog.show();
                     httpClient.phonehome_state = httpClient.STATE_CONNECT;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_CONNECT /*1*/:
+                	break;
+				case httpClient.STATE_CONNECT /*1*/:
                     if (httpClient.this.isConnected()) {
                         httpClient.this.dialog.setMessage("Stopping Gateway");
                         httpClient.phonehome_state = httpClient.STATE_FREEZE_GATEWAY;
@@ -157,7 +158,8 @@ public class httpClient extends Activity {
                         httpClient.phonehome_state = httpClient.STATE_ERROR;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_FREEZE_GATEWAY /*2*/:
+                	break;
+				case httpClient.STATE_FREEZE_GATEWAY /*2*/:
                     if (MainActivity.aMaintEnable[httpClient.STATE_CSC_AUTOUPDATE]) {
                         httpClient.this.mInstance.openCommDialog();
                     }
@@ -166,7 +168,8 @@ public class httpClient extends Activity {
                     httpClient.this.dialog.setMessage("Identifying/Activating Vehicle");
                     httpClient.phonehome_state = httpClient.STATE_ACTIVATE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_ACTIVATE /*3*/:
+                	break;
+				case httpClient.STATE_ACTIVATE /*3*/:
                     Log.i(httpClient.TAG, "       setJsonGateway..");
                     httpClient.this.setJsonGateway();
                     Log.i(httpClient.TAG, "       Activation..");
@@ -179,18 +182,21 @@ public class httpClient extends Activity {
                         httpClient.phonehome_state = httpClient.STATE_UPDATE;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_UPDATE /*4*/:
+                	break;
+				case httpClient.STATE_UPDATE /*4*/:
                     Log.i(httpClient.TAG, "       Update..");
                     httpClient.this.PerformUpdateTask();
                     httpClient.this.dialog.setMessage("Sending Vehicle Logs");
                     httpClient.phonehome_state = httpClient.STATE_LOG;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_LOG /*5*/:
+                	break;
+				case httpClient.STATE_LOG /*5*/:
                     Log.i(httpClient.TAG, "       Log..");
                     httpClient.this.PerformLogTask();
                     httpClient.phonehome_state = httpClient.STATE_LOG_STATUS;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_VERSION /*6*/:
+                	break;
+				case httpClient.STATE_VERSION /*6*/:
                     Log.i(httpClient.TAG, "       Version..");
                     httpClient.this.PerformVersionTask();
                     httpClient.APKupdate_exists = httpClient.this.APKUpdateExist() == httpClient.STATE_CONNECT ? httpClient.PHONEHOME_RESCHEDULE : httpClient.PHONEHOME_NO_RESCHEDULE;
@@ -239,7 +245,8 @@ public class httpClient extends Activity {
                         httpClient.phonehome_state = httpClient.STATE_DONE;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_APKUPDATE /*7*/:
+                	break;
+				case httpClient.STATE_APKUPDATE /*7*/:
                     httpClient.result = httpClient.STATE_CONNECT;
                     if (httpClient.APKupdate_exists) {
                         if (httpClient.CSCupdate_exists) {
@@ -262,6 +269,7 @@ public class httpClient extends Activity {
                         httpClient.phonehome_state = httpClient.STATE_DONE;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
+                    break;
                 case httpClient.STATE_CSCUPDATE /*8*/:
                 case httpClient.STATE_CSC_AUTOUPDATE /*9*/:
                     if (httpClient.CSCupdate_exists) {
@@ -278,20 +286,25 @@ public class httpClient extends Activity {
                     }
                     httpClient.phonehome_state = httpClient.STATE_DONE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_LOG_STATUS /*15*/:
+                	break;
+				case httpClient.STATE_LOG_STATUS /*15*/:
                     httpClient.this.dialog.setMessage("Sending Collected Data");
                     httpClient.phonehome_state = httpClient.STATE_DATUM;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_DATUM /*20*/:
+                	break;
+				case httpClient.STATE_DATUM /*20*/:
                     Log.i(httpClient.TAG, "       Datum..");
                     httpClient.this.PerformDatumTask();
                     httpClient.phonehome_state = httpClient.STATE_DATUM_STATUS;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_DATUM_STATUS /*25*/:
+                	break;
+				case httpClient.STATE_DATUM_STATUS /*25*/:
                     httpClient.this.dialog.setMessage("Checking for software updates");
                     httpClient.phonehome_state = httpClient.STATE_VERSION;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
-                case httpClient.STATE_DONE /*90*/:
+                	break;
+				case httpClient.STATE_DONE /*90*/:
+                    break;
                 case httpClient.STATE_ERROR /*99*/:
                     MainActivity.SyncLast_Status = httpClient.result;
                     httpClient.this.mInstance.UpdateConnectivityStatus();
@@ -336,7 +349,8 @@ public class httpClient extends Activity {
                     }
                     httpClient.phonehome_state = httpClient.STATE_CLEANUP;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, 3000);
-                case httpClient.STATE_CLEANUP /*100*/:
+                	break;
+				case httpClient.STATE_CLEANUP /*100*/:
                     httpClient.this.dialog.dismiss();
                     httpClient.phonehome_state = httpClient.STATE_IDLE;
                     httpClient.phonehomeHandler.removeCallbacks(httpClient.this.phonehomeRunnable);
@@ -344,7 +358,9 @@ public class httpClient extends Activity {
                     if (httpClient.result == httpClient.STATE_UPDATE) {
                         httpClient.this.mInstance.exit();
                     }
+                    break;
                 default:
+                    break;
             }
         }
     }

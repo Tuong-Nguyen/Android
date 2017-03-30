@@ -345,140 +345,184 @@ public class MainActivity extends Activity implements OnClickListener {
                     case Params.PARAM_TruckTimer /*18*/:
                         MainActivity.aParam[14] = msg.arg1;
                         mainActivityClass.setScreenTimeout(msg.arg1);
-                    case Params.PARAM_PasswordEnable /*19*/:
+                    	break;
+					case Params.PARAM_PasswordEnable /*19*/:
                         MainActivity.aParam[15] = msg.arg1;
                         if (msg.arg1 == 0) {
                             z = false;
                         }
                         mainActivityClass.setSoundOn(z);
-                    case AccessoryControl.APICMD_ENGINE_IDLE_RPM /*30*/:
+                    	break;
+					case AccessoryControl.APICMD_ENGINE_IDLE_RPM /*30*/:
                         MainActivity.aParam[16] = msg.arg1;
-                    case AccessoryControl.APICMD_ENGINE_RESTART_INTERVAL /*31*/:
+                    	break;
+					case AccessoryControl.APICMD_ENGINE_RESTART_INTERVAL /*31*/:
                         MainActivity.aParam[9] = msg.arg1;
-                    case AccessoryControl.APICMD_AUTO_SHUTOFF_TIMEOUT /*32*/:
+                    	break;
+					case AccessoryControl.APICMD_AUTO_SHUTOFF_TIMEOUT /*32*/:
                         MainActivity.aParam[7] = msg.arg1;
-                    case AccessoryControl.APICMD_CABIN_COMFORT_ENABLE /*40*/:
+                    	break;
+					case AccessoryControl.APICMD_CABIN_COMFORT_ENABLE /*40*/:
                         if (msg.arg1 == 0) {
                             mainActivityClass.setFunctionMode(MainActivity.GOOD_CONNECTIVITY, MainActivity.UNKNOWN_CONNECTIVITY);
                         } else {
                             mainActivityClass.setFunctionMode(MainActivity.GOOD_CONNECTIVITY, MainActivity.GOOD_CONNECTIVITY);
                         }
-                    case AccessoryControl.VIN_ID_MAX /*41*/:
+                    	break;
+					case AccessoryControl.VIN_ID_MAX /*41*/:
                         MainActivity.aParam[3] = msg.arg1;
-                    case AccessoryControl.APICMD_CABIN_TEMP_RANGE /*42*/:
+                    	break;
+					case AccessoryControl.APICMD_CABIN_TEMP_RANGE /*42*/:
                         MainActivity.aParam[4] = msg.arg1;
-                    case AccessoryControl.APICMD_AMBIENT_TEMP_SETPOINT /*43*/:
+                    	break;
+					case AccessoryControl.APICMD_AMBIENT_TEMP_SETPOINT /*43*/:
                         MainActivity.aParam[5] = msg.arg1;
-                    case AccessoryControl.APICMD_AMBIENT_TEMP_RANGE /*44*/:
+                    	break;
+					case AccessoryControl.APICMD_AMBIENT_TEMP_RANGE /*44*/:
                         MainActivity.aParam[6] = msg.arg1;
-                    case AccessoryControl.APICMD_SYSTEMTIMER /*45*/:
+                    	break;
+					case AccessoryControl.APICMD_SYSTEMTIMER /*45*/:
                         MainActivity.aParam[18] = msg.arg1;
-                    case AccessoryControl.APICMD_DRIVER_TEMP_COMMON /*48*/:
+                    	break;
+					case AccessoryControl.APICMD_DRIVER_TEMP_COMMON /*48*/:
                         MainActivity.aParam[17] = msg.arg1;
-                    case AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE /*50*/:
+                    	break;
+					case AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE /*50*/:
                         if (msg.arg1 == 0) {
                             mainActivityClass.setFunctionMode(3, MainActivity.UNKNOWN_CONNECTIVITY);
                         } else {
                             mainActivityClass.setFunctionMode(3, MainActivity.GOOD_CONNECTIVITY);
                         }
-                    case AccessoryControl.APICMD_BATTERY_MONITOR_VOLTAGE /*51*/:
+                    	break;
+					case AccessoryControl.APICMD_BATTERY_MONITOR_VOLTAGE /*51*/:
                         MainActivity.aParam[8] = msg.arg1;
-                    case AccessoryControl.APICMD_BATTERY_MONITOR_RUNTIME /*52*/:
+                    	break;
+					case AccessoryControl.APICMD_BATTERY_MONITOR_RUNTIME /*52*/:
                         MainActivity.aParam[9] = msg.arg1;
-                    case AccessoryControl.APICMD_SYNC_START /*53*/:
+                    	break;
+					case AccessoryControl.APICMD_SYNC_START /*53*/:
                         mainActivityClass.SetNextPhoneHome();
-                    case AccessoryControl.APICMD_SYNC_TTL /*54*/:
+                    	break;
+					case AccessoryControl.APICMD_SYNC_TTL /*54*/:
                         mainActivityClass.SetNextPhoneHome();
-                    case AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE /*55*/:
+                    	break;
+					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE /*55*/:
                         if (msg.arg1 == 0) {
                             mainActivityClass.setFunctionMode(MainActivity.BAD_CONNECTIVITY, MainActivity.UNKNOWN_CONNECTIVITY);
                         } else {
                             mainActivityClass.setFunctionMode(MainActivity.BAD_CONNECTIVITY, MainActivity.GOOD_CONNECTIVITY);
                         }
-                    case AccessoryControl.APICMD_COLD_WEATHER_GUARD_START_TEMP /*56*/:
+                    	break;
+					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_START_TEMP /*56*/:
                         MainActivity.aParam[12] = msg.arg1;
-                    case AccessoryControl.APICMD_COLD_WEATHER_GUARD_RESTART_INTERVAL /*58*/:
+                    	break;
+					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_RESTART_INTERVAL /*58*/:
                         MainActivity.aParam[13] = msg.arg1;
-                    case AccessoryControl.APICMD_COLD_WEATHER_GUARD_MIN_COOLANT /*59*/:
+                    	break;
+					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_MIN_COOLANT /*59*/:
                         MainActivity.aParam[11] = msg.arg1;
-                    case AccessoryControl.APICMD_COLD_WEATHER_GUARD_IDEAL_COOLANT /*60*/:
+                    	break;
+					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_IDEAL_COOLANT /*60*/:
                         MainActivity.aParam[10] = msg.arg1;
-                    case AccessoryControl.APIEVENT_SYNC /*69*/:
+                    	break;
+					case AccessoryControl.APIEVENT_SYNC /*69*/:
                         if (MainActivity.SyncWithServer) {
                             MainActivity.SyncWithServer = false;
                             MainActivity.httpclient.PhoneHome(MainActivity.GOOD_CONNECTIVITY, MainActivity.enableKioskMode);
                         }
-                    case AccessoryControl.APIEVENT_CURRENT_MODE /*78*/:
+                    	break;
+					case AccessoryControl.APIEVENT_CURRENT_MODE /*78*/:
                         Log.i(MainActivity.TAG, "handler::CurrentMode received");
                         mainActivityClass.useGatewayMode(msg.arg1);
-                    case AccessoryControl.APIEVENT_ACTIVATED /*80*/:
+                    	break;
+					case AccessoryControl.APIEVENT_ACTIVATED /*80*/:
                         MainActivity.Gateway_Activated = msg.arg1;
                         Log.i(MainActivity.TAG, "APIEVENT_ACTIVATED = " + MainActivity.Gateway_Activated);
                         if (MainActivity.Gateway_Activated == 0) {
                             z = false;
                         }
                         mainActivityClass.InstallAndActivate(z);
-                    case AccessoryControl.APIEVENT_REQUPDATE /*81*/:
+                    	break;
+					case AccessoryControl.APIEVENT_REQUPDATE /*81*/:
                         MainActivity.httpclient.PhoneHome(MainActivity.BAD_CONNECTIVITY, false);
-                    case AccessoryControl.APIEVENT_SYSTEM_STATUS /*84*/:
+                    	break;
+					case AccessoryControl.APIEVENT_SYSTEM_STATUS /*84*/:
                         mainActivityClass.setEngineStatus(mainActivityClass.aSystemStatus[msg.arg1]);
-                    case AccessoryControl.APIEVENT_DRIVING_MODE /*88*/:
+                    	break;
+					case AccessoryControl.APIEVENT_DRIVING_MODE /*88*/:
                         if (msg.arg1 == 0) {
                             mainActivityClass.wakeup();
                             mainActivityClass.back2sleep();
                         }
-                    case AccessoryControl.APIEVENT_ALERT /*94*/:
+                    	break;
+					case AccessoryControl.APIEVENT_ALERT /*94*/:
                         mainActivityClass.openAlertDialog(msg.arg1);
-                    case AccessoryControl.APIEVENT_CLEARALERT /*95*/:
+                    	break;
+					case AccessoryControl.APIEVENT_CLEARALERT /*95*/:
                         mainActivityClass.closeAlertDialog(msg.arg1);
-                    case AccessoryControl.APIEVENT_CLEARALLALERTS /*96*/:
+                    	break;
+					case AccessoryControl.APIEVENT_CLEARALLALERTS /*96*/:
                         mainActivityClass.closeAllAlertDialogs();
-                    case AccessoryControl.APIEVENT_WARNING /*97*/:
+                    	break;
+					case AccessoryControl.APIEVENT_WARNING /*97*/:
                         mainActivityClass.openAlertDialog(msg.arg1);
-                    case AccessoryControl.APIEVENT_CLEARWARNING /*98*/:
+                    	break;
+					case AccessoryControl.APIEVENT_CLEARWARNING /*98*/:
                         mainActivityClass.closeAlertDialog(msg.arg1);
-                    case AccessoryControl.APIEVENT_CLEARALLWARNINGS /*99*/:
+                    	break;
+					case AccessoryControl.APIEVENT_CLEARALLWARNINGS /*99*/:
                         mainActivityClass.closeAllAlertDialogs();
-                    case AccessoryControl.APIEVENT_HANDLER_EXCEPTION /*127*/:
+                    	break;
+					case AccessoryControl.APIEVENT_HANDLER_EXCEPTION /*127*/:
                         Log.e(MainActivity.TAG, "USB_HANDLER_EXCEPTION: " + msg.arg1);
                         MainActivity.gateway_connected = false;
                         mainActivityClass.disconnected();
                         mainActivityClass.accessoryControl.close();
-                    case AccessoryControl.APIDATA_CABIN_TEMP /*136*/:
+                    	break;
+					case AccessoryControl.APIDATA_CABIN_TEMP /*136*/:
                         str = Integer.toString(msg.arg1) + "\u00b0";
                         ((TextView) mainActivityClass.findViewById(R.id.cabinComfortValue)).setText(str);
                         ((TextView) mainActivityClass.findViewById(R.id.ccFragTemperatureValue)).setText(str);
-                    case AccessoryControl.APIDATA_AMBIENT_TEMP /*137*/:
+                    	break;
+					case AccessoryControl.APIDATA_AMBIENT_TEMP /*137*/:
                         ((TextView) mainActivityClass.findViewById(R.id.ccFragAmbientTempValue)).setText(Integer.toString(msg.arg1) + "\u00b0");
-                    case AccessoryControl.APIDATA_BATTERY_VOLTAGE /*138*/:
+                    	break;
+					case AccessoryControl.APIDATA_BATTERY_VOLTAGE /*138*/:
                         str = Integer.toString(msg.arg1);
                         ((TextView) mainActivityClass.findViewById(R.id.batteryProtectValue)).setText(str.substring(MainActivity.UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + mainActivityClass.params.aParamSfx[8]);
-                    case AccessoryControl.APIDATA_SYNC_LAST /*142*/:
+                    	break;
+					case AccessoryControl.APIDATA_SYNC_LAST /*142*/:
                         if (MainActivity.SyncLast_Status == MainActivity.BAD_CONNECTIVITY) {
                             MainActivity.SyncLast_Status = MainActivity.GOOD_CONNECTIVITY;
                             MainActivity.httpclient.sendSyncLast(MainActivity.SyncLast_Status, MainActivity.SyncLast);
                         }
                         mainActivityClass.UpdateConnectivityStatus();
-                    case AccessoryControl.APIDATA_TIMEREMAINING /*158*/:
+                    	break;
+					case AccessoryControl.APIDATA_TIMEREMAINING /*158*/:
                         if (mainActivityClass.GatewayMode != 3 || msg.arg1 <= 0) {
                             str = mainActivityClass.Time2MinsSecsStr(MainActivity.aParam[9] * 60);
                         } else {
                             str = mainActivityClass.Time2MinsSecsStr(msg.arg1);
                         }
                         ((TextView) mainActivityClass.findViewById(R.id.bpFragTimeRemainingValue)).setText(str);
-                    case AccessoryControl.APIDATA_FLEET_CABIN_COMFORT_ENABLE /*159*/:
+                    	break;
+					case AccessoryControl.APIDATA_FLEET_CABIN_COMFORT_ENABLE /*159*/:
                         if (msg.arg1 == 0) {
                             MainActivity.aParam[23] = MainActivity.UNKNOWN_CONNECTIVITY;
                         } else {
                             MainActivity.aParam[23] = MainActivity.GOOD_CONNECTIVITY;
                         }
-                    case AccessoryControl.APIDATA_FLEET_CABIN_TEMP_SETPOINT /*160*/:
+                    	break;
+					case AccessoryControl.APIDATA_FLEET_CABIN_TEMP_SETPOINT /*160*/:
                         MainActivity.aParam[24] = msg.arg1;
-                    case AccessoryControl.APICAN_ENGINE_COOLANT_TEMP /*193*/:
+                    	break;
+					case AccessoryControl.APICAN_ENGINE_COOLANT_TEMP /*193*/:
                         str = Integer.toString(msg.arg1) + "\u00b0";
                         ((TextView) mainActivityClass.findViewById(R.id.cwgFragTemperatureValue)).setText(str);
                         ((TextView) mainActivityClass.findViewById(R.id.coldWeatherGuardValue)).setText(str);
+                        break;
                     default:
+                        break;
                 }
             }
         }
@@ -1665,25 +1709,30 @@ public class MainActivity extends Activity implements OnClickListener {
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweronFragment).setVisibility(View.GONE);
-            case GOOD_CONNECTIVITY /*1*/:
+            	break;
+			case GOOD_CONNECTIVITY /*1*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.VISIBLE);
-            case BAD_CONNECTIVITY /*2*/:
+            	break;
+			case BAD_CONNECTIVITY /*2*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.VISIBLE);
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            	break;
+			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.fullScreen).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweronFragment).setVisibility(View.VISIBLE);
+                break;
             default:
+                break;
         }
     }
 
@@ -1799,8 +1848,10 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpEnableButton.setText("ENABLE");
                 bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 bpFragStopButton.setText("ENABLE");
-            case GOOD_CONNECTIVITY /*1*/:
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            	break;
+			case GOOD_CONNECTIVITY /*1*/:
+            	break;
+			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
@@ -1810,7 +1861,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpEnableButton.setText("DISABLE");
                 bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 bpFragStopButton.setText("DISABLE");
-            case BAD_CONNECTIVITY /*2*/:
+            	break;
+			case BAD_CONNECTIVITY /*2*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
@@ -1820,7 +1872,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpEnableButton.setText("STOP ENGINE");
                 bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 bpFragStopButton.setText("STOP ENGINE");
+                break;
             default:
+                break;
         }
     }
 
@@ -1958,7 +2012,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
                 this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
                 selectMenu1Entry(UNKNOWN_CONNECTIVITY);
-            case BAD_CONNECTIVITY /*2*/:
+            	break;
+			case BAD_CONNECTIVITY /*2*/:
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.VISIBLE);
                 initMenu2();
@@ -1966,14 +2021,17 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.settings_menu2_index = 0;
                 selectMenu2Entry(0);
                 this.settings_entrytype = UNKNOWN_CONNECTIVITY;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            	break;
+			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.VISIBLE);
                 viewParamValue();
+                break;
             default:
                 findViewById(R.id.settingsMenu1).setVisibility(View.GONE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.GONE);
                 selectSettingsEntry(UNKNOWN_CONNECTIVITY);
+                break;
         }
     }
 
@@ -2280,39 +2338,49 @@ public class MainActivity extends Activity implements OnClickListener {
                     if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
                         pValue = GOOD_CONNECTIVITY;
                     }
-                case R.id.settingsEntryDisableButton /*2131362068*/:
+                	break;
+			    case R.id.settingsEntryDisableButton /*2131362068*/:
                     if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
                         pValue = UNKNOWN_CONNECTIVITY;
                     }
-                case R.id.settingsEntryDecrementButton /*2131362072*/:
+                	break;
+			    case R.id.settingsEntryDecrementButton /*2131362072*/:
                     decrValue(pId);
                     if (pId == 18 && pValue < 4) {
                         pValue = UNKNOWN_CONNECTIVITY;
                     }
                     switch (this.params.aParamType[pId]) {
                         case BAD_CONNECTIVITY /*2*/:
-                        case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+			            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(pValue) + pSfx);
-                        case httpClient.PHONEHOME_APK_PENDING /*4*/:
+                        	break;
+			            case httpClient.PHONEHOME_APK_PENDING /*4*/:
                             str = Integer.toString(pValue);
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
+                            break;
                         default:
+                            break;
                     }
-                case R.id.settingsEntryIncrementButton /*2131362073*/:
+                	break;
+			    case R.id.settingsEntryIncrementButton /*2131362073*/:
                     incrValue(pId);
                     if (pId == 18 && pValue < 4) {
                         pValue = 4;
                     }
                     switch (this.params.aParamType[pId]) {
-                        case BAD_CONNECTIVITY /*2*/:
-                        case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+			            case BAD_CONNECTIVITY /*2*/:
+            			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(Integer.toString(pValue) + pSfx);
-                        case httpClient.PHONEHOME_APK_PENDING /*4*/:
+                        	break;
+			            case httpClient.PHONEHOME_APK_PENDING /*4*/:
                             str = Integer.toString(pValue);
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
+                            break;
                         default:
+                            break;
                     }
                 default:
+                    break;
             }
         }
     }
@@ -2441,15 +2509,19 @@ public class MainActivity extends Activity implements OnClickListener {
         switch (fragmentId) {
             case BAD_CONNECTIVITY /*2*/:
                 ((TextView) findViewById(R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(aParam[3]) + this.params.aParamSfx[3]);
+                break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 ((TextView) findViewById(R.id.cwgFragMinTempValue)).setText(Integer.toString(aParam[11]) + this.params.aParamSfx[11]);
                 ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[10]) + this.params.aParamSfx[10]);
+                break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
                 ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[9] * 60));
                 String str = Integer.toString(aParam[8]);
                 ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[8]);
                 ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[9]) + this.params.aParamSfx[9]);
+                break;
             default:
+                break;
         }
     }
 
@@ -2541,20 +2613,26 @@ public class MainActivity extends Activity implements OnClickListener {
             switch (fragment) {
                 case GOOD_CONNECTIVITY /*1*/:
                     findViewById(R.id.verificationFragment).setVisibility(View.VISIBLE);
-                case BAD_CONNECTIVITY /*2*/:
+                	break;
+				case BAD_CONNECTIVITY /*2*/:
                     findViewById(R.id.installFragment).setVisibility(View.VISIBLE);
                     StartVerificationProcess();
-                case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+                	break;
+				case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                     findViewById(R.id.activationFragment).setVisibility(View.VISIBLE);
-                case httpClient.PHONEHOME_APK_PENDING /*4*/:
+                	break;
+				case httpClient.PHONEHOME_APK_PENDING /*4*/:
                     activationcodeArea = (EditText) findViewById(R.id.activationCodeEditText);
                     activationcodeArea.setText(BuildConfig.FLAVOR);
                     activationcodeArea.setOnEditorActionListener(this.mEditorActionListener);
-                case httpClient.PHONEHOME_NONE /*5*/:
+                	break;
+				case httpClient.PHONEHOME_NONE /*5*/:
                     activationcodeArea = (EditText) findViewById(R.id.VINCodeEditText);
                     activationcodeArea.setText(BuildConfig.FLAVOR);
                     activationcodeArea.setOnEditorActionListener(this.mEditorActionListener);
+                    break;
                 default:
+                    break;
             }
         }
     }
@@ -2586,14 +2664,16 @@ public class MainActivity extends Activity implements OnClickListener {
                 doneButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 doneButton.setEnabled(false);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 100);
-            case GOOD_CONNECTIVITY /*1*/:
+            	break;
+			case GOOD_CONNECTIVITY /*1*/:
                 findViewById(R.id.installDetail1Progress).setVisibility(View.VISIBLE);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                 } else {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 5000);
                 }
-            case BAD_CONNECTIVITY /*2*/:
+            	break;
+			case BAD_CONNECTIVITY /*2*/:
                 findViewById(R.id.installDetail1Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(enableKioskMode);
                 findViewById(R.id.installDetail2Progress).setVisibility(View.VISIBLE);
@@ -2602,7 +2682,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 } else {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 2000);
                 }
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            	break;
+			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 findViewById(R.id.installDetail2Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(enableKioskMode);
                 findViewById(R.id.installDetail3Progress).setVisibility(View.VISIBLE);
@@ -2613,12 +2694,14 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_GET_VEHICLE_INFO, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
                 Log.i(TAG, "APICMD_GET_VEHICLE_INFO = 1");
                 this.verificationHandler.postDelayed(this.verificationRunnable, 15000);
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            	break;
+			case httpClient.PHONEHOME_APK_PENDING /*4*/:
                 findViewById(R.id.installDetail3Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(enableKioskMode);
                 findViewById(R.id.installDetail4Progress).setVisibility(View.VISIBLE);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 500);
-            case httpClient.PHONEHOME_NONE /*5*/:
+            	break;
+			case httpClient.PHONEHOME_NONE /*5*/:
                 findViewById(R.id.installDetail4Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(enableKioskMode);
                 this.activation_step = UNKNOWN_CONNECTIVITY;
@@ -2635,7 +2718,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 doneButton.setEnabled(enableKioskMode);
                 this.verificationHandler.removeCallbacks(this.verificationRunnable);
                 ActivationProcessPending = false;
+                break;
             default:
+                break;
         }
     }
 
