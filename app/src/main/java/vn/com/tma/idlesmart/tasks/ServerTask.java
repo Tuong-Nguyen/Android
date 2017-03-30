@@ -14,8 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import vn.com.tma.idlesmart.BuildConfig;
-import vn.com.tma.idlesmart.httpClient;
-import vn.com.tma.idlesmart.params.UpdateTaskConfig;
 
 /**
  * Run a task to send a request to server
