@@ -1567,10 +1567,10 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectKillswitchMode(BAD_CONNECTIVITY);
             	break;
 			case R.id.poweroffButton /*2131362088*/:
-                this.accessoryControl.writeCommand(22, 0, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_ENGINE_OFF, 0, 1);
                 selectKillswitchMode(3);
                 findViewById(R.id.fullScreen).setVisibility(View.GONE);
-                this.accessoryControl.writeCommand(21, 0, 0);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWEROFF, 0, 0);
             	break;
 			case R.id.verificationBeginVerificationButton /*2131362090*/:
                 selectActivationFragment(BAD_CONNECTIVITY);
