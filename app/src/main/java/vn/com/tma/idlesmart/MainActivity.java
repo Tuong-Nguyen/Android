@@ -100,8 +100,10 @@ public class MainActivity extends Activity implements OnClickListener {
     private static final String TAG = "IdleSmart.Main";
     public static final int UNKNOWN_CONNECTIVITY = 0;
     public static boolean ValidActivationProcess = false;
+
     public static boolean[] aMaintEnable = null;
     public static int[] aMaintValue = null;
+
     public static int[] aParam = null;
     private static Dialog commDialog = null;
     private static String commlogstr = null;
@@ -2916,75 +2918,90 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void clearMaintInfo() {
-        for (int i = 0; i < 10; i += GOOD_CONNECTIVITY) {
+        for (int i = 0; i < 10; i += 1) {
             aMaintEnable[i] = false;
-            aMaintValue[i] = GOOD_CONNECTIVITY;
+            aMaintValue[i] = 1;
         }
-        aMaintValue[3] = GOOD_CONNECTIVITY;
-        aMaintValue[6] = GOOD_CONNECTIVITY;
+        aMaintValue[3] = 1;
+        aMaintValue[6] = 1;
         aMaintValue[7] = 0;
         aMaintValue[8] = 0;
-        aMaintValue[9] = GOOD_CONNECTIVITY;
+        aMaintValue[9] = 1;
     }
 
     public void sendMaintInfo() {
-        byte[] data = new byte[BAD_CONNECTIVITY];
+        byte[] data = new byte[2];
+
+        // Log File (J1939 data)
         if (aMaintEnable[0]) {
             data[0] = (byte) ((aMaintValue[0] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[0] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[0] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, 0, 0);
         }
-        if (aMaintEnable[GOOD_CONNECTIVITY]) {
-            data[0] = (byte) ((aMaintValue[GOOD_CONNECTIVITY] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[GOOD_CONNECTIVITY] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, data[0], data[GOOD_CONNECTIVITY]);
+
+        // Clutch Override
+        if (aMaintEnable[1]) {
+            data[0] = (byte) ((aMaintValue[1] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[1] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, 0, 0);
         }
-        if (aMaintEnable[BAD_CONNECTIVITY]) {
-            data[0] = (byte) ((aMaintValue[BAD_CONNECTIVITY] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[BAD_CONNECTIVITY] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, data[0], data[GOOD_CONNECTIVITY]);
+
+        // Idle Timer Override (1='brake', 2='long brake', 3=spn_1237)
+        if (aMaintEnable[2]) {
+            data[0] = (byte) ((aMaintValue[2] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[2] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, 0, 0);
         }
+
+        // Engine Speed Adjustments (1=during idleup, 2=while running)
         if (aMaintEnable[3]) {
             data[0] = (byte) ((aMaintValue[3] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[3] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[3] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, 0, 0);
         }
+
+        // Timestamp/RPM logging
         if (aMaintEnable[4]) {
             data[0] = (byte) ((aMaintValue[4] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[4] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[4] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, 0, 0);
         }
+
+        // Neutral switch detection
         if (aMaintEnable[5]) {
             data[0] = (byte) ((aMaintValue[5] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[5] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[5] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, 0, 0);
         }
+
+        // Reserved
         if (aMaintEnable[6]) {
             data[0] = (byte) ((aMaintValue[6] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[6] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[6] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, 0, 0);
         }
+
+        // Server Route
         if (aMaintEnable[7]) {
             String ServerRoute = ((EditText) this.maintDialog.findViewById(R.id.maintText_8)).getText().toString();
             if (ServerRoute.trim().isEmpty()) {
                 ServerRoute = DefaultAPIroute;
             }
             int length = ServerRoute.trim().length();
-            AccessoryControl accessoryControl = this.accessoryControl;
             if (length >= 41) {
                 ServerRoute = DefaultAPIroute;
             }
@@ -2994,6 +3011,8 @@ public class MainActivity extends Activity implements OnClickListener {
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(false);
             aMaintEnable[7] = false;
         }
+
+        // Reset VIN and Restore Factory Defaults
         if (aMaintEnable[8]) {
             Gateway_VIN = BuildConfig.FLAVOR;
             sendVIN(Gateway_VIN);
@@ -3009,10 +3028,12 @@ public class MainActivity extends Activity implements OnClickListener {
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(false);
             aMaintEnable[8] = false;
         }
+
+        // View Server Communication (1-8 or 99)
         if (aMaintEnable[9]) {
             data[0] = (byte) ((aMaintValue[9] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[9] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[9] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, data[0], data[1]);
             return;
         }
         this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, 0, 0);
