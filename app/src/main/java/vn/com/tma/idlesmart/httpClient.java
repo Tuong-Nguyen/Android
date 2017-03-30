@@ -1300,17 +1300,25 @@ public class httpClient extends Activity {
         return num;
     }
 
+    /**
+     * Check there is APK update or not
+     * @return
+     * 0 if no update
+     * 1 if has update
+     * -1 if there is an exception
+     */
     public int APKUpdateExist() {
         Log.i(TAG, "<<APKUpdateExist>>");
         CommLog(STATE_VERSION, "APKUpdateExist");
         try {
-            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), STATE_IDLE).versionName;
+            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), 0).versionName;
             Log.i(TAG, "   current APK version: " + version);
             CommLog(STATE_VERSION, "   current APK version: " + version);
             try {
                 if (this.jsonApkVersionStack != null) {
                     this.jsonApkVersion = null;
-                    for (int i = STATE_IDLE; i < this.jsonApkVersionStack.length(); i += STATE_CONNECT) {
+                    // get first valid apk in stack (latest)
+                    for (int i = 0; i < this.jsonApkVersionStack.length(); i += 1) {
                         JSONObject jentry = this.jsonApkVersionStack.getJSONObject(i);
                         String feature_list = jentry.getString("feature_codes");
                         if (feature_list.trim().isEmpty() || Features.ValidateFeatureIdentityList(feature_list)) {
@@ -1319,6 +1327,7 @@ public class httpClient extends Activity {
                         }
                     }
                 } else {
+                    // get recent apk
                     this.jsonApkVersion = this.jsonVersion.getJSONObject("recent_apk");
                 }
                 if (this.jsonApkVersion != null) {
@@ -1326,32 +1335,39 @@ public class httpClient extends Activity {
                     Log.i(TAG, "   server version: " + server_version);
                     CommLog(STATE_VERSION, "   server version: " + server_version);
                     PrefUtils.setServerUpdateVersion(server_version, this.mInstance.getApplicationContext());
+                    // if current apk version is up to date
                     if (version.equals(server_version)) {
-                        return STATE_IDLE;
+                        return 0;
                     }
-                    return STATE_CONNECT;
+                    return 1;
                 }
                 PrefUtils.setServerUpdateVersion(BuildConfig.FLAVOR, this.mInstance.getApplicationContext());
-                return STATE_IDLE;
+                return 0;
             } catch (JSONException e) {
                 e.printStackTrace();
-                return PHONEHOME_ERROR;
             }
         } catch (NameNotFoundException e2) {
             e2.printStackTrace();
-            return PHONEHOME_ERROR;
         }
+        return -1;
     }
 
+    /**
+     * Execute UpdateApp task
+     * @return
+     * 0 if no update
+     * 1 if task finished
+     * -1 if there is an exception
+     */
     public int PerformAPKUpdate() {
         Log.i(TAG, "PerformAPKUpdate");
         CommLog(STATE_VERSION, "PerformAPKUpdate");
         try {
-            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), STATE_IDLE).versionName;
+            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), 0).versionName;
             Log.i(TAG, "APKUpdate::current APK version: " + version);
             CommLog(STATE_VERSION, "current APK version: " + version);
             if (!APKupdate_exists) {
-                return STATE_IDLE;
+                return 0;
             }
             PrefUtils.setApkUpdateState(STATE_CONNECT, this.mInstance.getApplicationContext());
             Log.i(TAG, "-----> New Application code exists, Update the APK <-----");
@@ -1362,30 +1378,25 @@ public class httpClient extends Activity {
                 UpdateApp updateApp = new UpdateApp();
                 updateApp.setContext(this.mInstance.getApplicationContext());
                 Log.i(TAG, "APKUpdate:updateApp.execute..");
-                String[] strArr = new String[STATE_CONNECT];
-                strArr[STATE_IDLE] = APKlink;
+                String[] strArr = { APKlink };
                 updateApp.execute(strArr);
                 updateApp.get(60, TimeUnit.SECONDS);
                 Log.i(TAG, "APKUpdate::updateApp.get - finished");
                 CommLog(STATE_VERSION, "updateApp.get - finished");
-                return STATE_CONNECT;
+                return 1;
             } catch (JSONException e) {
                 e.printStackTrace();
-                return PHONEHOME_ERROR;
             } catch (InterruptedException e2) {
                 e2.printStackTrace();
-                return PHONEHOME_ERROR;
             } catch (ExecutionException e3) {
                 e3.printStackTrace();
-                return PHONEHOME_ERROR;
             } catch (TimeoutException e4) {
                 e4.printStackTrace();
-                return PHONEHOME_ERROR;
             }
         } catch (NameNotFoundException e5) {
             e5.printStackTrace();
-            return PHONEHOME_ERROR;
         }
+        return -1;
     }
 
     /**
@@ -1435,7 +1446,7 @@ public class httpClient extends Activity {
     /**
      * Execute UpdateGateway task
      * @return
-     * 0 if CSC_PATH not existed
+     * 0 if no update
      * 1 if task finished
      * -1 if there is an exception
      */
