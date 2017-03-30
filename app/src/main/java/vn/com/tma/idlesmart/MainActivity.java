@@ -158,6 +158,16 @@ public class MainActivity extends Activity implements OnClickListener {
     final Handler verificationHandler;
     final Runnable verificationRunnable;
 
+    /**
+     * Represent the current status of the application
+     */
+    private static class KillSwitchMode {
+        static final int CONNECTED = 0; // The accessory is monitoring the truck.
+        static final int KILL_SWITCH = 1; // Display a confirmation asking if user want to stop monitoring the truck
+        static final int KILL_SWITCH_CONFIRMED = 2; // Power Off button is displayed for stopping monitoring the truck
+        static final int POWER_OFF = 3; // The accessory do not monitor the truck.
+    }
+
     /* renamed from: com.idlesmarter.aoa.MainActivity.11 */
     class AnonymousClass11 implements OnClickListener {
         final /* synthetic */ int val$faultId;
@@ -1298,7 +1308,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 SystemActivationFlag =true;
                 demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
-                    selectKillswitchMode(0);
+                    selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(true);
                     enableDashboard(true);
                     selectRunning(GOOD_CONNECTIVITY);
@@ -1311,7 +1321,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
                 if (SystemActivationFlag || demo_mode) {
-                    selectKillswitchMode(0);
+                    selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(false);
                     enableDashboard(false);
                     selectRunning(0);
@@ -1327,7 +1337,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
                 if (SystemActivationFlag) {
-                    selectKillswitchMode(GOOD_CONNECTIVITY);
+                    selectKillswitchMode(KillSwitchMode.KILL_SWITCH);
                 }
             	break;
 			case R.id.installDoneButton /*2131361837*/:
@@ -1343,7 +1353,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 InstallAndActivate(SystemActivationFlag);
             	break;
 			case R.id.poweronButton /*2131361943*/:
-                selectKillswitchMode(0);
+                selectKillswitchMode(KillSwitchMode.CONNECTED);
                 enableStatusBar(true);
                 enableDashboard(true);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
@@ -1569,11 +1579,11 @@ public class MainActivity extends Activity implements OnClickListener {
                 removeBloatware();
             	break;
 			case R.id.killswitchButton /*2131362086*/:
-                selectKillswitchMode(BAD_CONNECTIVITY);
+                selectKillswitchMode(KillSwitchMode.KILL_SWITCH_CONFIRMED);
             	break;
 			case R.id.poweroffButton /*2131362088*/:
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_ENGINE_OFF, 0, 1);
-                selectKillswitchMode(3);
+                selectKillswitchMode(KillSwitchMode.POWER_OFF);
                 findViewById(R.id.fullScreen).setVisibility(View.GONE);
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWEROFF, 0, 0);
             	break;
@@ -1711,26 +1721,26 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void selectKillswitchMode(int mode) {
         switch (mode) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
+            case KillSwitchMode.CONNECTED /*0*/:
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweronFragment).setVisibility(View.GONE);
                 break;
-            case GOOD_CONNECTIVITY /*1*/:
+            case KillSwitchMode.KILL_SWITCH /*1*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.VISIBLE);
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case KillSwitchMode.KILL_SWITCH_CONFIRMED /*2*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.VISIBLE);
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case KillSwitchMode.POWER_OFF /*3*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
