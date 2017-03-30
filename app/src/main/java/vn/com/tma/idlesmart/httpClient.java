@@ -1232,8 +1232,11 @@ public class httpClient extends Activity {
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertDatumToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
     }
 
+    /**
+     * Open datum BufferedInputStream
+     * @return BufferedInputStream object
+     */
     public BufferedInputStream openDatumBufferedInputStream() {
-        Exception e;
         BufferedInputStream returnstream = null;
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
@@ -1243,29 +1246,24 @@ public class httpClient extends Activity {
                     return null;
                 }
                 try {
-                    BufferedInputStream returnstream2 = new BufferedInputStream(new FileInputStream(file));
-                    try {
-                        Log.i(TAG, "Datum file opened for Read");
-                        returnstream = returnstream2;
-                    } catch (Exception e2) {
-                        e = e2;
-                        returnstream = returnstream2;
-                        Log.w(TAG, "IOException opening Datum file - ioe=", e);
-                        return returnstream;
-                    }
-                } catch (Exception e3) {
-                    e = e3;
+                    Log.i(TAG, "Datum file opened for Read");
+                    returnstream = new BufferedInputStream(new FileInputStream(file));
+                } catch (Exception e) {
                     Log.w(TAG, "IOException opening Datum file - ioe=", e);
-                    return returnstream;
                 }
+            } else {
+                Log.i(TAG, "ERROR: Log file directory does not exist");
             }
-            Log.i(TAG, "ERROR: Log file directory does not exist");
         } else {
             Log.w(TAG, "Error opening Datum file for Read - SDCard is not mounted");
         }
         return returnstream;
     }
 
+    /**
+     * Close a buffered input stream
+     * @param datumStream
+     */
     public void closeDatumStream(BufferedInputStream datumStream) {
         if (datumStream != null) {
             try {
@@ -1276,6 +1274,9 @@ public class httpClient extends Activity {
         }
     }
 
+    /**
+     * Delete data file in Logs
+     */
     public void deleteDatumFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
