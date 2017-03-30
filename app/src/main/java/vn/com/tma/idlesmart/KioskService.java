@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.view.Window.FEATURE_NO_TITLE;
 
 public class KioskService extends Service {
     private static final String AndroidPackageInstaller = "com.android.packageinstaller";
@@ -279,7 +280,7 @@ public class KioskService extends Service {
             this.restoreDialog.dismiss();
         }
         this.restoreDialog = new Dialog(this);
-        this.restoreDialog.requestWindowFeature(1);
+        this.restoreDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.restoreDialog.setContentView(R.layout.restore_dialog);
         this.restoreDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         this.restoreDialog.show();
