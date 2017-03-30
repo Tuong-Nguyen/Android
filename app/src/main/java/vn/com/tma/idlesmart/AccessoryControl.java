@@ -270,7 +270,7 @@ public class AccessoryControl {
                     int numRead = reclth;
                     if (!IOError) {
                         int len = numRead - AoaMessage.HEADER_LENGTH;
-                        int resp = buffer[AoaMessage.MESSAGE_ID_POSITION] & 255;
+                        int resp = buffer[AoaMessage.COMMAND_POSITION] & 255;
                         Message m;
                         byte[] ts;
                         int i;
@@ -575,14 +575,19 @@ public class AccessoryControl {
             Log.i(TAG, "   Open the USB connection..");
             this.parcelFileDescriptor = this.usbManager.openAccessory(accessory);
             if (this.parcelFileDescriptor != null) {
+
+                // Open InputStream and OutputStream for communicating with accessory
                 this.accOutputStream = new FileOutputStream(this.parcelFileDescriptor.getFileDescriptor());
                 Log.d(TAG, "accOutputStream=" + this.accOutputStream.toString());
                 this.accInputStream = new FileInputStream(this.parcelFileDescriptor.getFileDescriptor());
                 Log.d(TAG, "accInputStream=" + this.accInputStream.toString());
                 this.isOpen = true;
+
+                // Start thread for reading from accessory
                 this.usbreader = new UsbReader(new BufferedInputStream(this.accInputStream, 16384));
                 new Thread(this.usbreader).start();
                 Log.i(TAG, "   ---> Thread(receiver).start()..");
+
                 writeLogString("Gateway Connected");
                 MainActivity.demo_mode = false;
                 Log.i(TAG, "   Send APICMD_CONNECT to Gateway..");
@@ -656,10 +661,10 @@ public class AccessoryControl {
      * @param loVal Low value
      */
     public void writeCommand(int cmd, int hiVal, int loVal) {
-        byte[] buffer = new byte[APICMD_SYNC];
+        byte[] buffer = new byte[5];
         if (this.isOpen) {
             Log.i(TAG, "AccessoryControl::writeCommand: " + Integer.toString(cmd) + "  isOpen? true");
-            buffer[APICMD_BASE] = (byte) 0;
+            buffer[0] = (byte) 0;
             buffer[1] = (byte) 3;
             buffer[2] = (byte) (cmd & 255);
             buffer[3] = (byte) (hiVal & 255);
@@ -679,25 +684,31 @@ public class AccessoryControl {
         Log.w(TAG, "AccessoryControl::writeCommand: " + Integer.toString(cmd) + "  isOpen? false");
     }
 
-    public void writeCommandBlock(int cmd, int lth, byte[] datablk) {
-        byte[] buffer = new byte[(lth + USB_READ_EXCEPTION)];
+    /**
+     * Write command with data to accessory
+     * @param cmd
+     * @param dataLength
+     * @param datablk
+     */
+    public void writeCommandBlock(int cmd, int dataLength, byte[] datablk) {
+        byte[] buffer = new byte[(dataLength + AoaMessage.START_DATA_POSITION)];
         if (this.isOpen) {
             Log.i(TAG, "AccessoryControl::writeCommand: " + Integer.toString(cmd) + "  isOpen? true");
-            int reclen = lth + USB_OPEN_EXCEPTION;
-            buffer[APICMD_BASE] = (byte) ((reclen >> SYNC_LAST_MAX) & 255);
-            buffer[USB_OPEN_EXCEPTION] = (byte) (reclen & 255);
-            buffer[USB_CLOSE_EXCEPTION] = (byte) (cmd & 255);
-            for (int i = APICMD_BASE; i < lth; i += USB_OPEN_EXCEPTION) {
-                buffer[i + USB_READ_EXCEPTION] = datablk[i];
+            int reclen = dataLength + 1; // data length + command (1 byte)
+            buffer[0] = (byte) ((reclen >> 8) & 255);
+            buffer[1] = (byte) (reclen & 255);
+            buffer[AoaMessage.COMMAND_POSITION] = (byte) (cmd & 255);
+            for (int i = 0; i < dataLength; i += 1) {
+                buffer[i + AoaMessage.START_DATA_POSITION] = datablk[i];
             }
             try {
                 synchronized (this.accOutputStream) {
-                    this.accOutputStream.write(buffer, APICMD_BASE, lth + USB_READ_EXCEPTION);
+                    this.accOutputStream.write(buffer, 0, dataLength + AoaMessage.START_DATA_POSITION);
                 }
                 return;
             } catch (IOException ioe) {
                 Log.w(TAG, "IOException writing a USB data block - ioe=", ioe);
-                USBException(USB_WRITE_EXCEPTION);
+                USBException(4);
                 return;
             }
         }
@@ -741,12 +752,12 @@ public class AccessoryControl {
         if (this.logStream != null && !logstring.trim().isEmpty()) {
             try {
                 byte[] ts = getUTCdatetimeAsString().getBytes();
-                this.logStream.write(ts, APICMD_BASE, ts.length);
-                this.logStream.write(APICMD_AUTO_SHUTOFF_TIMEOUT);
+                this.logStream.write(ts, 0, ts.length);
+                this.logStream.write(' ');
                 byte[] bstr = logstring.getBytes();
-                this.logStream.write(bstr, APICMD_BASE, bstr.length);
-                this.logStream.write(APICMD_DL);
-                this.logStream.write(APICMD_API_VERSION);
+                this.logStream.write(bstr, 0, bstr.length);
+                this.logStream.write('\n');
+                this.logStream.write('\r');
                 this.logStream.flush();
             } catch (Exception e) {
                 Log.w(TAG, "IOException writing Log file - e=", e);
@@ -795,12 +806,12 @@ public class AccessoryControl {
         if (this.datumStream != null && !datumstring.trim().isEmpty()) {
             try {
                 byte[] ts = getUTCdatetimeAsString().getBytes();
-                this.datumStream.write(ts, APICMD_BASE, ts.length);
-                this.datumStream.write(APICMD_AUTO_SHUTOFF_TIMEOUT);
+                this.datumStream.write(ts, 0, ts.length);
+                this.datumStream.write(' ');
                 byte[] bstr = datumstring.getBytes();
-                this.datumStream.write(bstr, APICMD_BASE, bstr.length);
-                this.datumStream.write(APICMD_DL);
-                this.datumStream.write(APICMD_API_VERSION);
+                this.datumStream.write(bstr, 0, bstr.length);
+                this.datumStream.write('\n');
+                this.datumStream.write('\r');
                 this.datumStream.flush();
             } catch (Exception e) {
                 Log.w(TAG, "IOException writing Datum file - e=", e);
@@ -822,16 +833,17 @@ public class AccessoryControl {
 
     public void writefmtCANLogStream(String str) {
         if (MainActivity.aMaintEnable[APICMD_BASE] && str != null && this.canStream != null) {
+            int paddingCount = 16;
             try {
                 int lth = str.length();
-                int reccnt = lth / APICMD_TESTMODE;
-                if (reccnt * APICMD_TESTMODE != lth) {
-                    reccnt += USB_OPEN_EXCEPTION;
-                    str = padRight(str, (reccnt * APICMD_TESTMODE) - lth, ' ');
+                int reccnt = lth / paddingCount;
+                if (reccnt * paddingCount != lth) {
+                    reccnt += 1;
+                    str = padRight(str, (reccnt * paddingCount) - lth, ' ');
                 }
                 byte[] bytes = str.getBytes();
-                for (int irec = APICMD_BASE; irec < reccnt; irec += USB_OPEN_EXCEPTION) {
-                    this.canStream.write(bytes, APICMD_BASE, APICMD_TESTMODE);
+                for (int irec = 0; irec < reccnt; irec += 1) {
+                    this.canStream.write(bytes, 0, paddingCount);
                 }
                 this.canStream.flush();
             } catch (Exception e) {
@@ -861,7 +873,7 @@ public class AccessoryControl {
         }
         if (this.canStream != null) {
             try {
-                this.canStream.write("================".getBytes(), APICMD_BASE, APICMD_TESTMODE);
+                this.canStream.write("================".getBytes(), 0, 16);
             } catch (Exception e2) {
                 Log.w(TAG, "IOException writing CANLog header - ioe=", e2);
             }
@@ -881,7 +893,7 @@ public class AccessoryControl {
     }
 
     private int toInt(byte hi, byte lo) {
-        return ((((hi & 255) << SYNC_LAST_MAX) | (lo & 255)) << APICMD_TESTMODE) >> APICMD_TESTMODE;
+        return ((((hi & 255) << 8) | (lo & 255)) << 16) >> 16;
     }
 
     private String padRight(String str, int size, char padChar) {

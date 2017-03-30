@@ -15,6 +15,6 @@ package vn.com.tma.idlesmart;
 
 public class AoaMessage {
     public static final int HEADER_LENGTH = 2;
-    public static final int MESSAGE_ID_POSITION = 2;
+    public static final int COMMAND_POSITION = 2;
     public static final int START_DATA_POSITION = 3;
 }
