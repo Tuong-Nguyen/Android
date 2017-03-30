@@ -16,7 +16,6 @@ import java.net.URL;
 
 import vn.com.tma.idlesmart.KioskService;
 import vn.com.tma.idlesmart.MainActivity;
-import vn.com.tma.idlesmart.httpClient;
 import vn.com.tma.idlesmart.params.UpdateTaskConfig;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -37,19 +36,19 @@ public class UpdateApp extends AsyncTask<String, Void, Void> {
         byte[] buffer = new byte[16384];
         Log.i(TAG, "=====> UpdateApp thread is running in Bkgnd");
         try {
-            String APKlink = arg0[UpdateTaskConfig.STATE_IDLE];
+            String APKlink = arg0[0];
             URL url = new URL("http://" + MainActivity.APIroute + APKlink);
             Log.i(TAG, "url=" + url);
             // TODO: Extract to LogUtil class
             //httpClient.CommLog(UpdateTaskConfig.STATE_VERSION, "url=" + url);
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
             c.setRequestMethod("POST");
-            c.setDoOutput(httpClient.PHONEHOME_RESCHEDULE);
+            c.setDoOutput(true);
             c.connect();
             String lfn = APKlink;
-            for (int i = lfn.length() + httpClient.PHONEHOME_ERROR; i >= 0; i += httpClient.PHONEHOME_ERROR) {
+            for (int i = lfn.length() - 1; i >= 0; i -= 1) {
                 if (lfn.charAt(i) == '/') {
-                    lfn = lfn.substring(i + UpdateTaskConfig.STATE_CONNECT);
+                    lfn = lfn.substring(i + 1);
                     break;
                 }
             }
@@ -72,21 +71,21 @@ public class UpdateApp extends AsyncTask<String, Void, Void> {
                     InputStream is = c.getInputStream();
                     while (true) {
                         int len1 = is.read(buffer);
-                        if (len1 == httpClient.PHONEHOME_ERROR) {
+                        if (len1 == -1) {
                             break;
                         }
-                        fos.write(buffer, UpdateTaskConfig.STATE_IDLE, len1);
+                        fos.write(buffer, 0, len1);
                     }
                     fos.close();
                     is.close();
                     Log.i(TAG, "Download complete: " + lfn);
                     // TODO: Extract to LogUtil class
                     //httpClient.CommLog(UpdateTaskConfig.STATE_VERSION, "Download complete: " + lfn);
-                    KioskService.restartcount = UpdateTaskConfig.STATE_IDLE;
+                    KioskService.restartcount = 0;
                     Intent intent = new Intent("android.intent.action.VIEW");
                     intent.setDataAndType(Uri.fromFile(new File(path, lfn)), "application/vnd.android.package-archive");
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                    MainActivity.PackageUpdatePending = httpClient.PHONEHOME_RESCHEDULE;
+                    MainActivity.PackageUpdatePending = true;
                     Log.i(TAG, "******* startActivity::PackageManager::package-archive");
                     this.context.startActivity(intent);
                 } catch (IOException e) {
