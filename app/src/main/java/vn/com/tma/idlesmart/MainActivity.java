@@ -1169,22 +1169,22 @@ public class MainActivity extends Activity implements OnClickListener {
         Calendar date = Calendar.getInstance();
         int hour = SyncStart / 60;
         int min = SyncStart - (hour * 60);
-        date.set(11, hour);
-        date.set(12, min);
+        date.set(Calendar.HOUR_OF_DAY, hour);
+        date.set(Calendar.MINUTE, min);
         while (date.before(Calendar.getInstance())) {
-            date.add(12, SyncTTL);
+            date.add(Calendar.MINUTE, SyncTTL);
         }
         Calendar tomorrow = Calendar.getInstance();
-        tomorrow.set(11, UNKNOWN_CONNECTIVITY);
-        tomorrow.set(12, UNKNOWN_CONNECTIVITY);
-        tomorrow.set(13, UNKNOWN_CONNECTIVITY);
-        tomorrow.add(6, GOOD_CONNECTIVITY);
+        tomorrow.set(Calendar.HOUR_OF_DAY, 0);
+        tomorrow.set(Calendar.MINUTE, 0);
+        tomorrow.set(Calendar.SECOND, 0);
+        tomorrow.add(Calendar.DAY_OF_YEAR, 1);
         if (date.before(tomorrow)) {
             return date;
         }
         date = tomorrow;
-        date.set(11, hour);
-        date.set(12, min);
+        date.set(Calendar.HOUR_OF_DAY, hour);
+        date.set(Calendar.MINUTE, min);
         return date;
     }
 
