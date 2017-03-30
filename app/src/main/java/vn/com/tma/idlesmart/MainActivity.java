@@ -1167,8 +1167,8 @@ public class MainActivity extends Activity implements OnClickListener {
     public void SetNextPhoneHome() {
         Calendar date = CalcNextPhoneHome();
         Log.i(TAG, "Next PhoneHome scheduled for: " + date.getTime().toString());
-        byte[] data = new byte[BAD_CONNECTIVITY];
-        SyncNext = (date.get(11) * 60) + date.get(12);
+        byte[] data = new byte[2];
+        SyncNext = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
         data[0] = (byte) ((SyncNext >> 8) & 255);
         data[GOOD_CONNECTIVITY] = (byte) (SyncNext & 255);
         this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[GOOD_CONNECTIVITY]);
