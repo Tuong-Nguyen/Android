@@ -1692,7 +1692,7 @@ public class MainActivity extends Activity implements OnClickListener {
             this.passwordDialog.dismiss();
         }
         this.passwordDialog = new Dialog(this);
-        this.passwordDialog.requestWindowFeature(GOOD_CONNECTIVITY);
+        this.passwordDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.passwordDialog.setContentView(R.layout.password_dialog);
         this.passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
@@ -2646,7 +2646,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, UNKNOWN_CONNECTIVITY, faultId);
             }
             this.alertDialog = new Dialog(this);
-            this.alertDialog.requestWindowFeature(GOOD_CONNECTIVITY);
+            this.alertDialog.requestWindowFeature(FEATURE_NO_TITLE);
             this.alertDialog.setContentView(R.layout.alert_dialog);
             HasFocus = enableKioskMode;
             ((TextView) this.alertDialog.findViewById(R.id.alertName)).setText(this.faults.aFaultMessage[faultId]);
@@ -2707,7 +2707,7 @@ public class MainActivity extends Activity implements OnClickListener {
             this.serialDialog.dismiss();
         }
         this.serialDialog = new Dialog(this);
-        this.serialDialog.requestWindowFeature(GOOD_CONNECTIVITY);
+        this.serialDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.serialDialog.setContentView(R.layout.serial_dialog);
         this.serialDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) this.serialDialog.findViewById(R.id.serialVIN_Text)).setText(Gateway_VIN);
@@ -2737,7 +2737,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         this.kiosk_mode_counter = UNKNOWN_CONNECTIVITY;
         this.maintDialog = new Dialog(this);
-        this.maintDialog.requestWindowFeature(GOOD_CONNECTIVITY);
+        this.maintDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.maintDialog.setContentView(R.layout.maint_dialog);
         this.maintDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[UNKNOWN_CONNECTIVITY]);
