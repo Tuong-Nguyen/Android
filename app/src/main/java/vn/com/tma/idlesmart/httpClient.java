@@ -19,7 +19,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.FileChannel;
@@ -33,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import vn.com.tma.idlesmart.tasks.ServerTask;
 import vn.com.tma.idlesmart.tasks.UpdateApp;
 
 public class httpClient extends Activity {
@@ -360,61 +360,6 @@ public class httpClient extends Activity {
                 default:
                     break;
             }
-        }
-    }
-
-    public class ServerTask extends AsyncTask<String, Void, String> {
-        private static final String TAG = "IdleSmart.ServerTask";
-        String code;
-        private Context context;
-
-        public ServerTask() {
-            this.code = BuildConfig.FLAVOR;
-        }
-
-        public void setContext(Context contextf) {
-            this.context = contextf;
-        }
-
-        protected String doInBackground(String... arg0) {
-            StringBuilder result = new StringBuilder();
-            Log.i(TAG, "  ===> ServerTask::doInBackground..");
-            try {
-                URL url = new URL(arg0[httpClient.STATE_IDLE]);
-                Log.i(TAG, "  dib: url=" + url);
-                HttpURLConnection c = (HttpURLConnection) url.openConnection();
-                c.setRequestMethod("POST");
-                c.setRequestProperty("Content-Type", "application/json");
-                c.setDoOutput(httpClient.PHONEHOME_RESCHEDULE);
-                c.setDoInput(httpClient.PHONEHOME_RESCHEDULE);
-                c.connect();
-                OutputStream os = c.getOutputStream();
-                os.write(arg0[httpClient.STATE_CONNECT].getBytes());
-                os.flush();
-                os.close();
-                int httpResponseCode = c.getResponseCode();
-                if (httpResponseCode == 200 || httpResponseCode == 201) {
-                    InputStream is = new BufferedInputStream(c.getInputStream());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                    while (true) {
-                        String line = reader.readLine();
-                        if (line == null) {
-                            break;
-                        }
-                        result.append(line);
-                    }
-                    Log.i(TAG, "      ServerTask result:" + result.toString());
-                    is.close();
-                } else {
-                    Log.e(TAG, "      ServerTask Error:http response code:" + Integer.toString(httpResponseCode));
-                }
-                c.disconnect();
-            } catch (IOException e) {
-                Log.e(TAG, "  ServerTask::IOException");
-                e.printStackTrace();
-            }
-            Log.i(TAG, "  ===> ServerTask::done");
-            return result.toString();
         }
     }
 
