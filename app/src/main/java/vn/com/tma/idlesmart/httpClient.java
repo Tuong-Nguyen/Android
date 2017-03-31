@@ -126,7 +126,7 @@ public class httpClient extends Activity {
             int status;
             switch (httpClient.phonehome_state) {
                 case PhoneHomeState.IDLE /*0*/:
-                    httpClient.result = 3;
+                    httpClient.result = PhoneHomeSyncStatus.PENDING;
                     MainActivity.SyncLast_Status = PhoneHomeSyncStatus.PENDING;
                     MainActivity.SyncLast = Calendar.getInstance();
                     httpClient.this.mInstance.UpdateConnectivityStatus();
@@ -203,7 +203,7 @@ public class httpClient extends Activity {
                             httpClient.this.dialog.setMessage("Updating Gateway firmware");
                             httpClient.phonehome_state = PhoneHomeState.CSC_AUTO_UPDATE;
                         } else {
-                            httpClient.result = httpClient.STATE_LOG;
+                            httpClient.result = PhoneHomeSyncStatus.NONE;
                             httpClient.phonehome_state = PhoneHomeState.DONE;
                         }
                     } else if (httpClient.phonehome_update_level == PhoneHomeState.ACTIVATE) {
@@ -211,7 +211,7 @@ public class httpClient extends Activity {
                             httpClient.this.dialog.setMessage("Updating Tablet Application");
                             httpClient.phonehome_state = PhoneHomeState.APK_UPDATE;
                         } else {
-                            httpClient.result = httpClient.STATE_LOG;
+                            httpClient.result = PhoneHomeSyncStatus.NONE;
                             httpClient.phonehome_state = PhoneHomeState.DONE;
                         }
                     } else if (httpClient.phonehome_update_level == PhoneHomeState.CONNECT) {
@@ -220,9 +220,9 @@ public class httpClient extends Activity {
                             httpClient.phonehome_state = PhoneHomeState.CSC_UPDATE;
                         } else {
                             if (httpClient.APKupdate_exists) {
-                                httpClient.result = PhoneHomeState.UPDATE;
+                                httpClient.result = PhoneHomeSyncStatus.APK_PENDING;
                             } else {
-                                httpClient.result = PhoneHomeState.CONNECT;
+                                httpClient.result = PhoneHomeSyncStatus.OK;
                             }
                             httpClient.phonehome_state = PhoneHomeState.DONE;
                         }
@@ -233,13 +233,13 @@ public class httpClient extends Activity {
                         httpClient.this.dialog.setMessage("Updating Gateway firmware");
                         httpClient.phonehome_state = PhoneHomeState.CSC_UPDATE;
                     } else {
-                        httpClient.result = PhoneHomeState.CONNECT;
+                        httpClient.result = PhoneHomeSyncStatus.OK;
                         httpClient.phonehome_state = PhoneHomeState.DONE;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
 				case PhoneHomeState.APK_UPDATE /*7*/:
-                    httpClient.result = httpClient.STATE_CONNECT;
+                    httpClient.result = PhoneHomeSyncStatus.OK;
                     if (httpClient.APKupdate_exists) {
                         if (httpClient.CSCupdate_exists) {
                             Log.w(httpClient.TAG, "Send APICMD_DL(2)..(delayed CSC update)");
@@ -247,16 +247,16 @@ public class httpClient extends Activity {
                         }
                         status = httpClient.this.PerformAPKUpdate();
                         if (status == 0) {
-                            httpClient.result = httpClient.STATE_CONNECT;
+                            httpClient.result = PhoneHomeSyncStatus.OK;
                         } else if (status == 1) {
                             if (MainActivity.PackageUpdatePending) {
-                                httpClient.result = httpClient.STATE_UPDATE;
+                                httpClient.result = PhoneHomeSyncStatus.APK_PENDING;
                             }
                         } else if (status < 0) {
-                            httpClient.result = httpClient.PHONEHOME_ERROR;
+                            httpClient.result = PhoneHomeSyncStatus.ERROR;
                         }
-                        if (httpClient.result == httpClient.STATE_CONNECT && httpClient.CSCupdate_exists) {
-                            httpClient.result = httpClient.STATE_FREEZE_GATEWAY;
+                        if (httpClient.result == PhoneHomeSyncStatus.OK && httpClient.CSCupdate_exists) {
+                            httpClient.result = PhoneHomeSyncStatus.GATEWAY_UPDATE;
                         }
                         httpClient.phonehome_state = PhoneHomeState.DONE;
                     }
@@ -267,14 +267,14 @@ public class httpClient extends Activity {
                     if (httpClient.CSCupdate_exists) {
                         status = httpClient.this.PerformCSCUpdate();
                         if (status == 0) {
-                            httpClient.result = httpClient.STATE_LOG;
+                            httpClient.result = PhoneHomeSyncStatus.NONE;
                         } else if (status < 0) {
-                            httpClient.result = httpClient.PHONEHOME_ERROR;
+                            httpClient.result = PhoneHomeSyncStatus.ERROR;
                         } else {
-                            httpClient.result = httpClient.STATE_CONNECT;
+                            httpClient.result = PhoneHomeSyncStatus.OK;
                         }
                     } else {
-                        httpClient.result = httpClient.STATE_LOG;
+                        httpClient.result = PhoneHomeSyncStatus.NONE;
                     }
                     httpClient.phonehome_state = PhoneHomeState.DONE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
@@ -332,7 +332,7 @@ public class httpClient extends Activity {
                             break;
                     }
                     httpClient.PhoneHomePending = false;
-                    if (httpClient.result != httpClient.STATE_UPDATE) {
+                    if (httpClient.result != PhoneHomeSyncStatus.APK_PENDING) {
                         Log.w(httpClient.TAG, "send APICMD_FREEZE(false)..");
                         httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, httpClient.STATE_IDLE, httpClient.STATE_IDLE);
                     }
@@ -347,7 +347,7 @@ public class httpClient extends Activity {
                     httpClient.phonehome_state = PhoneHomeState.IDLE;
                     httpClient.phonehomeHandler.removeCallbacks(httpClient.this.phonehomeRunnable);
                     httpClient.PhoneHomePending = false;
-                    if (httpClient.result == httpClient.STATE_UPDATE) {
+                    if (httpClient.result == PhoneHomeSyncStatus.APK_PENDING) {
                         httpClient.this.mInstance.exit();
                     }
                     break;
@@ -471,7 +471,8 @@ public class httpClient extends Activity {
         phonehome_state = STATE_IDLE;
         APKupdate_exists = false;
         CSCupdate_exists = false;
-        result = PHONEHOME_NONE; // 5, assume
+        // Assume <result> is an "enum" PhoneHomeSyncStatus
+        result = PhoneHomeSyncStatus.NONE;
     }
 
     public void PhoneHome(int update_level, boolean reschedule) {
