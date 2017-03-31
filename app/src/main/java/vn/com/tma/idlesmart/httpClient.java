@@ -150,7 +150,7 @@ public class httpClient extends Activity {
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
 				case httpClient.STATE_FREEZE_GATEWAY /*2*/:
-                    if (MainActivity.aMaintEnable[httpClient.STATE_CSC_AUTOUPDATE]) {
+                    if (MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
                         httpClient.this.mInstance.openCommDialog();
                     }
                     Log.w(httpClient.TAG, "send APICMD_FREEZE(true)..");
@@ -451,7 +451,7 @@ public class httpClient extends Activity {
     }
 
     public void CommLog(int flag, String str) {
-        if (!MainActivity.aMaintEnable[STATE_CSC_AUTOUPDATE]) {
+        if (!MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
             return;
         }
         if (flag == STATE_CONNECT || flag == MainActivity.aMaintValue[STATE_CSC_AUTOUPDATE] || MainActivity.aMaintValue[STATE_CSC_AUTOUPDATE] == STATE_ERROR) {

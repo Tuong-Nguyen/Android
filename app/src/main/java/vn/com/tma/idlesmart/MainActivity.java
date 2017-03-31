@@ -161,6 +161,22 @@ public class MainActivity extends Activity implements OnClickListener {
     final Runnable verificationRunnable;
 
     /**
+     * Index of maintenance features
+     */
+    public static class MaintenanceFeature {
+        static final int LOG_FILE = 0;                             // Log File (J1939 data)
+        static final int CLUTCH_OVERRIDE = 1;                      // Clutch Override
+        static final int IDLE_TIME_OVERRIDE = 2;                   // Idle Timer Override (1='brake', 2='long brake', 3=spn_1237)
+        static final int ENGINE_SPEED_ADJUSTMENTS = 3;             // Engine Speed Adjustments (1=during idleup, 2=while running)
+        static final int TIMESTAMP_RPM = 4;                        // Timestamp/RPM logging
+        static final int NEUTRAL_SWITCH_DETECTION = 5;             // Neutral switch detection
+        static final int RESERVED = 6;                             // Reserved
+        static final int SERVER_ROUTE = 7;                         // Server Route
+        static final int RESET_VIN_RESTORE_FACTORY_DEFAULTS = 8;   // Reset VIN and Restore Factory Defaults
+        static final int VIEW_SERVER_COMMUNICATION = 9;            // View Server Communication (1-8 or 99)
+    }
+
+    /**
      * Represent the current status of the application
      */
     private static class KillSwitchMode {
@@ -2846,47 +2862,47 @@ public class MainActivity extends Activity implements OnClickListener {
         this.maintDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.maintDialog.setContentView(R.layout.maint_dialog);
         this.maintDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[0]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[0]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[1]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[1]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[2]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[2]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_4)).setChecked(aMaintEnable[3]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_4)).setText(Integer.toString(aMaintValue[3]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_5)).setChecked(aMaintEnable[4]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_5)).setText(Integer.toString(aMaintValue[4]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_6)).setChecked(aMaintEnable[5]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_6)).setText(Integer.toString(aMaintValue[5]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_7)).setChecked(aMaintEnable[6]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_7)).setText(Integer.toString(aMaintValue[6]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(aMaintEnable[7]);
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[MaintenanceFeature.LOG_FILE]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[MaintenanceFeature.LOG_FILE]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_4)).setChecked(aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_4)).setText(Integer.toString(aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_5)).setChecked(aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_5)).setText(Integer.toString(aMaintValue[MaintenanceFeature.TIMESTAMP_RPM]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_6)).setChecked(aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_6)).setText(Integer.toString(aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_7)).setChecked(aMaintEnable[MaintenanceFeature.RESERVED]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_7)).setText(Integer.toString(aMaintValue[MaintenanceFeature.RESERVED]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(aMaintEnable[MaintenanceFeature.SERVER_ROUTE]);
         ((EditText) this.maintDialog.findViewById(R.id.maintText_8)).setText(APIroute);
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(aMaintEnable[8]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_9)).setText(Integer.toString(aMaintValue[8]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_10)).setChecked(aMaintEnable[9]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_10)).setText(Integer.toString(aMaintValue[9]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_9)).setText(Integer.toString(aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_10)).setChecked(aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_10)).setText(Integer.toString(aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION]));
         this.maintDialog.findViewById(R.id.maintDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                MainActivity.aMaintEnable[0] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
-                MainActivity.aMaintValue[0] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
-                MainActivity.aMaintEnable[1] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
-                MainActivity.aMaintValue[1] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
-                MainActivity.aMaintEnable[2] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
-                MainActivity.aMaintValue[2] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
-                MainActivity.aMaintEnable[3] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_4)).isChecked();
-                MainActivity.aMaintValue[3] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
-                MainActivity.aMaintEnable[4] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_5)).isChecked();
-                MainActivity.aMaintValue[4] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_5)).getText().toString());
-                MainActivity.aMaintEnable[5] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_6)).isChecked();
-                MainActivity.aMaintValue[5] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_6)).getText().toString());
-                MainActivity.aMaintEnable[6] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_7)).isChecked();
-                MainActivity.aMaintValue[6] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_7)).getText().toString());
-                MainActivity.aMaintEnable[7] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_8)).isChecked();
-                MainActivity.aMaintEnable[8] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_9)).isChecked();
-                MainActivity.aMaintValue[8] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_9)).getText().toString());
-                MainActivity.aMaintEnable[9] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_10)).isChecked();
-                MainActivity.aMaintValue[9] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_10)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.LOG_FILE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.LOG_FILE] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_4)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_5)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_5)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_6)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_6)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.RESERVED] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_7)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.RESERVED] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_7)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.SERVER_ROUTE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_8)).isChecked();
+                MainActivity.aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_9)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_9)).getText().toString());
+                MainActivity.aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_10)).isChecked();
+                MainActivity.aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_10)).getText().toString());
                 MainActivity.this.sendMaintInfo();
                 MainActivity.this.maintDialog.dismiss();
             }
@@ -2924,81 +2940,82 @@ public class MainActivity extends Activity implements OnClickListener {
             aMaintEnable[i] = false;
             aMaintValue[i] = 1;
         }
-        aMaintValue[3] = 1;
-        aMaintValue[6] = 1;
-        aMaintValue[7] = 0;
-        aMaintValue[8] = 0;
-        aMaintValue[9] = 1;
+
+        aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = 1;
+        aMaintValue[MaintenanceFeature.RESERVED] = 1;
+        aMaintValue[MaintenanceFeature.SERVER_ROUTE] = 0;
+        aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = 0;
+        aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = 1;
     }
 
     public void sendMaintInfo() {
         byte[] data = new byte[2];
 
         // Log File (J1939 data)
-        if (aMaintEnable[0]) {
-            data[0] = (byte) ((aMaintValue[0] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[0] & 255);
+        if (aMaintEnable[MaintenanceFeature.LOG_FILE]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.LOG_FILE] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.LOG_FILE] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, 0, 0);
         }
 
         // Clutch Override
-        if (aMaintEnable[1]) {
-            data[0] = (byte) ((aMaintValue[1] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[1] & 255);
+        if (aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, 0, 0);
         }
 
         // Idle Timer Override (1='brake', 2='long brake', 3=spn_1237)
-        if (aMaintEnable[2]) {
-            data[0] = (byte) ((aMaintValue[2] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[2] & 255);
+        if (aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, 0, 0);
         }
 
         // Engine Speed Adjustments (1=during idleup, 2=while running)
-        if (aMaintEnable[3]) {
-            data[0] = (byte) ((aMaintValue[3] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[3] & 255);
+        if (aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, 0, 0);
         }
 
         // Timestamp/RPM logging
-        if (aMaintEnable[4]) {
-            data[0] = (byte) ((aMaintValue[4] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[4] & 255);
+        if (aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, 0, 0);
         }
 
         // Neutral switch detection
-        if (aMaintEnable[5]) {
-            data[0] = (byte) ((aMaintValue[5] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[5] & 255);
+        if (aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, 0, 0);
         }
 
         // Reserved
-        if (aMaintEnable[6]) {
-            data[0] = (byte) ((aMaintValue[6] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[6] & 255);
+        if (aMaintEnable[MaintenanceFeature.RESERVED]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.RESERVED] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.RESERVED] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, 0, 0);
         }
 
         // Server Route
-        if (aMaintEnable[7]) {
+        if (aMaintEnable[MaintenanceFeature.SERVER_ROUTE]) {
             String ServerRoute = ((EditText) this.maintDialog.findViewById(R.id.maintText_8)).getText().toString();
             if (ServerRoute.trim().isEmpty()) {
                 ServerRoute = DefaultAPIroute;
@@ -3011,11 +3028,11 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.w(TAG, "(send) APIDATA_SERVER_ROUTE=" + APIroute);
             sendCmdString(AccessoryControl.APIDATA_SERVER_ROUTE, APIroute);
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(false);
-            aMaintEnable[7] = false;
+            aMaintEnable[MaintenanceFeature.SERVER_ROUTE] = false;
         }
 
         // Reset VIN and Restore Factory Defaults
-        if (aMaintEnable[8]) {
+        if (aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]) {
             Gateway_VIN = BuildConfig.FLAVOR;
             sendVIN(Gateway_VIN);
             Log.i(TAG, "(send) APICMD_VIN= " + Gateway_VIN);
@@ -3028,13 +3045,13 @@ public class MainActivity extends Activity implements OnClickListener {
             this.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, 0, 0);
             Log.i(TAG, "(send) APICMD_ACTIVATE= 0");
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(false);
-            aMaintEnable[8] = false;
+            aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = false;
         }
 
         // View Server Communication (1-8 or 99)
-        if (aMaintEnable[9]) {
-            data[0] = (byte) ((aMaintValue[9] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[9] & 255);
+        if (aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
+            data[0] = (byte) ((aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] & 255);
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, data[0], data[1]);
             return;
         }
@@ -3244,7 +3261,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void CommLogStr(String str) {
-        if (aMaintEnable[9]) {
+        if (aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
             commlogstr += str + "\n\r";
             commlogtext.setText(commlogstr);
         }
