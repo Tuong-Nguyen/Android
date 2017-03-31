@@ -2388,26 +2388,26 @@ public class MainActivity extends Activity implements OnClickListener {
             String str;
             switch (vId) {
                 case R.id.settingsEntryEnableButton /*2131362065*/:
-                    if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
-                        pValue = GOOD_CONNECTIVITY;
+                    if (this.params.aParamType[pId] == Params.BooleanType) {
+                        pValue = 1;
                     }
                 	break;
 			    case R.id.settingsEntryDisableButton /*2131362068*/:
-                    if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
+                    if (this.params.aParamType[pId] == Params.BooleanType) {
                         pValue = 0;
                     }
                 	break;
 			    case R.id.settingsEntryDecrementButton /*2131362072*/:
                     decrValue(pId);
-                    if (pId == 18 && pValue < 4) {
+                    if (pId == Params.PARAM_TruckTimer && pValue < 4) {
                         pValue = 0;
                     }
                     switch (this.params.aParamType[pId]) {
-                        case BAD_CONNECTIVITY /*2*/:
-			            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+                        case Params.IntegerType /*2*/:
+			            case Params.TempType /*3*/:
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(pValue) + pSfx);
                         	break;
-			            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+			            case Params.VoltageType /*4*/:
                             str = Integer.toString(pValue);
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                             break;
@@ -2417,15 +2417,15 @@ public class MainActivity extends Activity implements OnClickListener {
                 	break;
 			    case R.id.settingsEntryIncrementButton /*2131362073*/:
                     incrValue(pId);
-                    if (pId == 18 && pValue < 4) {
+                    if (pId == Params.PARAM_TruckTimer && pValue < 4) {
                         pValue = 4;
                     }
                     switch (this.params.aParamType[pId]) {
-			            case BAD_CONNECTIVITY /*2*/:
-            			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+			            case Params.IntegerType /*2*/:
+            			case Params.TempType /*3*/:
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(Integer.toString(pValue) + pSfx);
                         	break;
-			            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+			            case Params.VoltageType /*4*/:
                             str = Integer.toString(pValue);
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                             break;
