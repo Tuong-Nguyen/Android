@@ -826,8 +826,17 @@ public class httpClient extends Activity {
         return voltstr + "." + Integer.toString(battvolt - (volts * 10));
     }
 
+    /**
+     * Calling ServerTask to upload log from external storage to server
+     * @return
+     * -1 if error
+     * 1 if response is empty
+     * 10 if success
+     * others: server error code
+     * Default API link: [POST] http://api.idlesmart.com/api/truck/update
+     */
     public int PerformLogTask() {
-        int responseCode = PHONEHOME_ERROR;
+        int responseCode = -1;
         Log.i(TAG, "LogTask");
         CommLog(STATE_UPDATE, "LogTask");
         if (this.mInstance.accessoryControl.logStream != null) {
@@ -838,7 +847,7 @@ public class httpClient extends Activity {
         if (logStream == null) {
             Log.i(TAG, "Log file does not exist or is empty");
             CommLog(STATE_UPDATE, "Log file does not exist or is empty");
-            return PHONEHOME_ERROR;
+            return -1;
         }
         BufferedReader logIn = new BufferedReader(new InputStreamReader(logStream));
         while (logIn != null) {
@@ -855,32 +864,32 @@ public class httpClient extends Activity {
                 jsonRequest.accumulate("device", jsonDevice);
                 jsonRequest.accumulate("log", jsonLog);
                 if (MainActivity.DebugLog) {
-                    Log.i(TAG, "jsonLogRequest:" + jsonRequest.toString(STATE_CONNECT));
+                    Log.i(TAG, "jsonLogRequest:" + jsonRequest.toString(1));
                 }
-                CommLog(STATE_UPDATE, "jsonLogRequest:" + jsonRequest.toString(STATE_CONNECT));
+                CommLog(STATE_UPDATE, "jsonLogRequest:" + jsonRequest.toString(1));
                 ServerTask servertask = new ServerTask();
                 servertask.setContext(this.mInstance.getApplicationContext());
                 Log.i(TAG, "logTask:servertask.execute..");
-                String[] strArr = new String[STATE_FREEZE_GATEWAY];
-                strArr[STATE_IDLE] = "http://" + MainActivity.APIroute + "/api/truck/update";
-                strArr[STATE_CONNECT] = jsonRequest.toString();
+                String[] strArr = new String[2];
+                strArr[0] = "http://" + MainActivity.APIroute + "/api/truck/update";
+                strArr[1] = jsonRequest.toString();
                 servertask.execute(strArr);
-                String response = (String) servertask.get(5, TimeUnit.MINUTES);
+                String response = servertask.get(5, TimeUnit.MINUTES);
                 if (MainActivity.DebugLog) {
                     Log.i(TAG, "logTask:servertask.get response=" + response);
                 }
                 CommLog(STATE_UPDATE, "servertask.get - finished");
                 if (response.isEmpty()) {
-                    responseCode = STATE_CONNECT;
+                    responseCode = 1;
                     Log.e(TAG, "ERROR: logTaskResponse is empty");
                     CommLog(STATE_UPDATE, "ERROR: logTaskResponse is empty");
                 } else {
                     JSONObject jsonResponse = new JSONObject(response);
                     responseCode = jsonResponse.getInt("code");
                     if (MainActivity.DebugLog) {
-                        Log.i(TAG, "jsonLogResponse:" + jsonResponse.toString(STATE_CONNECT));
+                        Log.i(TAG, "jsonLogResponse:" + jsonResponse.toString(1));
                     }
-                    CommLog(STATE_UPDATE, "jsonLogResponse:" + jsonResponse.toString(STATE_CONNECT));
+                    CommLog(STATE_UPDATE, "jsonLogResponse:" + jsonResponse.toString(1));
                     if (responseCode != 10) {
                         Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
                     }
@@ -1010,34 +1019,28 @@ public class httpClient extends Activity {
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertLogToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
     }
 
+    /**
+     * Read log file store in external storage
+     * @return BufferedInputStream object
+     */
     public BufferedInputStream openLogBufferedInputStream() {
-        Exception e;
         BufferedInputStream bufferedInputStream = null;
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
             if (path.exists()) {
                 try {
-                    BufferedInputStream returnstream = new BufferedInputStream(new FileInputStream(new File(path, "Log.bin")));
-                    try {
-                        Log.i(TAG, "Log file opened for Read");
-                        return returnstream;
-                    } catch (Exception e2) {
-                        e = e2;
-                        bufferedInputStream = returnstream;
-                        Log.w(TAG, "IOException opening Log file - ioe=", e);
-                        return bufferedInputStream;
-                    }
-                } catch (Exception e3) {
-                    e = e3;
+                    Log.i(TAG, "Log file opened for Read");
+                    bufferedInputStream = new BufferedInputStream(new FileInputStream(new File(path, "Log.bin")));
+                } catch (Exception e) {
                     Log.w(TAG, "IOException opening Log file - ioe=", e);
-                    return bufferedInputStream;
                 }
+            } else {
+                Log.i(TAG, "ERROR: Log file directory does not exist");
             }
-            Log.i(TAG, "ERROR: Log file directory does not exist");
-            return null;
+        } else {
+            Log.w(TAG, "Error opening Log file for Read - SDCard is not mounted");
         }
-        Log.w(TAG, "Error opening Log file for Read - SDCard is not mounted");
-        return null;
+        return bufferedInputStream;
     }
 
     public void closeLogStream(BufferedInputStream logStream) {
