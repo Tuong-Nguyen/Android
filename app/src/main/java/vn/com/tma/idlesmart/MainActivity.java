@@ -315,32 +315,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.8 */
-    class C00088 implements OnClickListener {
-        C00088() {
-        }
-
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            MainActivity.PasswordValid = false;
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.9 */
-    class C00099 implements OnClickListener {
-        C00099() {
-        }
-
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
-            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? MainActivity.enableKioskMode : false;
-            if (MainActivity.test_mode && pwtemp == 8800) {
-                MainActivity.PasswordEnable = false;
-                MainActivity.PasswordValid = MainActivity.enableKioskMode;
-            }
-        }
-    }
 
     public class ScreenReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
@@ -1771,6 +1745,8 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    // region Password Dialog for inputting password
+
     public void openPasswordDialog() {
         if (this.passwordDialog != null && this.passwordDialog.isShowing()) {
             this.passwordDialog.dismiss();
@@ -1780,10 +1756,37 @@ public class MainActivity extends Activity implements OnClickListener {
         this.passwordDialog.setContentView(R.layout.password_dialog);
         this.passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
-        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new C00088());
-        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new C00099());
+        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new PasswordReturnListener());
+        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new PaswordContinueListener());
         this.passwordDialog.show();
     }
+
+    /**
+     * Action listener for PasswordReturn button
+     */
+    class PasswordReturnListener implements OnClickListener {
+        public void onClick(View v) {
+            MainActivity.this.passwordDialog.dismiss();
+            MainActivity.PasswordValid = false;
+        }
+    }
+
+    /**
+     * Action listener for PasswordContinue button
+     */
+    class PaswordContinueListener implements OnClickListener {
+        public void onClick(View v) {
+            MainActivity.this.passwordDialog.dismiss();
+            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
+            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
+            if (MainActivity.test_mode && pwtemp == 8800) {
+                MainActivity.PasswordEnable = false;
+                MainActivity.PasswordValid = true;
+            }
+        }
+    }
+
+    // endregion
 
     private boolean ValidPassword() {
         if (!PasswordEnable || PasswordValid) {
