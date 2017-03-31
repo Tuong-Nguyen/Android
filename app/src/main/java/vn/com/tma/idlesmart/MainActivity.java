@@ -1947,14 +1947,14 @@ public class MainActivity extends Activity implements OnClickListener {
                     i = UNKNOWN_CONNECTIVITY;
                 }
                 iArr[UNKNOWN_CONNECTIVITY] = i;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, UNKNOWN_CONNECTIVITY, aParam[Params.PARAM_CabinComfort] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, 0, aParam[Params.PARAM_CabinComfort] & 255);
                 break;
             case BAD_CONNECTIVITY /*2*/:
                 int i2;
                 if (this.GatewayMode != BAD_CONNECTIVITY) {
                     this.ColdWeatherGuardMode = mode;
                 } else if (mode == 3) {
-                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.ColdWeatherGuardMode = 3;
                 }
                 int[] iArr2 = aParam;
@@ -1964,13 +1964,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     i2 = GOOD_CONNECTIVITY;
                 }
                 iArr2[GOOD_CONNECTIVITY] = i2;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, UNKNOWN_CONNECTIVITY, aParam[Params.PARAM_ColdWeatherGuard] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, 0, aParam[Params.PARAM_ColdWeatherGuard] & 255);
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 if (this.GatewayMode != 3) {
                     this.BatteryProtectMode = mode;
                 } else if (mode == 3) {
-                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, UNKNOWN_CONNECTIVITY, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.BatteryProtectMode = 3;
                 }
                 iArr = aParam;
@@ -1978,7 +1978,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     i = UNKNOWN_CONNECTIVITY;
                 }
                 iArr[BAD_CONNECTIVITY] = i;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, UNKNOWN_CONNECTIVITY, aParam[Params.PARAM_BatteryProtect] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, 0, aParam[Params.PARAM_BatteryProtect] & 255);
                 break;
         }
         updateFunctionModes();
@@ -2388,26 +2388,26 @@ public class MainActivity extends Activity implements OnClickListener {
             String str;
             switch (vId) {
                 case R.id.settingsEntryEnableButton /*2131362065*/:
-                    if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
-                        pValue = GOOD_CONNECTIVITY;
+                    if (this.params.aParamType[pId] == Params.BooleanType) {
+                        pValue = 1;
                     }
                 	break;
 			    case R.id.settingsEntryDisableButton /*2131362068*/:
-                    if (this.params.aParamType[pId] == GOOD_CONNECTIVITY) {
+                    if (this.params.aParamType[pId] == Params.BooleanType) {
                         pValue = 0;
                     }
                 	break;
 			    case R.id.settingsEntryDecrementButton /*2131362072*/:
                     decrValue(pId);
-                    if (pId == 18 && pValue < 4) {
+                    if (pId == Params.PARAM_TruckTimer && pValue < 4) {
                         pValue = 0;
                     }
                     switch (this.params.aParamType[pId]) {
-                        case BAD_CONNECTIVITY /*2*/:
-			            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+                        case Params.IntegerType /*2*/:
+			            case Params.TempType /*3*/:
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(pValue) + pSfx);
                         	break;
-			            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+			            case Params.VoltageType /*4*/:
                             str = Integer.toString(pValue);
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                             break;
@@ -2417,15 +2417,15 @@ public class MainActivity extends Activity implements OnClickListener {
                 	break;
 			    case R.id.settingsEntryIncrementButton /*2131362073*/:
                     incrValue(pId);
-                    if (pId == 18 && pValue < 4) {
+                    if (pId == Params.PARAM_TruckTimer && pValue < 4) {
                         pValue = 4;
                     }
                     switch (this.params.aParamType[pId]) {
-			            case BAD_CONNECTIVITY /*2*/:
-            			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+			            case Params.IntegerType /*2*/:
+            			case Params.TempType /*3*/:
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(Integer.toString(pValue) + pSfx);
                         	break;
-			            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+			            case Params.VoltageType /*4*/:
                             str = Integer.toString(pValue);
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                             break;
@@ -2549,12 +2549,12 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void sendParam(int paramId) {
-        byte[] data = new byte[BAD_CONNECTIVITY];
+        byte[] data = new byte[2];
         int api = this.params.aParamAPIcmd[paramId];
         if (api != 0) {
             data[0] = (byte) ((aParam[paramId] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aParam[paramId] & 255);
-            this.accessoryControl.writeCommand(api, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aParam[paramId] & 255);
+            this.accessoryControl.writeCommand(api, data[0], data[1]);
         }
     }
 
@@ -2569,9 +2569,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
                 ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
-                String str = Integer.toString(aParam[8]);
-                ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[8]);
-                ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[Params.PARAM_EngineRunTime]) + this.params.aParamSfx[9]);
+                String str = Integer.toString(aParam[Params.PARAM_VoltageSetPoint]);
+                ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[Params.PARAM_VoltageSetPoint]);
+                ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[Params.PARAM_EngineRunTime]) + this.params.aParamSfx[Params.PARAM_EngineRunTime]);
                 break;
             default:
                 break;
@@ -2632,8 +2632,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
         }
         data[0] = (byte) ((aParam[pId] >> 8) & 255);
-        data[GOOD_CONNECTIVITY] = (byte) (aParam[pId] & 255);
-        this.accessoryControl.writeCommand(this.params.aParamAPIcmd[pId], data[0], data[GOOD_CONNECTIVITY]);
+        data[1] = (byte) (aParam[pId] & 255);
+        this.accessoryControl.writeCommand(this.params.aParamAPIcmd[pId], data[0], data[1]);
     }
 
     private void incrParam(int paramId) {
