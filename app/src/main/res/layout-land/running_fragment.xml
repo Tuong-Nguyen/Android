@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:inputType="numberDecimal"
     android:orientation="horizontal"
-    android:visibility="visible"
     tools:showIn="@layout/dashboard_fragment">
 
     <LinearLayout

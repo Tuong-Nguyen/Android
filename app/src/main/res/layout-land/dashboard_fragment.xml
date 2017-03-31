@@ -8,7 +8,6 @@
     android:inputType="numberDecimal"
     android:orientation="horizontal"
     android:weightSum="1.0"
-    android:visibility="visible"
     tools:showIn="@layout/full_screen">
 
     <LinearLayout
@@ -30,6 +29,12 @@
     <include layout="@layout/function_status" />
 
     <include layout="@layout/running_fragment" />
+
+    <include layout="@layout/cabin_comfort_fragment"/>
+
+    <include layout="@layout/cold_weather_guard_fragment" />
+
+    <include layout="@layout/battery_protect_fragment" />
 
     <LinearLayout
         android:id="@id/settingsFragment"
