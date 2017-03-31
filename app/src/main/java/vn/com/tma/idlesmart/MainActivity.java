@@ -1349,7 +1349,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     selectActivationFragment(ActivationStep.NONE);
                     this.settings_menu1_index = 0;
                     this.settings_menu2_index = 0;
-                    selectSettingsMode(GOOD_CONNECTIVITY);
+                    selectSettingsMode(Functionality.CABIN_COMFORT);
                     PasswordValid = false;
                 }
             	break;
@@ -2072,7 +2072,7 @@ public class MainActivity extends Activity implements OnClickListener {
             enableSettings(true);
         }
         switch (level) {
-            case GOOD_CONNECTIVITY /*1*/:
+            case Functionality.CABIN_COMFORT /*1*/:
                 initMenu1();
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.GONE);
@@ -2080,7 +2080,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
                 selectMenu1Entry(UNKNOWN_CONNECTIVITY);
             	break;
-			case BAD_CONNECTIVITY /*2*/:
+            case Functionality.COLD_WEATHER_GUARD /*2*/:
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.VISIBLE);
                 initMenu2();
@@ -2089,7 +2089,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectMenu2Entry(0);
                 this.settings_entrytype = UNKNOWN_CONNECTIVITY;
             	break;
-			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+			case Functionality.BATTERY_PROTECT /*3*/:
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.VISIBLE);
                 viewParamValue();
@@ -2240,7 +2240,7 @@ public class MainActivity extends Activity implements OnClickListener {
             default:
                 return;
         }
-        selectSettingsMode(BAD_CONNECTIVITY);
+        selectSettingsMode(Functionality.COLD_WEATHER_GUARD);
     }
 
     private void selectMenu2Entry(int level) {
@@ -2297,7 +2297,7 @@ public class MainActivity extends Activity implements OnClickListener {
             default:
                 return;
         }
-        selectSettingsMode(3);
+        selectSettingsMode(Functionality.BATTERY_PROTECT);
     }
 
     private void selectSettingsEntry(int datatype) {
@@ -2558,7 +2558,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 sendParam(paramId);
                 break;
         }
-        selectSettingsMode(UNKNOWN_CONNECTIVITY);
+        selectSettingsMode(0);
         selectRunning(GOOD_CONNECTIVITY);
     }
 
