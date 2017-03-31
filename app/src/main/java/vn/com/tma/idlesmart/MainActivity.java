@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -271,20 +272,23 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.7 */
-    class C00077 implements OnEditorActionListener {
-        C00077() {
+    /**
+     * ActionListener for ActivityCodeEditText adn VINCodeEditText
+     */
+    class ActivationCodeVINCodeListener implements OnEditorActionListener {
+        ActivationCodeVINCodeListener() {
         }
 
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             byte[] data = new byte[2];
-            if (actionId == 6) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
                 switch (v.getId()) {
                     case R.id.activationCodeEditText /*2131361797*/:
                         MainActivity.ActivationCode = Integer.valueOf(((EditText) v).getText().toString());
                         data[0] = (byte) ((MainActivity.ActivationCode >> 8) & 255);
                         data[1] = (byte) (MainActivity.ActivationCode & 255);
-                        MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, data[MainActivity.UNKNOWN_CONNECTIVITY], data[MainActivity.GOOD_CONNECTIVITY]);
+                        MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, data[0], data[1]);
                         Log.i(MainActivity.TAG, "(send) APIDATA_ACTIVATION_CODE=" + MainActivity.ActivationCode);
                         break;
                     case R.id.VINCodeEditText /*2131362092*/:
@@ -548,7 +552,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.ETrunnable = new SetSyncTimeRunnable();
         this.isScreenOn = true;
         this.timeoutRunnable = new ScreenOffRunnable();
-        this.mEditorActionListener = new C00077();
+        this.mEditorActionListener = new ActivationCodeVINCodeListener();
         this.verificationRunnable = new Runnable() {
             public void run() {
                 MainActivity.this.nextVerificationStep();
