@@ -34,6 +34,8 @@
 
     <include layout="@layout/cold_weather_guard_fragment" />
 
+    <include layout="@layout/battery_protect_fragment" />
+
     <LinearLayout
         android:id="@id/settingsFragment"
         android:layout_width="match_parent"
