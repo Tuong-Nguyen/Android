@@ -1322,7 +1322,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
 
-                // Enable dashboardButton to access dashboard
+                // TODO Enable dashboardButton to access dashboard
                 SystemActivationFlag =true;
                 demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
@@ -1617,6 +1617,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 findViewById(R.id.VINCodeFragment).setVisibility(View.GONE);
                 findViewById(R.id.verificationFragment).setVisibility(View.VISIBLE);
             default:
+
         }
     }
 
@@ -1733,7 +1734,8 @@ public class MainActivity extends Activity implements OnClickListener {
                     break;
             }
         }
-        enableDashboard(false);
+        // TODO Display each fragment when click on subFragment (cabinComfortFragment, coldWeatherGuardFragment, batteryProtectFragment )
+        //enableDashboard(false);
         PasswordValid = false;
     }
 
