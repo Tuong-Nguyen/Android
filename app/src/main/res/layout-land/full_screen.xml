@@ -18,5 +18,5 @@
 
     <include layout="@layout/password_fragment" />
 
-    <include layout="@layout/dashbar_fragment" />
+    <include layout="@layout/dashboard_fragment" />
 </LinearLayout>
