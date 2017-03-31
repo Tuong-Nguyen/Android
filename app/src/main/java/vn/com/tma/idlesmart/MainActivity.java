@@ -257,13 +257,15 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.6 */
-    class C00066 implements Runnable {
-        C00066() {
+    /**
+     *  A Runnable which turns the screen off.
+     */
+    class ScreenOffRunnable implements Runnable {
+        ScreenOffRunnable() {
         }
 
         public void run() {
-            MainActivity.this.setScreenBrightness(MainActivity.UNKNOWN_CONNECTIVITY);
+            MainActivity.this.setScreenBrightness(0);
             MainActivity.this.isScreenOn = false;
         }
     }
@@ -544,7 +546,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
         this.ETrunnable = new C00044();
         this.isScreenOn = true;
-        this.timeoutRunnable = new C00066();
+        this.timeoutRunnable = new ScreenOffRunnable();
         this.mEditorActionListener = new C00077();
         this.verificationRunnable = new Runnable() {
             public void run() {
