@@ -245,16 +245,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.3 */
-    class C00033 implements Runnable {
-        C00033() {
-        }
-
-        public void run() {
-            MainActivity.this.hideNavBar();
-        }
-    }
-
     /* renamed from: com.idlesmarter.aoa.MainActivity.4 */
     class C00044 implements Runnable {
         C00044() {
@@ -1105,8 +1095,16 @@ public class MainActivity extends Activity implements OnClickListener {
         return false;
     }
 
+    /**
+     * Hide NavBar after 100ms
+     */
     private void executeDelayed() {
-        new Handler().postDelayed(new C00033(), 100);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.this.hideNavBar();
+            }
+        }, 100);
     }
 
     private void hideNavBar() {
