@@ -100,8 +100,10 @@ public class MainActivity extends Activity implements OnClickListener {
     private static final String TAG = "IdleSmart.Main";
     public static final int UNKNOWN_CONNECTIVITY = 0;
     public static boolean ValidActivationProcess = false;
+
     public static boolean[] aMaintEnable = null;
     public static int[] aMaintValue = null;
+
     public static int[] aParam = null;
     private static Dialog commDialog = null;
     private static String commlogstr = null;
@@ -157,6 +159,16 @@ public class MainActivity extends Activity implements OnClickListener {
     private LinearLayout topLayout;
     final Handler verificationHandler;
     final Runnable verificationRunnable;
+
+    /**
+     * Represent the current status of the application
+     */
+    private static class KillSwitchMode {
+        static final int CONNECTED = 0; // The accessory is monitoring the truck.
+        static final int KILL_SWITCH = 1; // Display a confirmation asking if user want to stop monitoring the truck
+        static final int KILL_SWITCH_CONFIRMED = 2; // Power Off button is displayed for stopping monitoring the truck
+        static final int POWER_OFF = 3; // The accessory do not monitor the truck.
+    }
 
     /* renamed from: com.idlesmarter.aoa.MainActivity.11 */
     class AnonymousClass11 implements OnClickListener {
@@ -266,13 +278,13 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            byte[] data = new byte[MainActivity.BAD_CONNECTIVITY];
+            byte[] data = new byte[2];
             if (actionId == 6) {
                 switch (v.getId()) {
                     case R.id.activationCodeEditText /*2131361797*/:
-                        MainActivity.ActivationCode = Integer.valueOf(((EditText) v).getText().toString()).intValue();
-                        data[MainActivity.UNKNOWN_CONNECTIVITY] = (byte) ((MainActivity.ActivationCode >> 8) & 255);
-                        data[MainActivity.GOOD_CONNECTIVITY] = (byte) (MainActivity.ActivationCode & 255);
+                        MainActivity.ActivationCode = Integer.valueOf(((EditText) v).getText().toString());
+                        data[0] = (byte) ((MainActivity.ActivationCode >> 8) & 255);
+                        data[1] = (byte) (MainActivity.ActivationCode & 255);
                         MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, data[MainActivity.UNKNOWN_CONNECTIVITY], data[MainActivity.GOOD_CONNECTIVITY]);
                         Log.i(MainActivity.TAG, "(send) APIDATA_ACTIVATION_CODE=" + MainActivity.ActivationCode);
                         break;
@@ -557,8 +569,8 @@ public class MainActivity extends Activity implements OnClickListener {
         this.ScreenOn = true;
         this.USBReconnectRunnable = new C00022();
         Integer[] numArr = new Integer[2];
-        numArr[0] = Integer.valueOf(25);
-        numArr[1] = Integer.valueOf(24);
+        numArr[0] = 25;
+        numArr[1] = 24;
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
         this.ETrunnable = new C00044();
         this.isScreenOn = true;
@@ -1157,8 +1169,8 @@ public class MainActivity extends Activity implements OnClickListener {
     public void SetNextPhoneHome() {
         Calendar date = CalcNextPhoneHome();
         Log.i(TAG, "Next PhoneHome scheduled for: " + date.getTime().toString());
-        byte[] data = new byte[BAD_CONNECTIVITY];
-        SyncNext = (date.get(11) * 60) + date.get(12);
+        byte[] data = new byte[2];
+        SyncNext = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
         data[0] = (byte) ((SyncNext >> 8) & 255);
         data[GOOD_CONNECTIVITY] = (byte) (SyncNext & 255);
         this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[GOOD_CONNECTIVITY]);
@@ -1298,7 +1310,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 SystemActivationFlag =true;
                 demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
-                    selectKillswitchMode(0);
+                    selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(true);
                     enableDashboard(true);
                     selectRunning(GOOD_CONNECTIVITY);
@@ -1311,7 +1323,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
                 if (SystemActivationFlag || demo_mode) {
-                    selectKillswitchMode(0);
+                    selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(false);
                     enableDashboard(false);
                     selectRunning(0);
@@ -1327,7 +1339,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
                 if (SystemActivationFlag) {
-                    selectKillswitchMode(GOOD_CONNECTIVITY);
+                    selectKillswitchMode(KillSwitchMode.KILL_SWITCH);
                 }
             	break;
 			case R.id.installDoneButton /*2131361837*/:
@@ -1343,12 +1355,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 InstallAndActivate(SystemActivationFlag);
             	break;
 			case R.id.poweronButton /*2131361943*/:
-                selectKillswitchMode(0);
+                selectKillswitchMode(KillSwitchMode.CONNECTED);
                 enableStatusBar(true);
                 enableDashboard(true);
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
                 findViewById(R.id.poweronButton).setVisibility(View.GONE);
-                this.accessoryControl.writeCommand(20, 0, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, 0, 1);
             	break;
 			case R.id.idlesmartButton /*2131361944*/:
                 this.test_mark_counter += GOOD_CONNECTIVITY;
@@ -1569,11 +1581,11 @@ public class MainActivity extends Activity implements OnClickListener {
                 removeBloatware();
             	break;
 			case R.id.killswitchButton /*2131362086*/:
-                selectKillswitchMode(BAD_CONNECTIVITY);
+                selectKillswitchMode(KillSwitchMode.KILL_SWITCH_CONFIRMED);
             	break;
 			case R.id.poweroffButton /*2131362088*/:
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_ENGINE_OFF, 0, 1);
-                selectKillswitchMode(3);
+                selectKillswitchMode(KillSwitchMode.POWER_OFF);
                 findViewById(R.id.fullScreen).setVisibility(View.GONE);
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWEROFF, 0, 0);
             	break;
@@ -1711,26 +1723,26 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void selectKillswitchMode(int mode) {
         switch (mode) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
+            case KillSwitchMode.CONNECTED /*0*/:
                 findViewById(R.id.fullScreen).setVisibility(View.VISIBLE);
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweronFragment).setVisibility(View.GONE);
                 break;
-            case GOOD_CONNECTIVITY /*1*/:
+            case KillSwitchMode.KILL_SWITCH /*1*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.VISIBLE);
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case KillSwitchMode.KILL_SWITCH_CONFIRMED /*2*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
                 findViewById(R.id.killswitchFragment).setVisibility(View.GONE);
                 findViewById(R.id.poweroffFragment).setVisibility(View.VISIBLE);
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case KillSwitchMode.POWER_OFF /*3*/:
                 enableStatusBar(false);
                 enableDashboard(false);
                 enableSettings(false);
@@ -2823,6 +2835,8 @@ public class MainActivity extends Activity implements OnClickListener {
         this.serialDialog.show();
     }
 
+    // region Maintenance Dialog
+
     public void openMaintDialog() {
         if (this.maintDialog != null && this.maintDialog.isShowing()) {
             this.maintDialog.dismiss();
@@ -2832,12 +2846,12 @@ public class MainActivity extends Activity implements OnClickListener {
         this.maintDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.maintDialog.setContentView(R.layout.maint_dialog);
         this.maintDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[UNKNOWN_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[UNKNOWN_CONNECTIVITY]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[GOOD_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[GOOD_CONNECTIVITY]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[BAD_CONNECTIVITY]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[BAD_CONNECTIVITY]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[0]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[0]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[1]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[1]));
+        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[2]);
+        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[2]));
         ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_4)).setChecked(aMaintEnable[3]);
         ((EditText) this.maintDialog.findViewById(R.id.maintText_4)).setText(Integer.toString(aMaintValue[3]));
         ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_5)).setChecked(aMaintEnable[4]);
@@ -2854,12 +2868,12 @@ public class MainActivity extends Activity implements OnClickListener {
         ((EditText) this.maintDialog.findViewById(R.id.maintText_10)).setText(Integer.toString(aMaintValue[9]));
         this.maintDialog.findViewById(R.id.maintDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                MainActivity.aMaintEnable[MainActivity.UNKNOWN_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
-                MainActivity.aMaintValue[MainActivity.UNKNOWN_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
-                MainActivity.aMaintEnable[MainActivity.GOOD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
-                MainActivity.aMaintValue[MainActivity.GOOD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
-                MainActivity.aMaintEnable[MainActivity.BAD_CONNECTIVITY] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
-                MainActivity.aMaintValue[MainActivity.BAD_CONNECTIVITY] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
+                MainActivity.aMaintEnable[0] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
+                MainActivity.aMaintValue[0] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
+                MainActivity.aMaintEnable[1] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
+                MainActivity.aMaintValue[1] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
+                MainActivity.aMaintEnable[2] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
+                MainActivity.aMaintValue[2] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
                 MainActivity.aMaintEnable[3] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_4)).isChecked();
                 MainActivity.aMaintValue[3] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
                 MainActivity.aMaintEnable[4] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_5)).isChecked();
@@ -2881,23 +2895,23 @@ public class MainActivity extends Activity implements OnClickListener {
             public void onClick(View v) {
                 Log.w(MainActivity.TAG, "Kiosk SuperExit button pressed");
                 MainActivity mainActivity = MainActivity.this;
-                int i = mainActivity.kiosk_mode_counter + MainActivity.GOOD_CONNECTIVITY;
+                int i = mainActivity.kiosk_mode_counter + 1;
                 mainActivity.kiosk_mode_counter = i;
-                if (i == 3) {
+                if (i == 3) { // Click 3 times for toggling Kiosk mode
                     boolean z;
-                    MainActivity.this.kiosk_mode_counter = MainActivity.UNKNOWN_CONNECTIVITY;
+                    MainActivity.this.kiosk_mode_counter = 0;
                     Context ctx = MainActivity.this.getApplicationContext();
                     if (PrefUtils.isKioskModeActive(ctx)) {
                         z = false;
                     } else {
-                        z = MainActivity.enableKioskMode;
+                        z = true;
                     }
                     MainActivity.KioskMode = z;
                     PrefUtils.setKioskModeActive(MainActivity.KioskMode, ctx);
                     if (MainActivity.KioskMode) {
-                        Toast.makeText(ctx, "Shields are UP.", MainActivity.UNKNOWN_CONNECTIVITY).show();
+                        Toast.makeText(ctx, "Shields are UP.", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(ctx, "Shields are down Commander!", MainActivity.UNKNOWN_CONNECTIVITY).show();
+                        Toast.makeText(ctx, "Shields are down Commander!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -2906,75 +2920,90 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void clearMaintInfo() {
-        for (int i = 0; i < 10; i += GOOD_CONNECTIVITY) {
+        for (int i = 0; i < 10; i += 1) {
             aMaintEnable[i] = false;
-            aMaintValue[i] = GOOD_CONNECTIVITY;
+            aMaintValue[i] = 1;
         }
-        aMaintValue[3] = GOOD_CONNECTIVITY;
-        aMaintValue[6] = GOOD_CONNECTIVITY;
+        aMaintValue[3] = 1;
+        aMaintValue[6] = 1;
         aMaintValue[7] = 0;
         aMaintValue[8] = 0;
-        aMaintValue[9] = GOOD_CONNECTIVITY;
+        aMaintValue[9] = 1;
     }
 
     public void sendMaintInfo() {
-        byte[] data = new byte[BAD_CONNECTIVITY];
+        byte[] data = new byte[2];
+
+        // Log File (J1939 data)
         if (aMaintEnable[0]) {
             data[0] = (byte) ((aMaintValue[0] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[0] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[0] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, 0, 0);
         }
-        if (aMaintEnable[GOOD_CONNECTIVITY]) {
-            data[0] = (byte) ((aMaintValue[GOOD_CONNECTIVITY] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[GOOD_CONNECTIVITY] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, data[0], data[GOOD_CONNECTIVITY]);
+
+        // Clutch Override
+        if (aMaintEnable[1]) {
+            data[0] = (byte) ((aMaintValue[1] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[1] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, 0, 0);
         }
-        if (aMaintEnable[BAD_CONNECTIVITY]) {
-            data[0] = (byte) ((aMaintValue[BAD_CONNECTIVITY] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[BAD_CONNECTIVITY] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, data[0], data[GOOD_CONNECTIVITY]);
+
+        // Idle Timer Override (1='brake', 2='long brake', 3=spn_1237)
+        if (aMaintEnable[2]) {
+            data[0] = (byte) ((aMaintValue[2] >> 8) & 255);
+            data[1] = (byte) (aMaintValue[2] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, 0, 0);
         }
+
+        // Engine Speed Adjustments (1=during idleup, 2=while running)
         if (aMaintEnable[3]) {
             data[0] = (byte) ((aMaintValue[3] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[3] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[3] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, 0, 0);
         }
+
+        // Timestamp/RPM logging
         if (aMaintEnable[4]) {
             data[0] = (byte) ((aMaintValue[4] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[4] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[4] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, 0, 0);
         }
+
+        // Neutral switch detection
         if (aMaintEnable[5]) {
             data[0] = (byte) ((aMaintValue[5] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[5] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[5] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, 0, 0);
         }
+
+        // Reserved
         if (aMaintEnable[6]) {
             data[0] = (byte) ((aMaintValue[6] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[6] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[6] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, data[0], data[1]);
         } else {
             this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, 0, 0);
         }
+
+        // Server Route
         if (aMaintEnable[7]) {
             String ServerRoute = ((EditText) this.maintDialog.findViewById(R.id.maintText_8)).getText().toString();
             if (ServerRoute.trim().isEmpty()) {
                 ServerRoute = DefaultAPIroute;
             }
             int length = ServerRoute.trim().length();
-            AccessoryControl accessoryControl = this.accessoryControl;
             if (length >= 41) {
                 ServerRoute = DefaultAPIroute;
             }
@@ -2984,6 +3013,8 @@ public class MainActivity extends Activity implements OnClickListener {
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(false);
             aMaintEnable[7] = false;
         }
+
+        // Reset VIN and Restore Factory Defaults
         if (aMaintEnable[8]) {
             Gateway_VIN = BuildConfig.FLAVOR;
             sendVIN(Gateway_VIN);
@@ -2999,14 +3030,17 @@ public class MainActivity extends Activity implements OnClickListener {
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(false);
             aMaintEnable[8] = false;
         }
+
+        // View Server Communication (1-8 or 99)
         if (aMaintEnable[9]) {
             data[0] = (byte) ((aMaintValue[9] >> 8) & 255);
-            data[GOOD_CONNECTIVITY] = (byte) (aMaintValue[9] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, data[0], data[GOOD_CONNECTIVITY]);
+            data[1] = (byte) (aMaintValue[9] & 255);
+            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, data[0], data[1]);
             return;
         }
         this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, 0, 0);
     }
+    // endregion
 
     public void sendVIN(String vin) {
         Log.i(TAG, "sendVIN.." + vin);

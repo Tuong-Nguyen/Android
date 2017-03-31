@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -15,16 +14,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileChannel.MapMode;
-import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -33,12 +25,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import vn.com.tma.idlesmart.tasks.ServerTask;
 import vn.com.tma.idlesmart.tasks.UpdateApp;
+import vn.com.tma.idlesmart.tasks.UpdateGateway;
 
 public class httpClient extends Activity {
-    private static final String APKpath = "APKupdates";
     private static boolean APKupdate_exists = false;
-    private static final String CSCpath = "CSCupdates";
     private static boolean CSCupdate_exists = false;
     private static final int MAINT_JSON_ACTIVATION = 2;
     private static final int MAINT_JSON_ALL = 99;
@@ -360,140 +352,6 @@ public class httpClient extends Activity {
                 default:
                     break;
             }
-        }
-    }
-
-    public class ServerTask extends AsyncTask<String, Void, String> {
-        private static final String TAG = "IdleSmart.ServerTask";
-        String code;
-        private Context context;
-
-        public ServerTask() {
-            this.code = BuildConfig.FLAVOR;
-        }
-
-        public void setContext(Context contextf) {
-            this.context = contextf;
-        }
-
-        protected String doInBackground(String... arg0) {
-            StringBuilder result = new StringBuilder();
-            Log.i(TAG, "  ===> ServerTask::doInBackground..");
-            try {
-                URL url = new URL(arg0[httpClient.STATE_IDLE]);
-                Log.i(TAG, "  dib: url=" + url);
-                HttpURLConnection c = (HttpURLConnection) url.openConnection();
-                c.setRequestMethod("POST");
-                c.setRequestProperty("Content-Type", "application/json");
-                c.setDoOutput(httpClient.PHONEHOME_RESCHEDULE);
-                c.setDoInput(httpClient.PHONEHOME_RESCHEDULE);
-                c.connect();
-                OutputStream os = c.getOutputStream();
-                os.write(arg0[httpClient.STATE_CONNECT].getBytes());
-                os.flush();
-                os.close();
-                int httpResponseCode = c.getResponseCode();
-                if (httpResponseCode == 200 || httpResponseCode == 201) {
-                    InputStream is = new BufferedInputStream(c.getInputStream());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                    while (true) {
-                        String line = reader.readLine();
-                        if (line == null) {
-                            break;
-                        }
-                        result.append(line);
-                    }
-                    Log.i(TAG, "      ServerTask result:" + result.toString());
-                    is.close();
-                } else {
-                    Log.e(TAG, "      ServerTask Error:http response code:" + Integer.toString(httpResponseCode));
-                }
-                c.disconnect();
-            } catch (IOException e) {
-                Log.e(TAG, "  ServerTask::IOException");
-                e.printStackTrace();
-            }
-            Log.i(TAG, "  ===> ServerTask::done");
-            return result.toString();
-        }
-    }
-
-    public class UpdateGateway extends AsyncTask<String, Void, Void> {
-        private static final String TAG = "IdleSmart.UpdateGateway";
-        private Context context;
-
-        public void setContext(Context contextf) {
-            this.context = contextf;
-        }
-
-        protected Void doInBackground(String... arg0) {
-            IOException e;
-            byte[] buffer = new byte[16384];
-            Log.i(TAG, "=====> UpdateGateway thread running in bkgnd");
-            httpClient.this.CommLog(httpClient.STATE_APKUPDATE, "  dib: UpdateGateway thread running in bkgnd");
-            try {
-                String CSClink = arg0[httpClient.STATE_IDLE];
-                URL url = new URL("http://" + MainActivity.APIroute + CSClink);
-                Log.i(TAG, "url=" + url);
-                HttpURLConnection c = (HttpURLConnection) url.openConnection();
-                c.setRequestMethod("POST");
-                c.setDoOutput(httpClient.PHONEHOME_RESCHEDULE);
-                c.connect();
-                String lfn = CSClink;
-                for (int i = lfn.length() + httpClient.PHONEHOME_ERROR; i >= 0; i += httpClient.PHONEHOME_ERROR) {
-                    if (lfn.charAt(i) == '/') {
-                        lfn = lfn.substring(i + httpClient.STATE_CONNECT);
-                        break;
-                    }
-                }
-                if ("mounted".equals(Environment.getExternalStorageState())) {
-                    File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), httpClient.CSCpath);
-                    if (!path.exists()) {
-                        if (!path.mkdirs()) {
-                            Log.i(TAG, "ERROR: Cannot create CSCupdates directory");
-                            httpClient.this.CommLog(httpClient.STATE_APKUPDATE, "ERROR: Cannot create CSCupdates directory");
-                        }
-                    }
-                    File outputFile = new File(path, lfn);
-                    File file;
-                    try {
-                        if (outputFile.exists()) {
-                            outputFile.delete();
-                        }
-                        outputFile.createNewFile();
-                        FileOutputStream fos = new FileOutputStream(outputFile);
-                        InputStream is = c.getInputStream();
-                        while (true) {
-                            int len1 = is.read(buffer);
-                            if (len1 == httpClient.PHONEHOME_ERROR) {
-                                break;
-                            }
-                            fos.write(buffer, httpClient.STATE_IDLE, len1);
-                        }
-                        fos.close();
-                        is.close();
-                        Log.i(TAG, lfn + " download complete");
-                        httpClient.this.CommLog(httpClient.STATE_APKUPDATE, lfn + " download complete");
-                        httpClient.this.ParseCSC(path + "/" + lfn);
-                        file = outputFile;
-                    } catch (IOException e2) {
-                        e = e2;
-                        file = outputFile;
-                        Log.e(TAG, "=====> UpdateGateway thread - IOException");
-                        e.printStackTrace();
-                        Log.i(TAG, "=====> UpdateGateway thread is done");
-                        return null;
-                    }
-                }
-            } catch (IOException e3) {
-                e = e3;
-                Log.e(TAG, "=====> UpdateGateway thread - IOException");
-                e.printStackTrace();
-                Log.i(TAG, "=====> UpdateGateway thread is done");
-                return null;
-            }
-            Log.i(TAG, "=====> UpdateGateway thread is done");
-            return null;
         }
     }
 
@@ -1374,8 +1232,11 @@ public class httpClient extends Activity {
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertDatumToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
     }
 
+    /**
+     * Open datum BufferedInputStream
+     * @return BufferedInputStream object
+     */
     public BufferedInputStream openDatumBufferedInputStream() {
-        Exception e;
         BufferedInputStream returnstream = null;
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
@@ -1385,29 +1246,24 @@ public class httpClient extends Activity {
                     return null;
                 }
                 try {
-                    BufferedInputStream returnstream2 = new BufferedInputStream(new FileInputStream(file));
-                    try {
-                        Log.i(TAG, "Datum file opened for Read");
-                        returnstream = returnstream2;
-                    } catch (Exception e2) {
-                        e = e2;
-                        returnstream = returnstream2;
-                        Log.w(TAG, "IOException opening Datum file - ioe=", e);
-                        return returnstream;
-                    }
-                } catch (Exception e3) {
-                    e = e3;
+                    Log.i(TAG, "Datum file opened for Read");
+                    returnstream = new BufferedInputStream(new FileInputStream(file));
+                } catch (Exception e) {
                     Log.w(TAG, "IOException opening Datum file - ioe=", e);
-                    return returnstream;
                 }
+            } else {
+                Log.i(TAG, "ERROR: Log file directory does not exist");
             }
-            Log.i(TAG, "ERROR: Log file directory does not exist");
         } else {
             Log.w(TAG, "Error opening Datum file for Read - SDCard is not mounted");
         }
         return returnstream;
     }
 
+    /**
+     * Close a buffered input stream
+     * @param datumStream
+     */
     public void closeDatumStream(BufferedInputStream datumStream) {
         if (datumStream != null) {
             try {
@@ -1418,6 +1274,9 @@ public class httpClient extends Activity {
         }
     }
 
+    /**
+     * Delete data file in Logs
+     */
     public void deleteDatumFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
@@ -1432,27 +1291,25 @@ public class httpClient extends Activity {
         }
     }
 
-    public int str2int(String str) {
-        int num = STATE_IDLE;
-        try {
-            num = Integer.parseInt(str);
-        } catch (NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
-        }
-        return num;
-    }
-
+    /**
+     * Check there is APK update or not
+     * @return
+     * 0 if no update
+     * 1 if has update
+     * -1 if there is an exception
+     */
     public int APKUpdateExist() {
         Log.i(TAG, "<<APKUpdateExist>>");
         CommLog(STATE_VERSION, "APKUpdateExist");
         try {
-            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), STATE_IDLE).versionName;
+            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), 0).versionName;
             Log.i(TAG, "   current APK version: " + version);
             CommLog(STATE_VERSION, "   current APK version: " + version);
             try {
                 if (this.jsonApkVersionStack != null) {
                     this.jsonApkVersion = null;
-                    for (int i = STATE_IDLE; i < this.jsonApkVersionStack.length(); i += STATE_CONNECT) {
+                    // get first valid apk in stack (latest)
+                    for (int i = 0; i < this.jsonApkVersionStack.length(); i += 1) {
                         JSONObject jentry = this.jsonApkVersionStack.getJSONObject(i);
                         String feature_list = jentry.getString("feature_codes");
                         if (feature_list.trim().isEmpty() || Features.ValidateFeatureIdentityList(feature_list)) {
@@ -1461,6 +1318,7 @@ public class httpClient extends Activity {
                         }
                     }
                 } else {
+                    // get recent apk
                     this.jsonApkVersion = this.jsonVersion.getJSONObject("recent_apk");
                 }
                 if (this.jsonApkVersion != null) {
@@ -1468,32 +1326,39 @@ public class httpClient extends Activity {
                     Log.i(TAG, "   server version: " + server_version);
                     CommLog(STATE_VERSION, "   server version: " + server_version);
                     PrefUtils.setServerUpdateVersion(server_version, this.mInstance.getApplicationContext());
+                    // if current apk version is up to date
                     if (version.equals(server_version)) {
-                        return STATE_IDLE;
+                        return 0;
                     }
-                    return STATE_CONNECT;
+                    return 1;
                 }
                 PrefUtils.setServerUpdateVersion(BuildConfig.FLAVOR, this.mInstance.getApplicationContext());
-                return STATE_IDLE;
+                return 0;
             } catch (JSONException e) {
                 e.printStackTrace();
-                return PHONEHOME_ERROR;
             }
         } catch (NameNotFoundException e2) {
             e2.printStackTrace();
-            return PHONEHOME_ERROR;
         }
+        return -1;
     }
 
+    /**
+     * Execute UpdateApp task
+     * @return
+     * 0 if no update
+     * 1 if task finished
+     * -1 if there is an exception
+     */
     public int PerformAPKUpdate() {
         Log.i(TAG, "PerformAPKUpdate");
         CommLog(STATE_VERSION, "PerformAPKUpdate");
         try {
-            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), STATE_IDLE).versionName;
+            String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), 0).versionName;
             Log.i(TAG, "APKUpdate::current APK version: " + version);
             CommLog(STATE_VERSION, "current APK version: " + version);
             if (!APKupdate_exists) {
-                return STATE_IDLE;
+                return 0;
             }
             PrefUtils.setApkUpdateState(STATE_CONNECT, this.mInstance.getApplicationContext());
             Log.i(TAG, "-----> New Application code exists, Update the APK <-----");
@@ -1504,32 +1369,34 @@ public class httpClient extends Activity {
                 UpdateApp updateApp = new UpdateApp();
                 updateApp.setContext(this.mInstance.getApplicationContext());
                 Log.i(TAG, "APKUpdate:updateApp.execute..");
-                String[] strArr = new String[STATE_CONNECT];
-                strArr[STATE_IDLE] = APKlink;
+                String[] strArr = { APKlink };
                 updateApp.execute(strArr);
                 updateApp.get(60, TimeUnit.SECONDS);
                 Log.i(TAG, "APKUpdate::updateApp.get - finished");
                 CommLog(STATE_VERSION, "updateApp.get - finished");
-                return STATE_CONNECT;
+                return 1;
             } catch (JSONException e) {
                 e.printStackTrace();
-                return PHONEHOME_ERROR;
             } catch (InterruptedException e2) {
                 e2.printStackTrace();
-                return PHONEHOME_ERROR;
             } catch (ExecutionException e3) {
                 e3.printStackTrace();
-                return PHONEHOME_ERROR;
             } catch (TimeoutException e4) {
                 e4.printStackTrace();
-                return PHONEHOME_ERROR;
             }
         } catch (NameNotFoundException e5) {
             e5.printStackTrace();
-            return PHONEHOME_ERROR;
         }
+        return -1;
     }
 
+    /**
+     * Check there is firmware update or not
+     * @return
+     * 0 if no update
+     * 1 if has update
+     * -1 if there is an exception
+     */
     public int CSCUpdateExist() {
         Log.i(TAG, "<<CSCUpdateExist>>");
         CommLog(STATE_APKUPDATE, "CSCUpdateExist");
@@ -1538,7 +1405,8 @@ public class httpClient extends Activity {
         try {
             if (this.jsonCscVersionStack != null) {
                 this.jsonCscVersion = null;
-                for (int i = STATE_IDLE; i < this.jsonCscVersionStack.length(); i += STATE_CONNECT) {
+                // get first valid csc in stack (latest)
+                for (int i = 0; i < this.jsonCscVersionStack.length(); i += 1) {
                     JSONObject jentry = this.jsonCscVersionStack.getJSONObject(i);
                     String feature_list = jentry.getString("feature_codes");
                     if (feature_list.trim().isEmpty() || Features.ValidateFeatureIdentityList(feature_list)) {
@@ -1547,30 +1415,39 @@ public class httpClient extends Activity {
                     }
                 }
             } else {
+                // get recent csc
                 this.jsonCscVersion = this.jsonVersion.getJSONObject("recent_csc");
             }
             if (this.jsonCscVersion != null) {
                 String server_version = this.jsonCscVersion.getString("version");
                 Log.i(TAG, "   server version: " + server_version);
                 CommLog(STATE_APKUPDATE, "   server version: " + server_version);
+                // if current firmware version is different to server
                 if (!MainActivity.Gateway_FWversion.equals(server_version)) {
-                    return STATE_CONNECT;
+                    return 1;
                 }
             }
-            return STATE_IDLE;
+            return 0;
         } catch (JSONException e) {
             e.printStackTrace();
-            return PHONEHOME_ERROR;
+            return -1;
         }
     }
 
+    /**
+     * Execute UpdateGateway task
+     * @return
+     * 0 if no update
+     * 1 if task finished
+     * -1 if there is an exception
+     */
     public int PerformCSCUpdate() {
         Log.i(TAG, "PerformCSCUpdate");
         CommLog(STATE_APKUPDATE, "PerformCSCUpdate");
         Log.i(TAG, "current CSC version: " + MainActivity.Gateway_FWversion);
         CommLog(STATE_APKUPDATE, "current CSC version: " + MainActivity.Gateway_FWversion);
         if (!CSCupdate_exists) {
-            return STATE_IDLE;
+            return 0;
         }
         Log.i(TAG, "-----> New CSC firmware exists, update the CSC <-----");
         try {
@@ -1578,430 +1455,23 @@ public class httpClient extends Activity {
             UpdateGateway updateGateway = new UpdateGateway();
             updateGateway.setContext(this.mInstance.getApplicationContext());
             Log.i(TAG, "CSCupdate::updateGateway.execute..");
-            String[] strArr = new String[STATE_CONNECT];
-            strArr[STATE_IDLE] = CSClink;
+            String[] strArr = new String[1];
+            strArr[0] = CSClink;
             updateGateway.execute(strArr);
             Log.i(TAG, "CSCupdate::updateGateway.get.. <==================================================================");
             updateGateway.get(60, TimeUnit.SECONDS);
             Log.i(TAG, "CSCupdate::updateGateway.get - finished");
             CommLog(STATE_APKUPDATE, "updateGateway.get - finished");
-            return STATE_CONNECT;
+            return 1;
         } catch (JSONException e) {
             e.printStackTrace();
-            return PHONEHOME_ERROR;
         } catch (InterruptedException e2) {
             e2.printStackTrace();
-            return PHONEHOME_ERROR;
         } catch (ExecutionException e3) {
             e3.printStackTrace();
-            return PHONEHOME_ERROR;
         } catch (TimeoutException e4) {
             e4.printStackTrace();
-            return PHONEHOME_ERROR;
         }
-    }
-
-    public void ParseCSC(String file) {
-        FileInputStream is = null;
-        String TAG = "IdleSmart.UpdateGateway";
-        try {
-            Log.i("IdleSmart.UpdateGateway", "     ParseCSC and send to Gateway..");
-            CommLog(STATE_APKUPDATE, "     ParseCSC and send to Gateway..");
-            is = new FileInputStream(file);
-            FileChannel fc = is.getChannel();
-            String jsonStr = Charset.defaultCharset().decode(fc.map(MapMode.READ_ONLY, 0, fc.size())).toString();
-            is.close();
-            JSONObject jsonCsc = new JSONObject(jsonStr);
-            sendCscHeaderToGateway(jsonCsc);
-            Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlocks ToGateway>");
-            for (int i = STATE_IDLE; i < jsonCsc.getInt("block_count"); i += STATE_CONNECT) {
-                sendCscDataBlockToGateway(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
-            }
-            sendCscTRAToGateway(jsonCsc);
-            MainActivity.gateway_restarting = PHONEHOME_RESCHEDULE;
-        } catch (Exception e) {
-            Log.e("IdleSmart.UpdateGateway", "     ParseCSC IOException");
-            e.printStackTrace();
-        } catch (Throwable th) {
-            if(is!=null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        Log.i("IdleSmart.UpdateGateway", "     CSC has been sent to Gateway");
-        CommLog(STATE_APKUPDATE, "     CSC has been sent to Gateway");
-    }
-
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscHeaderToGateway(JSONObject r14) {
-        /*
-        r13 = this;
-        r0 = "IdleSmart.UpdateGateway";
-        r11 = 16767; // 0x417f float:2.3496E-41 double:8.284E-320;
-        r1 = new byte[r11];
-        r6 = 0;
-        r11 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r11 == 0) goto L_0x0012;
-    L_0x000b:
-        r11 = "IdleSmart.UpdateGateway";
-        r12 = "<sendCSCHeaderToGateway>";
-        android.util.Log.i(r11, r12);
-    L_0x0012:
-        r11 = "format";
-        r4 = r14.getInt(r11);	 Catch:{ JSONException -> 0x0120 }
-        r7 = r6 + 1;
-        r11 = r4 & 255;
-        r11 = (byte) r11;
-        r1[r6] = r11;	 Catch:{ JSONException -> 0x0125 }
-        r11 = "start";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x002a:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0037;
-    L_0x002d:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x002a;
-    L_0x0037:
-        r11 = "size";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x0042:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x004f;
-    L_0x0045:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0042;
-    L_0x004f:
-        r11 = "tra";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x005a:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0067;
-    L_0x005d:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x005a;
-    L_0x0067:
-        r11 = "signature";
-        r8 = r14.getJSONObject(r11);	 Catch:{ JSONException -> 0x0125 }
-        r11 = "crc_0";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x0078:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0085;
-    L_0x007b:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0078;
-    L_0x0085:
-        r11 = "crc_1";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x0090:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x009d;
-    L_0x0093:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0090;
-    L_0x009d:
-        r11 = "crc_2";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x00a8:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x00b5;
-    L_0x00ab:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00a8;
-    L_0x00b5:
-        r11 = "crc_3";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x00c0:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x00cd;
-    L_0x00c3:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00c0;
-    L_0x00cd:
-        r11 = "block_count";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        r12 = 1;
-        if (r11 != r12) goto L_0x0128;
-    L_0x00db:
-        r6 = r7 + 1;
-        r11 = 0;
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-    L_0x00e0:
-        r5 = 0;
-        r7 = r6;
-    L_0x00e2:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x00ef;
-    L_0x00e5:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00e2;
-    L_0x00ef:
-        r11 = "version";
-        r9 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r10 = r9.getBytes();	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x00fa:
-        r11 = r10.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0107;
-    L_0x00fd:
-        r6 = r7 + 1;
-        r11 = r10[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00fa;
-    L_0x0107:
-        r5 = r10.length;	 Catch:{ JSONException -> 0x0125 }
-    L_0x0108:
-        r11 = 10;
-        if (r5 >= r11) goto L_0x0115;
-    L_0x010c:
-        r6 = r7 + 1;
-        r11 = 0;
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0108;
-    L_0x0115:
-        r11 = r13.mInstance;	 Catch:{ JSONException -> 0x0125 }
-        r11 = r11.accessoryControl;	 Catch:{ JSONException -> 0x0125 }
-        r12 = 188; // 0xbc float:2.63E-43 double:9.3E-322;
-        r11.writeCommandBlock(r12, r7, r1);	 Catch:{ JSONException -> 0x0125 }
-        r6 = r7;
-    L_0x011f:
-        return;
-    L_0x0120:
-        r3 = move-exception;
-    L_0x0121:
-        r3.printStackTrace();
-        goto L_0x011f;
-    L_0x0125:
-        r3 = move-exception;
-        r6 = r7;
-        goto L_0x0121;
-    L_0x0128:
-        r6 = r7;
-        goto L_0x00e0;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscHeaderToGateway(org.json.JSONObject):void");
-    }
-
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscDataBlockToGateway(JSONObject r10, int r11) {
-        /*
-        r9 = this;
-        r0 = "IdleSmart.UpdateGateway";
-        r7 = 16767; // 0x417f float:2.3496E-41 double:8.284E-320;
-        r1 = new byte[r7];
-        r5 = 0;
-        r7 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r7 == 0) goto L_0x0012;
-    L_0x000b:
-        r7 = "IdleSmart.UpdateGateway";
-        r8 = "<sendCSCDataBlockToGateway>";
-        android.util.Log.i(r7, r8);
-    L_0x0012:
-        r6 = r5 + 1;
-        r7 = 0;
-        r1[r5] = r7;
-        r5 = r6 + 1;
-        r7 = r11 & 255;
-        r7 = (byte) r7;
-        r1[r6] = r7;
-        r7 = "addr";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x0076 }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x0076 }
-        r4 = 0;
-        r6 = r5;
-    L_0x002a:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x007b }
-        if (r4 >= r7) goto L_0x0037;
-    L_0x002d:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0076 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0076 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x002a;
-    L_0x0037:
-        r7 = "size";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x007b }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x007b }
-        r4 = 0;
-    L_0x0042:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x007b }
-        if (r4 >= r7) goto L_0x004f;
-    L_0x0045:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0076 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0076 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x0042;
-    L_0x004f:
-        r7 = "load_image";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x007b }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x007b }
-        r4 = 0;
-    L_0x005a:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x007b }
-        if (r4 >= r7) goto L_0x0067;
-    L_0x005d:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0076 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0076 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x005a;
-    L_0x0067:
-        r7 = r9.mInstance;	 Catch:{ JSONException -> 0x007b }
-        r7 = r7.accessoryControl;	 Catch:{ JSONException -> 0x007b }
-        r8 = 189; // 0xbd float:2.65E-43 double:9.34E-322;
-        r7.writeCommandBlock(r8, r6, r1);	 Catch:{ JSONException -> 0x007b }
-        r7 = com.idlesmarter.aoa.MainActivity.DebugLog;	 Catch:{ JSONException -> 0x007b }
-        if (r7 == 0) goto L_0x0074;
-    L_0x0074:
-        r5 = r6;
-    L_0x0075:
-        return;
-    L_0x0076:
-        r3 = move-exception;
-    L_0x0077:
-        r3.printStackTrace();
-        goto L_0x0075;
-    L_0x007b:
-        r3 = move-exception;
-        r5 = r6;
-        goto L_0x0077;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscDataBlockToGateway(org.json.JSONObject, int):void");
-    }
-
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscTRAToGateway(JSONObject r10) {
-        /*
-        r9 = this;
-        r0 = "IdleSmart.UpdateGateway";
-        r7 = 16767; // 0x417f float:2.3496E-41 double:8.284E-320;
-        r1 = new byte[r7];
-        r5 = 0;
-        r7 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r7 == 0) goto L_0x0012;
-    L_0x000b:
-        r7 = "IdleSmart.UpdateGateway";
-        r8 = "<sendCSCTRAToGateway>";
-        android.util.Log.i(r7, r8);
-    L_0x0012:
-        r7 = "tra";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x0039 }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x0039 }
-        r4 = 0;
-        r6 = r5;
-    L_0x001e:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x003e }
-        if (r4 >= r7) goto L_0x002b;
-    L_0x0021:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0039 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0039 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x001e;
-    L_0x002b:
-        r7 = 1;
-        com.idlesmarter.aoa.MainActivity.GatewayUpdatePending = r7;	 Catch:{ JSONException -> 0x003e }
-        r7 = r9.mInstance;	 Catch:{ JSONException -> 0x003e }
-        r7 = r7.accessoryControl;	 Catch:{ JSONException -> 0x003e }
-        r8 = 191; // 0xbf float:2.68E-43 double:9.44E-322;
-        r7.writeCommandBlock(r8, r6, r1);	 Catch:{ JSONException -> 0x003e }
-        r5 = r6;
-    L_0x0038:
-        return;
-    L_0x0039:
-        r3 = move-exception;
-    L_0x003a:
-        r3.printStackTrace();
-        goto L_0x0038;
-    L_0x003e:
-        r3 = move-exception;
-        r5 = r6;
-        goto L_0x003a;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscTRAToGateway(org.json.JSONObject):void");
-    }
-
-    public static byte[] hexStringToByteArray(String str) {
-        String TAG = "IdleSmart.UpdateGateway";
-        try {
-            String s;
-            if (str.charAt(STATE_IDLE) == '0' && str.charAt(STATE_CONNECT) == 'x') {
-                s = str.substring(STATE_FREEZE_GATEWAY);
-            } else {
-                s = str;
-            }
-            int len = s.length();
-            byte[] bArr = new byte[(len / STATE_FREEZE_GATEWAY)];
-            for (int i = STATE_IDLE; i < len; i += STATE_FREEZE_GATEWAY) {
-                bArr[i / STATE_FREEZE_GATEWAY] = (byte) ((Character.digit(s.charAt(i), 16) << STATE_UPDATE) + Character.digit(s.charAt(i + STATE_CONNECT), 16));
-            }
-            return bArr;
-        } catch (StringIndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return -1;
     }
 }
