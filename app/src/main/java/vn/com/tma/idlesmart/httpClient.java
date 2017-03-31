@@ -150,7 +150,7 @@ public class httpClient extends Activity {
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
 				case httpClient.STATE_FREEZE_GATEWAY /*2*/:
-                    if (MainActivity.aMaintEnable[httpClient.STATE_CSC_AUTOUPDATE]) {
+                    if (MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
                         httpClient.this.mInstance.openCommDialog();
                     }
                     Log.w(httpClient.TAG, "send APICMD_FREEZE(true)..");
@@ -451,7 +451,7 @@ public class httpClient extends Activity {
     }
 
     public void CommLog(int flag, String str) {
-        if (!MainActivity.aMaintEnable[STATE_CSC_AUTOUPDATE]) {
+        if (!MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
             return;
         }
         if (flag == STATE_CONNECT || flag == MainActivity.aMaintValue[STATE_CSC_AUTOUPDATE] || MainActivity.aMaintValue[STATE_CSC_AUTOUPDATE] == STATE_ERROR) {
@@ -1054,8 +1054,17 @@ public class httpClient extends Activity {
         }
     }
 
+    /**
+     * Calling ServerTask to get data from server
+     * @return
+     * -1 if error
+     * 1 if response is empty
+     * 10 if success
+     * others: server error code
+     * Default API link: [POST] http://api.idlesmart.com/api/datacollection
+     */
     public int PerformDatumTask() {
-        int responseCode = PHONEHOME_ERROR;
+        int responseCode = -1;
         Log.i(TAG, "DatumTask");
         CommLog(STATE_CSC_AUTOUPDATE, "DatumTask");
         if (this.mInstance.accessoryControl.datumStream != null) {
@@ -1065,7 +1074,7 @@ public class httpClient extends Activity {
         if (datumStream == null) {
             Log.i(TAG, "Datum file does not exist or is empty");
             CommLog(STATE_CSC_AUTOUPDATE, "Datum file does not exist or is empty");
-            return PHONEHOME_ERROR;
+            return responseCode;
         }
         BufferedReader datumIn = new BufferedReader(new InputStreamReader(datumStream));
         while (datumIn != null) {
@@ -1078,28 +1087,28 @@ public class httpClient extends Activity {
                 jsonRequest.accumulate("guid", Integer.valueOf(this.jsonGateway.getInt("guid")));
                 jsonRequest.accumulate("datum", jsonDatum);
                 if (MainActivity.DebugLog) {
-                    Log.i(TAG, "jsonDatumRequest:" + jsonRequest.toString(STATE_CONNECT));
+                    Log.i(TAG, "jsonDatumRequest:" + jsonRequest.toString(1));
                 }
-                CommLog(STATE_CSC_AUTOUPDATE, "jsonDatumRequest:" + jsonRequest.toString(STATE_CONNECT));
+                CommLog(STATE_CSC_AUTOUPDATE, "jsonDatumRequest:" + jsonRequest.toString(1));
                 ServerTask servertask = new ServerTask();
                 servertask.setContext(this.mInstance.getApplicationContext());
                 Log.i(TAG, "datumTask:servertask.execute..");
-                String[] strArr = new String[STATE_FREEZE_GATEWAY];
-                strArr[STATE_IDLE] = "http://" + MainActivity.APIroute + "/api/datacollection";
-                strArr[STATE_CONNECT] = jsonRequest.toString();
+                String[] strArr = new String[2];
+                strArr[0] = "http://" + MainActivity.APIroute + "/api/datacollection";
+                strArr[1] = jsonRequest.toString();
                 servertask.execute(strArr);
-                String response = (String) servertask.get(5, TimeUnit.MINUTES);
+                String response = servertask.get(5, TimeUnit.MINUTES);
                 if (response.isEmpty()) {
-                    responseCode = STATE_CONNECT;
+                    responseCode = 1;
                     Log.e(TAG, "ERROR: datumTaskResponse is empty");
                     CommLog(STATE_CSC_AUTOUPDATE, "ERROR: datumTaskResponse is empty");
                 } else {
                     JSONObject jsonResponse = new JSONObject(response);
                     responseCode = jsonResponse.getInt("code");
                     if (MainActivity.DebugLog) {
-                        Log.i(TAG, "jsonDatumResponse:" + jsonResponse.toString(STATE_CONNECT));
+                        Log.i(TAG, "jsonDatumResponse:" + jsonResponse.toString(1));
                     }
-                    CommLog(STATE_CSC_AUTOUPDATE, "jsonDatumResponse:" + jsonResponse.toString(STATE_CONNECT));
+                    CommLog(STATE_CSC_AUTOUPDATE, "jsonDatumResponse:" + jsonResponse.toString(1));
                     if (responseCode != 10) {
                         Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
                     }
@@ -1114,6 +1123,7 @@ public class httpClient extends Activity {
                 e4.printStackTrace();
             }
         }
+        // TODO: Move closeDatumStream, deleteDatumFile, openDatumFile into single class
         closeDatumStream(datumStream);
         deleteDatumFile();
         this.mInstance.accessoryControl.openDatumFile();
