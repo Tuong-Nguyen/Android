@@ -357,21 +357,22 @@ public class httpClient extends Activity {
 
     public httpClient(MainActivity act) {
         this.httpStatus = STATE_IDLE;
-        this.ENABLE_APK_UPDATE = PHONEHOME_RESCHEDULE;
-        this.ENABLE_CSC_UPDATE = PHONEHOME_RESCHEDULE;
-        this.ENABLE_APK_RETROGRADE_VERSION = PHONEHOME_RESCHEDULE;
-        this.ENABLE_CSC_RETROGRADE_VERSION = PHONEHOME_RESCHEDULE;
-        this.LOG_RECORDS_BLOCK_MAX = STATE_DATUM_STATUS;
-        this.DATUM_RECORDS_BLOCK_MAX = STATE_DATUM_STATUS;
+        this.ENABLE_APK_UPDATE = true;
+        this.ENABLE_CSC_UPDATE = true;
+        this.ENABLE_APK_RETROGRADE_VERSION = true;
+        this.ENABLE_CSC_RETROGRADE_VERSION = true;
+        this.LOG_RECORDS_BLOCK_MAX = Params.PARAM_MAX;
+        this.DATUM_RECORDS_BLOCK_MAX = Params.PARAM_MAX;
+        // TODO: correct assigned values: STATE_IDLE, STATE_CONNECT, STATE_FREEZE_GATEWAY
         this.APIRESPONSE_BAD = STATE_IDLE;
         this.APIRESPONSE_BADHTTP = STATE_CONNECT;
         this.APIRESPONSE_INACTIVE = STATE_FREEZE_GATEWAY;
         this.APIRESPONSE_OK = 10;
         this.ActivationFindTruck = "find_truck";
         this.ActivationCreateTruck = "create_truck";
-        this.NewTruckActivation = PHONEHOME_NO_RESCHEDULE;
-        this.deviceAPKversion = STATE_IDLE;
-        this.deviceCSCversion = STATE_IDLE;
+        this.NewTruckActivation = false;
+        this.deviceAPKversion = 0;
+        this.deviceCSCversion = 0;
         this.jsonGateway = null;
         this.jsonVersion = null;
         this.jsonActivation = null;
@@ -388,21 +389,22 @@ public class httpClient extends Activity {
 
     public httpClient() {
         this.httpStatus = STATE_IDLE;
-        this.ENABLE_APK_UPDATE = PHONEHOME_RESCHEDULE;
-        this.ENABLE_CSC_UPDATE = PHONEHOME_RESCHEDULE;
-        this.ENABLE_APK_RETROGRADE_VERSION = PHONEHOME_RESCHEDULE;
-        this.ENABLE_CSC_RETROGRADE_VERSION = PHONEHOME_RESCHEDULE;
-        this.LOG_RECORDS_BLOCK_MAX = STATE_DATUM_STATUS;
-        this.DATUM_RECORDS_BLOCK_MAX = STATE_DATUM_STATUS;
+        this.ENABLE_APK_UPDATE = true;
+        this.ENABLE_CSC_UPDATE = true;
+        this.ENABLE_APK_RETROGRADE_VERSION = true;
+        this.ENABLE_CSC_RETROGRADE_VERSION = true;
+        this.LOG_RECORDS_BLOCK_MAX = Params.PARAM_MAX; // 25, assume
+        this.DATUM_RECORDS_BLOCK_MAX = Params.PARAM_MAX; // 25, assume
+        // TODO: correct assigned values: STATE_IDLE, STATE_CONNECT, STATE_FREEZE_GATEWAY
         this.APIRESPONSE_BAD = STATE_IDLE;
         this.APIRESPONSE_BADHTTP = STATE_CONNECT;
         this.APIRESPONSE_INACTIVE = STATE_FREEZE_GATEWAY;
         this.APIRESPONSE_OK = 10;
         this.ActivationFindTruck = "find_truck";
         this.ActivationCreateTruck = "create_truck";
-        this.NewTruckActivation = PHONEHOME_NO_RESCHEDULE;
-        this.deviceAPKversion = STATE_IDLE;
-        this.deviceCSCversion = STATE_IDLE;
+        this.NewTruckActivation = false;
+        this.deviceAPKversion = 0;
+        this.deviceCSCversion = 0;
         this.jsonGateway = null;
         this.jsonVersion = null;
         this.jsonActivation = null;
