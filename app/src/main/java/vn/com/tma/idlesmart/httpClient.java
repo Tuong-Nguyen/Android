@@ -282,13 +282,13 @@ public class httpClient extends Activity {
                     httpClient.this.mInstance.UpdateConnectivityStatus();
                     String resched_msg = httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE ? "\n\nRefresh has been rescheduled" : "";
                     switch (httpClient.result) {
-                        case httpClient.PHONEHOME_TIMEOUT /*-3*/:
+                        case PhoneHomeSyncStatus.TIMEOUT /*-3*/:
                             httpClient.this.dialog.setMessage("Server dashboard not responding" + resched_msg);
                             break;
-                        case httpClient.PHONEHOME_NONETWORK /*-2*/:
+                        case PhoneHomeSyncStatus.NONE_NETWORK /*-2*/:
                             httpClient.this.dialog.setMessage("Cannot connect to network" + resched_msg);
                             break;
-                        case httpClient.PHONEHOME_ERROR /*-1*/:
+                        case PhoneHomeSyncStatus.ERROR /*-1*/:
                             httpClient.this.dialog.setMessage("Errors encountered during refresh" + resched_msg);
                             break;
                         case PhoneHomeState.CONNECT /*1*/:
