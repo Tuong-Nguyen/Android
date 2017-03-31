@@ -489,20 +489,24 @@ public class httpClient extends Activity {
         phonehomeHandler.postDelayed(this.phonehomeRunnable, (long) progressUpdateRate);
     }
 
+    /**
+     * Write last sync time to accessory
+     * @param status
+     * @param synclast
+     */
     public void sendSyncLast(int status, Calendar synclast) {
         Log.i(TAG, "sendSyncLast.." + status + synclast);
-        byte[] bytestring = new byte[STATE_CSCUPDATE];
-        bytestring[STATE_IDLE] = (byte) (status & 255);
-        bytestring[STATE_CONNECT] = (byte) ((synclast.get(STATE_CONNECT) >> STATE_CSCUPDATE) & 255);
-        bytestring[STATE_FREEZE_GATEWAY] = (byte) (synclast.get(STATE_CONNECT) & 255);
-        bytestring[STATE_ACTIVATE] = (byte) synclast.get(STATE_FREEZE_GATEWAY);
-        bytestring[STATE_UPDATE] = (byte) synclast.get(STATE_LOG);
-        bytestring[STATE_LOG] = (byte) synclast.get(11);
-        bytestring[STATE_VERSION] = (byte) synclast.get(12);
-        bytestring[STATE_APKUPDATE] = (byte) synclast.get(13);
+        byte[] bytestring = new byte[8];
+        bytestring[0] = (byte) (status & 255);
+        bytestring[1] = (byte) ((synclast.get(Calendar.YEAR) >> 8) & 255);
+        bytestring[2] = (byte) (synclast.get(Calendar.YEAR) & 255);
+        bytestring[3] = (byte) synclast.get(Calendar.MONTH); // 2, assume MONTH
+        bytestring[4] = (byte) synclast.get(Calendar.DATE); // 5, assume DATE
+        bytestring[5] = (byte) synclast.get(Calendar.HOUR_OF_DAY);
+        bytestring[6] = (byte) synclast.get(Calendar.MINUTE);
+        bytestring[7] = (byte) synclast.get(Calendar.SECOND);
         AccessoryControl accessoryControl = this.mInstance.accessoryControl;
-        AccessoryControl accessoryControl2 = this.mInstance.accessoryControl;
-        accessoryControl.writeCommandBlock(AccessoryControl.APIDATA_SYNC_LAST, STATE_CSCUPDATE, bytestring);
+        accessoryControl.writeCommandBlock(AccessoryControl.APIDATA_SYNC_LAST, bytestring.length, bytestring);
     }
 
     public void setJsonGateway() {
@@ -510,10 +514,10 @@ public class httpClient extends Activity {
             this.jsonGateway = new JSONObject();
             this.jsonGateway.accumulate("vin", MainActivity.Gateway_VIN);
             this.jsonGateway.accumulate("activation_phrase", Integer.valueOf(MainActivity.ActivationCode));
-            this.jsonGateway.accumulate("guid", Integer.valueOf(STATE_IDLE));
+            this.jsonGateway.accumulate("guid", Integer.valueOf(0));
             this.jsonGateway.accumulate("serial", "1234");
-            Log.i(TAG, "jsonGateway " + this.jsonGateway.toString(STATE_CONNECT));
-            CommLog(STATE_CONNECT, "jsonGateway " + this.jsonGateway.toString(STATE_CONNECT));
+            Log.i(TAG, "jsonGateway " + this.jsonGateway.toString(1));
+            CommLog(STATE_CONNECT, "jsonGateway " + this.jsonGateway.toString(1));
         } catch (JSONException e) {
             e.printStackTrace();
         }
