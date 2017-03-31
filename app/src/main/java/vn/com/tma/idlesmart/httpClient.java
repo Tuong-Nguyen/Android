@@ -25,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import vn.com.tma.idlesmart.params.PhoneHomeState;
+import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 import vn.com.tma.idlesmart.tasks.ServerTask;
 import vn.com.tma.idlesmart.tasks.UpdateApp;
 import vn.com.tma.idlesmart.tasks.UpdateGateway;
@@ -120,123 +122,123 @@ public class httpClient extends Activity {
         }
 
         public void run() {
-            boolean z = httpClient.PHONEHOME_NO_RESCHEDULE;
+            boolean z = false;
             int status;
             switch (httpClient.phonehome_state) {
-                case httpClient.STATE_IDLE /*0*/:
-                    httpClient.result = httpClient.STATE_ACTIVATE;
-                    MainActivity.SyncLast_Status = httpClient.STATE_ACTIVATE;
+                case PhoneHomeState.IDLE /*0*/:
+                    httpClient.result = 3;
+                    MainActivity.SyncLast_Status = PhoneHomeSyncStatus.PENDING;
                     MainActivity.SyncLast = Calendar.getInstance();
                     httpClient.this.mInstance.UpdateConnectivityStatus();
                     httpClient.this.dialog = new ProgressDialog(httpClient.this.mInstance);
-                    httpClient.this.dialog.setIndeterminate(httpClient.PHONEHOME_RESCHEDULE);
-                    httpClient.this.dialog.setCancelable(httpClient.PHONEHOME_RESCHEDULE);
-                    httpClient.this.dialog.setProgressStyle(httpClient.STATE_IDLE);
+                    httpClient.this.dialog.setIndeterminate(true);
+                    httpClient.this.dialog.setCancelable(true);
+                    httpClient.this.dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     httpClient.this.dialog.setTitle("Idle Smart Refresh");
                     httpClient.this.dialog.setMessage("Connecting to server");
                     httpClient.this.dialog.show();
-                    httpClient.phonehome_state = httpClient.STATE_CONNECT;
+                    httpClient.phonehome_state = PhoneHomeState.CONNECT;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_CONNECT /*1*/:
+				case PhoneHomeState.CONNECT /*1*/:
                     if (httpClient.this.isConnected()) {
                         httpClient.this.dialog.setMessage("Stopping Gateway");
-                        httpClient.phonehome_state = httpClient.STATE_FREEZE_GATEWAY;
+                        httpClient.phonehome_state = PhoneHomeState.FREEZE_GATEWAY;
                     } else {
                         httpClient.this.dialog.setMessage("No Network Connection");
-                        httpClient.result = httpClient.PHONEHOME_NONETWORK;
-                        httpClient.phonehome_state = httpClient.STATE_ERROR;
+                        httpClient.result = PhoneHomeSyncStatus.NONE_NETWORK;
+                        httpClient.phonehome_state = PhoneHomeState.ERROR;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_FREEZE_GATEWAY /*2*/:
+				case PhoneHomeState.FREEZE_GATEWAY /*2*/:
                     if (MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
                         httpClient.this.mInstance.openCommDialog();
                     }
                     Log.w(httpClient.TAG, "send APICMD_FREEZE(true)..");
                     httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, httpClient.STATE_IDLE, httpClient.STATE_CONNECT);
                     httpClient.this.dialog.setMessage("Identifying/Activating Vehicle");
-                    httpClient.phonehome_state = httpClient.STATE_ACTIVATE;
+                    httpClient.phonehome_state = PhoneHomeState.ACTIVATE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_ACTIVATE /*3*/:
+				case PhoneHomeState.ACTIVATE /*3*/:
                     Log.i(httpClient.TAG, "       setJsonGateway..");
                     httpClient.this.setJsonGateway();
                     Log.i(httpClient.TAG, "       Activation..");
                     httpClient.this.PerformActivationTask();
-                    if (httpClient.phonehome_update_level == httpClient.STATE_FREEZE_GATEWAY || httpClient.phonehome_update_level == httpClient.STATE_ACTIVATE) {
+                    if (httpClient.phonehome_update_level == PhoneHomeState.FREEZE_GATEWAY || httpClient.phonehome_update_level == PhoneHomeState.ACTIVATE) {
                         httpClient.this.dialog.setMessage("Checking for software updates");
-                        httpClient.phonehome_state = httpClient.STATE_VERSION;
+                        httpClient.phonehome_state = PhoneHomeState.VERSION;
                     } else {
                         httpClient.this.dialog.setMessage("Updating Settings with Fleet Dashboard");
-                        httpClient.phonehome_state = httpClient.STATE_UPDATE;
+                        httpClient.phonehome_state = PhoneHomeState.UPDATE;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_UPDATE /*4*/:
+				case PhoneHomeState.UPDATE /*4*/:
                     Log.i(httpClient.TAG, "       Update..");
                     httpClient.this.PerformUpdateTask();
                     httpClient.this.dialog.setMessage("Sending Vehicle Logs");
-                    httpClient.phonehome_state = httpClient.STATE_LOG;
+                    httpClient.phonehome_state = PhoneHomeState.LOG;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_LOG /*5*/:
+				case PhoneHomeState.LOG /*5*/:
                     Log.i(httpClient.TAG, "       Log..");
                     httpClient.this.PerformLogTask();
-                    httpClient.phonehome_state = httpClient.STATE_LOG_STATUS;
+                    httpClient.phonehome_state = PhoneHomeState.LOG_STATUS;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_VERSION /*6*/:
+				case PhoneHomeState.VERSION /*6*/:
                     Log.i(httpClient.TAG, "       Version..");
                     httpClient.this.PerformVersionTask();
-                    httpClient.APKupdate_exists = httpClient.this.APKUpdateExist() == httpClient.STATE_CONNECT ? httpClient.PHONEHOME_RESCHEDULE : httpClient.PHONEHOME_NO_RESCHEDULE;
+                    httpClient.APKupdate_exists = httpClient.this.APKUpdateExist() == 1;
                     Log.i(httpClient.TAG, "       APKUpdateExist? " + (httpClient.APKupdate_exists ? "true" : "false"));
-                    if (httpClient.this.CSCUpdateExist() == httpClient.STATE_CONNECT) {
-                        z = httpClient.PHONEHOME_RESCHEDULE;
+                    if (httpClient.this.CSCUpdateExist() == 1) {
+                        z = true;
                     }
                     httpClient.CSCupdate_exists = z;
                     Log.i(httpClient.TAG, "       CSCUpdateExist? " + (httpClient.CSCupdate_exists ? "true" : "false"));
-                    if (httpClient.phonehome_update_level == httpClient.STATE_FREEZE_GATEWAY) {
+                    if (httpClient.phonehome_update_level == PhoneHomeState.FREEZE_GATEWAY) {
                         if (httpClient.CSCupdate_exists) {
                             httpClient.this.dialog.setMessage("Updating Gateway firmware");
-                            httpClient.phonehome_state = httpClient.STATE_CSC_AUTOUPDATE;
+                            httpClient.phonehome_state = PhoneHomeState.CSC_AUTO_UPDATE;
                         } else {
                             httpClient.result = httpClient.STATE_LOG;
-                            httpClient.phonehome_state = httpClient.STATE_DONE;
+                            httpClient.phonehome_state = PhoneHomeState.DONE;
                         }
-                    } else if (httpClient.phonehome_update_level == httpClient.STATE_ACTIVATE) {
+                    } else if (httpClient.phonehome_update_level == PhoneHomeState.ACTIVATE) {
                         if (httpClient.APKupdate_exists) {
                             httpClient.this.dialog.setMessage("Updating Tablet Application");
-                            httpClient.phonehome_state = httpClient.STATE_APKUPDATE;
+                            httpClient.phonehome_state = PhoneHomeState.APK_UPDATE;
                         } else {
                             httpClient.result = httpClient.STATE_LOG;
-                            httpClient.phonehome_state = httpClient.STATE_DONE;
+                            httpClient.phonehome_state = PhoneHomeState.DONE;
                         }
-                    } else if (httpClient.phonehome_update_level == httpClient.STATE_CONNECT) {
+                    } else if (httpClient.phonehome_update_level == PhoneHomeState.CONNECT) {
                         if (httpClient.CSCupdate_exists) {
                             httpClient.this.dialog.setMessage("Updating Gateway firmware");
-                            httpClient.phonehome_state = httpClient.STATE_CSCUPDATE;
+                            httpClient.phonehome_state = PhoneHomeState.CSC_UPDATE;
                         } else {
                             if (httpClient.APKupdate_exists) {
-                                httpClient.result = httpClient.STATE_UPDATE;
+                                httpClient.result = PhoneHomeState.UPDATE;
                             } else {
-                                httpClient.result = httpClient.STATE_CONNECT;
+                                httpClient.result = PhoneHomeState.CONNECT;
                             }
-                            httpClient.phonehome_state = httpClient.STATE_DONE;
+                            httpClient.phonehome_state = PhoneHomeState.DONE;
                         }
                     } else if (httpClient.APKupdate_exists) {
                         httpClient.this.dialog.setMessage("Updating Tablet Application");
-                        httpClient.phonehome_state = httpClient.STATE_APKUPDATE;
+                        httpClient.phonehome_state = PhoneHomeState.APK_UPDATE;
                     } else if (httpClient.CSCupdate_exists) {
                         httpClient.this.dialog.setMessage("Updating Gateway firmware");
-                        httpClient.phonehome_state = httpClient.STATE_CSCUPDATE;
+                        httpClient.phonehome_state = PhoneHomeState.CSC_UPDATE;
                     } else {
-                        httpClient.result = httpClient.STATE_CONNECT;
-                        httpClient.phonehome_state = httpClient.STATE_DONE;
+                        httpClient.result = PhoneHomeState.CONNECT;
+                        httpClient.phonehome_state = PhoneHomeState.DONE;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_APKUPDATE /*7*/:
+				case PhoneHomeState.APK_UPDATE /*7*/:
                     httpClient.result = httpClient.STATE_CONNECT;
                     if (httpClient.APKupdate_exists) {
                         if (httpClient.CSCupdate_exists) {
@@ -246,7 +248,7 @@ public class httpClient extends Activity {
                         status = httpClient.this.PerformAPKUpdate();
                         if (status == 0) {
                             httpClient.result = httpClient.STATE_CONNECT;
-                        } else if (status == httpClient.STATE_CONNECT) {
+                        } else if (status == 1) {
                             if (MainActivity.PackageUpdatePending) {
                                 httpClient.result = httpClient.STATE_UPDATE;
                             }
@@ -256,12 +258,12 @@ public class httpClient extends Activity {
                         if (httpClient.result == httpClient.STATE_CONNECT && httpClient.CSCupdate_exists) {
                             httpClient.result = httpClient.STATE_FREEZE_GATEWAY;
                         }
-                        httpClient.phonehome_state = httpClient.STATE_DONE;
+                        httpClient.phonehome_state = PhoneHomeState.DONE;
                     }
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                     break;
-                case httpClient.STATE_CSCUPDATE /*8*/:
-                case httpClient.STATE_CSC_AUTOUPDATE /*9*/:
+                case PhoneHomeState.CSC_UPDATE /*8*/:
+                case PhoneHomeState.CSC_AUTO_UPDATE /*9*/:
                     if (httpClient.CSCupdate_exists) {
                         status = httpClient.this.PerformCSCUpdate();
                         if (status == 0) {
@@ -274,28 +276,28 @@ public class httpClient extends Activity {
                     } else {
                         httpClient.result = httpClient.STATE_LOG;
                     }
-                    httpClient.phonehome_state = httpClient.STATE_DONE;
+                    httpClient.phonehome_state = PhoneHomeState.DONE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_LOG_STATUS /*15*/:
+				case PhoneHomeState.LOG_STATUS /*15*/:
                     httpClient.this.dialog.setMessage("Sending Collected Data");
-                    httpClient.phonehome_state = httpClient.STATE_DATUM;
+                    httpClient.phonehome_state = PhoneHomeState.DATUM;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_DATUM /*20*/:
+				case PhoneHomeState.DATUM /*20*/:
                     Log.i(httpClient.TAG, "       Datum..");
                     httpClient.this.PerformDatumTask();
-                    httpClient.phonehome_state = httpClient.STATE_DATUM_STATUS;
+                    httpClient.phonehome_state = PhoneHomeState.DATUM_STATUS;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_DATUM_STATUS /*25*/:
+				case PhoneHomeState.DATUM_STATUS /*25*/:
                     httpClient.this.dialog.setMessage("Checking for software updates");
-                    httpClient.phonehome_state = httpClient.STATE_VERSION;
+                    httpClient.phonehome_state = PhoneHomeState.VERSION;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case httpClient.STATE_DONE /*90*/:
+				case PhoneHomeState.DONE /*90*/:
                     break;
-                case httpClient.STATE_ERROR /*99*/:
+                case PhoneHomeState.ERROR /*99*/:
                     MainActivity.SyncLast_Status = httpClient.result;
                     httpClient.this.mInstance.UpdateConnectivityStatus();
                     String resched_msg = httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE ? "\n\nRefresh has been rescheduled" : BuildConfig.FLAVOR;
@@ -309,27 +311,27 @@ public class httpClient extends Activity {
                         case httpClient.PHONEHOME_ERROR /*-1*/:
                             httpClient.this.dialog.setMessage("Errors encountered during refresh" + resched_msg);
                             break;
-                        case httpClient.STATE_CONNECT /*1*/:
+                        case PhoneHomeState.CONNECT /*1*/:
                             MainActivity.SyncLast = Calendar.getInstance();
                             httpClient com_idlesmarter_aoa_httpClient = httpClient.this;
                             int access$100 = httpClient.result;
                             com_idlesmarter_aoa_httpClient.sendSyncLast(access$100, MainActivity.SyncLast);
                             httpClient.this.dialog.setMessage("Refresh completed");
                             break;
-                        case httpClient.STATE_FREEZE_GATEWAY /*2*/:
+                        case PhoneHomeState.FREEZE_GATEWAY /*2*/:
                             httpClient.this.dialog.setMessage("Gateway update is in progress");
                             break;
-                        case httpClient.STATE_ACTIVATE /*3*/:
+                        case PhoneHomeState.ACTIVATE /*3*/:
                             httpClient.this.dialog.setMessage("Refresh is in progress");
                             break;
-                        case httpClient.STATE_UPDATE /*4*/:
+                        case PhoneHomeState.UPDATE /*4*/:
                             httpClient.this.dialog.setMessage("Tablet update is in progress");
                             break;
-                        case httpClient.STATE_LOG /*5*/:
+                        case PhoneHomeState.LOG /*5*/:
                             httpClient.this.dialog.setMessage("No updates found");
                             break;
                     }
-                    httpClient.PhoneHomePending = httpClient.PHONEHOME_NO_RESCHEDULE;
+                    httpClient.PhoneHomePending = false;
                     if (httpClient.result != httpClient.STATE_UPDATE) {
                         Log.w(httpClient.TAG, "send APICMD_FREEZE(false)..");
                         httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, httpClient.STATE_IDLE, httpClient.STATE_IDLE);
@@ -337,14 +339,14 @@ public class httpClient extends Activity {
                     if (httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE) {
                         httpClient.this.mInstance.ReschedulePhoneHome(60);
                     }
-                    httpClient.phonehome_state = httpClient.STATE_CLEANUP;
+                    httpClient.phonehome_state = PhoneHomeState.CLEANUP;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, 3000);
                 	break;
-				case httpClient.STATE_CLEANUP /*100*/:
+				case PhoneHomeState.CLEANUP /*100*/:
                     httpClient.this.dialog.dismiss();
-                    httpClient.phonehome_state = httpClient.STATE_IDLE;
+                    httpClient.phonehome_state = PhoneHomeState.IDLE;
                     httpClient.phonehomeHandler.removeCallbacks(httpClient.this.phonehomeRunnable);
-                    httpClient.PhoneHomePending = httpClient.PHONEHOME_NO_RESCHEDULE;
+                    httpClient.PhoneHomePending = false;
                     if (httpClient.result == httpClient.STATE_UPDATE) {
                         httpClient.this.mInstance.exit();
                     }
