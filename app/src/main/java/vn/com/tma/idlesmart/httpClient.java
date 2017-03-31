@@ -519,8 +519,17 @@ public class httpClient extends Activity {
         }
     }
 
+    /**
+     * Calling ServerTask to get apk and csc recent version
+     * @return
+     * -1 if error
+     * 1 if response is empty
+     * 10 if success
+     * others: server error code
+     * Default API link: [POST] http://api.idlesmart.com/api/version
+     */
     public int PerformVersionTask() {
-        int responseCode = PHONEHOME_ERROR;
+        int responseCode = -1;
         Log.i(TAG, "VersionTask");
         CommLog(STATE_LOG, "VersionTask");
         try {
@@ -528,9 +537,9 @@ public class httpClient extends Activity {
             ServerTask servertask = new ServerTask();
             servertask.setContext(this.mInstance.getApplicationContext());
             Log.i(TAG, "versionTask:servertask.execute..");
-            String[] strArr = new String[STATE_FREEZE_GATEWAY];
-            strArr[STATE_IDLE] = "http://" + MainActivity.APIroute + "/api/version";
-            strArr[STATE_CONNECT] = jsonRequest.toString();
+            String[] strArr = new String[2];
+            strArr[0] = "http://" + MainActivity.APIroute + "/api/version";
+            strArr[1] = jsonRequest.toString();
             servertask.execute(strArr);
             Log.i(TAG, "versionTask:servertask.get..");
             String response = (String) servertask.get(60, TimeUnit.SECONDS);
@@ -539,7 +548,7 @@ public class httpClient extends Activity {
             if (response.isEmpty()) {
                 Log.e(TAG, "ERROR: versionTaskResponse is empty");
                 CommLog(STATE_LOG, "ERROR: versionTaskResponse is empty");
-                return STATE_CONNECT;
+                return 1;
             }
             this.jsonVersion = new JSONObject(response);
             Log.i(TAG, "Versions:" + this.jsonVersion.toString());
@@ -558,24 +567,20 @@ public class httpClient extends Activity {
                     return responseCode;
                 }
                 this.jsonCscVersionStack = null;
-                return responseCode;
+            } else {
+                Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
+                CommLog(STATE_LOG, "jsonResponse = " + this.jsonVersion.toString(1));
             }
-            Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
-            CommLog(STATE_LOG, "jsonResponse = " + this.jsonVersion.toString(STATE_CONNECT));
-            return responseCode;
         } catch (JSONException e) {
             e.printStackTrace();
-            return responseCode;
         } catch (InterruptedException e2) {
             e2.printStackTrace();
-            return responseCode;
         } catch (ExecutionException e3) {
             e3.printStackTrace();
-            return responseCode;
         } catch (TimeoutException e4) {
             e4.printStackTrace();
-            return responseCode;
         }
+        return responseCode;
     }
 
     /**
