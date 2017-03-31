@@ -105,7 +105,9 @@ public class MainActivity extends Activity implements OnClickListener {
     public static boolean[] aMaintEnable = null;
     public static int[] aMaintValue = null;
 
+    // Store PBC Parameter values
     public static int[] aParam = null;
+
     private static Dialog commDialog = null;
     private static String commlogstr = null;
     private static TextView commlogtext = null;
@@ -320,24 +322,24 @@ public class MainActivity extends Activity implements OnClickListener {
                 String str;
                 switch (msg.what) {
                     case Params.PARAM_TruckTimer /*18*/:
-                        MainActivity.aParam[14] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_DimTabletScreen] = msg.arg1;
                         mainActivityClass.setScreenTimeout(msg.arg1);
                     	break;
 					case Params.PARAM_PasswordEnable /*19*/:
-                        MainActivity.aParam[15] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_AudibleSound] = msg.arg1;
                         if (msg.arg1 == 0) {
                             z = false;
                         }
                         mainActivityClass.setSoundOn(z);
                     	break;
 					case AccessoryControl.APICMD_ENGINE_IDLE_RPM /*30*/:
-                        MainActivity.aParam[16] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_TruckRPMs] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_ENGINE_RESTART_INTERVAL /*31*/:
-                        MainActivity.aParam[9] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_EngineRunTime] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_AUTO_SHUTOFF_TIMEOUT /*32*/:
-                        MainActivity.aParam[7] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_AutoDisable] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_CABIN_COMFORT_ENABLE /*40*/:
                         if (msg.arg1 == 0) {
@@ -347,22 +349,22 @@ public class MainActivity extends Activity implements OnClickListener {
                         }
                     	break;
 					case AccessoryControl.VIN_ID_MAX /*41*/:
-                        MainActivity.aParam[3] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_CabinTargetTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_CABIN_TEMP_RANGE /*42*/:
-                        MainActivity.aParam[4] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_CabinTempRange] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_AMBIENT_TEMP_SETPOINT /*43*/:
-                        MainActivity.aParam[5] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_OutsideTargetTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_AMBIENT_TEMP_RANGE /*44*/:
-                        MainActivity.aParam[6] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_OutsideTempRange] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_SYSTEMTIMER /*45*/:
-                        MainActivity.aParam[18] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_TruckTimer] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_DRIVER_TEMP_COMMON /*48*/:
-                        MainActivity.aParam[17] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_DriverTempCommon] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE /*50*/:
                         if (msg.arg1 == 0) {
@@ -372,10 +374,10 @@ public class MainActivity extends Activity implements OnClickListener {
                         }
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_VOLTAGE /*51*/:
-                        MainActivity.aParam[8] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_VoltageSetPoint] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_RUNTIME /*52*/:
-                        MainActivity.aParam[9] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_EngineRunTime] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_SYNC_START /*53*/:
                         mainActivityClass.SetNextPhoneHome();
@@ -391,16 +393,16 @@ public class MainActivity extends Activity implements OnClickListener {
                         }
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_START_TEMP /*56*/:
-                        MainActivity.aParam[12] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_TemperatureSetPoint] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_RESTART_INTERVAL /*58*/:
-                        MainActivity.aParam[13] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_HoursBetweenStart] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_MIN_COOLANT /*59*/:
-                        MainActivity.aParam[11] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_MinCoolantTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_IDEAL_COOLANT /*60*/:
-                        MainActivity.aParam[10] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_IdealCoolantTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APIEVENT_SYNC /*69*/:
                         if (MainActivity.SyncWithServer) {
@@ -477,7 +479,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_TIMEREMAINING /*158*/:
                         if (mainActivityClass.GatewayMode != 3 || msg.arg1 <= 0) {
-                            str = mainActivityClass.Time2MinsSecsStr(MainActivity.aParam[9] * 60);
+                            str = mainActivityClass.Time2MinsSecsStr(MainActivity.aParam[Params.PARAM_EngineRunTime] * 60);
                         } else {
                             str = mainActivityClass.Time2MinsSecsStr(msg.arg1);
                         }
@@ -485,13 +487,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_FLEET_CABIN_COMFORT_ENABLE /*159*/:
                         if (msg.arg1 == 0) {
-                            MainActivity.aParam[23] = MainActivity.UNKNOWN_CONNECTIVITY;
+                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = MainActivity.UNKNOWN_CONNECTIVITY;
                         } else {
-                            MainActivity.aParam[23] = MainActivity.GOOD_CONNECTIVITY;
+                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = MainActivity.GOOD_CONNECTIVITY;
                         }
                     	break;
 					case AccessoryControl.APIDATA_FLEET_CABIN_TEMP_SETPOINT /*160*/:
-                        MainActivity.aParam[24] = msg.arg1;
+                        MainActivity.aParam[Params.PARAM_FleetCabinTargetTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICAN_ENGINE_COOLANT_TEMP /*193*/:
                         str = Integer.toString(msg.arg1) + "\u00b0";
@@ -631,7 +633,7 @@ public class MainActivity extends Activity implements OnClickListener {
         Password = 0;
         PasswordEnable = false;
         PasswordValid = false;
-        aParam = new int[25];
+        aParam = new int[Params.PARAM_MAX];
         aMaintEnable = new boolean[10];
         aMaintValue = new int[10];
         Gateway_HWver = 0;
@@ -784,7 +786,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 Log.i(TAG, "initialScreenTimeout = " + this.initialScreenTimeout);
             }
         }
-        startScreenHandler(aParam[14]);
+        startScreenHandler(aParam[Params.PARAM_DimTabletScreen]);
         PrefUtils.setApkUpdateState(0, getApplicationContext());
         Restart = true;
         Log.i(TAG, "<<==onCreate done");
@@ -851,7 +853,7 @@ public class MainActivity extends Activity implements OnClickListener {
         if (!this.mWakeLock.isHeld()) {
             this.mWakeLock.acquire();
         }
-        resetScreenTimeout(aParam[14]);
+        resetScreenTimeout(aParam[Params.PARAM_DimTabletScreen]);
         PasswordValid = false;
         PackageUpdatePending = false;
         GatewayUpdatePending = false;
@@ -1089,7 +1091,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
-        resetScreenTimeout(aParam[14]);
+        resetScreenTimeout(aParam[Params.PARAM_DimTabletScreen]);
         if (httpclient.dialog != null && httpclient.dialog.isShowing()) {
             httpclient.dialog.cancel();
         }
@@ -1447,7 +1449,7 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case R.id.ccFragStopButton /*2131361989*/:
                 Log.i(TAG, "-->cabinComfortEnableButton");
-                if (aParam[23] != 0 || this.CabinComfortMode == BAD_CONNECTIVITY || ValidPassword()) {
+                if (aParam[Params.PARAM_FleetCabinComfort] != 0 || this.CabinComfortMode == BAD_CONNECTIVITY || ValidPassword()) {
                     setFunctionMode(GOOD_CONNECTIVITY, toggleFunctionMode(this.CabinComfortMode));
                     updateFunctionModes();
                     PasswordValid = false;
@@ -1474,12 +1476,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
             	break;
 			case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
-                if (isCabinTempCommonDecrValid(aParam[3]) || ValidPassword()) {
+                if (isCabinTempCommonDecrValid(aParam[Params.PARAM_CabinTargetTemp]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
             	break;
 			case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
-                if (isCabinTempCommonIncrValid(aParam[3]) || ValidPassword()) {
+                if (isCabinTempCommonIncrValid(aParam[Params.PARAM_CabinTargetTemp]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
             	break;
@@ -1943,7 +1945,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     i = UNKNOWN_CONNECTIVITY;
                 }
                 iArr[UNKNOWN_CONNECTIVITY] = i;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, UNKNOWN_CONNECTIVITY, aParam[UNKNOWN_CONNECTIVITY] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, UNKNOWN_CONNECTIVITY, aParam[Params.PARAM_CabinComfort] & 255);
                 break;
             case BAD_CONNECTIVITY /*2*/:
                 int i2;
@@ -1960,7 +1962,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     i2 = GOOD_CONNECTIVITY;
                 }
                 iArr2[GOOD_CONNECTIVITY] = i2;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, UNKNOWN_CONNECTIVITY, aParam[GOOD_CONNECTIVITY] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, UNKNOWN_CONNECTIVITY, aParam[Params.PARAM_ColdWeatherGuard] & 255);
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 if (this.GatewayMode != 3) {
@@ -1974,7 +1976,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     i = UNKNOWN_CONNECTIVITY;
                 }
                 iArr[BAD_CONNECTIVITY] = i;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, UNKNOWN_CONNECTIVITY, aParam[BAD_CONNECTIVITY] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, UNKNOWN_CONNECTIVITY, aParam[Params.PARAM_BatteryProtect] & 255);
                 break;
         }
         updateFunctionModes();
@@ -2310,7 +2312,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void initializeRunningParams() {
-        for (int i = 0; i < 25; i += GOOD_CONNECTIVITY) {
+        for (int i = 0; i < Params.PARAM_MAX; i += 1) {
             aParam[i] = this.params.aParamDef[i];
         }
     }
@@ -2369,7 +2371,7 @@ public class MainActivity extends Activity implements OnClickListener {
         String pSfx = this.params.aParamSfx[this.param_id];
         String pPfx = this.params.aParamPfx[this.param_id];
         boolean bypass = false;
-        if (pId == 0 && aParam[23] == GOOD_CONNECTIVITY) {
+        if (pId == 0 && aParam[Params.PARAM_FleetCabinComfort] == 1) {
             bypass = true;
         }
         if (pId == 3) {
@@ -2435,14 +2437,14 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private boolean isCabinTempCommonIncrValid(int value) {
-        if (this.params.aParamIncr[3] + value <= aParam[24] + aParam[17]) {
+        if (this.params.aParamIncr[Params.PARAM_CabinTargetTemp] + value <= aParam[Params.PARAM_FleetCabinTargetTemp] + aParam[Params.PARAM_DriverTempCommon]) {
             return true;
         }
         return false;
     }
 
     private boolean isCabinTempCommonDecrValid(int value) {
-        if (value - this.params.aParamIncr[3] >= aParam[24] - aParam[17]) {
+        if (value - this.params.aParamIncr[Params.PARAM_CabinTargetTemp] >= aParam[Params.PARAM_FleetCabinTargetTemp] - aParam[Params.PARAM_DriverTempCommon]) {
             return true;
         }
         return false;
@@ -2557,17 +2559,17 @@ public class MainActivity extends Activity implements OnClickListener {
     private void viewFragmentParamValue(int fragmentId) {
         switch (fragmentId) {
             case BAD_CONNECTIVITY /*2*/:
-                ((TextView) findViewById(R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(aParam[3]) + this.params.aParamSfx[3]);
+                ((TextView) findViewById(R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(aParam[Params.PARAM_CabinTargetTemp]) + this.params.aParamSfx[Params.PARAM_CabinTargetTemp]);
                 break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                ((TextView) findViewById(R.id.cwgFragMinTempValue)).setText(Integer.toString(aParam[11]) + this.params.aParamSfx[11]);
-                ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[10]) + this.params.aParamSfx[10]);
+                ((TextView) findViewById(R.id.cwgFragMinTempValue)).setText(Integer.toString(aParam[Params.PARAM_MinCoolantTemp]) + this.params.aParamSfx[Params.PARAM_MinCoolantTemp]);
+                ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[Params.PARAM_IdealCoolantTemp]) + this.params.aParamSfx[Params.PARAM_IdealCoolantTemp]);
                 break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[9] * 60));
+                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
                 String str = Integer.toString(aParam[8]);
                 ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[8]);
-                ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[9]) + this.params.aParamSfx[9]);
+                ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[Params.PARAM_EngineRunTime]) + this.params.aParamSfx[9]);
                 break;
             default:
                 break;
@@ -2788,7 +2790,7 @@ public class MainActivity extends Activity implements OnClickListener {
             this.alertDialog.findViewById(R.id.alertRefreshButton).setOnClickListener(new AnonymousClass11(faultId));
             this.alertDialog.show();
             wakeup();
-            if (aParam[15] != 0) {
+            if (aParam[Params.PARAM_AudibleSound] != 0) {
                 alertTone();
             }
             back2sleep();
@@ -2816,7 +2818,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void alertTone() {
-        if (aParam[15] != 0) {
+        if (aParam[Params.PARAM_AudibleSound] != 0) {
             if (this.mMediaPlayer != null) {
                 closeMediaPlayer();
             }
