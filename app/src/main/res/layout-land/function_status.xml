@@ -49,6 +49,8 @@
 
     </LinearLayout>
 
+    <!--TODO Display 3 fragment(Cabin Comfort, ColdWeather Guard, Battery Protect), removed running_fragment from function_status to dashboard_fragment-->
+
    <!-- <include layout="@layout/running_fragment" />-->
 
     <LinearLayout
