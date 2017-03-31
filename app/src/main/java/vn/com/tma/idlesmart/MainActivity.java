@@ -1325,10 +1325,14 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.settingsButton /*2131361814*/:
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
+                // TODO Enable dashboardButton to access dashboard
+                SystemActivationFlag = true;
+                demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
                     selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(false);
-                    enableDashboard(false);
+                    // TODO Display setting fragment(1)
+                    //enableDashboard(false);
                     selectRunning(0);
                     enableSettings(true);
                     selectActivationFragment(0);
@@ -2055,7 +2059,8 @@ public class MainActivity extends Activity implements OnClickListener {
             selectSettingsEntry(UNKNOWN_CONNECTIVITY);
         } else {
             enableStatusBar(false);
-            enableDashboard(false);
+            // TODO Display setting fragment(2)
+            //enableDashboard(false);
             selectActivationFragment(UNKNOWN_CONNECTIVITY);
             enableSettings(true);
         }
