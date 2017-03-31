@@ -204,17 +204,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.1 */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    class C00011 implements OnSystemUiVisibilityChangeListener {
-        C00011() {
-        }
-
-        public void onSystemUiVisibilityChange(int visibility) {
-            MainActivity.this.hideNavBar();
-        }
-    }
-
     /**
      * Runnable which check the usb connection and try to connect (if not connected) every 3 seconds
      */
@@ -694,7 +683,16 @@ public class MainActivity extends Activity implements OnClickListener {
         if (!Restart) {
             clearMaintInfo();
         }
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new C00011());
+
+
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener(){
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                MainActivity.this.hideNavBar();
+            }
+        });
+
+
         findViewById(R.id.idlesmartButton).setOnClickListener(this);
         findViewById(R.id.dashboardButton).setOnClickListener(this);
         findViewById(R.id.settingsButton).setOnClickListener(this);
