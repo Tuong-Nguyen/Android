@@ -214,9 +214,11 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.2 */
-    class C00022 implements Runnable {
-        C00022() {
+    /**
+     * Runnable which check the usb connection and try to connect (if not connected) every 3 seconds
+     */
+    class UsbConnectionChecker implements Runnable {
+        UsbConnectionChecker() {
         }
 
         public void run() {
@@ -231,7 +233,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     Log.i(MainActivity.TAG, "      +++++++ We Have Reconnected +++++++");
                 } else {
                     int i = MainActivity.monitor_iter;
-                    MainActivity.monitor_iter = i + MainActivity.GOOD_CONNECTIVITY;
+                    MainActivity.monitor_iter = i + 1;
                     if (i >= 3) {
                         Log.d(MainActivity.TAG, "      PostDelayed USBReconnectHandler runnable..");
                         MainActivity.this.USBReconnectHandler.postDelayed(this, MainActivity.MONITOR_RATE);
@@ -538,7 +540,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.initialScreenBrightness = 0;
         this.initialScreenTimeout = 0;
         this.ScreenOn = true;
-        this.USBReconnectRunnable = new C00022();
+        this.USBReconnectRunnable = new UsbConnectionChecker();
         Integer[] numArr = new Integer[2];
         numArr[0] = 25;
         numArr[1] = 24;
