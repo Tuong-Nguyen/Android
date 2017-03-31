@@ -1909,7 +1909,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpFragStopButton.setText("ENABLE");
             	break;
 			case GOOD_CONNECTIVITY /*1*/:
-            	break;
 			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
@@ -1938,7 +1937,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void setFunctionMode(int function, int mode) {
-        int i = GOOD_CONNECTIVITY;
+        int i = 1;
         int[] iArr;
         switch (function) {
             case Functionality.CABIN_COMFORT /*1*/:
@@ -1952,7 +1951,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (this.CabinComfortMode == 0) {
                     i = 0;
                 }
-                iArr[0] = i;
+                iArr[Params.PARAM_CabinComfort] = i;
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, 0, aParam[Params.PARAM_CabinComfort] & 255);
                 break;
             case Functionality.COLD_WEATHER_GUARD /*2*/:
@@ -1965,11 +1964,11 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 int[] iArr2 = aParam;
                 if (this.ColdWeatherGuardMode == 0) {
-                    i2 = UNKNOWN_CONNECTIVITY;
+                    i2 = 0;
                 } else {
-                    i2 = GOOD_CONNECTIVITY;
+                    i2 = 1;
                 }
-                iArr2[GOOD_CONNECTIVITY] = i2;
+                iArr2[Params.PARAM_ColdWeatherGuard] = i2;
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, 0, aParam[Params.PARAM_ColdWeatherGuard] & 255);
                 break;
             case Functionality.BATTERY_PROTECT: /*3*/
@@ -1981,9 +1980,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 iArr = aParam;
                 if (this.BatteryProtectMode == 0) {
-                    i = UNKNOWN_CONNECTIVITY;
+                    i = 0;
                 }
-                iArr[BAD_CONNECTIVITY] = i;
+                iArr[Params.PARAM_BatteryProtect] = i;
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, 0, aParam[Params.PARAM_BatteryProtect] & 255);
                 break;
         }
