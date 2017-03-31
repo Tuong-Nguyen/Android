@@ -54,8 +54,8 @@
    <!-- <include layout="@layout/running_fragment" />-->
     <!--TODO Display Cabin Comfort detail -> removed cabin_comfort_fragment from here to -->
    <!--  <include layout="@layout/cabin_comfort_fragment" />-->
-
-    <include layout="@layout/cold_weather_guard_fragment" />
+    <!--TODO Display Cold Weather Guard detail -> removed cold_weather_guard_fragment from here to dashboard fragment-->
+   <!-- <include layout="@layout/cold_weather_guard_fragment" />-->
 
     <LinearLayout
         android:id="@id/batteryProtectFragment"

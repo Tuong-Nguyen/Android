@@ -32,6 +32,8 @@
 
     <include layout="@layout/cabin_comfort_fragment"/>
 
+    <include layout="@layout/cold_weather_guard_fragment" />
+
     <LinearLayout
         android:id="@id/settingsFragment"
         android:layout_width="match_parent"
