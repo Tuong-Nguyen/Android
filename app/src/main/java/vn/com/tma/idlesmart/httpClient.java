@@ -663,23 +663,23 @@ public class httpClient extends Activity {
             jsonRequest.accumulate("device", jsonDevice);
             this.jsonDeviceNode = new JSONObject();
             if (!this.NewTruckActivation) {
-                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_ENABLE", Integer.valueOf(MainActivity.aParam[STATE_IDLE]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_ENABLE", Integer.valueOf(MainActivity.aParam[STATE_CONNECT]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_ENABLE", Integer.valueOf(MainActivity.aParam[STATE_FREEZE_GATEWAY]));
-                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_SETPOINT", Integer.valueOf(MainActivity.aParam[STATE_ACTIVATE]));
-                this.jsonDeviceNode.accumulate("CABINCOMFORT_RANGE", Integer.valueOf(MainActivity.aParam[STATE_UPDATE]));
-                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_SETPOINT", Integer.valueOf(MainActivity.aParam[STATE_LOG]));
-                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_RANGE", Integer.valueOf(MainActivity.aParam[STATE_VERSION]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", battmv2Str(MainActivity.aParam[STATE_CSCUPDATE]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_RUNTIME", Integer.valueOf(MainActivity.aParam[STATE_CSC_AUTOUPDATE]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_IDEAL_COOLANT", Integer.valueOf(MainActivity.aParam[10]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_MIN_COOLANT", Integer.valueOf(MainActivity.aParam[11]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_START_TEMP", Integer.valueOf(MainActivity.aParam[12]));
-                this.jsonDeviceNode.accumulate("RESTART_INTERVAL", Integer.valueOf(MainActivity.aParam[13]));
-                this.jsonDeviceNode.accumulate("COMMON_SCREEN_DIM", Integer.valueOf(MainActivity.aParam[14]));
-                this.jsonDeviceNode.accumulate("COMMON_IDLERPM", Integer.valueOf(MainActivity.aParam[16]));
-                this.jsonDeviceNode.accumulate("COMMON_RUNTIME", Integer.valueOf(MainActivity.aParam[18]));
-                this.jsonDeviceNode.accumulate("COMMON_DRIVER_TEMP_RANGE", Integer.valueOf(MainActivity.aParam[17]));
+                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_ENABLE", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinComfort]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_ENABLE", Integer.valueOf(MainActivity.aParam[Params.PARAM_ColdWeatherGuard]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_ENABLE", Integer.valueOf(MainActivity.aParam[Params.PARAM_BatteryProtect]));
+                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_SETPOINT", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinTargetTemp]));
+                this.jsonDeviceNode.accumulate("CABINCOMFORT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinTempRange]));
+                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_SETPOINT", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTargetTemp]));
+                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTempRange]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", battmv2Str(MainActivity.aParam[Params.PARAM_VoltageSetPoint]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_RUNTIME", Integer.valueOf(MainActivity.aParam[Params.PARAM_EngineRunTime]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_IDEAL_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_IdealCoolantTemp]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_MIN_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_MinCoolantTemp]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_START_TEMP", Integer.valueOf(MainActivity.aParam[Params.PARAM_TemperatureSetPoint]));
+                this.jsonDeviceNode.accumulate("RESTART_INTERVAL", Integer.valueOf(MainActivity.aParam[Params.PARAM_HoursBetweenStart]));
+                this.jsonDeviceNode.accumulate("COMMON_SCREEN_DIM", Integer.valueOf(MainActivity.aParam[Params.PARAM_DimTabletScreen]));
+                this.jsonDeviceNode.accumulate("COMMON_IDLERPM", Integer.valueOf(MainActivity.aParam[Params.PARAM_TruckRPMs]));
+                this.jsonDeviceNode.accumulate("COMMON_RUNTIME", Integer.valueOf(MainActivity.aParam[Params.PARAM_TruckTimer]));
+                this.jsonDeviceNode.accumulate("COMMON_DRIVER_TEMP_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_DriverTempCommon]));
                 jsonRequest.accumulate("node_settings", this.jsonDeviceNode);
             }
             if (MainActivity.DebugLog) {
