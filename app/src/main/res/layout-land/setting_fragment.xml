@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/settingsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="477dp"
+    android:background="#eeeeee"
+    android:orientation="horizontal"
+    android:visibility="gone"
+    android:weightSum="1.0"
+    tools:showIn="@layout/dashboard_fragment">
+
+    <LinearLayout
+        android:id="@id/settingsMenu1"
+        android:layout_width="193dp"
+        android:layout_height="477dp"
+        android:background="#dddddd"
+        android:inputType="numberDecimal"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:id="@id/settingsMenu11"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/menu1Selected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu11Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Active"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu11Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Cabin Comfort"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu12"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu1Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu12Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu12Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Battery Protect"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu13"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu1Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu13Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu13Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Cold Weather Guard"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu14"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu1Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu14Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu14Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Password"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu15"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu1Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu15Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu15Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Vehicle"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu16"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu1Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu16Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu16Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="About Device"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu17"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu1Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu17Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu17Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Refresh Device"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu18"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu1Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu18Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu1Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu18Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/settingsMenu2"
+        android:layout_width="193dp"
+        android:layout_height="477dp"
+        android:background="#dddddd"
+        android:inputType="numberDecimal"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:id="@id/settingsMenu21"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/menu2Selected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu21Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Active"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu21Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Feature On/Off"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu22"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu2Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu22Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu22Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Cabin Target Temp"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu23"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu2Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu23Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu23Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Cabin Temp Range"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu24"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu2Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu24Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu24Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Outside Target Temp"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu25"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu2Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu25Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu25Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Outside Temp Range"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu26"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu2Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu26Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu26Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text="Timer Settings"
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu27"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu2Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu27Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu27Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="#f4f4f4"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/settingsMenu28"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/menu2Deselected"
+            android:clickable="true"
+            android:inputType="numberDecimal"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <LinearLayout
+                android:id="@id/settingsMenu28Indicator"
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:background="@color/menu2Deselected"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@id/settingsMenu28Item"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:text=""
+                android:textColor="#eeeeee"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/settingsEntryEnable"
+        android:layout_width="match_parent"
+        android:layout_height="477dp"
+        android:background="#eeeeee"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:weightSum="1.0">
+
+
+        <TextView
+            android:id="@id/settingsEntryEnableDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="64dp"
+            android:gravity="center_horizontal"
+            android:text="Cabin Comfort feature is currently disabled."
+            android:textColor="#848484"
+            android:textSize="36dp" />
+
+        <Button
+            android:id="@id/settingsEntryEnableButton"
+            android:layout_width="226dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="64dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/enabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="ENABLE"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/settingsEntryDisable"
+        android:layout_width="match_parent"
+        android:layout_height="477dp"
+        android:background="#eeeeee"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:weightSum="1.0">
+
+        <TextView
+            android:id="@id/settingsEntryDisableDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="64dp"
+            android:gravity="center_horizontal"
+            android:text="Cabin Comfort feature is currently enabled."
+            android:textColor="#848484"
+            android:textSize="36dp" />
+
+        <Button
+            android:id="@id/settingsEntryDisableButton"
+            android:layout_width="226dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="64dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/enabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="DISABLE"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/settingsEntryNumeric"
+        android:layout_width="match_parent"
+        android:layout_height="477dp"
+        android:background="#eeeeee"
+        android:visibility="gone"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:layout_width="384dp"
+            android:layout_height="256dp"
+            android:layout_marginLeft="124dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/round_button_shape"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:weightSum="1.0">
+
+            <TextView
+                android:id="@id/settingsEntryDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:text="Target Temp"
+                android:textColor="#848484"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@id/settingsEntryValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:text="70°"
+                android:textColor="#4a4a4a"
+                android:textSize="144dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="174dp"
+            android:layout_marginTop="0dp"
+            android:background="#eeeeee"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <Button
+                android:id="@id/settingsEntryDecrementButton"
+                android:layout_width="129dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="-20dp"
+                android:background="#4a4a4a"
+                android:clickable="true"
+                android:text="-"
+                android:textColor="#eeeeee"
+                android:textSize="60dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@id/settingsEntryIncrementButton"
+                android:layout_width="129dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="-12dp"
+                android:background="#4a4a4a"
+                android:clickable="true"
+                android:text="+"
+                android:textColor="#eeeeee"
+                android:textSize="50dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@id/settingsEntryDoneButton"
+            android:layout_width="257dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="34dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/enabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="DONE"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/settingsEntryPassword"
+        android:layout_width="match_parent"
+        android:layout_height="477dp"
+        android:background="#eeeeee"
+        android:visibility="gone"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:layout_width="384dp"
+            android:layout_height="256dp"
+            android:layout_marginLeft="124dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/round_button_shape"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:weightSum="1.0">
+
+            <TextView
+                android:id="@id/settingsPasswordDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:text="Password"
+                android:textColor="#848484"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@id/settingsPasswordValue"
+                android:layout_width="372dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:editable="true"
+                android:gravity="center_horizontal"
+                android:text=""
+                android:textColor="#4a4a4a"
+                android:textSize="80dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="174dp"
+            android:layout_marginTop="0dp"
+            android:background="#eeeeee"
+            android:orientation="horizontal"
+            android:weightSum="1.0" />
+
+        <Button
+            android:id="@id/settingsPasswordDoneButton"
+            android:layout_width="257dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="34dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/enabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="DONE"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/settingsEntryRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="477dp"
+        android:background="#eeeeee"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:weightSum="1.0">
+
+        <TextView
+            android:id="@id/settingsRefreshDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="124dp"
+            android:gravity="center_horizontal"
+            android:text="Refreshing data from Server.."
+            android:textColor="#848484"
+            android:textSize="36dp" />
+
+        <TextView
+            android:id="@id/settingsRefreshDescription2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="64dp"
+            android:gravity="center_horizontal"
+            android:text="Please wait"
+            android:textColor="#848484"
+            android:textSize="36dp" />
+    </LinearLayout>
+</LinearLayout>
+
+    
