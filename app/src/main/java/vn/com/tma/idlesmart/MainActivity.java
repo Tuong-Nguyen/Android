@@ -162,6 +162,12 @@ public class MainActivity extends Activity implements OnClickListener {
     final Handler verificationHandler;
     final Runnable verificationRunnable;
 
+    static class Functionality {
+        static final int CABIN_COMFORT = 1;
+        static final int COLD_WEATHER_GUARD = 2;
+        static final int BATTERY_PROTECT = 3;
+    }
+
     /**
      * Index of maintenance features
      */
@@ -343,9 +349,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APICMD_CABIN_COMFORT_ENABLE /*40*/:
                         if (msg.arg1 == 0) {
-                            mainActivityClass.setFunctionMode(MainActivity.GOOD_CONNECTIVITY, MainActivity.UNKNOWN_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.CABIN_COMFORT, MainActivity.UNKNOWN_CONNECTIVITY);
                         } else {
-                            mainActivityClass.setFunctionMode(MainActivity.GOOD_CONNECTIVITY, MainActivity.GOOD_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.CABIN_COMFORT, MainActivity.GOOD_CONNECTIVITY);
                         }
                     	break;
 					case AccessoryControl.VIN_ID_MAX /*41*/:
@@ -368,9 +374,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE /*50*/:
                         if (msg.arg1 == 0) {
-                            mainActivityClass.setFunctionMode(3, MainActivity.UNKNOWN_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.BATTERY_PROTECT, MainActivity.UNKNOWN_CONNECTIVITY);
                         } else {
-                            mainActivityClass.setFunctionMode(3, MainActivity.GOOD_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.BATTERY_PROTECT, MainActivity.GOOD_CONNECTIVITY);
                         }
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_VOLTAGE /*51*/:
@@ -387,9 +393,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE /*55*/:
                         if (msg.arg1 == 0) {
-                            mainActivityClass.setFunctionMode(MainActivity.BAD_CONNECTIVITY, MainActivity.UNKNOWN_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.COLD_WEATHER_GUARD, MainActivity.UNKNOWN_CONNECTIVITY);
                         } else {
-                            mainActivityClass.setFunctionMode(MainActivity.BAD_CONNECTIVITY, MainActivity.GOOD_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.COLD_WEATHER_GUARD, MainActivity.GOOD_CONNECTIVITY);
                         }
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_START_TEMP /*56*/:
@@ -1450,7 +1456,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.ccFragStopButton /*2131361989*/:
                 Log.i(TAG, "-->cabinComfortEnableButton");
                 if (aParam[Params.PARAM_FleetCabinComfort] != 0 || this.CabinComfortMode == BAD_CONNECTIVITY || ValidPassword()) {
-                    setFunctionMode(GOOD_CONNECTIVITY, toggleFunctionMode(this.CabinComfortMode));
+                    setFunctionMode(Functionality.CABIN_COMFORT, toggleFunctionMode(this.CabinComfortMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
@@ -1460,7 +1466,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.cwgFragStopButton /*2131361996*/:
                 Log.i(TAG, "-->coldWeatherGuardEnableButton");
                 if (this.ColdWeatherGuardMode == BAD_CONNECTIVITY || ValidPassword()) {
-                    setFunctionMode(BAD_CONNECTIVITY, toggleFunctionMode(this.ColdWeatherGuardMode));
+                    setFunctionMode(Functionality.COLD_WEATHER_GUARD, toggleFunctionMode(this.ColdWeatherGuardMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
@@ -1470,7 +1476,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.bpFragStopButton /*2131362005*/:
                 Log.i(TAG, "-->batteryProtectEnableButton");
                 if (this.BatteryProtectMode == BAD_CONNECTIVITY || ValidPassword()) {
-                    setFunctionMode(3, toggleFunctionMode(this.BatteryProtectMode));
+                    setFunctionMode(Functionality.BATTERY_PROTECT, toggleFunctionMode(this.BatteryProtectMode));
                     updateFunctionModes();
                     PasswordValid = false;
                 }
@@ -1631,11 +1637,11 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         setEngineStatus(BuildConfig.FLAVOR);
         if (this.GatewayMode == GOOD_CONNECTIVITY) {
-            setFunctionMode(GOOD_CONNECTIVITY, 3);
+            setFunctionMode(Functionality.CABIN_COMFORT, 3);
         } else if (this.GatewayMode == BAD_CONNECTIVITY) {
-            setFunctionMode(BAD_CONNECTIVITY, 3);
+            setFunctionMode(Functionality.COLD_WEATHER_GUARD, 3);
         } else if (this.GatewayMode == 3) {
-            setFunctionMode(3, 3);
+            setFunctionMode(Functionality.BATTERY_PROTECT, 3);
         }
         updateFunctionModes();
         enableDashboard(false);
@@ -1903,7 +1909,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpFragStopButton.setText("ENABLE");
             	break;
 			case GOOD_CONNECTIVITY /*1*/:
-            	break;
 			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
@@ -1932,24 +1937,24 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void setFunctionMode(int function, int mode) {
-        int i = GOOD_CONNECTIVITY;
+        int i = 1;
         int[] iArr;
         switch (function) {
-            case GOOD_CONNECTIVITY /*1*/:
+            case Functionality.CABIN_COMFORT /*1*/:
                 if (this.GatewayMode != GOOD_CONNECTIVITY) {
                     this.CabinComfortMode = mode;
                 } else if (mode == 3) {
-                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.CabinComfortMode = 3;
                 }
                 iArr = aParam;
                 if (this.CabinComfortMode == 0) {
-                    i = UNKNOWN_CONNECTIVITY;
+                    i = 0;
                 }
-                iArr[UNKNOWN_CONNECTIVITY] = i;
+                iArr[Params.PARAM_CabinComfort] = i;
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, 0, aParam[Params.PARAM_CabinComfort] & 255);
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case Functionality.COLD_WEATHER_GUARD /*2*/:
                 int i2;
                 if (this.GatewayMode != BAD_CONNECTIVITY) {
                     this.ColdWeatherGuardMode = mode;
@@ -1959,14 +1964,14 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 int[] iArr2 = aParam;
                 if (this.ColdWeatherGuardMode == 0) {
-                    i2 = UNKNOWN_CONNECTIVITY;
+                    i2 = 0;
                 } else {
-                    i2 = GOOD_CONNECTIVITY;
+                    i2 = 1;
                 }
-                iArr2[GOOD_CONNECTIVITY] = i2;
+                iArr2[Params.PARAM_ColdWeatherGuard] = i2;
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, 0, aParam[Params.PARAM_ColdWeatherGuard] & 255);
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case Functionality.BATTERY_PROTECT: /*3*/
                 if (this.GatewayMode != 3) {
                     this.BatteryProtectMode = mode;
                 } else if (mode == 3) {
@@ -1975,9 +1980,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 iArr = aParam;
                 if (this.BatteryProtectMode == 0) {
-                    i = UNKNOWN_CONNECTIVITY;
+                    i = 0;
                 }
-                iArr[BAD_CONNECTIVITY] = i;
+                iArr[Params.PARAM_BatteryProtect] = i;
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, 0, aParam[Params.PARAM_BatteryProtect] & 255);
                 break;
         }
@@ -2479,25 +2484,25 @@ public class MainActivity extends Activity implements OnClickListener {
                 switch (paramId) {
                     case UNKNOWN_CONNECTIVITY /*0*/:
                         if (aParam[paramId] != 0) {
-                            setFunctionMode(GOOD_CONNECTIVITY, GOOD_CONNECTIVITY);
+                            setFunctionMode(Functionality.CABIN_COMFORT, GOOD_CONNECTIVITY);
                         } else {
-                            setFunctionMode(GOOD_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
+                            setFunctionMode(Functionality.CABIN_COMFORT, UNKNOWN_CONNECTIVITY);
                         }
                         updateFunctionModes();
                         break;
                     case GOOD_CONNECTIVITY /*1*/:
                         if (aParam[paramId] != 0) {
-                            setFunctionMode(BAD_CONNECTIVITY, GOOD_CONNECTIVITY);
+                            setFunctionMode(Functionality.COLD_WEATHER_GUARD, GOOD_CONNECTIVITY);
                         } else {
-                            setFunctionMode(BAD_CONNECTIVITY, UNKNOWN_CONNECTIVITY);
+                            setFunctionMode(Functionality.COLD_WEATHER_GUARD, UNKNOWN_CONNECTIVITY);
                         }
                         updateFunctionModes();
                         break;
                     case BAD_CONNECTIVITY /*2*/:
                         if (aParam[paramId] != 0) {
-                            setFunctionMode(3, GOOD_CONNECTIVITY);
+                            setFunctionMode(Functionality.BATTERY_PROTECT, GOOD_CONNECTIVITY);
                         } else {
-                            setFunctionMode(3, UNKNOWN_CONNECTIVITY);
+                            setFunctionMode(Functionality.BATTERY_PROTECT, UNKNOWN_CONNECTIVITY);
                         }
                         updateFunctionModes();
                         break;
