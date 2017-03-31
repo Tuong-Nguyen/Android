@@ -44,6 +44,7 @@
             android:background="#dddddd"
             android:inputType="numberDecimal"
             android:visibility="visible"
+            android:orientation="vertical"
             android:weightSum="1.0">
 
             <LinearLayout
@@ -61,6 +62,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Active"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -91,6 +93,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -121,6 +124,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -151,6 +155,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -181,6 +186,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -211,6 +217,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -241,6 +248,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -271,6 +279,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu1Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -293,6 +302,7 @@
             android:background="#dddddd"
             android:inputType="numberDecimal"
             android:visibility="visible"
+            android:orientation="vertical"
             android:weightSum="1.0">
 
             <LinearLayout
@@ -310,6 +320,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Active"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -340,6 +351,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -370,6 +382,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -400,6 +413,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -430,6 +444,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -460,6 +475,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -490,6 +506,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -520,6 +537,7 @@
                     android:layout_width="8dp"
                     android:layout_height="match_parent"
                     android:background="@color/menu2Deselected"
+                    android:orientation="vertical"
                     android:visibility="visible" />
 
                 <TextView
@@ -541,7 +559,9 @@
             android:layout_height="477dp"
             android:background="#eeeeee"
             android:visibility="gone"
+            android:orientation="vertical"
             android:weightSum="1.0">
+
 
             <TextView
                 android:id="@id/settingsEntryEnableDescription"
@@ -575,6 +595,7 @@
             android:layout_height="477dp"
             android:background="#eeeeee"
             android:visibility="gone"
+            android:orientation="vertical"
             android:weightSum="1.0">
 
             <TextView
@@ -618,6 +639,7 @@
                 android:layout_marginTop="40dp"
                 android:background="@drawable/round_button_shape"
                 android:visibility="visible"
+                android:orientation="vertical"
                 android:weightSum="1.0">
 
                 <TextView
@@ -707,6 +729,7 @@
                 android:layout_marginTop="40dp"
                 android:background="@drawable/round_button_shape"
                 android:visibility="visible"
+                android:orientation="vertical"
                 android:weightSum="1.0">
 
                 <TextView
@@ -762,6 +785,7 @@
             android:layout_height="477dp"
             android:background="#eeeeee"
             android:visibility="gone"
+            android:orientation="vertical"
             android:weightSum="1.0">
 
             <TextView
@@ -923,6 +947,7 @@
         android:layout_height="477dp"
         android:background="@color/enabledFunction"
         android:visibility="gone"
+        android:orientation="vertical"
         android:weightSum="1.0">
 
         <TextView
@@ -965,6 +990,7 @@
         android:layout_height="477dp"
         android:background="@color/enabledFunction"
         android:visibility="gone"
+        android:orientation="vertical"
         android:weightSum="1.0">
 
         <TextView
@@ -1130,6 +1156,7 @@
         android:layout_height="477dp"
         android:background="@color/enabledFunction"
         android:visibility="gone"
+        android:orientation="vertical"
         android:weightSum="1.0">
 
         <TextView
@@ -1182,6 +1209,7 @@
         android:layout_height="477dp"
         android:background="@color/enabledFunction"
         android:visibility="gone"
+        android:orientation="vertical"
         android:weightSum="1.0">
 
         <TextView
@@ -1222,6 +1250,7 @@
         android:layout_height="477dp"
         android:background="@color/enabledFunction"
         android:visibility="gone"
+        android:orientation="vertical"
         android:weightSum="1.0">
 
         <TextView

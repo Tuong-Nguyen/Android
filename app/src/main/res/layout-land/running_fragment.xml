@@ -7,7 +7,7 @@
     android:inputType="numberDecimal"
     android:orientation="horizontal"
     android:visibility="visible"
-    tools:showIn="@layout/dashbar_fragment">
+    tools:showIn="@layout/dashboard_fragment">
 
     <LinearLayout
         android:id="@id/cabinComfortControl"
