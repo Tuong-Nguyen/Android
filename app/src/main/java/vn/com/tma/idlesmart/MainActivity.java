@@ -257,16 +257,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.5 */
-    class C00055 implements Runnable {
-        C00055() {
-        }
-
-        public void run() {
-            MainActivity.this.updateScreenTimeout();
-        }
-    }
-
     /* renamed from: com.idlesmarter.aoa.MainActivity.6 */
     class C00066 implements Runnable {
         C00066() {
@@ -1244,7 +1234,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void startScreenHandler(int delay_secs) {
         this.isScreenOn = true;
-        this.screentimeoutHandler.postDelayed(new C00055(), (long) (delay_secs * 1000));
+
+        this.screentimeoutHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.this.updateScreenTimeout();
+            }
+        }, (long) (delay_secs * 1000));
     }
 
     private void updateScreenTimeout() {
