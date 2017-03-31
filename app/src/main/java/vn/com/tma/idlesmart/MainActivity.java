@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -109,7 +110,6 @@ public class MainActivity extends Activity implements OnClickListener {
     private static String commlogstr = null;
     private static TextView commlogtext = null;
     public static boolean demo_mode = false;
-    public static final boolean enableKioskMode = true;
     public static boolean gateway_connected;
     public static boolean gateway_restarting;
     public static httpClient httpclient;
@@ -203,20 +203,11 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.1 */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    class C00011 implements OnSystemUiVisibilityChangeListener {
-        C00011() {
-        }
-
-        public void onSystemUiVisibilityChange(int visibility) {
-            MainActivity.this.hideNavBar();
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.2 */
-    class C00022 implements Runnable {
-        C00022() {
+    /**
+     * Runnable which check the usb connection and try to connect (if not connected) every 3 seconds
+     */
+    class UsbConnectionChecker implements Runnable {
+        UsbConnectionChecker() {
         }
 
         public void run() {
@@ -231,7 +222,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     Log.i(MainActivity.TAG, "      +++++++ We Have Reconnected +++++++");
                 } else {
                     int i = MainActivity.monitor_iter;
-                    MainActivity.monitor_iter = i + MainActivity.GOOD_CONNECTIVITY;
+                    MainActivity.monitor_iter = i + 1;
                     if (i >= 3) {
                         Log.d(MainActivity.TAG, "      PostDelayed USBReconnectHandler runnable..");
                         MainActivity.this.USBReconnectHandler.postDelayed(this, MainActivity.MONITOR_RATE);
@@ -245,63 +236,47 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.3 */
-    class C00033 implements Runnable {
-        C00033() {
-        }
-
+    /**
+     * Runnable which set NEXT SYNC TIME to PCB (APIDATA_SYNC_NEXT).
+     */
+    class SetSyncTimeRunnable implements Runnable {
         public void run() {
-            MainActivity.this.hideNavBar();
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.4 */
-    class C00044 implements Runnable {
-        C00044() {
-        }
-
-        public void run() {
-            MainActivity.SyncWithServer = MainActivity.enableKioskMode;
+            MainActivity.SyncWithServer = true;
             Log.i(MainActivity.TAG, "--> <TimerTask>: SyncWithServer");
             MainActivity.this.SetNextPhoneHome();
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.5 */
-    class C00055 implements Runnable {
-        C00055() {
+    /**
+     *  A Runnable which turns the screen off.
+     */
+    class ScreenOffRunnable implements Runnable {
+        ScreenOffRunnable() {
         }
 
         public void run() {
-            MainActivity.this.updateScreenTimeout();
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.6 */
-    class C00066 implements Runnable {
-        C00066() {
-        }
-
-        public void run() {
-            MainActivity.this.setScreenBrightness(MainActivity.UNKNOWN_CONNECTIVITY);
+            MainActivity.this.setScreenBrightness(0);
             MainActivity.this.isScreenOn = false;
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.7 */
-    class C00077 implements OnEditorActionListener {
-        C00077() {
+    /**
+     * ActionListener for ActivityCodeEditText adn VINCodeEditText
+     */
+    class ActivationCodeVINCodeListener implements OnEditorActionListener {
+        ActivationCodeVINCodeListener() {
         }
 
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             byte[] data = new byte[2];
-            if (actionId == 6) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
                 switch (v.getId()) {
                     case R.id.activationCodeEditText /*2131361797*/:
                         MainActivity.ActivationCode = Integer.valueOf(((EditText) v).getText().toString());
                         data[0] = (byte) ((MainActivity.ActivationCode >> 8) & 255);
                         data[1] = (byte) (MainActivity.ActivationCode & 255);
-                        MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, data[MainActivity.UNKNOWN_CONNECTIVITY], data[MainActivity.GOOD_CONNECTIVITY]);
+                        MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, data[0], data[1]);
                         Log.i(MainActivity.TAG, "(send) APIDATA_ACTIVATION_CODE=" + MainActivity.ActivationCode);
                         break;
                     case R.id.VINCodeEditText /*2131362092*/:
@@ -315,32 +290,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.8 */
-    class C00088 implements OnClickListener {
-        C00088() {
-        }
-
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            MainActivity.PasswordValid = false;
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.9 */
-    class C00099 implements OnClickListener {
-        C00099() {
-        }
-
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
-            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? MainActivity.enableKioskMode : false;
-            if (MainActivity.test_mode && pwtemp == 8800) {
-                MainActivity.PasswordEnable = false;
-                MainActivity.PasswordValid = MainActivity.enableKioskMode;
-            }
-        }
-    }
 
     public class ScreenReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
@@ -365,7 +314,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         public void handleMessage(Message msg) {
-            boolean z = MainActivity.enableKioskMode;
+            boolean z = true;
             MainActivity mainActivityClass = this.mainActivityClassWeakReference.get();
             if (mainActivityClass != null) {
                 String str;
@@ -456,7 +405,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					case AccessoryControl.APIEVENT_SYNC /*69*/:
                         if (MainActivity.SyncWithServer) {
                             MainActivity.SyncWithServer = false;
-                            MainActivity.httpclient.PhoneHome(MainActivity.GOOD_CONNECTIVITY, MainActivity.enableKioskMode);
+                            MainActivity.httpclient.PhoneHome(MainActivity.GOOD_CONNECTIVITY, true);
                         }
                     	break;
 					case AccessoryControl.APIEVENT_CURRENT_MODE /*78*/:
@@ -583,15 +532,15 @@ public class MainActivity extends Activity implements OnClickListener {
         this.initialScreenBrightness = 0;
         this.initialScreenTimeout = 0;
         this.ScreenOn = true;
-        this.USBReconnectRunnable = new C00022();
+        this.USBReconnectRunnable = new UsbConnectionChecker();
         Integer[] numArr = new Integer[2];
         numArr[0] = 25;
         numArr[1] = 24;
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
-        this.ETrunnable = new C00044();
+        this.ETrunnable = new SetSyncTimeRunnable();
         this.isScreenOn = true;
-        this.timeoutRunnable = new C00066();
-        this.mEditorActionListener = new C00077();
+        this.timeoutRunnable = new ScreenOffRunnable();
+        this.mEditorActionListener = new ActivationCodeVINCodeListener();
         this.verificationRunnable = new Runnable() {
             public void run() {
                 MainActivity.this.nextVerificationStep();
@@ -605,8 +554,15 @@ public class MainActivity extends Activity implements OnClickListener {
                 MainActivity.this.mMediaPlayer = null;
             }
         };
-        this.kiosk_mode_counter = UNKNOWN_CONNECTIVITY;
-        this.aSystemStatus = new String[]{"NOT ACTIVATED", "DISABLED", "DISENGAGED", "VEHICLE NOT READY", "TEMP CHANGE FAULT", "STANDBY MODE", "TEMP INTERLOCK", "INITIATING START", "STARTING ENGINE", "WARMING UP", "ENGINE RUNNING", "RUNNING NORMAL", "CHARGING BATTERY", "RUNNING COLD GUARD", "SHUTTING DOWN", "RESTART DELAY", "DOWNLOADING", "VEHICLE NOT READY - Transmission not in Neutral", "VEHICLE NOT READY - Parking Brake not set", "VEHICLE NOT READY - Hood is Open", "VEHICLE NOT READY - Regen Required", "VEHICLE NOT READY - Ignition Switch is On", "VEHICLE NOT READY - Battery Voltage below 11.0V"};
+        this.kiosk_mode_counter = 0;
+        this.aSystemStatus = new String[]{"NOT ACTIVATED", "DISABLED", "DISENGAGED", "VEHICLE NOT READY",
+                "TEMP CHANGE FAULT", "STANDBY MODE", "TEMP INTERLOCK", "INITIATING START", "STARTING ENGINE",
+                "WARMING UP", "ENGINE RUNNING", "RUNNING NORMAL", "CHARGING BATTERY", "RUNNING COLD GUARD",
+                "SHUTTING DOWN", "RESTART DELAY", "DOWNLOADING", "VEHICLE NOT READY - Transmission not in Neutral",
+                "VEHICLE NOT READY - Parking Brake not set", "VEHICLE NOT READY - Hood is Open",
+                "VEHICLE NOT READY - Regen Required", "VEHICLE NOT READY - Ignition Switch is On",
+                "VEHICLE NOT READY - Battery Voltage below 11.0V"};
+
         this.UsbReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
@@ -620,10 +576,10 @@ public class MainActivity extends Activity implements OnClickListener {
                                 AccessoryControl.OpenStatus status = MainActivity.this.accessoryControl.open(accessory);
                                 if (status == AccessoryControl.OpenStatus.CONNECTED) {
                                     Log.d(MainActivity.TAG, "    UsbReceiver::Gateway is connected");
-                                    MainActivity.gateway_connected = MainActivity.enableKioskMode;
+                                    MainActivity.gateway_connected = true;
                                     MainActivity.demo_mode = false;
                                     MainActivity.this.connected();
-                                    MainActivity.this.enableDashboard(MainActivity.enableKioskMode);
+                                    MainActivity.this.enableDashboard(true);
                                     MainActivity.this.selectRunning(MainActivity.GOOD_CONNECTIVITY);
                                 } else {
                                     Log.d(MainActivity.TAG, "   UsbReceiver::Gateway is disconnected");
@@ -640,7 +596,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     }
                 } else if ("android.hardware.usb.action.USB_ACCESSORY_ATTACHED".equals(action)) {
                     Log.d(MainActivity.TAG, "==>UsbReceiver::Recv Intent=ACTION_USB_ACCESSORY_ATTACHED");
-                    MainActivity.gateway_connected = MainActivity.enableKioskMode;
+                    MainActivity.gateway_connected = true;
                     MainActivity.this.connected();
                 } else if ("android.hardware.usb.action.USB_ACCESSORY_DETACHED".equals(action)) {
                     Log.d(MainActivity.TAG, "==>UsbReceiver::Recv Intent=ACTION_USB_ACCESSORY_DETACHED");
@@ -733,7 +689,16 @@ public class MainActivity extends Activity implements OnClickListener {
         if (!Restart) {
             clearMaintInfo();
         }
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new C00011());
+
+
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener(){
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                MainActivity.this.hideNavBar();
+            }
+        });
+
+
         findViewById(R.id.idlesmartButton).setOnClickListener(this);
         findViewById(R.id.dashboardButton).setOnClickListener(this);
         findViewById(R.id.settingsButton).setOnClickListener(this);
@@ -1131,8 +1096,16 @@ public class MainActivity extends Activity implements OnClickListener {
         return false;
     }
 
+    /**
+     * Hide NavBar after 100ms
+     */
     private void executeDelayed() {
-        new Handler().postDelayed(new C00033(), 100);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.this.hideNavBar();
+            }
+        }, 100);
     }
 
     private void hideNavBar() {
@@ -1164,6 +1137,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    // region PhoneHome - send heart-beat to PCB
     private void StartPhoneHome() {
         this.EThandler.removeCallbacks(this.ETrunnable);
         SetNextPhoneHome();
@@ -1184,12 +1158,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void SetNextPhoneHome() {
         Calendar date = CalcNextPhoneHome();
+
+        // Send Next Sync time to PCB
         Log.i(TAG, "Next PhoneHome scheduled for: " + date.getTime().toString());
         byte[] data = new byte[2];
         SyncNext = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
         data[0] = (byte) ((SyncNext >> 8) & 255);
-        data[GOOD_CONNECTIVITY] = (byte) (SyncNext & 255);
-        this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[GOOD_CONNECTIVITY]);
+        data[1] = (byte) (SyncNext & 255);
+        this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[1]);
+
+        // Re-add the timer for next time
         CancelPhoneHome();
         long delay = date.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
         this.EThandler.postDelayed(this.ETrunnable, delay);
@@ -1222,6 +1200,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private void CancelPhoneHome() {
         this.EThandler.removeCallbacks(this.ETrunnable);
     }
+    // endregion
 
     private int getScreenBrightness() {
         int curBrightnessValue = 0;
@@ -1272,7 +1251,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void startScreenHandler(int delay_secs) {
         this.isScreenOn = true;
-        this.screentimeoutHandler.postDelayed(new C00055(), (long) (delay_secs * 1000));
+
+        this.screentimeoutHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.this.updateScreenTimeout();
+            }
+        }, (long) (delay_secs * 1000));
     }
 
     private void updateScreenTimeout() {
@@ -1773,6 +1758,8 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    // region Password Dialog for inputting password
+
     public void openPasswordDialog() {
         if (this.passwordDialog != null && this.passwordDialog.isShowing()) {
             this.passwordDialog.dismiss();
@@ -1782,10 +1769,37 @@ public class MainActivity extends Activity implements OnClickListener {
         this.passwordDialog.setContentView(R.layout.password_dialog);
         this.passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
-        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new C00088());
-        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new C00099());
+        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new PasswordReturnListener());
+        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new PaswordContinueListener());
         this.passwordDialog.show();
     }
+
+    /**
+     * Action listener for PasswordReturn button
+     */
+    class PasswordReturnListener implements OnClickListener {
+        public void onClick(View v) {
+            MainActivity.this.passwordDialog.dismiss();
+            MainActivity.PasswordValid = false;
+        }
+    }
+
+    /**
+     * Action listener for PasswordContinue button
+     */
+    class PaswordContinueListener implements OnClickListener {
+        public void onClick(View v) {
+            MainActivity.this.passwordDialog.dismiss();
+            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
+            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
+            if (MainActivity.test_mode && pwtemp == 8800) {
+                MainActivity.PasswordEnable = false;
+                MainActivity.PasswordValid = true;
+            }
+        }
+    }
+
+    // endregion
 
     private boolean ValidPassword() {
         if (!PasswordEnable || PasswordValid) {
