@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:inputType="numberDecimal"
     android:orientation="horizontal"
-    tools:showIn="@layout/dashbar_fragment">
+    android:visibility="visible"
+    tools:showIn="@layout/dashboard_fragment">
 
     <LinearLayout
         android:id="@id/cabinComfortControl"
@@ -25,7 +26,6 @@
             android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:text="Cabin Comfort"
-            android:textColor="#717171"
             android:textSize="30sp" />
 
         <LinearLayout
@@ -95,7 +95,7 @@
         android:clickable="true"
         android:visibility="visible"
         android:weightSum="1.0"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@id/coldWeatherGuardLabel"
@@ -174,7 +174,7 @@
         android:clickable="true"
         android:visibility="visible"
         android:weightSum="1.0"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@id/batteryProtectLabel"

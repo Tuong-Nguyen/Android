@@ -245,45 +245,26 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.3 */
-    class C00033 implements Runnable {
-        C00033() {
-        }
-
+    /**
+     * Runnable which set NEXT SYNC TIME to PCB (APIDATA_SYNC_NEXT).
+     */
+    class SetSyncTimeRunnable implements Runnable {
         public void run() {
-            MainActivity.this.hideNavBar();
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.4 */
-    class C00044 implements Runnable {
-        C00044() {
-        }
-
-        public void run() {
-            MainActivity.SyncWithServer = MainActivity.enableKioskMode;
+            MainActivity.SyncWithServer = true;
             Log.i(MainActivity.TAG, "--> <TimerTask>: SyncWithServer");
             MainActivity.this.SetNextPhoneHome();
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.5 */
-    class C00055 implements Runnable {
-        C00055() {
+    /**
+     *  A Runnable which turns the screen off.
+     */
+    class ScreenOffRunnable implements Runnable {
+        ScreenOffRunnable() {
         }
 
         public void run() {
-            MainActivity.this.updateScreenTimeout();
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.6 */
-    class C00066 implements Runnable {
-        C00066() {
-        }
-
-        public void run() {
-            MainActivity.this.setScreenBrightness(MainActivity.UNKNOWN_CONNECTIVITY);
+            MainActivity.this.setScreenBrightness(0);
             MainActivity.this.isScreenOn = false;
         }
     }
@@ -315,32 +296,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.8 */
-    class C00088 implements OnClickListener {
-        C00088() {
-        }
-
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            MainActivity.PasswordValid = false;
-        }
-    }
-
-    /* renamed from: com.idlesmarter.aoa.MainActivity.9 */
-    class C00099 implements OnClickListener {
-        C00099() {
-        }
-
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
-            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? MainActivity.enableKioskMode : false;
-            if (MainActivity.test_mode && pwtemp == 8800) {
-                MainActivity.PasswordEnable = false;
-                MainActivity.PasswordValid = MainActivity.enableKioskMode;
-            }
-        }
-    }
 
     public class ScreenReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
@@ -588,9 +543,9 @@ public class MainActivity extends Activity implements OnClickListener {
         numArr[0] = 25;
         numArr[1] = 24;
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
-        this.ETrunnable = new C00044();
+        this.ETrunnable = new SetSyncTimeRunnable();
         this.isScreenOn = true;
-        this.timeoutRunnable = new C00066();
+        this.timeoutRunnable = new ScreenOffRunnable();
         this.mEditorActionListener = new C00077();
         this.verificationRunnable = new Runnable() {
             public void run() {
@@ -1131,8 +1086,16 @@ public class MainActivity extends Activity implements OnClickListener {
         return false;
     }
 
+    /**
+     * Hide NavBar after 100ms
+     */
     private void executeDelayed() {
-        new Handler().postDelayed(new C00033(), 100);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.this.hideNavBar();
+            }
+        }, 100);
     }
 
     private void hideNavBar() {
@@ -1164,6 +1127,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    // region PhoneHome - send heart-beat to PCB
     private void StartPhoneHome() {
         this.EThandler.removeCallbacks(this.ETrunnable);
         SetNextPhoneHome();
@@ -1184,12 +1148,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void SetNextPhoneHome() {
         Calendar date = CalcNextPhoneHome();
+
+        // Send Next Sync time to PCB
         Log.i(TAG, "Next PhoneHome scheduled for: " + date.getTime().toString());
         byte[] data = new byte[2];
         SyncNext = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
         data[0] = (byte) ((SyncNext >> 8) & 255);
-        data[GOOD_CONNECTIVITY] = (byte) (SyncNext & 255);
-        this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[GOOD_CONNECTIVITY]);
+        data[1] = (byte) (SyncNext & 255);
+        this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[1]);
+
+        // Re-add the timer for next time
         CancelPhoneHome();
         long delay = date.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
         this.EThandler.postDelayed(this.ETrunnable, delay);
@@ -1222,6 +1190,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private void CancelPhoneHome() {
         this.EThandler.removeCallbacks(this.ETrunnable);
     }
+    // endregion
 
     private int getScreenBrightness() {
         int curBrightnessValue = 0;
@@ -1272,7 +1241,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void startScreenHandler(int delay_secs) {
         this.isScreenOn = true;
-        this.screentimeoutHandler.postDelayed(new C00055(), (long) (delay_secs * 1000));
+
+        this.screentimeoutHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.this.updateScreenTimeout();
+            }
+        }, (long) (delay_secs * 1000));
     }
 
     private void updateScreenTimeout() {
@@ -1771,6 +1746,8 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    // region Password Dialog for inputting password
+
     public void openPasswordDialog() {
         if (this.passwordDialog != null && this.passwordDialog.isShowing()) {
             this.passwordDialog.dismiss();
@@ -1780,10 +1757,37 @@ public class MainActivity extends Activity implements OnClickListener {
         this.passwordDialog.setContentView(R.layout.password_dialog);
         this.passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
-        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new C00088());
-        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new C00099());
+        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new PasswordReturnListener());
+        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new PaswordContinueListener());
         this.passwordDialog.show();
     }
+
+    /**
+     * Action listener for PasswordReturn button
+     */
+    class PasswordReturnListener implements OnClickListener {
+        public void onClick(View v) {
+            MainActivity.this.passwordDialog.dismiss();
+            MainActivity.PasswordValid = false;
+        }
+    }
+
+    /**
+     * Action listener for PasswordContinue button
+     */
+    class PaswordContinueListener implements OnClickListener {
+        public void onClick(View v) {
+            MainActivity.this.passwordDialog.dismiss();
+            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
+            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
+            if (MainActivity.test_mode && pwtemp == 8800) {
+                MainActivity.PasswordEnable = false;
+                MainActivity.PasswordValid = true;
+            }
+        }
+    }
+
+    // endregion
 
     private boolean ValidPassword() {
         if (!PasswordEnable || PasswordValid) {
