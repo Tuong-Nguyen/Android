@@ -642,9 +642,9 @@ public class MainActivity extends Activity implements OnClickListener {
         CurrentDashboardFlag = false;
         CurrentDashboardFragment = 0;
         CurrentSettingsFlag = false;
-        CurrentGatewayStatus = BuildConfig.FLAVOR;
-        CurrentEngineStatus = BuildConfig.FLAVOR;
-        CurrentConnectivityStatus = BuildConfig.FLAVOR;
+        CurrentGatewayStatus = "";
+        CurrentEngineStatus = "";
+        CurrentConnectivityStatus = "";
         Password = 0;
         PasswordEnable = false;
         PasswordValid = false;
@@ -652,12 +652,12 @@ public class MainActivity extends Activity implements OnClickListener {
         aMaintEnable = new boolean[10];
         aMaintValue = new int[10];
         Gateway_HWver = 0;
-        Gateway_LDRversion = BuildConfig.FLAVOR;
-        Gateway_FWversion = BuildConfig.FLAVOR;
-        Gateway_APIversion = BuildConfig.FLAVOR;
-        Gateway_SerialID = BuildConfig.FLAVOR;
-        Gateway_VIN = BuildConfig.FLAVOR;
-        Gateway_Fleet = BuildConfig.FLAVOR;
+        Gateway_LDRversion = "";
+        Gateway_FWversion = "";
+        Gateway_APIversion = "";
+        Gateway_SerialID = "";
+        Gateway_VIN = "";
+        Gateway_Fleet = "";
         Gateway_Activated = 0;
         Gateway_Guid = 0;
         ActivationCode = 0;
@@ -666,7 +666,7 @@ public class MainActivity extends Activity implements OnClickListener {
         APIroute = DefaultAPIroute;
         SyncWithServer = false;
         commlogtext = null;
-        commlogstr = BuildConfig.FLAVOR;
+        commlogstr = "";
         PackageUpdatePending = false;
         GatewayUpdatePending = false;
         ServerConnectivity = false;
@@ -1650,7 +1650,7 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.i(TAG, "disconnected()");
             setGatewayStatus("Gateway Disconnected");
         }
-        setEngineStatus(BuildConfig.FLAVOR);
+        setEngineStatus("");
         if (this.GatewayMode == GOOD_CONNECTIVITY) {
             setFunctionMode(Functionality.CABIN_COMFORT, 3);
         } else if (this.GatewayMode == BAD_CONNECTIVITY) {
@@ -1799,7 +1799,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.passwordDialog.requestWindowFeature(FEATURE_NO_TITLE);
         this.passwordDialog.setContentView(R.layout.password_dialog);
         this.passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText(BuildConfig.FLAVOR);
+        ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText("");
         this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new PasswordReturnListener());
         this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new PaswordContinueListener());
         this.passwordDialog.show();
@@ -3080,10 +3080,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
         // Reset VIN and Restore Factory Defaults
         if (aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]) {
-            Gateway_VIN = BuildConfig.FLAVOR;
+            Gateway_VIN = "";
             sendVIN(Gateway_VIN);
             Log.i(TAG, "(send) APICMD_VIN= " + Gateway_VIN);
-            Gateway_Fleet = BuildConfig.FLAVOR;
+            Gateway_Fleet = "";
             sendFleet(Gateway_Fleet);
             Log.i(TAG, "(send) APICMD_Fleet= " + Gateway_Fleet);
             ActivationCode = 0;
@@ -3297,7 +3297,7 @@ public class MainActivity extends Activity implements OnClickListener {
         commDialog.setContentView(R.layout.comm_dialog);
         commDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         commlogtext = (TextView) commDialog.findViewById(R.id.commlog_Text);
-        commlogstr = BuildConfig.FLAVOR;
+        commlogstr = "";
         commlogtext.setText(commlogstr);
         commDialog.findViewById(R.id.commDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
