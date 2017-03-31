@@ -30,6 +30,8 @@
 
     <include layout="@layout/running_fragment" />
 
+    <include layout="@layout/cabin_comfort_fragment"/>
+
     <LinearLayout
         android:id="@id/settingsFragment"
         android:layout_width="match_parent"
