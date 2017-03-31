@@ -162,6 +162,15 @@ public class MainActivity extends Activity implements OnClickListener {
     final Handler verificationHandler;
     final Runnable verificationRunnable;
 
+    static class ActivationStep {
+        static final int NONE = 0; // Not in activation
+        static final int VERIFICATION = 1;
+        static final int INSTALL = 2;
+        static final int ACTIVATION = 3;
+        static final int ACTIVATION_CODE = 4;
+        static final int VIN_CODE = 5;
+    }
+
     static class Functionality {
         static final int CABIN_COMFORT = 1;
         static final int COLD_WEATHER_GUARD = 2;
@@ -881,7 +890,7 @@ public class MainActivity extends Activity implements OnClickListener {
             enableSettings(CurrentSettingsFlag);
         }
         selectSettingsMode(0);
-        selectActivationFragment(0);
+        selectActivationFragment(ActivationStep.NONE);
 
         //TODO Display powerOn button,it was replaced by httpClient.PHONEHOME_TABLET_UPDATE - Original: selectKillswitchMode(httpClient.UNKNOWN_CONNECTIVITY);
         selectKillswitchMode(httpClient.PHONEHOME_TABLET_UPDATE);
@@ -1135,7 +1144,7 @@ public class MainActivity extends Activity implements OnClickListener {
         if (!activate_flag) {
             SystemActivationFlag = false;
             Log.i(TAG, "VerifyActivation: NOT ACTIVATED");
-            selectActivationFragment(3);
+            selectActivationFragment(ActivationStep.ACTIVATION);
         } else if (!SystemActivationFlag) {
             SystemActivationFlag = true;
             Log.i(TAG, "VerifyActivation: ACTIVATED");
@@ -1302,12 +1311,12 @@ public class MainActivity extends Activity implements OnClickListener {
         int i;
         switch (v.getId()) {
             case R.id.activationEnterCodeButton /*2131361795*/:
-                selectActivationFragment(4);
+                selectActivationFragment(ActivationStep.ACTIVATION_CODE);
                 findViewById(R.id.activationFragment).setVisibility(View.GONE);
                 findViewById(R.id.activationCodeFragment).setVisibility(View.VISIBLE);
             	break;
 			case R.id.activationCodeContinueButton /*2131361798*/:
-                selectActivationFragment(5);
+                selectActivationFragment(ActivationStep.VIN_CODE);
                 findViewById(R.id.activationCodeFragment).setVisibility(View.GONE);
                 findViewById(R.id.VINCodeFragment).setVisibility(View.VISIBLE);
             	break;
@@ -1324,7 +1333,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     enableDashboard(true);
                     selectRunning(GOOD_CONNECTIVITY);
                     enableSettings(false);
-                    selectActivationFragment(0);
+                    selectActivationFragment(ActivationStep.NONE);
                     PasswordValid = false;
                 }
             	break;
@@ -1337,7 +1346,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     enableDashboard(false);
                     selectRunning(0);
                     enableSettings(true);
-                    selectActivationFragment(0);
+                    selectActivationFragment(ActivationStep.NONE);
                     this.settings_menu1_index = 0;
                     this.settings_menu2_index = 0;
                     selectSettingsMode(GOOD_CONNECTIVITY);
@@ -1599,14 +1608,14 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWEROFF, 0, 0);
             	break;
 			case R.id.verificationBeginVerificationButton /*2131362090*/:
-                selectActivationFragment(BAD_CONNECTIVITY);
+                selectActivationFragment(ActivationStep.INSTALL);
                 findViewById(R.id.verificationFragment).setVisibility(View.GONE);
                 findViewById(R.id.installFragment).setVisibility(View.VISIBLE);
                 ValidActivationProcess = false;
                 StartVerificationProcess();
             	break;
 			case R.id.VINCodeContinueButton /*2131362093*/:
-                selectActivationFragment(GOOD_CONNECTIVITY);
+                selectActivationFragment(ActivationStep.VERIFICATION);
                 findViewById(R.id.VINCodeFragment).setVisibility(View.GONE);
                 findViewById(R.id.verificationFragment).setVisibility(View.VISIBLE);
             default:
@@ -2059,7 +2068,7 @@ public class MainActivity extends Activity implements OnClickListener {
         } else {
             enableStatusBar(false);
             enableDashboard(false);
-            selectActivationFragment(UNKNOWN_CONNECTIVITY);
+            selectActivationFragment(ActivationStep.NONE);
             enableSettings(true);
         }
         switch (level) {
@@ -2669,24 +2678,24 @@ public class MainActivity extends Activity implements OnClickListener {
             selectRunning(0);
             EditText activationcodeArea;
             switch (fragment) {
-                case GOOD_CONNECTIVITY /*1*/:
+                case 1 /*1*/:
                     findViewById(R.id.verificationFragment).setVisibility(View.VISIBLE);
                 	break;
-				case BAD_CONNECTIVITY /*2*/:
+				case 2 /*2*/:
                     findViewById(R.id.installFragment).setVisibility(View.VISIBLE);
                     StartVerificationProcess();
                 	break;
-				case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+				case 3 /*3*/:
                     findViewById(R.id.activationFragment).setVisibility(View.VISIBLE);
                 	break;
-				case httpClient.PHONEHOME_APK_PENDING /*4*/:
+				case 4 /*4*/:
                     activationcodeArea = (EditText) findViewById(R.id.activationCodeEditText);
-                    activationcodeArea.setText(BuildConfig.FLAVOR);
+                    activationcodeArea.setText("");
                     activationcodeArea.setOnEditorActionListener(this.mEditorActionListener);
                 	break;
-				case httpClient.PHONEHOME_NONE /*5*/:
+				case 5 /*5*/:
                     activationcodeArea = (EditText) findViewById(R.id.VINCodeEditText);
-                    activationcodeArea.setText(BuildConfig.FLAVOR);
+                    activationcodeArea.setText("");
                     activationcodeArea.setOnEditorActionListener(this.mEditorActionListener);
                     break;
                 default:
