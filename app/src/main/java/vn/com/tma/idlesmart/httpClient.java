@@ -659,9 +659,18 @@ public class httpClient extends Activity {
         return responseCode;
     }
 
+    /**
+     * Calling ServerTask to update truck information to server
+     * @return
+     * -1 if error
+     * 1 if response is empty
+     * 10 if success
+     * others: server error code
+     * Default API link: [POST] http://api.idlesmart.com/api/truck/update
+     */
     public int PerformUpdateTask() {
-        byte[] data = new byte[STATE_FREEZE_GATEWAY];
-        int responseCode = PHONEHOME_ERROR;
+        byte[] data = new byte[2];
+        int responseCode = -1;
         Log.i(TAG, "UpdateTask");
         CommLog(STATE_ACTIVATE, "UpdateTask");
         try {
@@ -673,35 +682,35 @@ public class httpClient extends Activity {
             jsonRequest.accumulate("device", jsonDevice);
             this.jsonDeviceNode = new JSONObject();
             if (!this.NewTruckActivation) {
-                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_ENABLE", Integer.valueOf(MainActivity.aParam[STATE_IDLE]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_ENABLE", Integer.valueOf(MainActivity.aParam[STATE_CONNECT]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_ENABLE", Integer.valueOf(MainActivity.aParam[STATE_FREEZE_GATEWAY]));
-                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_SETPOINT", Integer.valueOf(MainActivity.aParam[STATE_ACTIVATE]));
-                this.jsonDeviceNode.accumulate("CABINCOMFORT_RANGE", Integer.valueOf(MainActivity.aParam[STATE_UPDATE]));
-                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_SETPOINT", Integer.valueOf(MainActivity.aParam[STATE_LOG]));
-                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_RANGE", Integer.valueOf(MainActivity.aParam[STATE_VERSION]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", battmv2Str(MainActivity.aParam[STATE_CSCUPDATE]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_RUNTIME", Integer.valueOf(MainActivity.aParam[STATE_CSC_AUTOUPDATE]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_IDEAL_COOLANT", Integer.valueOf(MainActivity.aParam[10]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_MIN_COOLANT", Integer.valueOf(MainActivity.aParam[11]));
-                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_START_TEMP", Integer.valueOf(MainActivity.aParam[12]));
-                this.jsonDeviceNode.accumulate("RESTART_INTERVAL", Integer.valueOf(MainActivity.aParam[13]));
-                this.jsonDeviceNode.accumulate("COMMON_SCREEN_DIM", Integer.valueOf(MainActivity.aParam[14]));
-                this.jsonDeviceNode.accumulate("COMMON_IDLERPM", Integer.valueOf(MainActivity.aParam[16]));
-                this.jsonDeviceNode.accumulate("COMMON_RUNTIME", Integer.valueOf(MainActivity.aParam[18]));
-                this.jsonDeviceNode.accumulate("COMMON_DRIVER_TEMP_RANGE", Integer.valueOf(MainActivity.aParam[17]));
+                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_ENABLE", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinComfort]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_ENABLE", Integer.valueOf(MainActivity.aParam[Params.PARAM_ColdWeatherGuard]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_ENABLE", Integer.valueOf(MainActivity.aParam[Params.PARAM_BatteryProtect]));
+                this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_SETPOINT", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinTargetTemp]));
+                this.jsonDeviceNode.accumulate("CABINCOMFORT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinTempRange]));
+                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_SETPOINT", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTargetTemp]));
+                this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTempRange]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", battmv2Str(MainActivity.aParam[Params.PARAM_VoltageSetPoint]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_RUNTIME", Integer.valueOf(MainActivity.aParam[Params.PARAM_EngineRunTime]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_IDEAL_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_IdealCoolantTemp]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_MIN_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_MinCoolantTemp]));
+                this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_START_TEMP", Integer.valueOf(MainActivity.aParam[Params.PARAM_TemperatureSetPoint]));
+                this.jsonDeviceNode.accumulate("RESTART_INTERVAL", Integer.valueOf(MainActivity.aParam[Params.PARAM_HoursBetweenStart]));
+                this.jsonDeviceNode.accumulate("COMMON_SCREEN_DIM", Integer.valueOf(MainActivity.aParam[Params.PARAM_DimTabletScreen]));
+                this.jsonDeviceNode.accumulate("COMMON_IDLERPM", Integer.valueOf(MainActivity.aParam[Params.PARAM_TruckRPMs]));
+                this.jsonDeviceNode.accumulate("COMMON_RUNTIME", Integer.valueOf(MainActivity.aParam[Params.PARAM_TruckTimer]));
+                this.jsonDeviceNode.accumulate("COMMON_DRIVER_TEMP_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_DriverTempCommon]));
                 jsonRequest.accumulate("node_settings", this.jsonDeviceNode);
             }
             if (MainActivity.DebugLog) {
-                Log.i(TAG, "jsonUpdateRequest:" + jsonRequest.toString(STATE_CONNECT));
+                Log.i(TAG, "jsonUpdateRequest:" + jsonRequest.toString(1));
             }
-            CommLog(STATE_ACTIVATE, "jsonUpdateRequest:" + jsonRequest.toString(STATE_CONNECT));
+            CommLog(STATE_ACTIVATE, "jsonUpdateRequest:" + jsonRequest.toString(1));
             ServerTask servertask = new ServerTask();
             servertask.setContext(this.mInstance.getApplicationContext());
             Log.i(TAG, "updateTask:servertask.execute..");
-            String[] strArr = new String[STATE_FREEZE_GATEWAY];
-            strArr[STATE_IDLE] = "http://" + MainActivity.APIroute + "/api/truck/update";
-            strArr[STATE_CONNECT] = jsonRequest.toString();
+            String[] strArr = new String[2];
+            strArr[0] = "http://" + MainActivity.APIroute + "/api/truck/update";
+            strArr[1] = jsonRequest.toString();
             servertask.execute(strArr);
             String response = (String) servertask.get(60, TimeUnit.SECONDS);
             Log.i(TAG, "updateTask:servertask.get response=" + response);
@@ -709,51 +718,52 @@ public class httpClient extends Activity {
             if (response.isEmpty()) {
                 Log.e(TAG, "ERROR: updateTaskResponse is empty");
                 CommLog(STATE_ACTIVATE, "ERROR: updateTaskResponse is empty");
-                return STATE_CONNECT;
+                return 1;
             }
             this.jsonUpdate = new JSONObject(response);
             responseCode = this.jsonUpdate.getInt("code");
             if (MainActivity.DebugLog) {
-                Log.i(TAG, "jsonUpdateResponse:" + this.jsonUpdate.toString(STATE_CONNECT));
+                Log.i(TAG, "jsonUpdateResponse:" + this.jsonUpdate.toString(1));
             }
-            CommLog(STATE_ACTIVATE, "jsonUpdateResponse:" + this.jsonUpdate.toString(STATE_CONNECT));
+            CommLog(STATE_ACTIVATE, "jsonUpdateResponse:" + this.jsonUpdate.toString(1));
             if (responseCode == 10) {
                 JSONObject jsonServerNode = this.jsonUpdate.getJSONObject("node_settings");
                 if (jsonServerNode.getInt("CABINCOMFORT_ENABLE") == 0) {
-                    this.mInstance.SaveDownloadedParamValue(23, STATE_IDLE);
-                    this.mInstance.SaveDownloadedParamValue(STATE_IDLE, STATE_IDLE);
+                    this.mInstance.SaveDownloadedParamValue(Params.PARAM_FleetCabinComfort, 0);
+                    this.mInstance.SaveDownloadedParamValue(Params.PARAM_CabinComfort, 0);
                 } else {
-                    this.mInstance.SaveDownloadedParamValue(23, STATE_CONNECT);
+                    this.mInstance.SaveDownloadedParamValue(Params.PARAM_FleetCabinComfort, 1);
                 }
-                this.mInstance.SaveDownloadedParamValue(STATE_CONNECT, jsonServerNode.getInt("COLDWEATHERGUARD_ENABLE") != 0 ? STATE_CONNECT : STATE_IDLE);
-                this.mInstance.SaveDownloadedParamValue(STATE_FREEZE_GATEWAY, jsonServerNode.getInt("BATTERYMONITOR_ENABLE") != 0 ? STATE_CONNECT : STATE_IDLE);
-                this.mInstance.SaveDownloadedParamValue(24, jsonServerNode.getInt("CABINCOMFORT_SETPOINT"));
-                this.mInstance.SaveDownloadedParamValue(STATE_UPDATE, jsonServerNode.getInt("CABINCOMFORT_RANGE"));
-                this.mInstance.SaveDownloadedParamValue(STATE_LOG, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_SETPOINT"));
-                this.mInstance.SaveDownloadedParamValue(STATE_VERSION, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_RANGE"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_ColdWeatherGuard, jsonServerNode.getInt("COLDWEATHERGUARD_ENABLE") != 0 ? 1 : 0);
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_BatteryProtect, jsonServerNode.getInt("BATTERYMONITOR_ENABLE") != 0 ? 1 : 0);
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_FleetCabinTargetTemp, jsonServerNode.getInt("CABINCOMFORT_SETPOINT"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_CabinTempRange, jsonServerNode.getInt("CABINCOMFORT_RANGE"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_OutsideTargetTemp, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_SETPOINT"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_OutsideTempRange, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_RANGE"));
                 int battmv = battStr2mv(jsonServerNode.getString("BATTERYMONITOR_VOLTAGE"));
                 if (battmv != 0) {
-                    this.mInstance.SaveDownloadedParamValue(STATE_CSCUPDATE, battmv);
+                    this.mInstance.SaveDownloadedParamValue(Params.PARAM_VoltageSetPoint, battmv);
                 }
-                this.mInstance.SaveDownloadedParamValue(STATE_CSC_AUTOUPDATE, jsonServerNode.getInt("BATTERYMONITOR_RUNTIME"));
-                this.mInstance.SaveDownloadedParamValue(10, jsonServerNode.getInt("COLDWEATHERGUARD_IDEAL_COOLANT"));
-                this.mInstance.SaveDownloadedParamValue(11, jsonServerNode.getInt("COLDWEATHERGUARD_MIN_COOLANT"));
-                this.mInstance.SaveDownloadedParamValue(12, jsonServerNode.getInt("COLDWEATHERGUARD_START_TEMP"));
-                this.mInstance.SaveDownloadedParamValue(13, jsonServerNode.getInt("COLDWEATHERGUARD_RESTART_INTERVAL"));
-                this.mInstance.SaveDownloadedParamValue(14, jsonServerNode.getInt("COMMON_SCREEN_DIM"));
-                this.mInstance.SaveDownloadedParamValue(16, jsonServerNode.getInt("COMMON_IDLERPM"));
-                this.mInstance.SaveDownloadedParamValue(18, jsonServerNode.getInt("COMMON_RUNTIME"));
-                this.mInstance.SaveDownloadedParamValue(17, jsonServerNode.getInt("COMMON_DRIVER_TEMP_RANGE"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_EngineRunTime, jsonServerNode.getInt("BATTERYMONITOR_RUNTIME"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_IdealCoolantTemp, jsonServerNode.getInt("COLDWEATHERGUARD_IDEAL_COOLANT"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_MinCoolantTemp, jsonServerNode.getInt("COLDWEATHERGUARD_MIN_COOLANT"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_TemperatureSetPoint, jsonServerNode.getInt("COLDWEATHERGUARD_START_TEMP"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_HoursBetweenStart, jsonServerNode.getInt("COLDWEATHERGUARD_RESTART_INTERVAL"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_DimTabletScreen, jsonServerNode.getInt("COMMON_SCREEN_DIM"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_TruckRPMs, jsonServerNode.getInt("COMMON_IDLERPM"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_TruckTimer, jsonServerNode.getInt("COMMON_RUNTIME"));
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_DriverTempCommon, jsonServerNode.getInt("COMMON_DRIVER_TEMP_RANGE"));
                 int temp_passwordenable = jsonServerNode.getInt("COMMON_PROHIBIT_DRIVER_EDITS");
-                MainActivity.PasswordEnable = temp_passwordenable != 0 ? PHONEHOME_RESCHEDULE : PHONEHOME_NO_RESCHEDULE;
+                MainActivity.PasswordEnable = temp_passwordenable != 0 ? true : false;
                 this.mInstance.SaveDownloadedParamValue(19, temp_passwordenable);
                 if (jsonServerNode.getString("COMMON_DRIVER_UNLOCK_CODE").isEmpty()) {
                     MainActivity.Password = 5555;
                 } else {
                     MainActivity.Password = jsonServerNode.getInt("COMMON_DRIVER_UNLOCK_CODE");
                 }
-                this.mInstance.SaveDownloadedParamValue(STATE_DATUM, MainActivity.Password);
-                boolean newSync = PHONEHOME_NO_RESCHEDULE;
+                // 20, assume Params.PARAM_Password
+                this.mInstance.SaveDownloadedParamValue(Params.PARAM_Password, MainActivity.Password);
+                boolean newSync = false;
                 if (jsonServerNode.has("COMMON_TIME_TO_LIVE") && !jsonServerNode.isNull("COMMON_TIME_TO_LIVE")) {
                     int newSyncTTL = jsonServerNode.getInt("COMMON_TIME_TO_LIVE");
                     Log.i(TAG, "COMMON_TIME_TO_LIVE = " + newSyncTTL);
@@ -763,10 +773,10 @@ public class httpClient extends Activity {
                     if (newSyncTTL != MainActivity.SyncTTL) {
                         Log.i(TAG, "New TTL - we need a recalc");
                         MainActivity.SyncTTL = newSyncTTL;
-                        newSync = PHONEHOME_RESCHEDULE;
-                        data[STATE_IDLE] = (byte) ((newSyncTTL >> STATE_CSCUPDATE) & 255);
-                        data[STATE_CONNECT] = (byte) (newSyncTTL & 255);
-                        this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC_TTL, data[STATE_IDLE], data[STATE_CONNECT]);
+                        newSync = true;
+                        data[0] = (byte) ((newSyncTTL >> 8) & 255);
+                        data[1] = (byte) (newSyncTTL & 255);
+                        this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC_TTL, data[0], data[1]);
                     }
                 }
                 if (jsonServerNode.has("COMMON_TIME_TO_START") && !jsonServerNode.isNull("COMMON_TIME_TO_START")) {
@@ -778,10 +788,10 @@ public class httpClient extends Activity {
                     if (newSyncStart != MainActivity.SyncStart) {
                         Log.i(TAG, "New TIME_TO_START - we need a recalc");
                         MainActivity.SyncStart = newSyncStart;
-                        newSync = PHONEHOME_RESCHEDULE;
-                        data[STATE_IDLE] = (byte) ((newSyncStart >> STATE_CSCUPDATE) & 255);
-                        data[STATE_CONNECT] = (byte) (newSyncStart & 255);
-                        this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC_START, data[STATE_IDLE], data[STATE_CONNECT]);
+                        newSync = true;
+                        data[0] = (byte) ((newSyncStart >> 8) & 255);
+                        data[1] = (byte) (newSyncStart & 255);
+                        this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC_START, data[0], data[1]);
                     }
                 }
                 if (newSync) {
@@ -792,34 +802,32 @@ public class httpClient extends Activity {
                     Features.parseFeatureList(this.jsonUpdate.getString("features"));
                 }
                 this.mInstance.sendFeatures();
-                return responseCode;
+            } else {
+                Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
             }
-            Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
-            return responseCode;
         } catch (JSONException e) {
             e.printStackTrace();
-            return responseCode;
         } catch (InterruptedException e2) {
             e2.printStackTrace();
-            return responseCode;
         } catch (ExecutionException e3) {
             e3.printStackTrace();
-            return responseCode;
         } catch (TimeoutException e4) {
             e4.printStackTrace();
-            return responseCode;
         }
+        return responseCode;
     }
 
+    // TODO: Move to Util class
     public int battStr2mv(String battstr) {
         try {
-            return (Integer.parseInt(battstr.substring(STATE_IDLE, STATE_FREEZE_GATEWAY)) * 10) + Integer.parseInt(battstr.substring(STATE_ACTIVATE, STATE_UPDATE));
+            return (Integer.parseInt(battstr.substring(0, 2)) * 10) + Integer.parseInt(battstr.substring(3, 4));
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            return STATE_IDLE;
+            return 0;
         }
     }
 
+    // TODO: Move to Util class
     public String battmv2Str(int battvolt) {
         int volts = battvolt / 10;
         String voltstr = Integer.toString(volts);
