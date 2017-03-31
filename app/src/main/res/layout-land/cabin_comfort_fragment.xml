@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:weightSum="1.0"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
@@ -60,6 +61,7 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:orientation="vertical"
+        android:gravity="center_vertical"
         android:weightSum="1.0">
 
         <LinearLayout

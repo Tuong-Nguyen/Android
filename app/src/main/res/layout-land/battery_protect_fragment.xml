@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/enabledFunction"
     android:clickable="true"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:visibility="gone"
     android:weightSum="1.0"
     tools:showIn="@layout/dashboard_fragment">
@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:orientation="vertical"
+        android:gravity="center_vertical"
         android:weightSum="1.0">
 
         <TextView
@@ -58,6 +59,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
         android:weightSum="1.0">
 
         <LinearLayout
