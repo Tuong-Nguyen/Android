@@ -375,7 +375,7 @@ public class AccessoryControl {
                                 Log.i(TAG, "(Recv)APIEVENT_API_VERSION = " + MainActivity.Gateway_APIversion);
                                 break;
                             case AccessoryControl.APIEVENT_CANLOG /*77*/:
-                                if (!MainActivity.aMaintEnable[AccessoryControl.APICMD_BASE]) {
+                                if (!MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE]) {
                                     break;
                                 }
                                 if (AccessoryControl.this.canStream == null) {
@@ -833,7 +833,7 @@ public class AccessoryControl {
     }
 
     public void writefmtCANLogStream(String str) {
-        if (MainActivity.aMaintEnable[APICMD_BASE] && str != null && this.canStream != null) {
+        if (MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE] && str != null && this.canStream != null) {
             int paddingCount = 16;
             try {
                 int lth = str.length();
