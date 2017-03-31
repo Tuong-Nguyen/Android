@@ -8,6 +8,7 @@
     android:inputType="numberDecimal"
     android:orientation="horizontal"
     android:weightSum="1.0"
+    android:visibility="visible"
     tools:showIn="@layout/full_screen">
 
     <LinearLayout
@@ -27,6 +28,8 @@
     </LinearLayout>
 
     <include layout="@layout/function_status" />
+
+    <include layout="@layout/running_fragment" />
 
     <LinearLayout
         android:id="@id/settingsFragment"
