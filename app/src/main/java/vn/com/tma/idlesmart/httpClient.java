@@ -61,22 +61,6 @@ public class httpClient extends Activity {
     public static final int PHONEHOME_TIMEOUT = -3;
     private static final int PROGRESS_UPDATE_RATE = 100;
     public static boolean PhoneHomePending = false;
-    private static final int STATE_ACTIVATE = 3;
-    private static final int STATE_APKUPDATE = 7;
-    private static final int STATE_CLEANUP = 100;
-    private static final int STATE_CONNECT = 1;
-    private static final int STATE_CSCUPDATE = 8;
-    private static final int STATE_CSC_AUTOUPDATE = 9;
-    private static final int STATE_DATUM = 20;
-    private static final int STATE_DATUM_STATUS = 25;
-    private static final int STATE_DONE = 90;
-    private static final int STATE_ERROR = 99;
-    private static final int STATE_FREEZE_GATEWAY = 2;
-    private static final int STATE_IDLE = 0;
-    private static final int STATE_LOG = 5;
-    private static final int STATE_LOG_STATUS = 15;
-    private static final int STATE_UPDATE = 4;
-    private static final int STATE_VERSION = 6;
     private static final String TAG = "IdleSmart.HTTPClient";
     private static final int TEST_UPDATE_RATE = 1000;
     private static Context context;
@@ -86,10 +70,6 @@ public class httpClient extends Activity {
     private static int phonehome_update_level;
     private static int progressUpdateRate;
     private static int result;
-    private final int APIRESPONSE_BAD;
-    private final int APIRESPONSE_BADHTTP;
-    private final int APIRESPONSE_INACTIVE;
-    private final int APIRESPONSE_OK;
     private final String ActivationCreateTruck;
     private final String ActivationFindTruck;
     private final int DATUM_RECORDS_BLOCK_MAX;
@@ -156,7 +136,7 @@ public class httpClient extends Activity {
                         httpClient.this.mInstance.openCommDialog();
                     }
                     Log.w(httpClient.TAG, "send APICMD_FREEZE(true)..");
-                    httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, httpClient.STATE_IDLE, httpClient.STATE_CONNECT);
+                    httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, 0, 1);
                     httpClient.this.dialog.setMessage("Identifying/Activating Vehicle");
                     httpClient.phonehome_state = PhoneHomeState.ACTIVATE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
@@ -243,7 +223,7 @@ public class httpClient extends Activity {
                     if (httpClient.APKupdate_exists) {
                         if (httpClient.CSCupdate_exists) {
                             Log.w(httpClient.TAG, "Send APICMD_DL(2)..(delayed CSC update)");
-                            httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_DL, httpClient.STATE_IDLE, httpClient.STATE_CONNECT);
+                            httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_DL, 0, 1);
                         }
                         status = httpClient.this.PerformAPKUpdate();
                         if (status == 0) {
@@ -334,7 +314,7 @@ public class httpClient extends Activity {
                     httpClient.PhoneHomePending = false;
                     if (httpClient.result != PhoneHomeSyncStatus.APK_PENDING) {
                         Log.w(httpClient.TAG, "send APICMD_FREEZE(false)..");
-                        httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, httpClient.STATE_IDLE, httpClient.STATE_IDLE);
+                        httpClient.this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_FREEZE, 0, 0);
                     }
                     if (httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE) {
                         httpClient.this.mInstance.ReschedulePhoneHome(60);
@@ -358,18 +338,13 @@ public class httpClient extends Activity {
     }
 
     public httpClient(MainActivity act) {
-        this.httpStatus = STATE_IDLE;
+        this.httpStatus = 0;
         this.ENABLE_APK_UPDATE = true;
         this.ENABLE_CSC_UPDATE = true;
         this.ENABLE_APK_RETROGRADE_VERSION = true;
         this.ENABLE_CSC_RETROGRADE_VERSION = true;
         this.LOG_RECORDS_BLOCK_MAX = Params.PARAM_MAX;
         this.DATUM_RECORDS_BLOCK_MAX = Params.PARAM_MAX;
-        // TODO: correct assigned values: STATE_IDLE, STATE_CONNECT, STATE_FREEZE_GATEWAY
-        this.APIRESPONSE_BAD = STATE_IDLE;
-        this.APIRESPONSE_BADHTTP = STATE_CONNECT;
-        this.APIRESPONSE_INACTIVE = STATE_FREEZE_GATEWAY;
-        this.APIRESPONSE_OK = 10;
         this.ActivationFindTruck = "find_truck";
         this.ActivationCreateTruck = "create_truck";
         this.NewTruckActivation = false;
@@ -390,18 +365,13 @@ public class httpClient extends Activity {
     }
 
     public httpClient() {
-        this.httpStatus = STATE_IDLE;
+        this.httpStatus = 0;
         this.ENABLE_APK_UPDATE = true;
         this.ENABLE_CSC_UPDATE = true;
         this.ENABLE_APK_RETROGRADE_VERSION = true;
         this.ENABLE_CSC_RETROGRADE_VERSION = true;
         this.LOG_RECORDS_BLOCK_MAX = Params.PARAM_MAX; // 25, assume
         this.DATUM_RECORDS_BLOCK_MAX = Params.PARAM_MAX; // 25, assume
-        // TODO: correct assigned values: STATE_IDLE, STATE_CONNECT, STATE_FREEZE_GATEWAY
-        this.APIRESPONSE_BAD = STATE_IDLE;
-        this.APIRESPONSE_BADHTTP = STATE_CONNECT;
-        this.APIRESPONSE_INACTIVE = STATE_FREEZE_GATEWAY;
-        this.APIRESPONSE_OK = 10;
         this.ActivationFindTruck = "find_truck";
         this.ActivationCreateTruck = "create_truck";
         this.NewTruckActivation = false;
@@ -458,7 +428,7 @@ public class httpClient extends Activity {
         if (!MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
             return;
         }
-        if (flag == STATE_CONNECT || flag == MainActivity.aMaintValue[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION] || MainActivity.aMaintValue[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION] == STATE_ERROR) {
+        if (flag == PhoneHomeState.CONNECT || flag == MainActivity.aMaintValue[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION] || MainActivity.aMaintValue[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION] == PhoneHomeState.ERROR) {
             this.mInstance.CommLogStr(str);
         }
     }
@@ -468,7 +438,7 @@ public class httpClient extends Activity {
         phonehome_update_level = 0;
         phonehomeHandler = new Handler();
         progressUpdateRate = PROGRESS_UPDATE_RATE;
-        phonehome_state = STATE_IDLE;
+        phonehome_state = PhoneHomeState.IDLE;
         APKupdate_exists = false;
         CSCupdate_exists = false;
         // Assume <result> is an "enum" PhoneHomeSyncStatus
@@ -483,7 +453,7 @@ public class httpClient extends Activity {
         StringBuilder append = new StringBuilder().append("     Update Level: ");
         String str2 = update_level == 1 ? "AUTO" : update_level == 3 ? "TABLET" : update_level == 2 ? "GATEWAY" : "FULL";
         Log.i(str, append.append(str2).toString());
-        phonehome_state = STATE_IDLE;
+        phonehome_state = PhoneHomeState.IDLE;
         PhoneHomePending = true;
         phonehomeHandler.removeCallbacks(this.phonehomeRunnable);
         if (MainActivity.test_mode) {
@@ -522,7 +492,7 @@ public class httpClient extends Activity {
             this.jsonGateway.accumulate("guid", Integer.valueOf(0));
             this.jsonGateway.accumulate("serial", "1234");
             Log.i(TAG, "jsonGateway " + this.jsonGateway.toString(1));
-            CommLog(STATE_CONNECT, "jsonGateway " + this.jsonGateway.toString(1));
+            CommLog(PhoneHomeState.CONNECT, "jsonGateway " + this.jsonGateway.toString(1));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -540,7 +510,7 @@ public class httpClient extends Activity {
     public int PerformVersionTask() {
         int responseCode = -1;
         Log.i(TAG, "VersionTask");
-        CommLog(STATE_LOG, "VersionTask");
+        CommLog(PhoneHomeState.LOG, "VersionTask");
         try {
             JSONObject jsonRequest = new JSONObject();
             ServerTask servertask = new ServerTask();
@@ -553,15 +523,15 @@ public class httpClient extends Activity {
             Log.i(TAG, "versionTask:servertask.get..");
             String response = (String) servertask.get(60, TimeUnit.SECONDS);
             Log.i(TAG, "versionTask:servertask.get response=" + response);
-            CommLog(STATE_LOG, "servertask.get - finished");
+            CommLog(PhoneHomeState.LOG, "servertask.get - finished");
             if (response.isEmpty()) {
                 Log.e(TAG, "ERROR: versionTaskResponse is empty");
-                CommLog(STATE_LOG, "ERROR: versionTaskResponse is empty");
+                CommLog(PhoneHomeState.LOG, "ERROR: versionTaskResponse is empty");
                 return 1;
             }
             this.jsonVersion = new JSONObject(response);
             Log.i(TAG, "Versions:" + this.jsonVersion.toString());
-            CommLog(STATE_CSCUPDATE, "Versions:" + this.jsonVersion.toString());
+            CommLog(PhoneHomeState.CSC_UPDATE, "Versions:" + this.jsonVersion.toString());
             responseCode = this.jsonVersion.getInt("code");
             if (responseCode == 10) {
                 this.jsonApkVersion = this.jsonVersion.getJSONObject("recent_apk");
@@ -578,7 +548,7 @@ public class httpClient extends Activity {
                 this.jsonCscVersionStack = null;
             } else {
                 Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
-                CommLog(STATE_LOG, "jsonResponse = " + this.jsonVersion.toString(1));
+                CommLog(PhoneHomeState.LOG, "jsonResponse = " + this.jsonVersion.toString(1));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -604,7 +574,7 @@ public class httpClient extends Activity {
     public int PerformActivationTask() {
         int responseCode = -1;
         Log.i(TAG, "ActivationTask");
-        CommLog(STATE_FREEZE_GATEWAY, "ActivationTask");
+        CommLog(PhoneHomeState.FREEZE_GATEWAY, "ActivationTask");
         try {
             JSONObject jsonRequest = new JSONObject();
             jsonRequest.accumulate("vin", this.jsonGateway.getString("vin"));
@@ -612,7 +582,7 @@ public class httpClient extends Activity {
             if (MainActivity.DebugLog) {
                 Log.i(TAG, "jsonActivationRequest:" + jsonRequest.toString(1));
             }
-            CommLog(STATE_FREEZE_GATEWAY, "jsonActivationRequest:" + jsonRequest.toString(1));
+            CommLog(PhoneHomeState.FREEZE_GATEWAY, "jsonActivationRequest:" + jsonRequest.toString(1));
             ServerTask servertask = new ServerTask();
             servertask.setContext(this.mInstance.getApplicationContext());
             Log.i(TAG, "activationTask:servertask.execute..");
@@ -627,21 +597,21 @@ public class httpClient extends Activity {
             if (MainActivity.DebugLog) {
                 Log.i(TAG, "activationTask:servertask.get response=" + response);
             }
-            CommLog(STATE_FREEZE_GATEWAY, "servertask.get - finished");
+            CommLog(PhoneHomeState.FREEZE_GATEWAY, "servertask.get - finished");
             if (response.isEmpty()) {
                 Log.e(TAG, "ERROR: activationTaskResponse is empty");
-                CommLog(STATE_FREEZE_GATEWAY, "ERROR: activationTaskResponse is empty");
+                CommLog(PhoneHomeState.FREEZE_GATEWAY, "ERROR: activationTaskResponse is empty");
                 return 1;
             }
             this.jsonActivation = new JSONObject(response);
             if (MainActivity.DebugLog) {
                 Log.i(TAG, "jsonActivationResponse=" + this.jsonActivation.toString(1));
             }
-            CommLog(STATE_FREEZE_GATEWAY, "jsonActivationResponse=" + this.jsonActivation.toString(1));
+            CommLog(PhoneHomeState.FREEZE_GATEWAY, "jsonActivationResponse=" + this.jsonActivation.toString(1));
             responseCode = this.jsonActivation.getInt("code");
             if (responseCode == 10) {
                 this.jsonGateway.put("guid", this.jsonActivation.getInt("guid"));
-                this.mInstance.accessoryControl.writeCommand(STATE_LOG_STATUS, STATE_IDLE, STATE_FREEZE_GATEWAY);
+                this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, 0, 2);
                 Log.i(TAG, "APICMD_ACTIVATE = 2");
                 this.NewTruckActivation = this.jsonActivation.getString("route_type").equals("create_truck");
                 if (!this.jsonActivation.has("fleet_name") || this.jsonActivation.isNull("fleet_name")) {
@@ -681,7 +651,7 @@ public class httpClient extends Activity {
         byte[] data = new byte[2];
         int responseCode = -1;
         Log.i(TAG, "UpdateTask");
-        CommLog(STATE_ACTIVATE, "UpdateTask");
+        CommLog(PhoneHomeState.ACTIVATE, "UpdateTask");
         try {
             JSONObject jsonRequest = new JSONObject();
             jsonRequest.accumulate("vin", this.jsonGateway.getString("vin"));
@@ -713,7 +683,7 @@ public class httpClient extends Activity {
             if (MainActivity.DebugLog) {
                 Log.i(TAG, "jsonUpdateRequest:" + jsonRequest.toString(1));
             }
-            CommLog(STATE_ACTIVATE, "jsonUpdateRequest:" + jsonRequest.toString(1));
+            CommLog(PhoneHomeState.ACTIVATE, "jsonUpdateRequest:" + jsonRequest.toString(1));
             ServerTask servertask = new ServerTask();
             servertask.setContext(this.mInstance.getApplicationContext());
             Log.i(TAG, "updateTask:servertask.execute..");
@@ -723,10 +693,10 @@ public class httpClient extends Activity {
             servertask.execute(strArr);
             String response = (String) servertask.get(60, TimeUnit.SECONDS);
             Log.i(TAG, "updateTask:servertask.get response=" + response);
-            CommLog(STATE_ACTIVATE, "servertask.get - finished");
+            CommLog(PhoneHomeState.ACTIVATE, "servertask.get - finished");
             if (response.isEmpty()) {
                 Log.e(TAG, "ERROR: updateTaskResponse is empty");
-                CommLog(STATE_ACTIVATE, "ERROR: updateTaskResponse is empty");
+                CommLog(PhoneHomeState.ACTIVATE, "ERROR: updateTaskResponse is empty");
                 return 1;
             }
             this.jsonUpdate = new JSONObject(response);
@@ -734,7 +704,7 @@ public class httpClient extends Activity {
             if (MainActivity.DebugLog) {
                 Log.i(TAG, "jsonUpdateResponse:" + this.jsonUpdate.toString(1));
             }
-            CommLog(STATE_ACTIVATE, "jsonUpdateResponse:" + this.jsonUpdate.toString(1));
+            CommLog(PhoneHomeState.ACTIVATE, "jsonUpdateResponse:" + this.jsonUpdate.toString(1));
             if (responseCode == 10) {
                 JSONObject jsonServerNode = this.jsonUpdate.getJSONObject("node_settings");
                 if (jsonServerNode.getInt("CABINCOMFORT_ENABLE") == 0) {
@@ -855,7 +825,7 @@ public class httpClient extends Activity {
     public int PerformLogTask() {
         int responseCode = -1;
         Log.i(TAG, "LogTask");
-        CommLog(STATE_UPDATE, "LogTask");
+        CommLog(PhoneHomeState.UPDATE, "LogTask");
         if (this.mInstance.accessoryControl.logStream != null) {
             this.mInstance.accessoryControl.writeLogString("Start Upload");
             this.mInstance.accessoryControl.closeLogFile();
@@ -863,12 +833,12 @@ public class httpClient extends Activity {
         BufferedInputStream logStream = openLogBufferedInputStream();
         if (logStream == null) {
             Log.i(TAG, "Log file does not exist or is empty");
-            CommLog(STATE_UPDATE, "Log file does not exist or is empty");
+            CommLog(PhoneHomeState.UPDATE, "Log file does not exist or is empty");
             return -1;
         }
         BufferedReader logIn = new BufferedReader(new InputStreamReader(logStream));
         while (logIn != null) {
-            JSONArray jsonLog = convertLogToJsonArray(logIn, STATE_DATUM_STATUS);
+            JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
             if (jsonLog == null) {
                 break;
             }
@@ -883,7 +853,7 @@ public class httpClient extends Activity {
                 if (MainActivity.DebugLog) {
                     Log.i(TAG, "jsonLogRequest:" + jsonRequest.toString(1));
                 }
-                CommLog(STATE_UPDATE, "jsonLogRequest:" + jsonRequest.toString(1));
+                CommLog(PhoneHomeState.UPDATE, "jsonLogRequest:" + jsonRequest.toString(1));
                 ServerTask servertask = new ServerTask();
                 servertask.setContext(this.mInstance.getApplicationContext());
                 Log.i(TAG, "logTask:servertask.execute..");
@@ -895,18 +865,18 @@ public class httpClient extends Activity {
                 if (MainActivity.DebugLog) {
                     Log.i(TAG, "logTask:servertask.get response=" + response);
                 }
-                CommLog(STATE_UPDATE, "servertask.get - finished");
+                CommLog(PhoneHomeState.UPDATE, "servertask.get - finished");
                 if (response.isEmpty()) {
                     responseCode = 1;
                     Log.e(TAG, "ERROR: logTaskResponse is empty");
-                    CommLog(STATE_UPDATE, "ERROR: logTaskResponse is empty");
+                    CommLog(PhoneHomeState.UPDATE, "ERROR: logTaskResponse is empty");
                 } else {
                     JSONObject jsonResponse = new JSONObject(response);
                     responseCode = jsonResponse.getInt("code");
                     if (MainActivity.DebugLog) {
                         Log.i(TAG, "jsonLogResponse:" + jsonResponse.toString(1));
                     }
-                    CommLog(STATE_UPDATE, "jsonLogResponse:" + jsonResponse.toString(1));
+                    CommLog(PhoneHomeState.UPDATE, "jsonLogResponse:" + jsonResponse.toString(1));
                     if (responseCode != 10) {
                         Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
                     }
@@ -1096,19 +1066,19 @@ public class httpClient extends Activity {
     public int PerformDatumTask() {
         int responseCode = -1;
         Log.i(TAG, "DatumTask");
-        CommLog(STATE_CSC_AUTOUPDATE, "DatumTask");
+        CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
         if (this.mInstance.accessoryControl.datumStream != null) {
             this.mInstance.accessoryControl.closeDatumFile();
         }
         BufferedInputStream datumStream = openDatumBufferedInputStream();
         if (datumStream == null) {
             Log.i(TAG, "Datum file does not exist or is empty");
-            CommLog(STATE_CSC_AUTOUPDATE, "Datum file does not exist or is empty");
+            CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "Datum file does not exist or is empty");
             return responseCode;
         }
         BufferedReader datumIn = new BufferedReader(new InputStreamReader(datumStream));
         while (datumIn != null) {
-            JSONArray jsonDatum = convertDatumToJsonArray(datumIn, STATE_DATUM_STATUS);
+            JSONArray jsonDatum = convertDatumToJsonArray(datumIn, PhoneHomeState.DATUM_STATUS);
             if (jsonDatum == null) {
                 break;
             }
@@ -1119,7 +1089,7 @@ public class httpClient extends Activity {
                 if (MainActivity.DebugLog) {
                     Log.i(TAG, "jsonDatumRequest:" + jsonRequest.toString(1));
                 }
-                CommLog(STATE_CSC_AUTOUPDATE, "jsonDatumRequest:" + jsonRequest.toString(1));
+                CommLog(PhoneHomeState.CSC_UPDATE, "jsonDatumRequest:" + jsonRequest.toString(1));
                 ServerTask servertask = new ServerTask();
                 servertask.setContext(this.mInstance.getApplicationContext());
                 Log.i(TAG, "datumTask:servertask.execute..");
@@ -1131,14 +1101,14 @@ public class httpClient extends Activity {
                 if (response.isEmpty()) {
                     responseCode = 1;
                     Log.e(TAG, "ERROR: datumTaskResponse is empty");
-                    CommLog(STATE_CSC_AUTOUPDATE, "ERROR: datumTaskResponse is empty");
+                    CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "ERROR: datumTaskResponse is empty");
                 } else {
                     JSONObject jsonResponse = new JSONObject(response);
                     responseCode = jsonResponse.getInt("code");
                     if (MainActivity.DebugLog) {
                         Log.i(TAG, "jsonDatumResponse:" + jsonResponse.toString(1));
                     }
-                    CommLog(STATE_CSC_AUTOUPDATE, "jsonDatumResponse:" + jsonResponse.toString(1));
+                    CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "jsonDatumResponse:" + jsonResponse.toString(1));
                     if (responseCode != 10) {
                         Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
                     }
@@ -1340,11 +1310,11 @@ public class httpClient extends Activity {
      */
     public int APKUpdateExist() {
         Log.i(TAG, "<<APKUpdateExist>>");
-        CommLog(STATE_VERSION, "APKUpdateExist");
+        CommLog(PhoneHomeState.VERSION, "APKUpdateExist");
         try {
             String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), 0).versionName;
             Log.i(TAG, "   current APK version: " + version);
-            CommLog(STATE_VERSION, "   current APK version: " + version);
+            CommLog(PhoneHomeState.VERSION, "   current APK version: " + version);
             try {
                 if (this.jsonApkVersionStack != null) {
                     this.jsonApkVersion = null;
@@ -1364,7 +1334,7 @@ public class httpClient extends Activity {
                 if (this.jsonApkVersion != null) {
                     String server_version = this.jsonApkVersion.getString("version");
                     Log.i(TAG, "   server version: " + server_version);
-                    CommLog(STATE_VERSION, "   server version: " + server_version);
+                    CommLog(PhoneHomeState.VERSION, "   server version: " + server_version);
                     PrefUtils.setServerUpdateVersion(server_version, this.mInstance.getApplicationContext());
                     // if current apk version is up to date
                     if (version.equals(server_version)) {
@@ -1392,19 +1362,19 @@ public class httpClient extends Activity {
      */
     public int PerformAPKUpdate() {
         Log.i(TAG, "PerformAPKUpdate");
-        CommLog(STATE_VERSION, "PerformAPKUpdate");
+        CommLog(PhoneHomeState.VERSION, "PerformAPKUpdate");
         try {
             String version = this.mInstance.getPackageManager().getPackageInfo(this.mInstance.getPackageName(), 0).versionName;
             Log.i(TAG, "APKUpdate::current APK version: " + version);
-            CommLog(STATE_VERSION, "current APK version: " + version);
+            CommLog(PhoneHomeState.VERSION, "current APK version: " + version);
             if (!APKupdate_exists) {
                 return 0;
             }
-            PrefUtils.setApkUpdateState(STATE_CONNECT, this.mInstance.getApplicationContext());
+            PrefUtils.setApkUpdateState(1, this.mInstance.getApplicationContext());
             Log.i(TAG, "-----> New Application code exists, Update the APK <-----");
             try {
                 Log.w(TAG, "Send APICMD_DISCONNECT to Gateway..");
-                this.mInstance.accessoryControl.writeCommand(STATE_FREEZE_GATEWAY, STATE_IDLE, STATE_IDLE);
+                this.mInstance.accessoryControl.writeCommand(AccessoryControl.APICMD_DISCONNECT, 0, 0);
                 String APKlink = this.jsonApkVersion.getString("link_small");
                 UpdateApp updateApp = new UpdateApp();
                 updateApp.setContext(this.mInstance.getApplicationContext());
@@ -1413,7 +1383,7 @@ public class httpClient extends Activity {
                 updateApp.execute(strArr);
                 updateApp.get(60, TimeUnit.SECONDS);
                 Log.i(TAG, "APKUpdate::updateApp.get - finished");
-                CommLog(STATE_VERSION, "updateApp.get - finished");
+                CommLog(PhoneHomeState.VERSION, "updateApp.get - finished");
                 return 1;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1439,9 +1409,9 @@ public class httpClient extends Activity {
      */
     public int CSCUpdateExist() {
         Log.i(TAG, "<<CSCUpdateExist>>");
-        CommLog(STATE_APKUPDATE, "CSCUpdateExist");
+        CommLog(PhoneHomeState.APK_UPDATE, "CSCUpdateExist");
         Log.i(TAG, "   current CSC version: " + MainActivity.Gateway_FWversion);
-        CommLog(STATE_APKUPDATE, "   current CSC version: " + MainActivity.Gateway_FWversion);
+        CommLog(PhoneHomeState.APK_UPDATE, "   current CSC version: " + MainActivity.Gateway_FWversion);
         try {
             if (this.jsonCscVersionStack != null) {
                 this.jsonCscVersion = null;
@@ -1461,7 +1431,7 @@ public class httpClient extends Activity {
             if (this.jsonCscVersion != null) {
                 String server_version = this.jsonCscVersion.getString("version");
                 Log.i(TAG, "   server version: " + server_version);
-                CommLog(STATE_APKUPDATE, "   server version: " + server_version);
+                CommLog(PhoneHomeState.APK_UPDATE, "   server version: " + server_version);
                 // if current firmware version is different to server
                 if (!MainActivity.Gateway_FWversion.equals(server_version)) {
                     return 1;
@@ -1483,9 +1453,9 @@ public class httpClient extends Activity {
      */
     public int PerformCSCUpdate() {
         Log.i(TAG, "PerformCSCUpdate");
-        CommLog(STATE_APKUPDATE, "PerformCSCUpdate");
+        CommLog(PhoneHomeState.APK_UPDATE, "PerformCSCUpdate");
         Log.i(TAG, "current CSC version: " + MainActivity.Gateway_FWversion);
-        CommLog(STATE_APKUPDATE, "current CSC version: " + MainActivity.Gateway_FWversion);
+        CommLog(PhoneHomeState.APK_UPDATE, "current CSC version: " + MainActivity.Gateway_FWversion);
         if (!CSCupdate_exists) {
             return 0;
         }
@@ -1501,7 +1471,7 @@ public class httpClient extends Activity {
             Log.i(TAG, "CSCupdate::updateGateway.get.. <==================================================================");
             updateGateway.get(60, TimeUnit.SECONDS);
             Log.i(TAG, "CSCupdate::updateGateway.get - finished");
-            CommLog(STATE_APKUPDATE, "updateGateway.get - finished");
+            CommLog(PhoneHomeState.APK_UPDATE, "updateGateway.get - finished");
             return 1;
         } catch (JSONException e) {
             e.printStackTrace();
