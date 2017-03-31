@@ -3221,6 +3221,9 @@ public class MainActivity extends Activity implements OnClickListener {
         isRefreshAvailable();
     }
 
+    /**
+     * Open a dialog with build flavor
+     */
     public void openCommDialog() {
         if (commDialog != null && commDialog.isShowing()) {
             commDialog.dismiss();
