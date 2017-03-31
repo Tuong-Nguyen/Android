@@ -444,30 +444,30 @@ public class httpClient extends Activity {
         NetworkInfo networkInfo = ((ConnectivityManager) this.mInstance.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
             Log.e(TAG, "NOT Connected to Network");
-            return PHONEHOME_NO_RESCHEDULE;
+            return false;
         }
         Log.i(TAG, "Connected to Network");
-        return PHONEHOME_RESCHEDULE;
+        return true;
     }
 
     public void CommLog(int flag, String str) {
         if (!MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION]) {
             return;
         }
-        if (flag == STATE_CONNECT || flag == MainActivity.aMaintValue[STATE_CSC_AUTOUPDATE] || MainActivity.aMaintValue[STATE_CSC_AUTOUPDATE] == STATE_ERROR) {
+        if (flag == STATE_CONNECT || flag == MainActivity.aMaintValue[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION] || MainActivity.aMaintValue[MainActivity.MaintenanceFeature.VIEW_SERVER_COMMUNICATION] == STATE_ERROR) {
             this.mInstance.CommLogStr(str);
         }
     }
 
     static {
-        PhoneHomePending = PHONEHOME_NO_RESCHEDULE;
-        phonehome_update_level = STATE_IDLE;
+        PhoneHomePending = false;
+        phonehome_update_level = 0;
         phonehomeHandler = new Handler();
-        progressUpdateRate = STATE_CLEANUP;
+        progressUpdateRate = PROGRESS_UPDATE_RATE;
         phonehome_state = STATE_IDLE;
-        APKupdate_exists = PHONEHOME_NO_RESCHEDULE;
-        CSCupdate_exists = PHONEHOME_NO_RESCHEDULE;
-        result = STATE_LOG;
+        APKupdate_exists = false;
+        CSCupdate_exists = false;
+        result = PHONEHOME_NONE; // 5, assume
     }
 
     public void PhoneHome(int update_level, boolean reschedule) {
@@ -476,15 +476,15 @@ public class httpClient extends Activity {
         phonehome_reschedule = reschedule;
         String str = TAG;
         StringBuilder append = new StringBuilder().append("     Update Level: ");
-        String str2 = update_level == STATE_CONNECT ? "AUTO" : update_level == STATE_ACTIVATE ? "TABLET" : update_level == STATE_FREEZE_GATEWAY ? "GATEWAY" : "FULL";
+        String str2 = update_level == 1 ? "AUTO" : update_level == 3 ? "TABLET" : update_level == 2 ? "GATEWAY" : "FULL";
         Log.i(str, append.append(str2).toString());
         phonehome_state = STATE_IDLE;
-        PhoneHomePending = PHONEHOME_RESCHEDULE;
+        PhoneHomePending = true;
         phonehomeHandler.removeCallbacks(this.phonehomeRunnable);
         if (MainActivity.test_mode) {
             progressUpdateRate = TEST_UPDATE_RATE;
         } else {
-            progressUpdateRate = STATE_CLEANUP;
+            progressUpdateRate = PROGRESS_UPDATE_RATE;
         }
         phonehomeHandler.postDelayed(this.phonehomeRunnable, (long) progressUpdateRate);
     }
