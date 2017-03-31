@@ -1341,6 +1341,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.killSwitchButton /*2131361816*/:
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
+                // TODO Enable KillswitchMode button
+                SystemActivationFlag =true;
                 if (SystemActivationFlag) {
                     selectKillswitchMode(KillSwitchMode.KILL_SWITCH);
                 }
