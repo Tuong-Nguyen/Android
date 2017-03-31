@@ -110,7 +110,6 @@ public class MainActivity extends Activity implements OnClickListener {
     private static String commlogstr = null;
     private static TextView commlogtext = null;
     public static boolean demo_mode = false;
-    public static final boolean enableKioskMode = true;
     public static boolean gateway_connected;
     public static boolean gateway_restarting;
     public static httpClient httpclient;
@@ -315,7 +314,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         public void handleMessage(Message msg) {
-            boolean z = MainActivity.enableKioskMode;
+            boolean z = true;
             MainActivity mainActivityClass = this.mainActivityClassWeakReference.get();
             if (mainActivityClass != null) {
                 String str;
@@ -406,7 +405,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					case AccessoryControl.APIEVENT_SYNC /*69*/:
                         if (MainActivity.SyncWithServer) {
                             MainActivity.SyncWithServer = false;
-                            MainActivity.httpclient.PhoneHome(MainActivity.GOOD_CONNECTIVITY, MainActivity.enableKioskMode);
+                            MainActivity.httpclient.PhoneHome(MainActivity.GOOD_CONNECTIVITY, true);
                         }
                     	break;
 					case AccessoryControl.APIEVENT_CURRENT_MODE /*78*/:
@@ -555,8 +554,15 @@ public class MainActivity extends Activity implements OnClickListener {
                 MainActivity.this.mMediaPlayer = null;
             }
         };
-        this.kiosk_mode_counter = UNKNOWN_CONNECTIVITY;
-        this.aSystemStatus = new String[]{"NOT ACTIVATED", "DISABLED", "DISENGAGED", "VEHICLE NOT READY", "TEMP CHANGE FAULT", "STANDBY MODE", "TEMP INTERLOCK", "INITIATING START", "STARTING ENGINE", "WARMING UP", "ENGINE RUNNING", "RUNNING NORMAL", "CHARGING BATTERY", "RUNNING COLD GUARD", "SHUTTING DOWN", "RESTART DELAY", "DOWNLOADING", "VEHICLE NOT READY - Transmission not in Neutral", "VEHICLE NOT READY - Parking Brake not set", "VEHICLE NOT READY - Hood is Open", "VEHICLE NOT READY - Regen Required", "VEHICLE NOT READY - Ignition Switch is On", "VEHICLE NOT READY - Battery Voltage below 11.0V"};
+        this.kiosk_mode_counter = 0;
+        this.aSystemStatus = new String[]{"NOT ACTIVATED", "DISABLED", "DISENGAGED", "VEHICLE NOT READY",
+                "TEMP CHANGE FAULT", "STANDBY MODE", "TEMP INTERLOCK", "INITIATING START", "STARTING ENGINE",
+                "WARMING UP", "ENGINE RUNNING", "RUNNING NORMAL", "CHARGING BATTERY", "RUNNING COLD GUARD",
+                "SHUTTING DOWN", "RESTART DELAY", "DOWNLOADING", "VEHICLE NOT READY - Transmission not in Neutral",
+                "VEHICLE NOT READY - Parking Brake not set", "VEHICLE NOT READY - Hood is Open",
+                "VEHICLE NOT READY - Regen Required", "VEHICLE NOT READY - Ignition Switch is On",
+                "VEHICLE NOT READY - Battery Voltage below 11.0V"};
+
         this.UsbReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
@@ -570,10 +576,10 @@ public class MainActivity extends Activity implements OnClickListener {
                                 AccessoryControl.OpenStatus status = MainActivity.this.accessoryControl.open(accessory);
                                 if (status == AccessoryControl.OpenStatus.CONNECTED) {
                                     Log.d(MainActivity.TAG, "    UsbReceiver::Gateway is connected");
-                                    MainActivity.gateway_connected = MainActivity.enableKioskMode;
+                                    MainActivity.gateway_connected = true;
                                     MainActivity.demo_mode = false;
                                     MainActivity.this.connected();
-                                    MainActivity.this.enableDashboard(MainActivity.enableKioskMode);
+                                    MainActivity.this.enableDashboard(true);
                                     MainActivity.this.selectRunning(MainActivity.GOOD_CONNECTIVITY);
                                 } else {
                                     Log.d(MainActivity.TAG, "   UsbReceiver::Gateway is disconnected");
@@ -590,7 +596,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     }
                 } else if ("android.hardware.usb.action.USB_ACCESSORY_ATTACHED".equals(action)) {
                     Log.d(MainActivity.TAG, "==>UsbReceiver::Recv Intent=ACTION_USB_ACCESSORY_ATTACHED");
-                    MainActivity.gateway_connected = MainActivity.enableKioskMode;
+                    MainActivity.gateway_connected = true;
                     MainActivity.this.connected();
                 } else if ("android.hardware.usb.action.USB_ACCESSORY_DETACHED".equals(action)) {
                     Log.d(MainActivity.TAG, "==>UsbReceiver::Recv Intent=ACTION_USB_ACCESSORY_DETACHED");
