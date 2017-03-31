@@ -597,7 +597,7 @@ public class MainActivity extends Activity implements OnClickListener {
                                     MainActivity.demo_mode = false;
                                     MainActivity.this.connected();
                                     MainActivity.this.enableDashboard(true);
-                                    MainActivity.this.selectRunning(MainActivity.GOOD_CONNECTIVITY);
+                                    MainActivity.this.selectRunning(1);
                                 } else {
                                     Log.d(MainActivity.TAG, "   UsbReceiver::Gateway is disconnected");
                                     MainActivity.this.disconnected();
@@ -884,7 +884,7 @@ public class MainActivity extends Activity implements OnClickListener {
         selectRunning(CurrentDashboardFragment);
         if (CurrentSettingsFlag) {
             enableDashboard(true);
-            selectRunning(GOOD_CONNECTIVITY);
+            selectRunning(1);
             enableSettings(false);
         } else {
             enableSettings(CurrentSettingsFlag);
@@ -943,7 +943,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, 0, GOOD_CONNECTIVITY);
                 connected();
                 enableDashboard(true);
-                selectRunning(GOOD_CONNECTIVITY);
+                selectRunning(1);
                 enableSettings(false);
                 Log.i(TAG, "        connectUSB::send APICMD_SYNC.. (Request data from Gateway");
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC, 0, GOOD_CONNECTIVITY);
@@ -1150,7 +1150,7 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.i(TAG, "VerifyActivation: ACTIVATED");
             enableStatusBar(true);
             enableDashboard(true);
-            selectRunning(GOOD_CONNECTIVITY);
+            selectRunning(1);
         }
     }
 
@@ -1331,7 +1331,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(true);
                     enableDashboard(true);
-                    selectRunning(GOOD_CONNECTIVITY);
+                    selectRunning(1);
                     enableSettings(false);
                     selectActivationFragment(ActivationStep.NONE);
                     PasswordValid = false;
@@ -1366,7 +1366,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, 0, GOOD_CONNECTIVITY);
                     Log.i(TAG, "APICMD_ACTIVATE = 1");
                     enableDashboard(true);
-                    selectRunning(GOOD_CONNECTIVITY);
+                    selectRunning(1);
                     httpclient.PhoneHome(0, false);
                     return;
                 }
@@ -1417,7 +1417,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         setGatewayStatus("Demo Mode");
                         enableDashboard(true);
                         enableStatusBar(true);
-                        selectRunning(GOOD_CONNECTIVITY);
+                        selectRunning(1);
                         enableSettings(false);
                     }
                 }
@@ -1438,16 +1438,16 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case R.id.cabinComfortFunction /*2131361959*/:
                 PasswordValid = false;
-                if (CurrentDashboardFragment == BAD_CONNECTIVITY) {
-                    selectRunning(GOOD_CONNECTIVITY);
+                if (CurrentDashboardFragment == 2) {
+                    selectRunning(1);
                 } else {
-                    selectRunning(BAD_CONNECTIVITY);
+                    selectRunning(2);
                 }
             	break;
 			case R.id.coldWeatherGuardFunction /*2131361960*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == 3) {
-                    selectRunning(GOOD_CONNECTIVITY);
+                    selectRunning(1);
                 } else {
                     selectRunning(3);
                 }
@@ -1455,7 +1455,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.batteryProtectFunction /*2131361961*/:
                 PasswordValid = false;
                 if (CurrentDashboardFragment == 4) {
-                    selectRunning(GOOD_CONNECTIVITY);
+                    selectRunning(1);
                 } else {
                     selectRunning(4);
                 }
@@ -1706,6 +1706,14 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    /**
+     * Display fragment on Dashboard
+     * @param fragment
+     * - 1: RunningFragment - Summary of 3 functionalities
+     * - 2: Cabin Comfort - Summary of Cabin comfort
+     * - 3: Cold Weather - Summary of Cold Weather
+     * - 4: Battery Protect - Summary of Battery Protect
+     */
     private void selectRunning(int fragment) {
         CurrentDashboardFragment = fragment;
         findViewById(R.id.runningFragment).setVisibility(View.GONE);
@@ -1713,23 +1721,23 @@ public class MainActivity extends Activity implements OnClickListener {
         findViewById(R.id.coldWeatherGuardFragment).setVisibility(View.GONE);
         findViewById(R.id.batteryProtectFragment).setVisibility(View.GONE);
         updateFunctionModes();
-        viewFragmentParamValue(GOOD_CONNECTIVITY);
-        viewFragmentParamValue(BAD_CONNECTIVITY);
+        viewFragmentParamValue(1);
+        viewFragmentParamValue(2);
         viewFragmentParamValue(3);
         viewFragmentParamValue(4);
         if (fragment != 0) {
             enableDashboard(true);
             switch (fragment) {
-                case GOOD_CONNECTIVITY /*1*/:
+                case 1 /*1*/:
                     findViewById(R.id.runningFragment).setVisibility(View.VISIBLE);
                     break;
-                case BAD_CONNECTIVITY /*2*/:
+                case 2 /*2*/:
                     findViewById(R.id.cabinComfortFragment).setVisibility(View.VISIBLE);
                     break;
-                case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+                case 3 /*3*/:
                     findViewById(R.id.coldWeatherGuardFragment).setVisibility(View.VISIBLE);
                     break;
-                case httpClient.PHONEHOME_APK_PENDING /*4*/:
+                case 4 /*4*/:
                     findViewById(R.id.batteryProtectFragment).setVisibility(View.VISIBLE);
                     break;
                 default:
@@ -2371,16 +2379,16 @@ public class MainActivity extends Activity implements OnClickListener {
                         openSerialDialog();
                     }
                     selectSettingsMode(0);
-                    selectRunning(GOOD_CONNECTIVITY);
+                    selectRunning(1);
                     return;
                 default:
                     selectSettingsMode(0);
-                    selectRunning(GOOD_CONNECTIVITY);
+                    selectRunning(1);
                     return;
             }
         }
         selectSettingsMode(0);
-        selectRunning(GOOD_CONNECTIVITY);
+        selectRunning(1);
     }
 
     private void updateParamValue(int vId, int pId) {
@@ -2559,7 +2567,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
         }
         selectSettingsMode(0);
-        selectRunning(GOOD_CONNECTIVITY);
+        selectRunning(1);
     }
 
     private void sendParam(int paramId) {
@@ -2574,14 +2582,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void viewFragmentParamValue(int fragmentId) {
         switch (fragmentId) {
-            case BAD_CONNECTIVITY /*2*/:
+            case 2 /*2*/:
                 ((TextView) findViewById(R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(aParam[Params.PARAM_CabinTargetTemp]) + this.params.aParamSfx[Params.PARAM_CabinTargetTemp]);
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case 3 /*3*/:
                 ((TextView) findViewById(R.id.cwgFragMinTempValue)).setText(Integer.toString(aParam[Params.PARAM_MinCoolantTemp]) + this.params.aParamSfx[Params.PARAM_MinCoolantTemp]);
                 ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[Params.PARAM_IdealCoolantTemp]) + this.params.aParamSfx[Params.PARAM_IdealCoolantTemp]);
                 break;
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            case 4 /*4*/:
                 ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
                 String str = Integer.toString(aParam[Params.PARAM_VoltageSetPoint]);
                 ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[Params.PARAM_VoltageSetPoint]);
