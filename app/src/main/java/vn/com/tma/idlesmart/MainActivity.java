@@ -245,13 +245,12 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.4 */
-    class C00044 implements Runnable {
-        C00044() {
-        }
-
+    /**
+     * Runnable which set NEXT SYNC TIME to PCB (APIDATA_SYNC_NEXT).
+     */
+    class SetSyncTimeRunnable implements Runnable {
         public void run() {
-            MainActivity.SyncWithServer = MainActivity.enableKioskMode;
+            MainActivity.SyncWithServer = true;
             Log.i(MainActivity.TAG, "--> <TimerTask>: SyncWithServer");
             MainActivity.this.SetNextPhoneHome();
         }
@@ -544,7 +543,7 @@ public class MainActivity extends Activity implements OnClickListener {
         numArr[0] = 25;
         numArr[1] = 24;
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
-        this.ETrunnable = new C00044();
+        this.ETrunnable = new SetSyncTimeRunnable();
         this.isScreenOn = true;
         this.timeoutRunnable = new ScreenOffRunnable();
         this.mEditorActionListener = new C00077();
@@ -1128,6 +1127,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    // region PhoneHome - send heart-beat to PCB
     private void StartPhoneHome() {
         this.EThandler.removeCallbacks(this.ETrunnable);
         SetNextPhoneHome();
@@ -1148,12 +1148,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void SetNextPhoneHome() {
         Calendar date = CalcNextPhoneHome();
+
+        // Send Next Sync time to PCB
         Log.i(TAG, "Next PhoneHome scheduled for: " + date.getTime().toString());
         byte[] data = new byte[2];
         SyncNext = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
         data[0] = (byte) ((SyncNext >> 8) & 255);
-        data[GOOD_CONNECTIVITY] = (byte) (SyncNext & 255);
-        this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[GOOD_CONNECTIVITY]);
+        data[1] = (byte) (SyncNext & 255);
+        this.accessoryControl.writeCommand(AccessoryControl.APIDATA_SYNC_NEXT, data[0], data[1]);
+
+        // Re-add the timer for next time
         CancelPhoneHome();
         long delay = date.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
         this.EThandler.postDelayed(this.ETrunnable, delay);
@@ -1186,6 +1190,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private void CancelPhoneHome() {
         this.EThandler.removeCallbacks(this.ETrunnable);
     }
+    // endregion
 
     private int getScreenBrightness() {
         int curBrightnessValue = 0;
