@@ -1061,6 +1061,7 @@ public class httpClient extends Activity {
      * 1 if response is empty
      * 10 if success
      * others: server error code
+     * Default API link: [POST] http://api.idlesmart.com/api/datacollection
      */
     public int PerformDatumTask() {
         int responseCode = -1;
