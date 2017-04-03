@@ -22,6 +22,8 @@
 
     <include layout="@layout/setting_fragment" />
 
+    <include layout="@layout/powerof_fragment" />
+
     <include layout="@layout/killswitch_fragment" />
 
 </LinearLayout>
