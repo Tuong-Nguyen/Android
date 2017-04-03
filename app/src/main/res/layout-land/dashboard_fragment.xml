@@ -35,7 +35,8 @@
 
     <include layout="@layout/battery_protect_fragment" />
 
-    <include layout="@layout/setting_fragment" />
+    // TODO Moved setting_fragment from here to fullscreen
+   <!-- <include layout="@layout/setting_fragment" />-->
 
     <LinearLayout
         android:id="@id/packagemanagerFragment"

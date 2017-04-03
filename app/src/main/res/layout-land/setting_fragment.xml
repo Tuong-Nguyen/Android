@@ -10,7 +10,7 @@
     android:orientation="horizontal"
     android:visibility="gone"
     android:weightSum="1.0"
-    tools:showIn="@layout/dashboard_fragment">
+    tools:showIn="@layout/full_screen">
 
     <LinearLayout
         android:id="@id/settingsMenu1"
