@@ -19,4 +19,7 @@
     <include layout="@layout/password_fragment" />
 
     <include layout="@layout/dashboard_fragment" />
+
+    <include layout="@layout/killswitch_fragment" />
+
 </LinearLayout>
