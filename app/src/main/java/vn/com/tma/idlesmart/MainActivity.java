@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -1323,7 +1325,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.dashboardButton /*2131361812*/:
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
-
                 // TODO Enable dashboardButton to access dashboard
                 SystemActivationFlag =true;
                 demo_mode = true;
@@ -1346,8 +1347,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (SystemActivationFlag || demo_mode) {
                     selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(false);
-                    // TODO Display setting fragment(1)
-                    //enableDashboard(false);
+                    enableDashboard(false);
                     selectRunning(0);
                     enableSettings(true);
                     selectActivationFragment(ActivationStep.NONE);
@@ -1357,11 +1357,12 @@ public class MainActivity extends Activity implements OnClickListener {
                     PasswordValid = false;
                 }
             	break;
-			case R.id.killSwitchButton /*2131361816*/:
+
+            case R.id.killSwitchButton /*2131361816*/:
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
-                // TODO Enable KillswitchMode button
-                SystemActivationFlag =true;
+                // TODO enable killSwitchButton
+                SystemActivationFlag = true;
                 if (SystemActivationFlag) {
                     selectKillswitchMode(KillSwitchMode.KILL_SWITCH);
                 }
@@ -1601,6 +1602,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 packagemanagernag = false;
                 findViewById(R.id.packagemanagerFragment).setVisibility(View.GONE);
             	break;
+
 			case R.id.packagemanagerButton /*2131362084*/:
                 removeBloatware();
             	break;
@@ -2073,8 +2075,7 @@ public class MainActivity extends Activity implements OnClickListener {
             selectSettingsEntry(UNKNOWN_CONNECTIVITY);
         } else {
             enableStatusBar(false);
-            // TODO Display setting fragment(2)
-            //enableDashboard(false);
+            enableDashboard(false);
             selectActivationFragment(UNKNOWN_CONNECTIVITY);
             enableSettings(true);
         }
