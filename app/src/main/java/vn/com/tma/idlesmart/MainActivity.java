@@ -360,9 +360,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APICMD_CABIN_COMFORT_ENABLE /*40*/:
                         if (msg.arg1 == 0) {
-                            mainActivityClass.setFunctionMode(Functionality.CABIN_COMFORT, MainActivity.UNKNOWN_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.CABIN_COMFORT, 0);
                         } else {
-                            mainActivityClass.setFunctionMode(Functionality.CABIN_COMFORT, MainActivity.GOOD_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.CABIN_COMFORT, 1);
                         }
                     	break;
 					case AccessoryControl.VIN_ID_MAX /*41*/:
@@ -385,9 +385,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE /*50*/:
                         if (msg.arg1 == 0) {
-                            mainActivityClass.setFunctionMode(Functionality.BATTERY_PROTECT, MainActivity.UNKNOWN_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.BATTERY_PROTECT, 0);
                         } else {
-                            mainActivityClass.setFunctionMode(Functionality.BATTERY_PROTECT, MainActivity.GOOD_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.BATTERY_PROTECT, 1);
                         }
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_VOLTAGE /*51*/:
@@ -404,9 +404,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE /*55*/:
                         if (msg.arg1 == 0) {
-                            mainActivityClass.setFunctionMode(Functionality.COLD_WEATHER_GUARD, MainActivity.UNKNOWN_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.COLD_WEATHER_GUARD, 0);
                         } else {
-                            mainActivityClass.setFunctionMode(Functionality.COLD_WEATHER_GUARD, MainActivity.GOOD_CONNECTIVITY);
+                            mainActivityClass.setFunctionMode(Functionality.COLD_WEATHER_GUARD, 1);
                         }
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_START_TEMP /*56*/:
@@ -485,7 +485,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_BATTERY_VOLTAGE /*138*/:
                         str = Integer.toString(msg.arg1);
-                        ((TextView) mainActivityClass.findViewById(R.id.batteryProtectValue)).setText(str.substring(MainActivity.UNKNOWN_CONNECTIVITY, str.length() - 1) + "." + str.substring(str.length() - 1) + mainActivityClass.params.aParamSfx[8]);
+                        ((TextView) mainActivityClass.findViewById(R.id.batteryProtectValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + mainActivityClass.params.aParamSfx[8]);
                     	break;
 					case AccessoryControl.APIDATA_SYNC_LAST /*142*/:
                         if (MainActivity.SyncLast_Status == MainActivity.BAD_CONNECTIVITY) {
@@ -504,9 +504,9 @@ public class MainActivity extends Activity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_FLEET_CABIN_COMFORT_ENABLE /*159*/:
                         if (msg.arg1 == 0) {
-                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = MainActivity.UNKNOWN_CONNECTIVITY;
+                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = 0;
                         } else {
-                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = MainActivity.GOOD_CONNECTIVITY;
+                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = 1;
                         }
                     	break;
 					case AccessoryControl.APIDATA_FLEET_CABIN_TEMP_SETPOINT /*160*/:
