@@ -280,15 +280,15 @@ public class httpClient extends Activity {
                 case PhoneHomeState.ERROR /*99*/:
                     MainActivity.SyncLast_Status = httpClient.result;
                     httpClient.this.mInstance.UpdateConnectivityStatus();
-                    String resched_msg = httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE ? "\n\nRefresh has been rescheduled" : BuildConfig.FLAVOR;
+                    String resched_msg = httpClient.phonehome_reschedule == httpClient.PHONEHOME_RESCHEDULE ? "\n\nRefresh has been rescheduled" : "";
                     switch (httpClient.result) {
-                        case httpClient.PHONEHOME_TIMEOUT /*-3*/:
+                        case PhoneHomeSyncStatus.TIMEOUT /*-3*/:
                             httpClient.this.dialog.setMessage("Server dashboard not responding" + resched_msg);
                             break;
-                        case httpClient.PHONEHOME_NONETWORK /*-2*/:
+                        case PhoneHomeSyncStatus.NONE_NETWORK /*-2*/:
                             httpClient.this.dialog.setMessage("Cannot connect to network" + resched_msg);
                             break;
-                        case httpClient.PHONEHOME_ERROR /*-1*/:
+                        case PhoneHomeSyncStatus.ERROR /*-1*/:
                             httpClient.this.dialog.setMessage("Errors encountered during refresh" + resched_msg);
                             break;
                         case PhoneHomeState.CONNECT /*1*/:
@@ -401,8 +401,8 @@ public class httpClient extends Activity {
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = BuildConfig.FLAVOR;
-        String result = BuildConfig.FLAVOR;
+        String line = "";
+        String result = "";
         while (true) {
             line = bufferedReader.readLine();
             if (line != null) {
@@ -615,7 +615,7 @@ public class httpClient extends Activity {
                 Log.i(TAG, "APICMD_ACTIVATE = 2");
                 this.NewTruckActivation = this.jsonActivation.getString("route_type").equals("create_truck");
                 if (!this.jsonActivation.has("fleet_name") || this.jsonActivation.isNull("fleet_name")) {
-                    MainActivity.Gateway_Fleet = BuildConfig.FLAVOR;
+                    MainActivity.Gateway_Fleet = "";
                 } else {
                     String temp = this.jsonActivation.getString("fleet_name");
                     if (temp.length() < 41) {
@@ -1342,7 +1342,7 @@ public class httpClient extends Activity {
                     }
                     return 1;
                 }
-                PrefUtils.setServerUpdateVersion(BuildConfig.FLAVOR, this.mInstance.getApplicationContext());
+                PrefUtils.setServerUpdateVersion("", this.mInstance.getApplicationContext());
                 return 0;
             } catch (JSONException e) {
                 e.printStackTrace();

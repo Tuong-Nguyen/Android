@@ -35,42 +35,43 @@ public class Menus {
     }
 
     public String getSubmenuName(int level1, int level2) {
-        String result = BuildConfig.FLAVOR;
+        String result = "";
         level2--;
         switch (level1) {
             case httpClient.PHONEHOME_OK /*1*/:
                 if (level2 < this.aCabinComfortMenu.length) {
-                    return this.aCabinComfortMenu[level2];
+                    result = this.aCabinComfortMenu[level2];
                 }
-                return result;
+                break;
             case httpClient.PHONEHOME_GATEWAY_UPDATE /*2*/:
                 if (level2 < this.aBatteryProtectMenu.length) {
-                    return this.aBatteryProtectMenu[level2];
+                    result = this.aBatteryProtectMenu[level2];
                 }
-                return result;
+                break;
             case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
                 if (level2 < this.aColdWeatherGuardMenu.length) {
-                    return this.aColdWeatherGuardMenu[level2];
+                    result = this.aColdWeatherGuardMenu[level2];
                 }
-                return result;
+                break;
             case httpClient.PHONEHOME_APK_PENDING /*4*/:
                 if (level2 < this.aDeviceSettings.length) {
-                    return this.aDeviceSettings[level2];
+                    result = this.aDeviceSettings[level2];
                 }
-                return result;
+                break;
             case httpClient.PHONEHOME_NONE /*5*/:
                 if (level2 < this.aVehicleSettings.length) {
-                    return this.aVehicleSettings[level2];
+                    result = this.aVehicleSettings[level2];
                 }
-                return result;
+                break;
             case Params.PasswordType /*6*/:
                 if (level2 < this.aRefreshDevice.length) {
-                    return this.aRefreshDevice[level2];
+                    result = this.aRefreshDevice[level2];
                 }
-                return result;
+                break;
             default:
-                return result;
+                break;
         }
+        return result;
     }
 
     public static int getSubmenuId(int level1, int level2) {

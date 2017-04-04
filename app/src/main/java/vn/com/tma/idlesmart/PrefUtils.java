@@ -44,7 +44,7 @@ public class PrefUtils {
     }
 
     public static String getServerUpdateVersion(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_SERVER_UPDATE_VERSION, BuildConfig.FLAVOR).trim();
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_SERVER_UPDATE_VERSION, "").trim();
     }
 
     public static void setServerUpdateVersion(String version, Context context) {
