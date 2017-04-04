@@ -28,6 +28,9 @@ public class AppContext extends Application {
         Log.i(TAG, "<<==onCreate");
     }
 
+    /**
+     * Register screen off broadcast to dim the screen instead of turning it off
+     */
     private void registerKioskModeScreenOffReceiver() {
         IntentFilter filter = new IntentFilter("android.intent.action.SCREEN_OFF");
         filter.addAction("android.intent.action.SCREEN_ON");
@@ -36,6 +39,10 @@ public class AppContext extends Application {
         registerReceiver(this.onScreenOffReceiver, filter);
     }
 
+    /**
+     * Get the WakeLock - create it if it does not yet created.
+     * @return
+     */
     public WakeLock getWakeLock() {
         if (this.wakeLock == null) {
             this.wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE)).newWakeLock(
