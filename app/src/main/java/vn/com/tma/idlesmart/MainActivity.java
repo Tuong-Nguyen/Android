@@ -923,7 +923,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         isRefreshAvailable();
         Log.i(TAG, "        (re-)connectUSB::send APICMD_SYNC.. (Request data from Gateway");
-        this.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC, 0, GOOD_CONNECTIVITY);
+        this.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC, 0, 1);
         if (DebugLog) {
             Log.i(TAG, "<<==end OnResume");
         }
@@ -940,13 +940,13 @@ public class MainActivity extends Activity implements OnClickListener {
                 Log.i(TAG, "        connectUSB::we are now connected to gateway");
                 gateway_connected = true;
                 Log.i(TAG, "        connectUSB::send APICMD_POWERON..");
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, 0, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, 0, 1);
                 connected();
                 enableDashboard(true);
                 selectRunning(1);
                 enableSettings(false);
                 Log.i(TAG, "        connectUSB::send APICMD_SYNC.. (Request data from Gateway");
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC, 0, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_SYNC, 0, 1);
             } else if (status == AccessoryControl.OpenStatus.REQUESTING_PERMISSION) {
                 Log.w(TAG, "        connectUSB::Requesting Permission");
                 disconnected();
@@ -1042,7 +1042,7 @@ public class MainActivity extends Activity implements OnClickListener {
         AppContext.instance.stopKioskService();
         moveTaskToBack(true);
         Process.killProcess(Process.myPid());
-        java.lang.System.exit(GOOD_CONNECTIVITY);
+        java.lang.System.exit(1);
     }
 
     protected void onDestroy() {
