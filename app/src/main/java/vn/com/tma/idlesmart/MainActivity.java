@@ -2368,7 +2368,7 @@ public class MainActivity extends Activity implements OnClickListener {
         String pSfx = this.params.aParamSfx[this.param_id];
         if (this.param_id >= 0) {
             switch (this.params.aParamType[this.param_id]) {
-                case GOOD_CONNECTIVITY /*1*/:
+                case Params.BooleanType /*1*/:
                     if (aParam[this.param_id] != 0) {
                         ((TextView) findViewById(R.id.settingsEntryDisableDescription)).setText(pName + " feature is currently Enabled.");
                         selectSettingsEntry(2);
@@ -2377,13 +2377,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     ((TextView) findViewById(R.id.settingsEntryEnableDescription)).setText(pName + " feature is currently Disabled.");
                     selectSettingsEntry(1);
                     return;
-                case BAD_CONNECTIVITY /*2*/:
-                case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+                case Params.IntegerType /*2*/:
+                case Params.TempType /*3*/:
                     ((TextView) findViewById(R.id.settingsEntryDescription)).setText(pName);
                     ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(aParam[this.param_id]) + pSfx);
                     selectSettingsEntry(3);
                     return;
-                case httpClient.PHONEHOME_APK_PENDING /*4*/:
+                case Params.VoltageType /*4*/:
                     ((TextView) findViewById(R.id.settingsEntryDescription)).setText(pName);
                     String str = Integer.toString(aParam[this.param_id]);
                     ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
