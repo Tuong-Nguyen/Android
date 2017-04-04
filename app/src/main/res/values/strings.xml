@@ -8,4 +8,7 @@
     <string name="kill_verbiage">The Kill Switch will disable all the features and will prevent Idle Smart from monitoring and starting your vehicle.</string>
     <string name="packagemanager_verbiage">Idle Smart needs permission to enhance your experience. Click \"OK\" on the next screen.</string>
     <string name="poweroff_verbiage">"By pushing Power Off, Idle Smart won't monitor or start your vehicle."</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

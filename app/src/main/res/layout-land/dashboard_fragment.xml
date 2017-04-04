@@ -10,24 +10,17 @@
     android:weightSum="1.0"
     tools:showIn="@layout/full_screen">
 
-    <LinearLayout
-        android:id="@id/functionSummary"
-        android:layout_width="129dp"
-        android:layout_height="match_parent"
-        android:background="#eeeeee"
-        android:weightSum="3.0"
-        android:orientation="vertical">
-
-        <include layout="@layout/cabin_comfort_function" />
-
-        <include layout="@layout/cold_weather_guard_function" />
-
-        <include layout="@layout/battery_protect_function" />
-    </LinearLayout>
+   <include layout="@layout/function_summary_fragment"/>
 
     <include layout="@layout/function_status" />
 
-    <include layout="@layout/running_fragment" />
+    <!--TODO add running_fragment-->
+   <!-- <include layout="@layout/running_fragment" />-->
+    <fragment
+        android:name="vn.com.tma.idlesmart.fragments.RunningFragment"
+        android:id="@+id/runningFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <include layout="@layout/cabin_comfort_fragment"/>
 
@@ -35,7 +28,7 @@
 
     <include layout="@layout/battery_protect_fragment" />
 
-    // TODO Moved setting_fragment from here to fullscreen
+    <!-- TODO Moved setting_fragment from here to fullscreen-->
    <!-- <include layout="@layout/setting_fragment" />-->
 
     <LinearLayout
@@ -101,9 +94,9 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    // TODO Moved killswitch_fragment from here to full_screen
+    <!-- TODO Moved killswitch_fragment from here to full_screen-->
    <!-- <include layout="@layout/killswitch_fragment" />-->
-    // TODO Moved powerof_fragment from here to full_screen
+    <!--TODO Moved powerof_fragment from here to full_screen-->
    <!-- <include layout="@layout/powerof_fragment" />-->
 
     <LinearLayout
