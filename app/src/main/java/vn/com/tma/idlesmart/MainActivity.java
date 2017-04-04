@@ -1376,7 +1376,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.installDoneButton /*2131361837*/:
                 findViewById(R.id.installFragment).setVisibility(View.GONE);
                 if (ValidActivationProcess) {
-                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, 0, GOOD_CONNECTIVITY);
+                    this.accessoryControl.writeCommand(AccessoryControl.APICMD_ACTIVATE, 0, 1);
                     Log.i(TAG, "APICMD_ACTIVATE = 1");
                     enableDashboard(true);
                     selectRunning(1);
@@ -1394,7 +1394,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_POWERON, 0, 1);
             	break;
 			case R.id.idlesmartButton /*2131361944*/:
-                this.test_mark_counter += GOOD_CONNECTIVITY;
+                this.test_mark_counter += 1;
                 Log.i(TAG, "************************************ TEST MARK: " + this.test_mark_counter);
                 if (gateway_connected) {
                     this.accessoryControl.writefmtCANLogStream("TEST MARK: " + Integer.toString(this.test_mark_counter));
@@ -1406,12 +1406,12 @@ public class MainActivity extends Activity implements OnClickListener {
                         this.accessoryControl.writeCommand(AccessoryControl.APICMD_TESTMODE, 0, 0);
                         return;
                     }
-                    i = this.test_mode_counter + GOOD_CONNECTIVITY;
+                    i = this.test_mode_counter + 1;
                     this.test_mode_counter = i;
                     if (i >= 5) {
                         setGatewayStatus("Test Mode");
                         test_mode = true;
-                        this.accessoryControl.writeCommand(AccessoryControl.APICMD_TESTMODE, 0, GOOD_CONNECTIVITY);
+                        this.accessoryControl.writeCommand(AccessoryControl.APICMD_TESTMODE, 0, 1);
                     }
                 } else if (demo_mode) {
                     demo_mode = false;
@@ -1423,7 +1423,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.test_mode_counter = 0;
                     this.maint_mode_counter = 0;
                 } else {
-                    i = this.test_mode_counter + GOOD_CONNECTIVITY;
+                    i = this.test_mode_counter + 1;
                     this.test_mode_counter = i;
                     if (i >= 5) {
                         demo_mode = true;
@@ -1439,7 +1439,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 installUpdate();
             	break;
 			case R.id.maintButton /*2131361949*/:
-                i = this.maint_mode_counter + GOOD_CONNECTIVITY;
+                i = this.maint_mode_counter + 1;
                 this.maint_mode_counter = i;
                 if (i >= 3) {
                     openMaintDialog();
@@ -1542,7 +1542,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
             	break;
 			case R.id.settingsMenu11 /*2131362014*/:
-                selectMenu1Entry(GOOD_CONNECTIVITY);
+                selectMenu1Entry(1);
             	break;
 			case R.id.settingsMenu12 /*2131362017*/:
                 selectMenu1Entry(BAD_CONNECTIVITY);
@@ -1563,7 +1563,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectMenu1Entry(7);
             	break;
 			case R.id.settingsMenu21 /*2131362039*/:
-                selectMenu2Entry(GOOD_CONNECTIVITY);
+                selectMenu2Entry(1);
             	break;
 			case R.id.settingsMenu22 /*2131362042*/:
                 selectMenu2Entry(BAD_CONNECTIVITY);
