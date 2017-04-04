@@ -38,32 +38,32 @@ public class Menus {
         String result = "";
         level2--;
         switch (level1) {
-            case httpClient.PHONEHOME_OK /*1*/:
+            case 1 /*1*/:
                 if (level2 < this.aCabinComfortMenu.length) {
                     result = this.aCabinComfortMenu[level2];
                 }
                 break;
-            case httpClient.PHONEHOME_GATEWAY_UPDATE /*2*/:
+            case 2 /*2*/:
                 if (level2 < this.aBatteryProtectMenu.length) {
                     result = this.aBatteryProtectMenu[level2];
                 }
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case 3 /*3*/:
                 if (level2 < this.aColdWeatherGuardMenu.length) {
                     result = this.aColdWeatherGuardMenu[level2];
                 }
                 break;
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            case 4 /*4*/:
                 if (level2 < this.aDeviceSettings.length) {
                     result = this.aDeviceSettings[level2];
                 }
                 break;
-            case httpClient.PHONEHOME_NONE /*5*/:
+            case 5 /*5*/:
                 if (level2 < this.aVehicleSettings.length) {
                     result = this.aVehicleSettings[level2];
                 }
                 break;
-            case Params.PasswordType /*6*/:
+            case 6 /*6*/:
                 if (level2 < this.aRefreshDevice.length) {
                     result = this.aRefreshDevice[level2];
                 }
@@ -79,32 +79,32 @@ public class Menus {
         if (level2 < 0)
             return -1;
         switch (level1) {
-            case httpClient.PHONEHOME_OK /*1*/:
+            case 1 /*1*/:
                 if (level2 < Submenu1.length) {
                     return Submenu1[level2];
                 }
                 return -1;
-            case httpClient.PHONEHOME_GATEWAY_UPDATE /*2*/:
+            case 2 /*2*/:
                 if (level2 < Submenu2.length) {
                     return Submenu2[level2];
                 }
                 return -1;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case 3 /*3*/:
                 if (level2 < Submenu3.length) {
                     return Submenu3[level2];
                 }
                 return -1;
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            case 4 /*4*/:
                 if (level2 < Submenu4.length) {
                     return Submenu4[level2];
                 }
                 return -1;
-            case httpClient.PHONEHOME_NONE /*5*/:
+            case 5 /*5*/:
                 if (level2 < Submenu5.length) {
                     return Submenu5[level2];
                 }
                 return -1;
-            case Params.PasswordType /*6*/:
+            case 6 /*6*/:
                 if (level2 < Submenu6.length) {
                     return Submenu6[level2];
                 }
