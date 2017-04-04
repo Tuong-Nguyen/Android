@@ -1098,7 +1098,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (KioskMode && this.blockedKeys.contains(Integer.valueOf(event.getKeyCode()))) {
+        if (KioskMode && this.blockedKeys.contains(event.getKeyCode())) {
             return true;
         }
         return super.dispatchKeyEvent(event);
@@ -1340,14 +1340,10 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.settingsButton /*2131361814*/:
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
-                // TODO Enable dashboardButton to access dashboard
-                SystemActivationFlag = true;
-                demo_mode = true;
                 if (SystemActivationFlag || demo_mode) {
                     selectKillswitchMode(KillSwitchMode.CONNECTED);
                     enableStatusBar(false);
-                    // TODO Display setting fragment(1)
-                    //enableDashboard(false);
+                    enableDashboard(false);
                     selectRunning(0);
                     enableSettings(true);
                     selectActivationFragment(ActivationStep.NONE);
@@ -1360,8 +1356,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.killSwitchButton /*2131361816*/:
                 this.test_mode_counter = 0;
                 this.maint_mode_counter = 0;
-                // TODO Enable KillswitchMode button
-                SystemActivationFlag =true;
                 if (SystemActivationFlag) {
                     selectKillswitchMode(KillSwitchMode.KILL_SWITCH);
                 }
@@ -2081,9 +2075,8 @@ public class MainActivity extends Activity implements OnClickListener {
             selectSettingsEntry(UNKNOWN_CONNECTIVITY);
         } else {
             enableStatusBar(false);
-            // TODO Display setting fragment(2)
-            //enableDashboard(false);
-            selectActivationFragment(UNKNOWN_CONNECTIVITY);
+            enableDashboard(false);
+            selectActivationFragment(ActivationStep.NONE);
             enableSettings(true);
         }
         switch (level) {

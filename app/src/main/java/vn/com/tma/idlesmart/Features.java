@@ -6,12 +6,16 @@ import java.util.Objects;
 public class Features {
     private static final int FEATURE_ALIAS_MAX = 200;
     public static final int FEATURE_CODE_MAX = 100;
-    public static final byte FEATURE_DEBUG = (byte) 2;
+
+
     public static final byte FEATURE_DISABLE = (byte) 0;
     public static final byte FEATURE_ENABLE = (byte) 1;
+    public static final byte FEATURE_DEBUG = (byte) 2;
+
+    private static final int FEATURE_TEST = 0;
     private static final int FEATURE_ENGINE_HOURS = 1;
     private static final int FEATURE_IDLE_TIMER_OVERRIDE = 2;
-    private static final int FEATURE_TEST = 0;
+
     private static final String TAG = "IdleSmart.Features";
     private static final int[] feature_alias_code;
     private static final String[] feature_alias_name;
@@ -30,7 +34,8 @@ public class Features {
     public static void initFeatureCodeTable() {
         Log.i(TAG, "****** initFeatureCodeTable");
         resetFeatureCodes();
-        feature_count = FEATURE_TEST;
+        feature_count = 0;
+
         addFeature("Test", FEATURE_TEST);
         addFeature("FedEx", FEATURE_ENGINE_HOURS);
         addFeature("EngineHours", FEATURE_ENGINE_HOURS);
@@ -39,7 +44,7 @@ public class Features {
 
     public static void resetFeatureCodes() {
         Log.i(TAG, "****** resetFeatureCodes");
-        for (int i = FEATURE_TEST; i < FEATURE_CODE_MAX; i += FEATURE_ENGINE_HOURS) {
+        for (int i = 0; i < FEATURE_CODE_MAX; i += 1) {
             feature_status[i] = FEATURE_DISABLE;
             feature_value[i] = FEATURE_TEST;
         }
@@ -51,7 +56,7 @@ public class Features {
             feature_alias_code[feature_count] = feature_code;
             feature_status[feature_code] = FEATURE_DISABLE;
             feature_value[feature_code] = FEATURE_TEST;
-            feature_count += FEATURE_ENGINE_HOURS;
+            feature_count += 1;
         }
     }
 
@@ -60,7 +65,7 @@ public class Features {
         if (temp.isEmpty()) {
             return -1;
         }
-        for (int i = FEATURE_TEST; i < feature_count; i += FEATURE_ENGINE_HOURS) {
+        for (int i = 0; i < feature_count; i += 1) {
             if (Objects.equals(feature_alias_name[i], temp)) {
                 return feature_alias_code[i];
             }
@@ -118,7 +123,7 @@ public class Features {
             resetFeatureCodes();
             return;
         }
-        int next = FEATURE_TEST;
+        int next = 0;
         while (next < temp.length()) {
             String feature;
             String feature_name;
@@ -126,7 +131,7 @@ public class Features {
             int delim = feature_list.indexOf(",", next);
             if (delim >= 0) {
                 feature = feature_list.substring(next, delim);
-                next = delim + FEATURE_ENGINE_HOURS;
+                next = delim + 1;
             } else {
                 feature = feature_list.substring(next);
                 next = 9999;
@@ -136,9 +141,9 @@ public class Features {
                 feature_name = feature;
                 feature_value = FEATURE_TEST;
             } else {
-                feature_name = feature.substring(FEATURE_TEST, equate).trim().toUpperCase();
+                feature_name = feature.substring(0, equate).trim().toUpperCase();
                 try {
-                    feature_value = Integer.parseInt(feature.substring(equate + FEATURE_ENGINE_HOURS));
+                    feature_value = Integer.parseInt(feature.substring(equate + 1));
                 } catch (NumberFormatException e) {
                     feature_value = FEATURE_TEST;
                 }
@@ -158,7 +163,7 @@ public class Features {
             resetFeatureCodes();
             return false;
         }
-        int next = FEATURE_TEST;
+        int next = 0;
         while (next < temp.length()) {
             String condition;
             int delim = feature_list.indexOf(",", next);
@@ -168,7 +173,7 @@ public class Features {
             if (delim >= 0) {
                 condition = feature_list.substring(next, delim - next);
                 Log.d(TAG, "****** Feature condition = " + condition);
-                next = delim + FEATURE_ENGINE_HOURS;
+                next = delim + 1;
             } else {
                 condition = feature_list.substring(next);
                 next = 9999;
@@ -190,8 +195,8 @@ public class Features {
             }
             return isIdentityMatch(expr);
         }
-        String expr1 = expr.substring(FEATURE_TEST, oper);
-        String expr2 = expr.substring(oper + FEATURE_ENGINE_HOURS, expr.length() - (oper + FEATURE_ENGINE_HOURS));
+        String expr1 = expr.substring(0, oper);
+        String expr2 = expr.substring(oper + 1, expr.length() - (oper + 1));
         Log.d(TAG, "******               Expr1 = " + expr1);
         Log.d(TAG, "******               Expr2 = " + expr2);
         if (isExpr(expr1) && isExpr(expr2)) {
@@ -211,8 +216,8 @@ public class Features {
     private static boolean isIdentityMatch(String identity) {
         int equate = identity.indexOf("=");
         if (equate >= 0 && equate < identity.length() - 1) {
-            String id_string = identity.substring(FEATURE_TEST, equate).trim().toUpperCase();
-            String value_string = identity.substring(equate + FEATURE_ENGINE_HOURS).trim().toUpperCase();
+            String id_string = identity.substring(0, equate).trim().toUpperCase();
+            String value_string = identity.substring(equate + 1).trim().toUpperCase();
             if (id_string.equals("FLEET")) {
                 if (value_string.equals(MainActivity.Gateway_Fleet.trim().toUpperCase())) {
                     Log.d(TAG, "******               FLEET Matches");

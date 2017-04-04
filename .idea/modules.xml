@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/IdleSmart.iml" filepath="$PROJECT_DIR$/IdleSmart.iml" />
       <module fileurl="file://$PROJECT_DIR$/IdleSmartRefactor.iml" filepath="$PROJECT_DIR$/IdleSmartRefactor.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
