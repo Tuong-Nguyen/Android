@@ -2127,13 +2127,13 @@ public class MainActivity extends Activity implements OnClickListener {
     private void initMenu1() {
         findViewById(R.id.settingsMenu11).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
-        ((TextView) findViewById(R.id.settingsMenu11Item)).setText(this.menus.aMainMenu[UNKNOWN_CONNECTIVITY]);
+        ((TextView) findViewById(R.id.settingsMenu11Item)).setText(this.menus.aMainMenu[0]);
         findViewById(R.id.settingsMenu12).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
-        ((TextView) findViewById(R.id.settingsMenu12Item)).setText(this.menus.aMainMenu[GOOD_CONNECTIVITY]);
+        ((TextView) findViewById(R.id.settingsMenu12Item)).setText(this.menus.aMainMenu[1]);
         findViewById(R.id.settingsMenu13).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
-        ((TextView) findViewById(R.id.settingsMenu13Item)).setText(this.menus.aMainMenu[BAD_CONNECTIVITY]);
+        ((TextView) findViewById(R.id.settingsMenu13Item)).setText(this.menus.aMainMenu[2]);
         findViewById(R.id.settingsMenu14).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         ((TextView) findViewById(R.id.settingsMenu14Item)).setText(this.menus.aMainMenu[3]);
@@ -2736,7 +2736,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void nextVerificationStep() {
         int i = this.activation_step;
-        this.activation_step = i + GOOD_CONNECTIVITY;
+        this.activation_step = i + 1;
         Button doneButton;
         switch (i) {
             case UNKNOWN_CONNECTIVITY /*0*/:
