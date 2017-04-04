@@ -2086,7 +2086,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private void selectSettingsMode(int level) {
         if (level == 0) {
             enableSettings(false);
-            selectSettingsEntry(UNKNOWN_CONNECTIVITY);
+            selectSettingsEntry(0);
         } else {
             enableStatusBar(false);
             enableDashboard(false);
@@ -2098,7 +2098,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 initMenu1();
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.GONE);
-                selectSettingsEntry(UNKNOWN_CONNECTIVITY);
+                selectSettingsEntry(0);
                 this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
                 selectMenu1Entry(UNKNOWN_CONNECTIVITY);
             	break;
@@ -2119,7 +2119,7 @@ public class MainActivity extends Activity implements OnClickListener {
             default:
                 findViewById(R.id.settingsMenu1).setVisibility(View.GONE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.GONE);
-                selectSettingsEntry(UNKNOWN_CONNECTIVITY);
+                selectSettingsEntry(0);
                 break;
         }
     }
@@ -2360,7 +2360,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void viewParamValue() {
-        selectSettingsEntry(GOOD_CONNECTIVITY);
+        selectSettingsEntry(1);
         this.param_id = Menus.getSubmenuId(this.settings_menu1_index, this.settings_menu2_index);
         pValue = aParam[this.param_id];
         String pName = this.params.aParamName[this.param_id];
@@ -2371,11 +2371,11 @@ public class MainActivity extends Activity implements OnClickListener {
                 case GOOD_CONNECTIVITY /*1*/:
                     if (aParam[this.param_id] != 0) {
                         ((TextView) findViewById(R.id.settingsEntryDisableDescription)).setText(pName + " feature is currently Enabled.");
-                        selectSettingsEntry(BAD_CONNECTIVITY);
+                        selectSettingsEntry(2);
                         return;
                     }
                     ((TextView) findViewById(R.id.settingsEntryEnableDescription)).setText(pName + " feature is currently Disabled.");
-                    selectSettingsEntry(GOOD_CONNECTIVITY);
+                    selectSettingsEntry(1);
                     return;
                 case BAD_CONNECTIVITY /*2*/:
                 case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
