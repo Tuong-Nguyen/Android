@@ -553,8 +553,8 @@ public class MainActivity extends Activity implements OnClickListener {
         this.ScreenOn = true;
         this.USBReconnectRunnable = new UsbConnectionChecker();
         Integer[] numArr = new Integer[2];
-        numArr[0] = 25;
-        numArr[1] = 24;
+        numArr[0] = KeyEvent.KEYCODE_VOLUME_DOWN;
+        numArr[1] = KeyEvent.KEYCODE_VOLUME_UP;
         this.blockedKeys = new ArrayList(Arrays.asList(numArr));
         this.ETrunnable = new SetSyncTimeRunnable();
         this.isScreenOn = true;
@@ -681,7 +681,7 @@ public class MainActivity extends Activity implements OnClickListener {
         monitor_iter = 0;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "#########################################################################################################################################");
@@ -709,14 +709,12 @@ public class MainActivity extends Activity implements OnClickListener {
             clearMaintInfo();
         }
 
-
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener(){
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
                 MainActivity.this.hideNavBar();
             }
         });
-
 
         findViewById(R.id.idlesmartButton).setOnClickListener(this);
         findViewById(R.id.dashboardButton).setOnClickListener(this);
@@ -997,7 +995,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onPause() {
         super.onPause();
         Log.i(TAG, "==>>onPause");
@@ -1079,12 +1076,19 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    /**
+     * Kioskmode: Disable back button
+     */
     public void onBackPressed() {
         if (!KioskMode) {
             super.onBackPressed();
         }
     }
 
+    /**
+     * Kiosk mode: When the window is focused - hide the Android's NavBar
+     * @param hasFocus
+     */
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         HasFocus = hasFocus;
@@ -1099,6 +1103,11 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    /**
+     * KioskMode: disable Volume_Up and Volume_Down button
+     * @param event
+     * @return
+     */
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (KioskMode && this.blockedKeys.contains(event.getKeyCode())) {
             return true;
