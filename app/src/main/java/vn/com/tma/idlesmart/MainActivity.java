@@ -2322,6 +2322,10 @@ public class MainActivity extends Activity implements OnClickListener {
         selectSettingsMode(Functionality.BATTERY_PROTECT);
     }
 
+    /**
+     * Display the UI according to the data type
+     * @param datatype
+     */
     private void selectSettingsEntry(int datatype) {
         this.settings_entrytype = datatype;
         findViewById(R.id.settingsEntryEnable).setVisibility(View.GONE);
@@ -2330,19 +2334,19 @@ public class MainActivity extends Activity implements OnClickListener {
         findViewById(R.id.settingsEntryPassword).setVisibility(View.GONE);
         findViewById(R.id.settingsEntryRefresh).setVisibility(View.GONE);
         switch (datatype) {
-            case GOOD_CONNECTIVITY /*1*/:
+            case 1 /*1*/: // ex: Carbin Comfort is enabled. Display Disable button
                 findViewById(R.id.settingsEntryEnable).setVisibility(View.VISIBLE);
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case 2 /*2*/: // ex: Carbin Comfort is disabled. Display Enable button
                 findViewById(R.id.settingsEntryDisable).setVisibility(View.VISIBLE);
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case 3 /*3*/: // Display a number with + and - button
                 findViewById(R.id.settingsEntryNumeric).setVisibility(View.VISIBLE);
                 break;
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            case 4 /*4*/: // Display change password
                 findViewById(R.id.settingsEntryPassword).setVisibility(View.VISIBLE);
                 break;
-            case httpClient.PHONEHOME_NONE /*5*/:
+            case 5 /*5*/: // Display refresh
                 findViewById(R.id.settingsEntryRefresh).setVisibility(View.VISIBLE);
                 break;
         }
