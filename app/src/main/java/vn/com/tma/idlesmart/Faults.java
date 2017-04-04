@@ -1,32 +1,36 @@
 package vn.com.tma.idlesmart;
 
 public class Faults {
-    public static final boolean Automatic = false;
+    public static final int FAULT_NONE = 0;
+    public static final int FAULT_NEUTRAL_FAULT = 1;
+    public static final int FAULT_PARKING_BRAKE_FAULT = 2;
+    public static final int FAULT_HOOD_OPEN_FAULT = 3;
+    public static final int FAULT_LOW_BATTERY_VOLTAGE_FAULT = 4;
+    public static final int FAULT_OIL_PRESSURE_FAULT = 5;
+    public static final int FAULT_IGNITION_ON_FAULT = 6;
+    public static final int FAULT_START_ABORTED_FAULT = 7;
     public static final int FAULT_AMBIENT_TEMP_SENSOR_FAULT = 8;
     public static final int FAULT_CABIN_TEMP_SENSOR_FAULT = 9;
-    public static final int FAULT_CAN_BUS_NOT_CONNECTED_FAULT = 17;
     public static final int FAULT_COOLANT_SENSOR_OUT_FAULT = 10;
-    public static final int FAULT_DPS_REGEN_FAULT = 23;
     public static final int FAULT_ENGINE_RPM_FAULT = 11;
-    public static final int FAULT_GATEWAY_NOT_CONNECTED_FAULT = 16;
-    public static final int FAULT_HARDWARE_LEVEL_FAULT = 21;
-    public static final int FAULT_HIGH_COOLANT_TEMP_FAULT = 15;
-    public static final int FAULT_HOOD_OPEN_FAULT = 3;
-    public static final int FAULT_IGNITION_ON_FAULT = 6;
-    public static final int FAULT_LOW_BATTERY_VOLTAGE_FAULT = 4;
-    public static final int FAULT_LOW_ENGINE_RPM_FAULT = 18;
-    public static final int FAULT_LOW_OIL_PRESSURE_FAULT = 14;
-    public static final int FAULT_MAX = 23;
-    public static final int FAULT_NEUTRAL_FAULT = 1;
-    public static final int FAULT_NONE = 0;
-    public static final int FAULT_NO_TEMP_CHANGE_FAULT = 13;
-    public static final int FAULT_OIL_PRESSURE_FAULT = 5;
-    public static final int FAULT_PARKING_BRAKE_FAULT = 2;
-    public static final int FAULT_PROTOCOL_LEVEL_FAULT = 20;
     public static final int FAULT_RAPID_TEMP_CHANGE_FAULT = 12;
-    public static final int FAULT_START_ABORTED_FAULT = 7;
+    public static final int FAULT_NO_TEMP_CHANGE_FAULT = 13;
+    public static final int FAULT_LOW_OIL_PRESSURE_FAULT = 14;
+    public static final int FAULT_HIGH_COOLANT_TEMP_FAULT = 15;
+    public static final int FAULT_GATEWAY_NOT_CONNECTED_FAULT = 16;
+    public static final int FAULT_CAN_BUS_NOT_CONNECTED_FAULT = 17;
+    public static final int FAULT_LOW_ENGINE_RPM_FAULT = 18;
+
+    public static final int FAULT_PROTOCOL_LEVEL_FAULT = 20;
+    public static final int FAULT_HARDWARE_LEVEL_FAULT = 21;
     public static final int FAULT_TABLET_NOT_CONNECTED_FAULT = 22;
+    public static final int FAULT_DPS_REGEN_FAULT = 23;
+
+    public static final int FAULT_MAX = 23;
+
+    public static final boolean Automatic = false;
     public static final boolean Manual = true;
+
     public String[] aFaultDesc;
     public boolean[] aFaultIntervention;
     public String[] aFaultMessage;
