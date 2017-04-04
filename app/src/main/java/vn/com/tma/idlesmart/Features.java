@@ -28,7 +28,7 @@ public class Features {
         feature_value = new int[FEATURE_CODE_MAX];
         feature_alias_name = new String[FEATURE_ALIAS_MAX];
         feature_alias_code = new int[FEATURE_ALIAS_MAX];
-        feature_count = FEATURE_TEST;
+        feature_count = 0;
     }
 
     public static void initFeatureCodeTable() {
@@ -46,7 +46,7 @@ public class Features {
         Log.i(TAG, "****** resetFeatureCodes");
         for (int i = 0; i < FEATURE_CODE_MAX; i += 1) {
             feature_status[i] = FEATURE_DISABLE;
-            feature_value[i] = FEATURE_TEST;
+            feature_value[i] = 0;
         }
     }
 
@@ -55,7 +55,7 @@ public class Features {
             feature_alias_name[feature_count] = feature_name.trim().toUpperCase();
             feature_alias_code[feature_count] = feature_code;
             feature_status[feature_code] = FEATURE_DISABLE;
-            feature_value[feature_code] = FEATURE_TEST;
+            feature_value[feature_code] = 0;
             feature_count += 1;
         }
     }
@@ -102,6 +102,11 @@ public class Features {
         return false;
     }
 
+    /**
+     * Check if a feature is enabled or not
+     * @param feature_number
+     * @return
+     */
     public static boolean isFeatureCodeEnabled(int feature_number) {
         if (feature_number >= FEATURE_CODE_MAX || feature_status[feature_number] != FEATURE_ENABLE) {
             return false;
@@ -109,13 +114,23 @@ public class Features {
         return true;
     }
 
+    /**
+     * Return the value of the feature
+     * @param feature_number
+     * @return 0 if not found or disabled - otherwise return feature value
+     */
     public static int FeatureCode(int feature_number) {
-        if (feature_number >= FEATURE_CODE_MAX || feature_status[feature_number] != FEATURE_ENGINE_HOURS) {
-            return FEATURE_TEST;
+        if (feature_number >= FEATURE_CODE_MAX || feature_status[feature_number] != FEATURE_ENABLE) {
+            return 0;
         }
         return feature_value[feature_number] & 65535;
     }
 
+    /**
+     * Parse a list of feature and add them
+     *
+     * @param feature_list String of feature list in format: FeatureA=5,FeatureB=6
+     */
     public static void parseFeatureList(String feature_list) {
         Log.i(TAG, "****** feature_list= \"" + feature_list + "\"");
         String temp = feature_list.trim().toUpperCase();
@@ -139,13 +154,13 @@ public class Features {
             int equate = feature.indexOf("=");
             if (equate < 0 || equate >= feature.length() - 1) {
                 feature_name = feature;
-                feature_value = FEATURE_TEST;
+                feature_value = 0;
             } else {
                 feature_name = feature.substring(0, equate).trim().toUpperCase();
                 try {
                     feature_value = Integer.parseInt(feature.substring(equate + 1));
                 } catch (NumberFormatException e) {
-                    feature_value = FEATURE_TEST;
+                    feature_value = 0;
                 }
             }
             if (setFeature(feature_name, feature_value)) {
@@ -156,6 +171,13 @@ public class Features {
         }
     }
 
+    /**
+     * Validate the features are enabled and Identities are corrected. Only the first condition is checked.
+     * @param feature_list A string contains conditions seperated by , or |
+     *  Condition: [feature|identity](&[feature|identity])*
+     *
+     * @return
+     */
     public static boolean ValidateFeatureIdentityList(String feature_list) {
         Log.d(TAG, "****** FeatureIdentityList = " + feature_list);
         String temp = feature_list.trim().toUpperCase();
@@ -185,6 +207,14 @@ public class Features {
         return false;
     }
 
+    /**
+     * Check if an epxression is true or false
+     * @param expr - List of features or Identity seperated by &
+     *             feature: feature name (check if feature enables or not)
+     *             Identity: FLEET=10 (check if identity is correct or not
+     *
+     * @return True when all conditions are matched. Otherwise, return false.
+     */
     private static boolean isExpr(String expr) {
         Log.d(TAG, "******           FeatureExpr = " + expr);
         int oper = expr.indexOf("&");
@@ -213,6 +243,14 @@ public class Features {
         return true;
     }
 
+    /**
+     * Check if identity is matched with the device
+     * Identity is:
+     *  - Fleet: FLEET=10 - Check with Gateway_Fleet
+     *  - Vehicle: VEHICLE=11 or TRUCK=11 or VIN=1 - Check with Gateway_VIN
+     * @param identity
+     * @return
+     */
     private static boolean isIdentityMatch(String identity) {
         int equate = identity.indexOf("=");
         if (equate >= 0 && equate < identity.length() - 1) {
