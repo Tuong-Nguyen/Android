@@ -2734,12 +2734,15 @@ public class MainActivity extends Activity implements OnClickListener {
         this.verificationHandler.postDelayed(this.verificationRunnable, 100);
     }
 
+    /**
+     * Verify
+     */
     private void nextVerificationStep() {
         int i = this.activation_step;
         this.activation_step = i + 1;
         Button doneButton;
         switch (i) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
+            case 0 /*0*/:
                 ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(false);
                 ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(false);
                 ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(false);
@@ -2754,7 +2757,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 doneButton.setEnabled(false);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 100);
             	break;
-			case GOOD_CONNECTIVITY /*1*/:
+			case 1 /*1*/:
                 findViewById(R.id.installDetail1Progress).setVisibility(View.VISIBLE);
                 if (test_mode) {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
@@ -2762,7 +2765,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 5000);
                 }
             	break;
-			case BAD_CONNECTIVITY /*2*/:
+			case 2 /*2*/:
                 findViewById(R.id.installDetail1Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail1CheckBox)).setChecked(true);
                 findViewById(R.id.installDetail2Progress).setVisibility(View.VISIBLE);
@@ -2772,7 +2775,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 2000);
                 }
             	break;
-			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+			case 3 /*3*/:
                 findViewById(R.id.installDetail2Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail2CheckBox)).setChecked(true);
                 findViewById(R.id.installDetail3Progress).setVisibility(View.VISIBLE);
@@ -2780,17 +2783,17 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.verificationHandler.postDelayed(this.verificationRunnable, 500);
                     return;
                 }
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_GET_VEHICLE_INFO, 0, GOOD_CONNECTIVITY);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_GET_VEHICLE_INFO, 0, 1);
                 Log.i(TAG, "APICMD_GET_VEHICLE_INFO = 1");
                 this.verificationHandler.postDelayed(this.verificationRunnable, 15000);
             	break;
-			case httpClient.PHONEHOME_APK_PENDING /*4*/:
+			case 4 /*4*/:
                 findViewById(R.id.installDetail3Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail3CheckBox)).setChecked(true);
                 findViewById(R.id.installDetail4Progress).setVisibility(View.VISIBLE);
                 this.verificationHandler.postDelayed(this.verificationRunnable, 500);
             	break;
-			case httpClient.PHONEHOME_NONE /*5*/:
+			case 5 /*5*/:
                 findViewById(R.id.installDetail4Progress).setVisibility(View.INVISIBLE);
                 ((CheckBox) findViewById(R.id.installDetail4CheckBox)).setChecked(true);
                 this.activation_step = 0;
