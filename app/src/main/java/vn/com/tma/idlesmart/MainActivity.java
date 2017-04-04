@@ -2509,31 +2509,31 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void saveParamValue(int paramId) {
         switch (this.params.aParamType[paramId]) {
-            case GOOD_CONNECTIVITY /*1*/:
+            case Params.BooleanType /*1*/:
                 aParam[paramId] = pValue;
                 boolean z;
                 switch (paramId) {
-                    case UNKNOWN_CONNECTIVITY /*0*/:
+                    case Params.PARAM_CabinComfort /*0*/:
                         if (aParam[paramId] != 0) {
-                            setFunctionMode(Functionality.CABIN_COMFORT, GOOD_CONNECTIVITY);
+                            setFunctionMode(Functionality.CABIN_COMFORT, 1);
                         } else {
-                            setFunctionMode(Functionality.CABIN_COMFORT, UNKNOWN_CONNECTIVITY);
+                            setFunctionMode(Functionality.CABIN_COMFORT, 0);
                         }
                         updateFunctionModes();
                         break;
-                    case GOOD_CONNECTIVITY /*1*/:
+                    case Params.PARAM_ColdWeatherGuard /*1*/:
                         if (aParam[paramId] != 0) {
-                            setFunctionMode(Functionality.COLD_WEATHER_GUARD, GOOD_CONNECTIVITY);
+                            setFunctionMode(Functionality.COLD_WEATHER_GUARD, 1);
                         } else {
-                            setFunctionMode(Functionality.COLD_WEATHER_GUARD, UNKNOWN_CONNECTIVITY);
+                            setFunctionMode(Functionality.COLD_WEATHER_GUARD, 0);
                         }
                         updateFunctionModes();
                         break;
-                    case BAD_CONNECTIVITY /*2*/:
+                    case Params.PARAM_BatteryProtect /*2*/:
                         if (aParam[paramId] != 0) {
-                            setFunctionMode(Functionality.BATTERY_PROTECT, GOOD_CONNECTIVITY);
+                            setFunctionMode(Functionality.BATTERY_PROTECT, 1);
                         } else {
-                            setFunctionMode(Functionality.BATTERY_PROTECT, UNKNOWN_CONNECTIVITY);
+                            setFunctionMode(Functionality.BATTERY_PROTECT, 0);
                         }
                         updateFunctionModes();
                         break;
@@ -2563,7 +2563,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         sendParam(paramId);
                         break;
                 }
-            case BAD_CONNECTIVITY /*2*/:
+            case Params.IntegerType /*2*/:
                 aParam[paramId] = pValue;
                 switch (paramId) {
                     case Params.PARAM_DimTabletScreen /*14*/:
@@ -2574,8 +2574,8 @@ public class MainActivity extends Activity implements OnClickListener {
                         sendParam(paramId);
                         break;
                 }
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            case Params.TempType /*3*/:
+            case Params.VoltageType /*4*/:
                 aParam[paramId] = pValue;
                 sendParam(paramId);
                 break;
