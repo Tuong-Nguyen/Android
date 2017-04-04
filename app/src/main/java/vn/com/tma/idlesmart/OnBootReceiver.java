@@ -7,10 +7,16 @@ import android.util.Log;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
+
 public class OnBootReceiver extends BroadcastReceiver {
     private static final String TAG = "IdleSmart.OnBootRcvr";
     private static final String TargetPackageName = "com.idlesmarter.aoa";
 
+    /**
+     * Listen to boot event and start the application
+     * @param context
+     * @param intent
+     */
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "------------------------------------------------------------------------");
         Log.i(TAG, "OnBoot Received");
