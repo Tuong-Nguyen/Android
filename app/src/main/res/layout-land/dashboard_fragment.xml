@@ -15,7 +15,6 @@
         android:layout_width="129dp"
         android:layout_height="match_parent"
         android:background="#eeeeee"
-        android:visibility="visible"
         android:weightSum="3.0"
         android:orientation="vertical">
 
@@ -36,7 +35,8 @@
 
     <include layout="@layout/battery_protect_fragment" />
 
-    <include layout="@layout/setting_fragment" />
+    // TODO Moved setting_fragment from here to fullscreen
+   <!-- <include layout="@layout/setting_fragment" />-->
 
     <LinearLayout
         android:id="@id/packagemanagerFragment"
@@ -101,71 +101,10 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@id/killswitchFragment"
-        android:layout_width="match_parent"
-        android:layout_height="477dp"
-        android:background="@color/enabledFunction"
-        android:visibility="gone"
-        android:weightSum="1.0">
-
-        <TextView
-            android:layout_width="800dp"
-            android:layout_height="150dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="100dp"
-            android:gravity="center_horizontal"
-            android:text="@string/kill_verbiage"
-            android:textColor="#5c5c5c"
-            android:textSize="36sp" />
-
-        <Button
-            android:id="@id/killswitchButton"
-            android:layout_width="400dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="76dp"
-            android:layout_weight="0.09"
-            android:background="@drawable/enabled_button_shape"
-            android:clickable="true"
-            android:enabled="true"
-            android:text="I UNDERSTAND"
-            android:textSize="36sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@id/poweroffFragment"
-        android:layout_width="match_parent"
-        android:layout_height="477dp"
-        android:background="@color/enabledFunction"
-        android:visibility="gone"
-        android:weightSum="1.0">
-
-        <TextView
-            android:layout_width="800dp"
-            android:layout_height="150dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="100dp"
-            android:gravity="center_horizontal"
-            android:text="@string/poweroff_verbiage"
-            android:textColor="#5c5c5c"
-            android:textSize="36sp" />
-
-        <Button
-            android:id="@id/poweroffButton"
-            android:layout_width="400dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="26dp"
-            android:layout_weight="0.09"
-            android:background="@drawable/enabled_button_shape"
-            android:clickable="true"
-            android:enabled="true"
-            android:text="POWER OFF"
-            android:textSize="36sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+    // TODO Moved killswitch_fragment from here to full_screen
+   <!-- <include layout="@layout/killswitch_fragment" />-->
+    // TODO Moved powerof_fragment from here to full_screen
+   <!-- <include layout="@layout/powerof_fragment" />-->
 
     <LinearLayout
         android:id="@id/verificationFragment"

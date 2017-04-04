@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/functionSummary"
+    android:layout_width="129dp"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:weightSum="3.0"
+    android:orientation="vertical"
+    tools:showIn="@layout/dashboard_fragment">
+
+    <include layout="@layout/cabin_comfort_function" />
+
+    <include layout="@layout/cold_weather_guard_function" />
+
+    <include layout="@layout/battery_protect_function" />
+</LinearLayout>

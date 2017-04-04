@@ -26,7 +26,7 @@ public class ServerTask extends AsyncTask<String, Void, String> {
     private Context context;
 
     public ServerTask() {
-        this.code = BuildConfig.FLAVOR;
+        this.code = "";
     }
 
     public void setContext(Context contextf) {
