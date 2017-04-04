@@ -93,118 +93,71 @@ public class KioskService extends Service {
         return START_NOT_STICKY;
     }
 
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
+    /**
+     * Check if app is not in foreground and there is no any updating,
+     * restore the app by bringing main activity to front
+     */
     private void handleKioskMode() {
-        /*
-        r6 = this;
-        r5 = 1;
-        r4 = 0;
-        r0 = r6.ctx;
-        r0 = com.idlesmarter.aoa.PrefUtils.isKioskModeActive(r0);
-        if (r0 == 0) goto L_0x0090;
-    L_0x000a:
-        r0 = r6.getApplicationContext();
-        r0 = com.idlesmarter.aoa.PrefUtils.getApkUpdateState(r0);
-        if (r0 != r5) goto L_0x0024;
-    L_0x0014:
-        r0 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r0 == 0) goto L_0x001f;
-    L_0x0018:
-        r0 = "IdleSmart.KioskService";
-        r1 = "APK Update is running.";
-        android.util.Log.i(r0, r1);
-    L_0x001f:
-        r0 = CHECKINTERVAL;
-        interval = r0;
-    L_0x0023:
-        return;
-    L_0x0024:
-        r0 = com.idlesmarter.aoa.MainActivity.HasFocus;
-        if (r0 != 0) goto L_0x002c;
-    L_0x0028:
-        r0 = CHECKINTERVAL;
-        interval = r0;
-    L_0x002c:
-        r0 = r6.isInForeground();
-        if (r0 == 0) goto L_0x0059;
-    L_0x0032:
-        restartcount = r4;
-        r0 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r0 == 0) goto L_0x0054;
-    L_0x0038:
-        r0 = foreground_logmsg_issued;
-        if (r0 == 0) goto L_0x0049;
-    L_0x003c:
-        r0 = foreground_logmsg_count;
-        r1 = r0 + 1;
-        foreground_logmsg_count = r1;
-        r0 = (long) r0;
-        r2 = FOREGROUND_RATE;
-        r0 = (r0 > r2 ? 1 : (r0 == r2 ? 0 : -1));
-        if (r0 <= 0) goto L_0x0054;
-    L_0x0049:
-        r0 = "IdleSmart.KioskService";
-        r1 = "we are in Foreground.";
-        android.util.Log.i(r0, r1);
-        foreground_logmsg_issued = r5;
-        foreground_logmsg_count = r4;
-    L_0x0054:
-        r0 = CHECKINTERVAL;
-        interval = r0;
-        goto L_0x0023;
-    L_0x0059:
-        r0 = com.idlesmarter.aoa.MainActivity.PackageUpdatePending;
-        if (r0 == 0) goto L_0x0073;
-    L_0x005d:
-        r0 = r6.packageInstallerRunning;
-        if (r0 == 0) goto L_0x0073;
-    L_0x0061:
-        r0 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r0 == 0) goto L_0x006e;
-    L_0x0065:
-        r0 = "IdleSmart.KioskService";
-        r1 = "   package installer is running [for us]";
-        android.util.Log.i(r0, r1);
-        foreground_logmsg_issued = r4;
-    L_0x006e:
-        r0 = CHECKINTERVAL;
-        interval = r0;
-        goto L_0x0023;
-    L_0x0073:
-        r0 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r0 == 0) goto L_0x0080;
-    L_0x0077:
-        r0 = "IdleSmart.KioskService";
-        r1 = "   We are in the Background.  Re-start our main activity..";
-        android.util.Log.i(r0, r1);
-        foreground_logmsg_issued = r4;
-    L_0x0080:
-        r0 = r6.restoreApp();
-        if (r0 == 0) goto L_0x008b;
-    L_0x0086:
-        r0 = RESTARTINTERVAL;
-        interval = r0;
-        goto L_0x0023;
-    L_0x008b:
-        r0 = DELAYINTERVAL;
-        interval = r0;
-        goto L_0x0023;
-    L_0x0090:
-        r0 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r0 == 0) goto L_0x00a0;
-    L_0x0094:
-        r0 = "IdleSmart.KioskService";
-        r1 = "We are NOT in Kiosk Mode.";
-        android.util.Log.i(r0, r1);
-        foreground_logmsg_issued = r4;
-        r6.isInForeground();
-    L_0x00a0:
-        r0 = NOTKIOSKINTERVAL;
-        interval = r0;
-        goto L_0x0023;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.KioskService.handleKioskMode():void");
+        boolean isKiosModeActive = PrefUtils.isKioskModeActive(this.ctx);
+        if (isKiosModeActive) {
+            if (PrefUtils.getApkUpdateState(this.ctx) == PrefUtils.PREF_APK_UPDATE_RUNNING) {
+                if (MainActivity.DebugLog) {
+                    Log.i("IdleSmart.KioskService", "APK Update is running");
+                }
+                interval = CHECKINTERVAL;
+                return;
+            }
+
+            if (MainActivity.HasFocus) {
+                interval = CHECKINTERVAL;
+            }
+            if (this.isInForeground()) {
+                restartcount = 0;
+                if (MainActivity.DebugLog) {
+                    if (foreground_logmsg_issued) {
+                        foreground_logmsg_count++;
+                    }
+
+                    if (foreground_logmsg_count > FOREGROUND_RATE) {
+                        Log.i("IdleSmart.KioskService", "We are in Foreround");
+                        foreground_logmsg_issued = true;
+                        foreground_logmsg_count = 0;
+                    }
+                }
+                interval = CHECKINTERVAL;
+                return;
+            } else {
+                if (MainActivity.PackageUpdatePending) {
+                    if (this.packageInstallerRunning) {
+                        if (MainActivity.DebugLog) {
+                            Log.i("IdleSmart.KioskService", "   Package installer is running [for us]");
+                            foreground_logmsg_issued = false;
+                        }
+                        interval = CHECKINTERVAL;
+                        return;
+                    }
+                }
+                if (MainActivity.DebugLog) {
+                    Log.i("IdleSmart.KioskService", "   We are in the Background. Restart our main activity..");
+                    foreground_logmsg_issued = false;
+                }
+
+                if (this.restoreApp()) {
+                    interval = RESTARTINTERVAL;
+                } else {
+                    interval = DELAYINTERVAL;
+                }
+                return;
+            }
+        } else {
+            if (MainActivity.DebugLog) {
+                Log.i("IdleSmart.KioskService", "We are NOT in Kiosk Mode");
+                foreground_logmsg_issued = false;
+                this.isInForeground();
+            }
+            interval = NOTKIOSKINTERVAL;
+            return;
+        }
     }
 
     private boolean isInForeground() {
@@ -234,6 +187,11 @@ public class KioskService extends Service {
         return this.ctx.getApplicationContext().getPackageName().equals(currentInfo.processName);
     }
 
+    /**
+     * Bring the main activity to front
+     * @return true if success
+     *         false if fail
+     */
     private boolean restoreApp() {
         Log.i(TAG, "restoreApp()..");
         if (restartcount >= MAXRESTARTS) {
