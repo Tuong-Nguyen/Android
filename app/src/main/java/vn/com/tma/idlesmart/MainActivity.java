@@ -316,7 +316,7 @@ public class MainActivity extends Activity implements OnClickListener {
             String action = intent.getAction();
             if (action.equals("android.intent.action.SCREEN_OFF")) {
                 Log.i(MainActivity.TAG, "    ScreenReceiver:Intent=SCREEN_OFF");
-                MainActivity.this.setScreenBrightness(MainActivity.UNKNOWN_CONNECTIVITY);
+                MainActivity.this.setScreenBrightness(0);
             } else if (action.equals("android.intent.action.SCREEN_ON")) {
                 Log.i(MainActivity.TAG, "    ScreenReceiver:intent=SCREEN_ON");
                 MainActivity.this.setScreenBrightness(MainActivity.this.initialScreenBrightness);
@@ -2206,6 +2206,19 @@ public class MainActivity extends Activity implements OnClickListener {
             return;
         }
         findViewById(R.id.settingsMenu28).setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Declare constants for Setting menu level 1
+     */
+    final class SettingsMenuLevel1{
+        static final int CABIN_COMFORT = 0;
+        static final int BATTERY_PROTECT = 1;
+        static final int COLD_WEATHER_GUARD = 2;
+        static final int PASSWORD = 3;
+        static final int VEHICLE = 4;
+        static final int ABOUT_DEVICE = 5;
+        static final int REFRESH_DEVICE = 6;
     }
 
     private void selectMenu1Entry(int level) {
