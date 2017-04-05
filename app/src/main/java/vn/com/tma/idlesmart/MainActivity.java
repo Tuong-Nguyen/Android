@@ -2119,6 +2119,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+
     private void initMenu1() {
         findViewById(R.id.settingsMenu11).setVisibility(View.VISIBLE);
         findViewById(R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
@@ -2148,14 +2149,14 @@ public class MainActivity extends Activity implements OnClickListener {
         findViewById(R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 1) >= 0) {
             findViewById(R.id.settingsMenu21).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.settingsMenu21Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, GOOD_CONNECTIVITY));
+            ((TextView) findViewById(R.id.settingsMenu21Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 1));
         } else {
             findViewById(R.id.settingsMenu21).setVisibility(View.INVISIBLE);
         }
         findViewById(R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         if (Menus.getSubmenuId(this.settings_menu1_index, 2) >= 0) {
             findViewById(R.id.settingsMenu22).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.settingsMenu22Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, BAD_CONNECTIVITY));
+            ((TextView) findViewById(R.id.settingsMenu22Item)).setText(this.menus.getSubmenuName(this.settings_menu1_index, 2));
         } else {
             findViewById(R.id.settingsMenu22).setVisibility(View.INVISIBLE);
         }
