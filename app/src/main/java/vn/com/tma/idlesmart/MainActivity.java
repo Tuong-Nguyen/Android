@@ -889,8 +889,8 @@ public class MainActivity extends Activity implements OnClickListener {
         selectSettingsMode(0);
         selectActivationFragment(ActivationStep.NONE);
 
-        //TODO Display powerOn button,it was replaced by httpClient.PHONEHOME_TABLET_UPDATE - Original: selectKillswitchMode(httpClient.UNKNOWN_CONNECTIVITY);
-        selectKillswitchMode(httpClient.PHONEHOME_TABLET_UPDATE);
+        //TODO Display powerOn button,it was replaced by KillSwitchMode.POWER_OFF - Original: selectKillswitchMode(KillSwitchMode.CONNECTED);
+        selectKillswitchMode(KillSwitchMode.POWER_OFF);
 
         Log.i(TAG, "   onResume::Do we need to update gateway connection...");
         if (gateway_connected) {
