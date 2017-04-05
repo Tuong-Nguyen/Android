@@ -1492,7 +1492,7 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case R.id.bpFragStopButton /*2131362005*/:
                 Log.i(TAG, "-->batteryProtectEnableButton");
-                if (this.BatteryProtectMode == BAD_CONNECTIVITY || ValidPassword()) {
+                if (this.BatteryProtectMode == Modes.ENGINE_RUNNING || ValidPassword()) {
                     setFunctionMode(Functionality.BATTERY_PROTECT, toggleFunctionMode(this.BatteryProtectMode));
                     updateFunctionModes();
                     PasswordValid = false;
@@ -1923,7 +1923,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
         }
         switch (this.BatteryProtectMode) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
+            case Modes.DISABLED /*0*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
                 findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
                 findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
@@ -1934,8 +1934,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 bpFragStopButton.setText("ENABLE");
             	break;
-			case GOOD_CONNECTIVITY /*1*/:
-			case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+			case Modes.ENGAGED /*1*/:
+			case Modes.ENGINE_STOPPED /*3*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
@@ -1946,7 +1946,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 bpFragStopButton.setText("DISABLE");
             	break;
-			case BAD_CONNECTIVITY /*2*/:
+			case Modes.ENGINE_RUNNING /*2*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.batteryProtectFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
@@ -2005,7 +2005,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.BatteryProtectMode = 3;
                 }
                 iArr = aParam;
-                if (this.BatteryProtectMode == 0) {
+                if (this.BatteryProtectMode == Modes.DISABLED) {
                     i = 0;
                 }
                 iArr[Params.PARAM_BatteryProtect] = i;
@@ -2017,16 +2017,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private int toggleFunctionMode(int mode) {
         switch (mode) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
-                return GOOD_CONNECTIVITY;
-            case GOOD_CONNECTIVITY /*1*/:
-                return UNKNOWN_CONNECTIVITY;
-            case BAD_CONNECTIVITY /*2*/:
-                return 3;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                return GOOD_CONNECTIVITY;
+            case Modes.DISABLED /*0*/:
+                return Modes.ENGAGED;
+            case Modes.ENGAGED /*1*/:
+                return Modes.DISABLED;
+            case Modes.ENGINE_RUNNING /*2*/:
+                return Modes.ENGINE_STOPPED;
+            case Modes.ENGINE_STOPPED /*3*/:
+                return Modes.ENGAGED;
             default:
-                return UNKNOWN_CONNECTIVITY;
+                return Modes.DISABLED;
         }
     }
 
@@ -2035,6 +2035,16 @@ public class MainActivity extends Activity implements OnClickListener {
         static final int CABIN_COMFORT = 1;
         static final int COLD_WEATHER_GUARD = 2;
         static final int BATTERY_PROTECT = 3;
+    }
+
+    /**
+     * Define modes for Function
+     */
+    private static class Modes {
+        static final int DISABLED = 0;
+        static final int ENGAGED = 1;
+        static final int ENGINE_RUNNING = 2;
+        static final int ENGINE_STOPPED = 3;
     }
 
     private void useGatewayMode(int newmode) {
