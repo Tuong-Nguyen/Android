@@ -165,6 +165,9 @@ public class MainActivity extends Activity implements OnClickListener {
     final Handler verificationHandler;
     final Runnable verificationRunnable;
 
+    /**
+     * Define verification steps
+     */
     static class ActivationStep {
         static final int NONE = 0; // Not in activation
         static final int VERIFICATION = 1;
@@ -2376,7 +2379,7 @@ public class MainActivity extends Activity implements OnClickListener {
         PasswordValid = false;
     }
 
-    public void initializeRunningParams() {
+    private void initializeRunningParams() {
         for (int i = 0; i < Params.PARAM_MAX; i += 1) {
             aParam[i] = this.params.aParamDef[i];
         }
