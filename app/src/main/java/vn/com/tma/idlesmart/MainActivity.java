@@ -70,8 +70,11 @@ public class MainActivity extends Activity implements OnClickListener {
     private static boolean CurrentStatusBarFlag = false;
     public static boolean DebugLog = false;
     public static final String DefaultAPIroute = "api.idlesmart.com";
+
+    public static final int UNKNOWN_CONNECTIVITY = 0;
     public static final int GOOD_CONNECTIVITY = 1;
     public static final int BAD_CONNECTIVITY = 2;
+
     public static boolean GatewayUpdatePending = false;
     public static String Gateway_APIversion = null;
     public static int Gateway_Activated = 0;
@@ -99,7 +102,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public static boolean SyncWithServer = false;
     public static boolean SystemActivationFlag = false;
     private static final String TAG = "IdleSmart.Main";
-    public static final int UNKNOWN_CONNECTIVITY = 0;
+
     public static boolean ValidActivationProcess = false;
 
     public static boolean[] aMaintEnable = null;
@@ -437,7 +440,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         mainActivityClass.InstallAndActivate(z);
                     	break;
 					case AccessoryControl.APIEVENT_REQUPDATE /*81*/:
-                        MainActivity.httpclient.PhoneHome(MainActivity.BAD_CONNECTIVITY, false);
+                        MainActivity.httpclient.PhoneHome(2, false);
                     	break;
 					case AccessoryControl.APIEVENT_SYSTEM_STATUS /*84*/:
                         mainActivityClass.setEngineStatus(mainActivityClass.aSystemStatus[msg.arg1]);
@@ -1268,9 +1271,9 @@ public class MainActivity extends Activity implements OnClickListener {
     private void setSoundOn(boolean enable) {
         AudioManager aManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         if (enable) {
-            aManager.setRingerMode(BAD_CONNECTIVITY);
+            aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
         } else {
-            aManager.setRingerMode(0);
+            aManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         }
     }
 
@@ -1542,7 +1545,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectMenu1Entry(1);
             	break;
 			case R.id.settingsMenu12 /*2131362017*/:
-                selectMenu1Entry(BAD_CONNECTIVITY);
+                selectMenu1Entry(2);
             	break;
 			case R.id.settingsMenu13 /*2131362020*/:
                 selectMenu1Entry(3);
@@ -2660,15 +2663,15 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void updateFragmentParamValue(int vId, int pId) {
-        byte[] data = new byte[BAD_CONNECTIVITY];
+        byte[] data = new byte[2];
         switch (vId) {
             case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
                 decrParam(pId);
-                viewFragmentParamValue(BAD_CONNECTIVITY);
+                viewFragmentParamValue(2);
                 break;
             case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
                 incrParam(pId);
-                viewFragmentParamValue(BAD_CONNECTIVITY);
+                viewFragmentParamValue(2);
                 break;
             case R.id.cwgFragMinTempDecrButton /*2131361998*/:
                 decrParam(pId);
