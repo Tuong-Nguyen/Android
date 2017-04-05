@@ -1856,6 +1856,7 @@ public class MainActivity extends Activity implements OnClickListener {
         Button ccFragStopButton = (Button) findViewById(R.id.ccFragStopButton);
         Button cwFragStopButton = (Button) findViewById(R.id.cwgFragStopButton);
         Button bpFragStopButton = (Button) findViewById(R.id.bpFragStopButton);
+
         LinearLayout cabinComfortControl = (LinearLayout) findViewById(R.id.cabinComfortControl);
         LinearLayout cabinComfortFragment = (LinearLayout) findViewById(R.id.cabinComfortFragment);
         LinearLayout cabinComfortFunctionIndicator = (LinearLayout) findViewById(R.id.cabinComfortFunctionIndicator);
@@ -1868,6 +1869,12 @@ public class MainActivity extends Activity implements OnClickListener {
         Drawable disabledButtonShape = getResources().getDrawable(R.drawable.disabled_button_shape);
         String disable = "DISABLED";
         String enable = "ENABLE";
+
+
+        Drawable enabledFunction = getResources().getDrawable(R.color.enabledFunction);
+        Drawable enabled = getResources().getDrawable(R.color.enabled);
+        Drawable enabled_indicator_shape = getResources().getDrawable(R.drawable.enabled_indicator_shape);
+
 
         switch (this.CabinComfortMode) {
             case Modes.DISABLED /*0*/:
@@ -1899,42 +1906,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 ccFragStopButton.setText("STOP ENGINE");
                 break;
         }
-        switch (this.ColdWeatherGuardMode) {
-            case Modes.DISABLED /*0*/:
-                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
-                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
-                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
-                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.disabled_indicator_shape));
-                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("DISABLED");
-                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
-                cwEnableButton.setText("ENABLE");
-                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
-                cwFragStopButton.setText("ENABLE");
-                break;
-            case Modes.ENGAGED /*1*/:
-            case Modes.ENGINE_STOPPED /*3*/:
-                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
-                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.enabled_indicator_shape));
-                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("MONITORING");
-                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
-                cwEnableButton.setText("DISABLE");
-                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
-                cwFragStopButton.setText("DISABLE");
-                break;
-            case Modes.ENGINE_RUNNING /*2*/:
-                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
-                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.active_indicator_shape));
-                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("RUNNING ENGINE");
-                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
-                cwEnableButton.setText("STOP ENGINE");
-                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
-                cwFragStopButton.setText("STOP ENGINE");
-                break;
-        }
+
+        setColdWeatherGuardMode(cwEnableButton, cwFragStopButton);
+
         switch (this.BatteryProtectMode) {
             case Modes.DISABLED /*0*/:
                 findViewById(R.id.batteryProtectControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
@@ -1971,6 +1945,45 @@ public class MainActivity extends Activity implements OnClickListener {
                 bpFragStopButton.setText("STOP ENGINE");
                 break;
             default:
+                break;
+        }
+    }
+
+    private void setColdWeatherGuardMode(Button cwEnableButton, Button cwFragStopButton) {
+        switch (this.ColdWeatherGuardMode) {
+            case Modes.DISABLED /*0*/:
+                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
+                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
+                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.disabled_indicator_shape));
+                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("DISABLED");
+                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
+                cwEnableButton.setText("ENABLE");
+                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
+                cwFragStopButton.setText("ENABLE");
+                break;
+            case Modes.ENGAGED /*1*/:
+            case Modes.ENGINE_STOPPED /*3*/:
+                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
+                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.enabled_indicator_shape));
+                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("MONITORING");
+                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
+                cwEnableButton.setText("DISABLE");
+                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
+                cwFragStopButton.setText("DISABLE");
+                break;
+            case Modes.ENGINE_RUNNING /*2*/:
+                findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
+                findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
+                findViewById(R.id.coldWeatherGuardIndicator).setBackground(getResources().getDrawable(R.drawable.active_indicator_shape));
+                ((TextView) findViewById(R.id.coldWeatherGuardStatus)).setText("RUNNING ENGINE");
+                cwEnableButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
+                cwEnableButton.setText("STOP ENGINE");
+                cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
+                cwFragStopButton.setText("STOP ENGINE");
                 break;
         }
     }
