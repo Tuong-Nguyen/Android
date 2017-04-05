@@ -536,7 +536,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.maint_mode_counter = 0;
         this.test_mark_counter = 0;
         this.GatewayMode = GatewayModes.IDLE;
-        this.CabinComfortMode = 0;
+        this.CabinComfortMode = Modes.DISABLED;
         this.ColdWeatherGuardMode = Modes.DISABLED;
         this.BatteryProtectMode = Modes.DISABLED;
         this.activation_step = 0;
@@ -1472,7 +1472,7 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case R.id.ccFragStopButton /*2131361989*/:
                 Log.i(TAG, "-->cabinComfortEnableButton");
-                if (aParam[Params.PARAM_FleetCabinComfort] != 0 || this.CabinComfortMode == BAD_CONNECTIVITY || ValidPassword()) {
+                if (aParam[Params.PARAM_FleetCabinComfort] != 0 || this.CabinComfortMode == Modes.ENGINE_RUNNING || ValidPassword()) {
                     setFunctionMode(Functionality.CABIN_COMFORT, toggleFunctionMode(this.CabinComfortMode));
                     updateFunctionModes();
                     PasswordValid = false;
@@ -1851,7 +1851,7 @@ public class MainActivity extends Activity implements OnClickListener {
         Button cwFragStopButton = (Button) findViewById(R.id.cwgFragStopButton);
         Button bpFragStopButton = (Button) findViewById(R.id.bpFragStopButton);
         switch (this.CabinComfortMode) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
+            case Modes.DISABLED /*0*/:
                 findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
                 findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
                 findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
@@ -1862,8 +1862,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 ccFragStopButton.setText("ENABLE");
                 break;
-            case GOOD_CONNECTIVITY /*1*/:
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case Modes.ENGAGED /*1*/:
+            case Modes.ENGINE_STOPPED /*3*/:
                 findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
@@ -1874,7 +1874,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 ccFragStopButton.setText("DISABLE");
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case Modes.ENGINE_RUNNING /*2*/:
                 findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
@@ -1971,10 +1971,10 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.CabinComfortMode = mode;
                 } else if (mode == 3) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
-                    this.CabinComfortMode = 3;
+                    this.CabinComfortMode = Modes.ENGINE_STOPPED;
                 }
                 iArr = aParam;
-                if (this.CabinComfortMode == 0) {
+                if (this.CabinComfortMode == Modes.DISABLED) {
                     i = 0;
                 }
                 iArr[Params.PARAM_CabinComfort] = i;
