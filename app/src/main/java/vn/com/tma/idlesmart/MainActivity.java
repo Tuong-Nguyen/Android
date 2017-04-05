@@ -490,7 +490,7 @@ public class MainActivity extends Activity implements OnClickListener {
                         mainActivityClass.UpdateConnectivityStatus();
                     	break;
 					case AccessoryControl.APIDATA_TIMEREMAINING /*158*/:
-                        if (mainActivityClass.GatewayMode != 3 || msg.arg1 <= 0) {
+                        if (mainActivityClass.GatewayMode != GatewayModes.BATTERY_PROTECT || msg.arg1 <= 0) {
                             str = mainActivityClass.Time2MinsSecsStr(MainActivity.aParam[Params.PARAM_EngineRunTime] * 60);
                         } else {
                             str = mainActivityClass.Time2MinsSecsStr(msg.arg1);
@@ -535,7 +535,7 @@ public class MainActivity extends Activity implements OnClickListener {
         this.test_mode_counter = 0;
         this.maint_mode_counter = 0;
         this.test_mark_counter = 0;
-        this.GatewayMode = 0;
+        this.GatewayMode = GatewayModes.IDLE;
         this.CabinComfortMode = 0;
         this.ColdWeatherGuardMode = 0;
         this.BatteryProtectMode = 0;
@@ -1654,11 +1654,11 @@ public class MainActivity extends Activity implements OnClickListener {
             setGatewayStatus("Gateway Disconnected");
         }
         setEngineStatus("");
-        if (this.GatewayMode == GOOD_CONNECTIVITY) {
+        if (this.GatewayMode == GatewayModes.CABIN_COMFORT) {
             setFunctionMode(Functionality.CABIN_COMFORT, 3);
-        } else if (this.GatewayMode == BAD_CONNECTIVITY) {
+        } else if (this.GatewayMode == GatewayModes.COLD_WEATHER_GUARD) {
             setFunctionMode(Functionality.COLD_WEATHER_GUARD, 3);
-        } else if (this.GatewayMode == 3) {
+        } else if (this.GatewayMode == GatewayModes.BATTERY_PROTECT) {
             setFunctionMode(Functionality.BATTERY_PROTECT, 3);
         }
         updateFunctionModes();
@@ -1967,7 +1967,7 @@ public class MainActivity extends Activity implements OnClickListener {
         int[] iArr;
         switch (function) {
             case Functionality.CABIN_COMFORT /*1*/:
-                if (this.GatewayMode != GOOD_CONNECTIVITY) {
+                if (this.GatewayMode != GatewayModes.CABIN_COMFORT) {
                     this.CabinComfortMode = mode;
                 } else if (mode == 3) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
@@ -1982,7 +1982,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
             case Functionality.COLD_WEATHER_GUARD /*2*/:
                 int i2;
-                if (this.GatewayMode != BAD_CONNECTIVITY) {
+                if (this.GatewayMode != GatewayModes.COLD_WEATHER_GUARD) {
                     this.ColdWeatherGuardMode = mode;
                 } else if (mode == 3) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
@@ -1998,7 +1998,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, 0, aParam[Params.PARAM_ColdWeatherGuard] & 255);
                 break;
             case Functionality.BATTERY_PROTECT: /*3*/
-                if (this.GatewayMode != 3) {
+                if (this.GatewayMode != GatewayModes.BATTERY_PROTECT) {
                     this.BatteryProtectMode = mode;
                 } else if (mode == 3) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
@@ -2030,36 +2030,43 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    private static class GatewayModes {
+        static final int IDLE = 0;
+        static final int CABIN_COMFORT = 1;
+        static final int COLD_WEATHER_GUARD = 2;
+        static final int BATTERY_PROTECT = 3;
+    }
+
     private void useGatewayMode(int newmode) {
         switch (this.GatewayMode) {
-            case GOOD_CONNECTIVITY /*1*/:
+            case GatewayModes.CABIN_COMFORT /*1*/:
                 this.CabinComfortMode = GOOD_CONNECTIVITY;
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case GatewayModes.COLD_WEATHER_GUARD /*2*/:
                 this.ColdWeatherGuardMode = GOOD_CONNECTIVITY;
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case GatewayModes.BATTERY_PROTECT /*3*/:
                 this.BatteryProtectMode = GOOD_CONNECTIVITY;
                 break;
         }
         switch (newmode) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
+            case GatewayModes.IDLE /*0*/:
                 Log.i(TAG, "     change mode to Idle");
-                this.GatewayMode = UNKNOWN_CONNECTIVITY;
+                this.GatewayMode = GatewayModes.IDLE;
                 break;
-            case GOOD_CONNECTIVITY /*1*/:
+            case GatewayModes.CABIN_COMFORT /*1*/:
                 Log.i(TAG, "     change mode to CabinComfortMode");
-                this.GatewayMode = GOOD_CONNECTIVITY;
+                this.GatewayMode = GatewayModes.CABIN_COMFORT;
                 this.CabinComfortMode = BAD_CONNECTIVITY;
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case GatewayModes.COLD_WEATHER_GUARD: /*2*/
                 Log.i(TAG, "     change mode to ColdWeatherGuardMode");
-                this.GatewayMode = BAD_CONNECTIVITY;
+                this.GatewayMode = GatewayModes.COLD_WEATHER_GUARD;
                 this.ColdWeatherGuardMode = BAD_CONNECTIVITY;
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case GatewayModes.BATTERY_PROTECT /*3*/:
                 Log.i(TAG, "     change mode to BatteryProtectMode");
-                this.GatewayMode = 3;
+                this.GatewayMode = GatewayModes.BATTERY_PROTECT;
                 this.BatteryProtectMode = BAD_CONNECTIVITY;
                 break;
         }
