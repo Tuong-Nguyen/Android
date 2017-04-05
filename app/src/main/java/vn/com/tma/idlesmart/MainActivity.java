@@ -786,6 +786,7 @@ public class MainActivity extends Activity implements OnClickListener {
         filter.addAction("android.hardware.usb.action.USB_ACCESSORY_ATTACHED");
         Log.i(TAG, "register UsbReceiver..");
         registerReceiver(this.UsbReceiver, filter);
+
         this.mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE)).newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "IdleSmartWakeLock");
         if (DebugLog) {
@@ -2224,19 +2225,6 @@ public class MainActivity extends Activity implements OnClickListener {
             return;
         }
         findViewById(R.id.settingsMenu28).setVisibility(View.INVISIBLE);
-    }
-
-    /**
-     * Declare constants for Setting menu level 1
-     */
-    final class SettingsMenuLevel1{
-        static final int CABIN_COMFORT = 0;
-        static final int BATTERY_PROTECT = 1;
-        static final int COLD_WEATHER_GUARD = 2;
-        static final int PASSWORD = 3;
-        static final int VEHICLE = 4;
-        static final int ABOUT_DEVICE = 5;
-        static final int REFRESH_DEVICE = 6;
     }
 
     /**
