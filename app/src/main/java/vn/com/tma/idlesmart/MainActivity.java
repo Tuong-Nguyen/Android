@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         public void onClick(View v) {
-            MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, MainActivity.UNKNOWN_CONNECTIVITY, this.val$faultId);
+            MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, this.val$faultId);
             MainActivity.this.alertDialog.dismiss();
             if (MainActivity.this.mTempWakeLock.isHeld()) {
                 MainActivity.this.mTempWakeLock.release();
@@ -424,7 +424,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					case AccessoryControl.APIEVENT_SYNC /*69*/:
                         if (MainActivity.SyncWithServer) {
                             MainActivity.SyncWithServer = false;
-                            MainActivity.httpclient.PhoneHome(MainActivity.GOOD_CONNECTIVITY, true);
+                            MainActivity.httpclient.PhoneHome(1, true);
                         }
                     	break;
 					case AccessoryControl.APIEVENT_CURRENT_MODE /*78*/:
@@ -2099,8 +2099,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
                 findViewById(R.id.settingsMenu2).setVisibility(View.GONE);
                 selectSettingsEntry(0);
-                this.settings_menu1_index = UNKNOWN_CONNECTIVITY;
-                selectMenu1Entry(UNKNOWN_CONNECTIVITY);
+                this.settings_menu1_index = 0;
+                selectMenu1Entry(0);
             	break;
             case Functionality.COLD_WEATHER_GUARD /*2*/:
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
@@ -2109,7 +2109,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectSettingsEntry(0);
                 this.settings_menu2_index = 0;
                 selectMenu2Entry(0);
-                this.settings_entrytype = UNKNOWN_CONNECTIVITY;
+                this.settings_entrytype = 0;
             	break;
 			case Functionality.BATTERY_PROTECT /*3*/:
                 findViewById(R.id.settingsMenu1).setVisibility(View.VISIBLE);
