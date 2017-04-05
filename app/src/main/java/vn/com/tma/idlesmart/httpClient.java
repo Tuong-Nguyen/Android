@@ -445,6 +445,15 @@ public class httpClient extends Activity {
         result = PhoneHomeSyncStatus.NONE;
     }
 
+    /**
+     *
+     * @param update_level
+     *  1 - Auto
+     *  2 - Gateway
+     *  3 - Tablet
+     *  Other - All
+     * @param reschedule
+     */
     public void PhoneHome(int update_level, boolean reschedule) {
         Log.i(TAG, "======> PhoneHome request <======");
         phonehome_update_level = update_level;
