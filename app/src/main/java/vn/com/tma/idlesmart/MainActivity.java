@@ -537,8 +537,8 @@ public class MainActivity extends Activity implements OnClickListener {
         this.test_mark_counter = 0;
         this.GatewayMode = GatewayModes.IDLE;
         this.CabinComfortMode = 0;
-        this.ColdWeatherGuardMode = 0;
-        this.BatteryProtectMode = 0;
+        this.ColdWeatherGuardMode = Modes.DISABLED;
+        this.BatteryProtectMode = Modes.DISABLED;
         this.activation_step = 0;
         this.settings_entrytype = 0;
         this.settings_menu1_index = 0;
@@ -1482,7 +1482,7 @@ public class MainActivity extends Activity implements OnClickListener {
             	break;
 			case R.id.cwgFragStopButton /*2131361996*/:
                 Log.i(TAG, "-->coldWeatherGuardEnableButton");
-                if (this.ColdWeatherGuardMode == BAD_CONNECTIVITY || ValidPassword()) {
+                if (this.ColdWeatherGuardMode == Modes.ENGINE_RUNNING || ValidPassword()) {
                     setFunctionMode(Functionality.COLD_WEATHER_GUARD, toggleFunctionMode(this.ColdWeatherGuardMode));
                     updateFunctionModes();
                     PasswordValid = false;
@@ -1887,7 +1887,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 break;
         }
         switch (this.ColdWeatherGuardMode) {
-            case UNKNOWN_CONNECTIVITY /*0*/:
+            case Modes.DISABLED /*0*/:
                 findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
                 findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
                 findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
@@ -1898,8 +1898,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
                 cwFragStopButton.setText("ENABLE");
                 break;
-            case GOOD_CONNECTIVITY /*1*/:
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case Modes.ENGAGED /*1*/:
+            case Modes.ENGINE_STOPPED /*3*/:
                 findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
@@ -1910,7 +1910,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 cwFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 cwFragStopButton.setText("DISABLE");
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case Modes.ENGINE_RUNNING /*2*/:
                 findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.coldWeatherGuardFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
                 findViewById(R.id.coldWeatherGuardFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
@@ -1986,10 +1986,10 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.ColdWeatherGuardMode = mode;
                 } else if (mode == 3) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
-                    this.ColdWeatherGuardMode = 3;
+                    this.ColdWeatherGuardMode = Modes.ENGINE_STOPPED;
                 }
                 int[] iArr2 = aParam;
-                if (this.ColdWeatherGuardMode == 0) {
+                if (this.ColdWeatherGuardMode == Modes.DISABLED) {
                     i2 = 0;
                 } else {
                     i2 = 1;
@@ -2050,13 +2050,13 @@ public class MainActivity extends Activity implements OnClickListener {
     private void useGatewayMode(int newmode) {
         switch (this.GatewayMode) {
             case GatewayModes.CABIN_COMFORT /*1*/:
-                this.CabinComfortMode = GOOD_CONNECTIVITY;
+                this.CabinComfortMode = Modes.ENGAGED;
                 break;
             case GatewayModes.COLD_WEATHER_GUARD /*2*/:
-                this.ColdWeatherGuardMode = GOOD_CONNECTIVITY;
+                this.ColdWeatherGuardMode = Modes.ENGAGED;
                 break;
             case GatewayModes.BATTERY_PROTECT /*3*/:
-                this.BatteryProtectMode = GOOD_CONNECTIVITY;
+                this.BatteryProtectMode = Modes.ENGAGED;
                 break;
         }
         switch (newmode) {
@@ -2067,12 +2067,12 @@ public class MainActivity extends Activity implements OnClickListener {
             case GatewayModes.CABIN_COMFORT /*1*/:
                 Log.i(TAG, "     change mode to CabinComfortMode");
                 this.GatewayMode = GatewayModes.CABIN_COMFORT;
-                this.CabinComfortMode = BAD_CONNECTIVITY;
+                this.CabinComfortMode = Modes.ENGINE_RUNNING;
                 break;
             case GatewayModes.COLD_WEATHER_GUARD: /*2*/
                 Log.i(TAG, "     change mode to ColdWeatherGuardMode");
                 this.GatewayMode = GatewayModes.COLD_WEATHER_GUARD;
-                this.ColdWeatherGuardMode = BAD_CONNECTIVITY;
+                this.ColdWeatherGuardMode = Modes.ENGINE_RUNNING;
                 break;
             case GatewayModes.BATTERY_PROTECT /*3*/:
                 Log.i(TAG, "     change mode to BatteryProtectMode");
