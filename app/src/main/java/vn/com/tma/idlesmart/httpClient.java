@@ -32,37 +32,47 @@ import vn.com.tma.idlesmart.tasks.UpdateApp;
 import vn.com.tma.idlesmart.tasks.UpdateGateway;
 
 public class httpClient extends Activity {
-    private static boolean APKupdate_exists = false;
-    private static boolean CSCupdate_exists = false;
+    private static final int MAINT_JSON_GUID_REQUEST = 1;
     private static final int MAINT_JSON_ACTIVATION = 2;
-    private static final int MAINT_JSON_ALL = 99;
+    private static final int MAINT_JSON_UPDATE = 3;
+    private static final int MAINT_JSON_LOG = 4;
+    private static final int MAINT_JSON_VERSION = 5;
     private static final int MAINT_JSON_APK_UPDATE = 6;
     private static final int MAINT_JSON_CSC_UPDATE = 7;
-    private static final int MAINT_JSON_DATUM = 9;
-    private static final int MAINT_JSON_GUID_REQUEST = 1;
-    private static final int MAINT_JSON_LOG = 4;
-    private static final int MAINT_JSON_UPDATE = 3;
-    private static final int MAINT_JSON_VERSION = 5;
     private static final int MAINT_JSON_VERSION_ARRAY = 8;
-    public static final int PHONEHOME_APK_PENDING = 4;
-    public static final int PHONEHOME_AUTO_UPDATE = 1;
-    public static final int PHONEHOME_CSC_PENDING = 2;
-    public static final int PHONEHOME_ERROR = -1;
-    public static final int PHONEHOME_FULL_UPDATE = 0;
-    public static final int PHONEHOME_GATEWAY_UPDATE = 2;
-    public static final int PHONEHOME_IDLE = 0;
-    public static final int PHONEHOME_NONE = 5;
-    public static final int PHONEHOME_NONETWORK = -2;
-    public static final boolean PHONEHOME_NO_RESCHEDULE = false;
-    public static final int PHONEHOME_OK = 1;
-    public static final int PHONEHOME_PENDING = 3;
-    public static final boolean PHONEHOME_RESCHEDULE = true;
-    public static final int PHONEHOME_TABLET_UPDATE = 3;
+    private static final int MAINT_JSON_DATUM = 9;
+    private static final int MAINT_JSON_ALL = 99;
+
     public static final int PHONEHOME_TIMEOUT = -3;
+    public static final int PHONEHOME_NONETWORK = -2;
+    public static final int PHONEHOME_ERROR = -1;
+
+    public static final int PHONEHOME_OK = 1;
+
+    public static final int PHONEHOME_FULL_UPDATE = 0;
+    public static final int PHONEHOME_AUTO_UPDATE = 1;
+    public static final int PHONEHOME_GATEWAY_UPDATE = 2;
+    public static final int PHONEHOME_TABLET_UPDATE = 3;
+
+    public static final int PHONEHOME_IDLE = 0;
+    public static final int PHONEHOME_CSC_PENDING = 2;
+    public static final int PHONEHOME_PENDING = 3;
+    public static final int PHONEHOME_APK_PENDING = 4;
+    public static final int PHONEHOME_NONE = 5;
+
+    public static final boolean PHONEHOME_NO_RESCHEDULE = false;
+    public static final boolean PHONEHOME_RESCHEDULE = true;
+
     private static final int PROGRESS_UPDATE_RATE = 100;
-    public static boolean PhoneHomePending = false;
+
     private static final String TAG = "IdleSmart.HTTPClient";
     private static final int TEST_UPDATE_RATE = 1000;
+
+    private static boolean APKupdate_exists = false;
+    private static boolean CSCupdate_exists = false;
+
+    public static boolean PhoneHomePending = false;
+
     private static Context context;
     static final Handler phonehomeHandler;
     private static boolean phonehome_reschedule;
@@ -70,6 +80,7 @@ public class httpClient extends Activity {
     private static int phonehome_update_level;
     private static int progressUpdateRate;
     private static int result;
+
     private final String ActivationCreateTruck;
     private final String ActivationFindTruck;
     private final int DATUM_RECORDS_BLOCK_MAX;
