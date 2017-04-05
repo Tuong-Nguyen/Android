@@ -1561,7 +1561,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 selectMenu2Entry(1);
             	break;
 			case R.id.settingsMenu22 /*2131362042*/:
-                selectMenu2Entry(BAD_CONNECTIVITY);
+                selectMenu2Entry(2);
             	break;
 			case R.id.settingsMenu23 /*2131362045*/:
                 selectMenu2Entry(3);
@@ -2297,35 +2297,35 @@ public class MainActivity extends Activity implements OnClickListener {
         findViewById(R.id.settingsMenu28).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         findViewById(R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(R.color.menu2Deselected));
         switch (level) {
-            case GOOD_CONNECTIVITY /*1*/:
+            case 1 /*1*/:
                 findViewById(R.id.settingsMenu21).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu21Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case 2 /*2*/:
                 findViewById(R.id.settingsMenu22).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu22Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case 3 /*3*/:
                 findViewById(R.id.settingsMenu23).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu23Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            case 4 /*4*/:
                 findViewById(R.id.settingsMenu24).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu24Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
-            case httpClient.PHONEHOME_NONE /*5*/:
+            case 5 /*5*/:
                 findViewById(R.id.settingsMenu25).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu25Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
-            case Params.PasswordType /*6*/:
+            case 6 /*6*/:
                 findViewById(R.id.settingsMenu26).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu26Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
-            case Params.ProcessType /*7*/:
+            case 7 /*7*/:
                 findViewById(R.id.settingsMenu27).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu27Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
-            case Params.PARAM_VoltageSetPoint /*8*/:
+            case 8 /*8*/:
                 findViewById(R.id.settingsMenu28).setBackground(getResources().getDrawable(R.color.menu2Selected));
                 findViewById(R.id.settingsMenu28Indicator).setBackground(getResources().getDrawable(R.color.menu2Active));
                 break;
