@@ -71,7 +71,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
                     InputStream is = c.getInputStream();
                     while (true) {
                         int len1 = is.read(buffer);
-                        if (len1 == httpClient.PHONEHOME_ERROR) {
+                        if (len1 == -1) {
                             break;
                         }
                         fos.write(buffer, 0, len1);
