@@ -2221,6 +2221,10 @@ public class MainActivity extends Activity implements OnClickListener {
         static final int REFRESH_DEVICE = 6;
     }
 
+    /**
+     * Highlight selected menu entry
+     * @param level
+     */
     private void selectMenu1Entry(int level) {
         this.settings_menu1_index = level;
         findViewById(R.id.settingsMenu11).setBackground(getResources().getDrawable(R.color.menu1Deselected));
@@ -2240,35 +2244,35 @@ public class MainActivity extends Activity implements OnClickListener {
         findViewById(R.id.settingsMenu18).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         findViewById(R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(R.color.menu1Deselected));
         switch (level) {
-            case GOOD_CONNECTIVITY /*1*/:
+            case 1 /*1*/: // Cabin Comfort
                 findViewById(R.id.settingsMenu11).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu11Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case 2 /*2*/: // Battery Protect
                 findViewById(R.id.settingsMenu12).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu12Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
+            case 3 /*3*/: // Cold Weather Guard
                 findViewById(R.id.settingsMenu13).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu13Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
+            case 4 /*4*/: // Password
                 findViewById(R.id.settingsMenu14).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu14Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
-            case httpClient.PHONEHOME_NONE /*5*/:
+            case 5 /*5*/: // Vehicle
                 findViewById(R.id.settingsMenu15).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu15Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
-            case Params.PasswordType /*6*/:
+            case 6 /*6*/: // About Device
                 findViewById(R.id.settingsMenu16).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu16Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
-            case Params.ProcessType /*7*/:
+            case 7 /*7*/: // Refresh Device
                 findViewById(R.id.settingsMenu17).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu17Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
-            case Params.PARAM_VoltageSetPoint /*8*/:
+            case 8 /*8*/: // Empty
                 findViewById(R.id.settingsMenu18).setBackground(getResources().getDrawable(R.color.menu1Selected));
                 findViewById(R.id.settingsMenu18Indicator).setBackground(getResources().getDrawable(R.color.menu1Active));
                 break;
