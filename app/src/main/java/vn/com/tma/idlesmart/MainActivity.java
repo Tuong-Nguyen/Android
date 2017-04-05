@@ -1,10 +1,8 @@
 package vn.com.tma.idlesmart;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +17,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,7 +37,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -205,16 +201,15 @@ public class MainActivity extends Activity implements OnClickListener {
         static final int POWER_OFF = 3; // The accessory do not monitor the truck.
     }
 
-    /* renamed from: com.idlesmarter.aoa.MainActivity.11 */
-    class AnonymousClass11 implements OnClickListener {
-        final /* synthetic */ int val$faultId;
+    class AlertDialogListener implements OnClickListener {
+        final /* synthetic */ int faultId;
 
-        AnonymousClass11(int i) {
-            this.val$faultId = i;
+        AlertDialogListener(int i) {
+            this.faultId = i;
         }
 
         public void onClick(View v) {
-            MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, this.val$faultId);
+            MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, this.faultId);
             MainActivity.this.alertDialog.dismiss();
             if (MainActivity.this.mTempWakeLock.isHeld()) {
                 MainActivity.this.mTempWakeLock.release();
@@ -2849,7 +2844,7 @@ public class MainActivity extends Activity implements OnClickListener {
             HasFocus = true;
             ((TextView) this.alertDialog.findViewById(R.id.alertName)).setText(this.faults.aFaultMessage[faultId]);
             ((TextView) this.alertDialog.findViewById(R.id.alertDescription)).setText(this.faults.aFaultDesc[faultId]);
-            this.alertDialog.findViewById(R.id.alertRefreshButton).setOnClickListener(new AnonymousClass11(faultId));
+            this.alertDialog.findViewById(R.id.alertRefreshButton).setOnClickListener(new AlertDialogListener(faultId));
             this.alertDialog.show();
             wakeup();
             if (aParam[Params.PARAM_AudibleSound] != 0) {
