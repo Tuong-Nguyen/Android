@@ -1857,29 +1857,16 @@ public class MainActivity extends Activity implements OnClickListener {
         Button cwFragStopButton = (Button) findViewById(R.id.cwgFragStopButton);
         Button bpFragStopButton = (Button) findViewById(R.id.bpFragStopButton);
 
-        LinearLayout cabinComfortControl = (LinearLayout) findViewById(R.id.cabinComfortControl);
-        LinearLayout cabinComfortFragment = (LinearLayout) findViewById(R.id.cabinComfortFragment);
-        LinearLayout cabinComfortFunctionIndicator = (LinearLayout) findViewById(R.id.cabinComfortFunctionIndicator);
-        LinearLayout cabinComfortIndicator  = (LinearLayout) findViewById(R.id.cabinComfortIndicator);
-        TextView cabinComfortStatus = (TextView) findViewById(R.id.cabinComfortStatus);
-
-        Drawable disabledFunction = getResources().getDrawable(R.color.disabledFunction);
-        Drawable disabled = getResources().getDrawable(R.color.disabled);
-        Drawable disabledIndicatorShape = getResources().getDrawable(R.drawable.disabled_indicator_shape);
-        Drawable disabledButtonShape = getResources().getDrawable(R.drawable.disabled_button_shape);
-        String disable = "DISABLED";
-        String enable = "ENABLE";
-
-
-        Drawable enabledFunction = getResources().getDrawable(R.color.enabledFunction);
-        Drawable enabled = getResources().getDrawable(R.color.enabled);
-        Drawable enabled_indicator_shape = getResources().getDrawable(R.drawable.enabled_indicator_shape);
-
-
         setCabinComfortMode(ccEnableButton, ccFragStopButton);
         setColdWeatherGuardMode(cwEnableButton, cwFragStopButton);
         setBatteryProtectMode(bpEnableButton, bpFragStopButton);
     }
+
+    /**
+     * Set Battery Protect Mode State
+     * @param bpEnableButton
+     * @param bpFragStopButton
+     */
 
     private void setBatteryProtectMode(Button bpEnableButton, Button bpFragStopButton) {
         switch (this.BatteryProtectMode) {
@@ -1922,6 +1909,12 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    /**
+     * Set CabinComfort Mode
+     * @param ccEnableButton
+     * @param ccFragStopButton
+     */
+
     private void setCabinComfortMode(Button ccEnableButton, Button ccFragStopButton) {
 
         LinearLayout cabinComfortControl = (LinearLayout) findViewById(R.id.cabinComfortControl);
@@ -1929,18 +1922,6 @@ public class MainActivity extends Activity implements OnClickListener {
         LinearLayout cabinComfortFunctionIndicator = (LinearLayout) findViewById(R.id.cabinComfortFunctionIndicator);
         LinearLayout cabinComfortIndicator  = (LinearLayout) findViewById(R.id.cabinComfortIndicator);
         TextView cabinComfortStatus = (TextView) findViewById(R.id.cabinComfortStatus);
-
-        Drawable disabledFunction = getResources().getDrawable(R.color.disabledFunction);
-        Drawable disabled = getResources().getDrawable(R.color.disabled);
-        Drawable disabledIndicatorShape = getResources().getDrawable(R.drawable.disabled_indicator_shape);
-        Drawable disabledButtonShape = getResources().getDrawable(R.drawable.disabled_button_shape);
-        String disable = "DISABLED";
-        String enable = "ENABLE";
-
-
-        Drawable enabledFunction = getResources().getDrawable(R.color.enabledFunction);
-        Drawable enabled = getResources().getDrawable(R.color.enabled);
-        Drawable enabled_indicator_shape = getResources().getDrawable(R.drawable.enabled_indicator_shape);
 
         switch (this.CabinComfortMode) {
             case UNKNOWN_CONNECTIVITY /*0*/:
@@ -1959,7 +1940,19 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    private void cabinComfortModeBadConnectivity(Button ccEnableButton, Button ccFragStopButton, LinearLayout cabinComfortControl, LinearLayout cabinComfortFragment, LinearLayout cabinComfortFunctionIndicator, LinearLayout cabinComfortIndicator, TextView cabinComfortStatus) {
+    /**
+     * Set CabinComfortMode with Bad Connectivity state
+     * @param ccEnableButton
+     * @param ccFragStopButton
+     * @param cabinComfortControl
+     * @param cabinComfortFragment
+     * @param cabinComfortFunctionIndicator
+     * @param cabinComfortIndicator
+     * @param cabinComfortStatus
+     */
+    private void cabinComfortModeBadConnectivity(Button ccEnableButton, Button ccFragStopButton,
+                                                 LinearLayout cabinComfortControl, LinearLayout cabinComfortFragment,
+                                                 LinearLayout cabinComfortFunctionIndicator, LinearLayout cabinComfortIndicator, TextView cabinComfortStatus) {
         cabinComfortControl.setBackground(getResources().getDrawable(R.color.enabledFunction));
         cabinComfortFragment.setBackground(getResources().getDrawable(R.color.enabledFunction));
         cabinComfortFunctionIndicator.setBackground(getResources().getDrawable(R.color.active));
@@ -1971,6 +1964,16 @@ public class MainActivity extends Activity implements OnClickListener {
         ccFragStopButton.setText("STOP ENGINE");
     }
 
+    /**
+     * Set CabinComfortMode with Phone Home Tablet Update State
+     * @param ccEnableButton
+     * @param ccFragStopButton
+     * @param cabinComfortControl
+     * @param cabinComfortFragment
+     * @param cabinComfortFunctionIndicator
+     * @param cabinComfortIndicator
+     * @param cabinComfortStatus
+     */
     private void cabinComfortModePhoneHomeTabletUpdate(Button ccEnableButton, Button ccFragStopButton,
                                                        LinearLayout cabinComfortControl, LinearLayout cabinComfortFragment,
                                                        LinearLayout cabinComfortFunctionIndicator, LinearLayout cabinComfortIndicator, TextView cabinComfortStatus) {
@@ -1985,6 +1988,16 @@ public class MainActivity extends Activity implements OnClickListener {
         ccFragStopButton.setText("DISABLE");
     }
 
+    /**
+     * Set CabinComfortMode with Unkown Connectivity State
+     * @param ccEnableButton
+     * @param ccFragStopButton
+     * @param cabinComfortControl
+     * @param cabinComfortFragment
+     * @param cabinComfortFunctionIndicator
+     * @param cabinComfortIndicator
+     * @param cabinComfortStatus
+     */
     private void cabinComfortModeUnKownConnectivity(Button ccEnableButton, Button ccFragStopButton,
                                                     LinearLayout cabinComfortControl, LinearLayout cabinComfortFragment,
                                                     LinearLayout cabinComfortFunctionIndicator, LinearLayout cabinComfortIndicator,
@@ -2000,7 +2013,14 @@ public class MainActivity extends Activity implements OnClickListener {
         ccFragStopButton.setText("ENABLE");
     }
 
+    /**
+     * Set Cold Weather Guard Mode State
+     * @param cwEnableButton
+     * @param cwFragStopButton
+     */
+
     private void setColdWeatherGuardMode(Button cwEnableButton, Button cwFragStopButton) {
+
         switch (this.ColdWeatherGuardMode) {
             case Modes.DISABLED /*0*/:
                 findViewById(R.id.coldWeatherGuardControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
@@ -2037,22 +2057,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 cwFragStopButton.setText("STOP ENGINE");
                 break;
         }
-    }
-
-    private void setCabinComfortMode(Button ccEnableButton, Button ccFragStopButton, LinearLayout cabinComfortControl,
-                                     LinearLayout cabinComfortFragment, LinearLayout cabinComfortFunctionIndicator,
-                                     LinearLayout cabinComfortIndicator, TextView cabinComfortStatus, Drawable cabinComfortBackground,
-                                     Drawable ccFunctionIndicator, Drawable ccIndicator, Drawable ccButtonBackground,
-                                     String comfortStatus, String buttonText ) {
-        cabinComfortControl.setBackground(cabinComfortBackground);
-        cabinComfortFragment.setBackground(cabinComfortBackground);
-        cabinComfortFunctionIndicator.setBackground(ccFunctionIndicator);
-        cabinComfortIndicator.setBackground(ccIndicator);
-        cabinComfortStatus.setText(comfortStatus);
-        ccEnableButton.setBackground(ccButtonBackground);
-        ccEnableButton.setText(buttonText);
-        ccFragStopButton.setBackground(ccButtonBackground);
-        ccFragStopButton.setText(buttonText);
     }
 
     private void setFunctionMode(int function, int mode) {
