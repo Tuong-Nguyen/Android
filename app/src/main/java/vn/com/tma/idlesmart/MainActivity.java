@@ -1978,7 +1978,7 @@ public class MainActivity extends Activity implements OnClickListener {
             case Functionality.CABIN_COMFORT /*1*/:
                 if (this.GatewayMode != GatewayModes.CABIN_COMFORT) {
                     this.CabinComfortMode = mode;
-                } else if (mode == 3) {
+                } else if (mode == Modes.ENGINE_STOPPED) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.CabinComfortMode = Modes.ENGINE_STOPPED;
                 }
@@ -1993,7 +1993,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 int i2;
                 if (this.GatewayMode != GatewayModes.COLD_WEATHER_GUARD) {
                     this.ColdWeatherGuardMode = mode;
-                } else if (mode == 3) {
+                } else if (mode == Modes.ENGINE_STOPPED) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.ColdWeatherGuardMode = Modes.ENGINE_STOPPED;
                 }
@@ -2009,7 +2009,7 @@ public class MainActivity extends Activity implements OnClickListener {
             case Functionality.BATTERY_PROTECT: /*3*/
                 if (this.GatewayMode != GatewayModes.BATTERY_PROTECT) {
                     this.BatteryProtectMode = mode;
-                } else if (mode == 3) {
+                } else if (mode == Modes.ENGINE_STOPPED) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.BatteryProtectMode = Modes.ENGINE_STOPPED;
                 }
