@@ -49,6 +49,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
+
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
 import static android.view.Window.FEATURE_NO_TITLE;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
@@ -90,7 +92,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private static boolean Restart = false;
     public static boolean ServerConnectivity = false;
     public static Calendar SyncLast = null;
-    public static int SyncLast_Status = 0;
+    public static int SyncLast_Status = PhoneHomeSyncStatus.IDLE;
     public static int SyncNext = 0;
     public static int SyncStart = 0;
     public static int SyncTTL = 0;
@@ -483,8 +485,8 @@ public class MainActivity extends Activity implements OnClickListener {
                         ((TextView) mainActivityClass.findViewById(R.id.batteryProtectValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + mainActivityClass.params.aParamSfx[8]);
                     	break;
 					case AccessoryControl.APIDATA_SYNC_LAST /*142*/:
-                        if (MainActivity.SyncLast_Status == MainActivity.BAD_CONNECTIVITY) {
-                            MainActivity.SyncLast_Status = MainActivity.GOOD_CONNECTIVITY;
+                        if (MainActivity.SyncLast_Status == PhoneHomeSyncStatus.GATEWAY_UPDATE) {
+                            MainActivity.SyncLast_Status = PhoneHomeSyncStatus.OK;
                             MainActivity.httpclient.sendSyncLast(MainActivity.SyncLast_Status, MainActivity.SyncLast);
                         }
                         mainActivityClass.UpdateConnectivityStatus();
@@ -671,7 +673,7 @@ public class MainActivity extends Activity implements OnClickListener {
         SyncStart = 60;
         SyncTTL = 1440;
         SyncNext = 0;
-        SyncLast_Status = 0;
+        SyncLast_Status = PhoneHomeSyncStatus.IDLE;
         SyncLast = Calendar.getInstance();
         monitor_iter = 0;
     }
@@ -3303,27 +3305,27 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public void UpdateConnectivityStatus() {
         switch (SyncLast_Status) {
-            case httpClient.PHONEHOME_TIMEOUT /*-3*/:
+            case PhoneHomeSyncStatus.TIMEOUT /*-3*/:
                 setConnectivityStatus("Network Timeout", BAD_CONNECTIVITY);
                 break;
-            case httpClient.PHONEHOME_NONETWORK /*-2*/:
+            case PhoneHomeSyncStatus.NONE_NETWORK /*-2*/:
                 setConnectivityStatus("No Network", BAD_CONNECTIVITY);
                 break;
-            case httpClient.PHONEHOME_ERROR /*-1*/:
+            case PhoneHomeSyncStatus.ERROR /*-1*/:
                 setConnectivityStatus("Network Error", BAD_CONNECTIVITY);
                 break;
-            case GOOD_CONNECTIVITY /*1*/:
-            case httpClient.PHONEHOME_NONE /*5*/:
+            case PhoneHomeSyncStatus.OK /*1*/:
+            case PhoneHomeSyncStatus.NONE /*5*/:
                 setConnectivityStatus("Refresh: " + new SimpleDateFormat("MM-dd hh:mm a").format(SyncLast.getTime()), GOOD_CONNECTIVITY);
                 break;
-            case BAD_CONNECTIVITY /*2*/:
+            case PhoneHomeSyncStatus.GATEWAY_UPDATE /*2*/:
                 setConnectivityStatus("Gateway updating..", GOOD_CONNECTIVITY);
                 break;
-            case httpClient.PHONEHOME_TABLET_UPDATE /*3*/:
-                setConnectivityStatus("Refreshing..", 0);
+            case PhoneHomeSyncStatus.PENDING /*3*/:
+                setConnectivityStatus("Refreshing..", UNKNOWN_CONNECTIVITY);
                 break;
-            case httpClient.PHONEHOME_APK_PENDING /*4*/:
-                setConnectivityStatus("Tablet updating..", 0);
+            case PhoneHomeSyncStatus.APK_PENDING /*4*/:
+                setConnectivityStatus("Tablet updating..", UNKNOWN_CONNECTIVITY);
                 break;
         }
         isRefreshAvailable();
