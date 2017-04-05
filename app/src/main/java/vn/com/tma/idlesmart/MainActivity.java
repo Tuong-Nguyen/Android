@@ -58,7 +58,6 @@ public class MainActivity extends Activity implements OnClickListener {
     public static String APIroute = null;
     public static int ActivationCode = 0;
     public static boolean ActivationProcessPending = false;
-    public static final int BAD_CONNECTIVITY = 2;
     public static int ConnectivityIndicator = 0;
     private static String CurrentConnectivityStatus = null;
     private static boolean CurrentDashboardFlag = false;
@@ -70,6 +69,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public static boolean DebugLog = false;
     public static final String DefaultAPIroute = "api.idlesmart.com";
     public static final int GOOD_CONNECTIVITY = 1;
+    public static final int BAD_CONNECTIVITY = 2;
     public static boolean GatewayUpdatePending = false;
     public static String Gateway_APIversion = null;
     public static int Gateway_Activated = 0;
