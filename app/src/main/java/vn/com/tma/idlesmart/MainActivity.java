@@ -2002,7 +2002,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     this.BatteryProtectMode = mode;
                 } else if (mode == 3) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
-                    this.BatteryProtectMode = 3;
+                    this.BatteryProtectMode = Modes.ENGINE_STOPPED;
                 }
                 iArr = aParam;
                 if (this.BatteryProtectMode == Modes.DISABLED) {
@@ -2077,7 +2077,7 @@ public class MainActivity extends Activity implements OnClickListener {
             case GatewayModes.BATTERY_PROTECT /*3*/:
                 Log.i(TAG, "     change mode to BatteryProtectMode");
                 this.GatewayMode = GatewayModes.BATTERY_PROTECT;
-                this.BatteryProtectMode = BAD_CONNECTIVITY;
+                this.BatteryProtectMode = Modes.ENGINE_RUNNING;
                 break;
         }
         updateFunctionModes();
