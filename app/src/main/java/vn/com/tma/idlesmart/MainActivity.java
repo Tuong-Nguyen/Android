@@ -166,6 +166,9 @@ public class MainActivity extends Activity implements OnClickListener {
     final Handler verificationHandler;
     final Runnable verificationRunnable;
 
+    /**
+     * Define verification steps
+     */
     static class ActivationStep {
         static final int NONE = 0; // Not in activation
         static final int VERIFICATION = 1;
@@ -787,6 +790,7 @@ public class MainActivity extends Activity implements OnClickListener {
         filter.addAction("android.hardware.usb.action.USB_ACCESSORY_ATTACHED");
         Log.i(TAG, "register UsbReceiver..");
         registerReceiver(this.UsbReceiver, filter);
+
         this.mWakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE)).newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "IdleSmartWakeLock");
         if (DebugLog) {
@@ -2066,7 +2070,7 @@ public class MainActivity extends Activity implements OnClickListener {
             case Functionality.CABIN_COMFORT /*1*/:
                 if (this.GatewayMode != GatewayModes.CABIN_COMFORT) {
                     this.CabinComfortMode = mode;
-                } else if (mode == 3) {
+                } else if (mode == Modes.ENGINE_STOPPED) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.CabinComfortMode = Modes.ENGINE_STOPPED;
                 }
@@ -2081,7 +2085,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 int i2;
                 if (this.GatewayMode != GatewayModes.COLD_WEATHER_GUARD) {
                     this.ColdWeatherGuardMode = mode;
-                } else if (mode == 3) {
+                } else if (mode == Modes.ENGINE_STOPPED) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.ColdWeatherGuardMode = Modes.ENGINE_STOPPED;
                 }
@@ -2097,7 +2101,7 @@ public class MainActivity extends Activity implements OnClickListener {
             case Functionality.BATTERY_PROTECT: /*3*/
                 if (this.GatewayMode != GatewayModes.BATTERY_PROTECT) {
                     this.BatteryProtectMode = mode;
-                } else if (mode == 3) {
+                } else if (mode == Modes.ENGINE_STOPPED) {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.BatteryProtectMode = Modes.ENGINE_STOPPED;
                 }
@@ -2319,19 +2323,6 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     /**
-     * Declare constants for Setting menu level 1
-     */
-    final class SettingsMenuLevel1{
-        static final int CABIN_COMFORT = 0;
-        static final int BATTERY_PROTECT = 1;
-        static final int COLD_WEATHER_GUARD = 2;
-        static final int PASSWORD = 3;
-        static final int VEHICLE = 4;
-        static final int ABOUT_DEVICE = 5;
-        static final int REFRESH_DEVICE = 6;
-    }
-
-    /**
      * Highlight selected menu entry
      * @param level
      */
@@ -2480,7 +2471,7 @@ public class MainActivity extends Activity implements OnClickListener {
         PasswordValid = false;
     }
 
-    public void initializeRunningParams() {
+    private void initializeRunningParams() {
         for (int i = 0; i < Params.PARAM_MAX; i += 1) {
             aParam[i] = this.params.aParamDef[i];
         }

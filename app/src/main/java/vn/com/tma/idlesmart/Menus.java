@@ -26,12 +26,14 @@ public class Menus {
     }
 
     static {
-        Submenu1 = new int[]{0, 3, 4, 5, 6, 7};
-        Submenu2 = new int[]{2, 8, 9};
-        Submenu3 = new int[]{1, 10, 11, 12, 13};
-        Submenu4 = new int[]{14, 15};
-        Submenu5 = new int[]{16, 17, 18};
-        Submenu6 = new int[]{21, 22};
+        Submenu1 = new int[]{Params.PARAM_CabinComfort, Params.PARAM_CabinTargetTemp, Params.PARAM_CabinTempRange,
+                Params.PARAM_OutsideTargetTemp, Params.PARAM_OutsideTempRange, Params.PARAM_AutoDisable};
+        Submenu2 = new int[]{Params.PARAM_BatteryProtect, Params.PARAM_VoltageSetPoint, Params.PARAM_EngineRunTime};
+        Submenu3 = new int[]{Params.PARAM_ColdWeatherGuard, Params.PARAM_IdealCoolantTemp, Params.PARAM_MinCoolantTemp,
+                Params.PARAM_TemperatureSetPoint, Params.PARAM_HoursBetweenStart};
+        Submenu4 = new int[]{Params.PARAM_DimTabletScreen, Params.PARAM_AudibleSound};
+        Submenu5 = new int[]{Params.PARAM_TruckRPMs, Params.PARAM_DriverTempCommon, Params.PARAM_TruckTimer};
+        Submenu6 = new int[]{Params.PARAM_RefreshTablet, Params.PARAM_SoftwareVersion};
     }
 
     public String getSubmenuName(int level1, int level2) {
