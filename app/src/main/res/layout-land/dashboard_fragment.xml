@@ -14,13 +14,7 @@
 
     <include layout="@layout/function_status" />
 
-    <!--TODO add running_fragment-->
-   <!-- <include layout="@layout/running_fragment" />-->
-    <fragment
-        android:name="vn.com.tma.idlesmart.fragments.RunningFragment"
-        android:id="@+id/runningFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <include layout="@layout/running_fragment" />
 
     <include layout="@layout/cabin_comfort_fragment"/>
 
