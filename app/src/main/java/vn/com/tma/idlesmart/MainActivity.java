@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbManager;
 import android.media.AudioManager;
@@ -1855,36 +1856,43 @@ public class MainActivity extends Activity implements OnClickListener {
         Button ccFragStopButton = (Button) findViewById(R.id.ccFragStopButton);
         Button cwFragStopButton = (Button) findViewById(R.id.cwgFragStopButton);
         Button bpFragStopButton = (Button) findViewById(R.id.bpFragStopButton);
+        LinearLayout cabinComfortControl = (LinearLayout) findViewById(R.id.cabinComfortControl);
+        LinearLayout cabinComfortFragment = (LinearLayout) findViewById(R.id.cabinComfortFragment);
+        LinearLayout cabinComfortFunctionIndicator = (LinearLayout) findViewById(R.id.cabinComfortFunctionIndicator);
+        LinearLayout cabinComfortIndicator  = (LinearLayout) findViewById(R.id.cabinComfortIndicator);
+        TextView cabinComfortStatus = (TextView) findViewById(R.id.cabinComfortStatus);
+
+        Drawable disabledFunction = getResources().getDrawable(R.color.disabledFunction);
+        Drawable disabled = getResources().getDrawable(R.color.disabled);
+        Drawable disabledIndicatorShape = getResources().getDrawable(R.drawable.disabled_indicator_shape);
+        Drawable disabledButtonShape = getResources().getDrawable(R.drawable.disabled_button_shape);
+        String disable = "DISABLED";
+        String enable = "ENABLE";
+
         switch (this.CabinComfortMode) {
             case Modes.DISABLED /*0*/:
-                findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.disabledFunction));
-                findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.disabledFunction));
-                findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.disabled));
-                findViewById(R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(R.drawable.disabled_indicator_shape));
-                ((TextView) findViewById(R.id.cabinComfortStatus)).setText("DISABLED");
-                ccEnableButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
-                ccEnableButton.setText("ENABLE");
-                ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.disabled_button_shape));
-                ccFragStopButton.setText("ENABLE");
-                break;
+                setCabinComfortMode(ccEnableButton, ccFragStopButton, cabinComfortControl, cabinComfortFragment,
+                        cabinComfortFunctionIndicator, cabinComfortIndicator, cabinComfortStatus, disabledFunction,
+                        disabled, disabledIndicatorShape, disabledButtonShape, disable, enable);
+            break;
             case Modes.ENGAGED /*1*/:
             case Modes.ENGINE_STOPPED /*3*/:
-                findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.enabled));
-                findViewById(R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(R.drawable.enabled_indicator_shape));
-                ((TextView) findViewById(R.id.cabinComfortStatus)).setText("MONITORING");
+                cabinComfortControl.setBackground(getResources().getDrawable(R.color.enabledFunction));
+                cabinComfortFragment.setBackground(getResources().getDrawable(R.color.enabledFunction));
+                cabinComfortFunctionIndicator.setBackground(getResources().getDrawable(R.color.enabled));
+                cabinComfortIndicator.setBackground(getResources().getDrawable(R.drawable.enabled_indicator_shape));
+                cabinComfortStatus.setText("MONITORING");
                 ccEnableButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 ccEnableButton.setText("DISABLE");
                 ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.enabled_button_shape));
                 ccFragStopButton.setText("DISABLE");
                 break;
             case Modes.ENGINE_RUNNING /*2*/:
-                findViewById(R.id.cabinComfortControl).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.cabinComfortFragment).setBackground(getResources().getDrawable(R.color.enabledFunction));
-                findViewById(R.id.cabinComfortFunctionIndicator).setBackground(getResources().getDrawable(R.color.active));
-                findViewById(R.id.cabinComfortIndicator).setBackground(getResources().getDrawable(R.drawable.active_indicator_shape));
-                ((TextView) findViewById(R.id.cabinComfortStatus)).setText("RUNNING ENGINE");
+                cabinComfortControl.setBackground(getResources().getDrawable(R.color.enabledFunction));
+                cabinComfortFragment.setBackground(getResources().getDrawable(R.color.enabledFunction));
+                cabinComfortFunctionIndicator.setBackground(getResources().getDrawable(R.color.active));
+                cabinComfortIndicator.setBackground(getResources().getDrawable(R.drawable.active_indicator_shape));
+                cabinComfortStatus.setText("RUNNING ENGINE");
                 ccEnableButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
                 ccEnableButton.setText("STOP ENGINE");
                 ccFragStopButton.setBackground(getResources().getDrawable(R.drawable.active_button_shape));
@@ -1965,6 +1973,22 @@ public class MainActivity extends Activity implements OnClickListener {
             default:
                 break;
         }
+    }
+
+    private void setCabinComfortMode(Button ccEnableButton, Button ccFragStopButton, LinearLayout cabinComfortControl,
+                                     LinearLayout cabinComfortFragment, LinearLayout cabinComfortFunctionIndicator,
+                                     LinearLayout cabinComfortIndicator, TextView cabinComfortStatus, Drawable cabinComfortBackground,
+                                     Drawable ccFunctionIndicator, Drawable ccIndicator, Drawable ccButtonBackground,
+                                     String comfortStatus, String buttonText ) {
+        cabinComfortControl.setBackground(cabinComfortBackground);
+        cabinComfortFragment.setBackground(cabinComfortBackground);
+        cabinComfortFunctionIndicator.setBackground(ccFunctionIndicator);
+        cabinComfortIndicator.setBackground(ccIndicator);
+        cabinComfortStatus.setText(comfortStatus);
+        ccEnableButton.setBackground(ccButtonBackground);
+        ccEnableButton.setText(buttonText);
+        ccFragStopButton.setBackground(ccButtonBackground);
+        ccFragStopButton.setText(buttonText);
     }
 
     private void setFunctionMode(int function, int mode) {
