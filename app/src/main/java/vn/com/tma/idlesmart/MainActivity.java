@@ -57,7 +57,7 @@ import static android.view.Window.FEATURE_NO_TITLE;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends KioskModeActivity implements OnClickListener {
     public static String APIroute = null;
     public static int ActivationCode = 0;
     public static boolean ActivationProcessPending = false;
@@ -87,7 +87,8 @@ public class MainActivity extends Activity implements OnClickListener {
     public static String Gateway_SerialID = null;
     public static String Gateway_VIN = null;
     public static boolean HasFocus = false;
-    public static boolean KioskMode = false;
+    // TODO Moved KioskMode to KioskModeActivity
+    // public static boolean KioskMode = false;
     static final long MONITOR_RATE = 3000;
     public static boolean PackageUpdatePending = false;
     public static int Password = 0;
@@ -1080,15 +1081,15 @@ public class MainActivity extends Activity implements OnClickListener {
             Log.i(TAG, "<<==end OnDestroy");
         }
     }
-
+    // TODO implemented this method in KioskModeActivity
     /**
      * Kioskmode: Disable back button
      */
-    public void onBackPressed() {
+   /* public void onBackPressed() {
         if (!KioskMode) {
             super.onBackPressed();
         }
-    }
+    }*/
 
     /**
      * Kiosk mode: When the window is focused - hide the Android's NavBar
