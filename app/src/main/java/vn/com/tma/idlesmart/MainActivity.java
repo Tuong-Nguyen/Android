@@ -1,6 +1,5 @@
 package vn.com.tma.idlesmart;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -11,7 +10,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbManager;
 import android.media.AudioManager;
@@ -48,7 +46,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
@@ -138,7 +135,10 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public AccessoryControl accessoryControl;
     private int activation_step;
     private Dialog alertDialog;
-    private final List blockedKeys;
+
+    // TODO Moved blockedKeys to KioskModeActivity
+    //private final List blockedKeys;
+
     public Faults faults;
     private int initialScreenBrightness;
     private int initialScreenTimeout;
@@ -530,6 +530,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     }
 
     public MainActivity() {
+        super();
         this.verificationHandler = new Handler();
         this.screentimeoutHandler = new Handler();
         this.EThandler = new Handler();
@@ -557,10 +558,11 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.initialScreenTimeout = 0;
         this.ScreenOn = true;
         this.USBReconnectRunnable = new UsbConnectionChecker();
-        Integer[] numArr = new Integer[2];
+        // TODO These variable was declared in KiosModeActivity
+       /* Integer[] numArr = new Integer[2];
         numArr[0] = KeyEvent.KEYCODE_VOLUME_DOWN;
         numArr[1] = KeyEvent.KEYCODE_VOLUME_UP;
-        this.blockedKeys = new ArrayList(Arrays.asList(numArr));
+        this.blockedKeys = new ArrayList(Arrays.asList(numArr));*/
         this.ETrunnable = new SetSyncTimeRunnable();
         this.isScreenOn = true;
         this.timeoutRunnable = new ScreenOffRunnable();
@@ -1108,18 +1110,14 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             Log.i(TAG, "<<== OnWindowFocusChanged");
         }
     }
+    // TODO implement dispatchKeyEvent on KioskModeActivity
 
-    /**
-     * KioskMode: disable Volume_Up and Volume_Down button
-     * @param event
-     * @return
-     */
-    public boolean dispatchKeyEvent(KeyEvent event) {
+   /* public boolean dispatchKeyEvent(KeyEvent event) {
         if (KioskMode && this.blockedKeys.contains(event.getKeyCode())) {
             return true;
         }
         return super.dispatchKeyEvent(event);
-    }
+    }*/
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);

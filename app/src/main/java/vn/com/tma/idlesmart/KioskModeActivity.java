@@ -1,6 +1,12 @@
 package vn.com.tma.idlesmart;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.view.KeyEvent;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -12,7 +18,18 @@ import android.app.Activity;
  */
 public class KioskModeActivity extends Activity{
     public static boolean KioskMode = false;
+    private  List blockedKeys;
 
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Integer[] numArr = new Integer[2];
+        numArr[0] = KeyEvent.KEYCODE_VOLUME_DOWN;
+        numArr[1] = KeyEvent.KEYCODE_VOLUME_UP;
+        this.blockedKeys = new ArrayList(Arrays.asList(numArr));
+    }
 
     /**
      * Kioskmode: Disable back button
@@ -23,5 +40,16 @@ public class KioskModeActivity extends Activity{
             super.onBackPressed();
         }
     }
-
+    /**
+     * KioskMode: disable Volume_Up and Volume_Down button
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (KioskMode && this.blockedKeys.contains(event.getKeyCode())) {
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
 }
