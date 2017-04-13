@@ -611,7 +611,8 @@ public class AccessoryControl {
         Log.i(TAG, "==> AccessoryControl::close()..");
         if (this.isOpen) {
             writeLogString("   Gateway Disconnected");
-            closeDatumFile();
+            DatumUtils datumUtils = new DatumUtils(TAG);
+            datumUtils.closeDatumFile(this.datumStream);
             closeLogFile();
             closeCANLogFile();
             this.permissionRequested = false;
@@ -812,24 +813,8 @@ public class AccessoryControl {
         }
     }*/
 
-    public void writeDatumString(String datumstring) {
-        if (this.datumStream != null && !datumstring.trim().isEmpty()) {
-            try {
-                byte[] ts = getUTCdatetimeAsString().getBytes();
-                this.datumStream.write(ts, 0, ts.length);
-                this.datumStream.write(' ');
-                byte[] bstr = datumstring.getBytes();
-                this.datumStream.write(bstr, 0, bstr.length);
-                this.datumStream.write('\n');
-                this.datumStream.write('\r');
-                this.datumStream.flush();
-            } catch (Exception e) {
-                Log.w(TAG, "IOException writing Datum file - e=", e);
-            }
-        }
-    }
-
-    public void closeDatumFile() {
+    // TODO Move closeDatumFile to DatumUtils
+  /*  public void closeDatumFile() {
         if (this.datumStream != null) {
             try {
                 this.datumStream.flush();
@@ -839,7 +824,7 @@ public class AccessoryControl {
                 Log.w(TAG, "IOException closing Datum file - e=", e);
             }
         }
-    }
+    }*/
 
     public void writefmtCANLogStream(String str) {
         if (MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE] && str != null && this.canStream != null) {

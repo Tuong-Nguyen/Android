@@ -53,6 +53,10 @@ public class DatumUtils {
         }
     }
 
+    /**
+     * Open DatumFile
+     * @return FileOutputStream
+     */
     public  BufferedOutputStream openDatumFile() {
             if ("mounted".equals(Environment.getExternalStorageState())) {
                 File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
@@ -75,4 +79,19 @@ public class DatumUtils {
         return null;
     }
 
+    /**
+     * Close Datum File
+     * @param datumStream
+     */
+    public void closeDatumFile(BufferedOutputStream datumStream) {
+        if (datumStream != null) {
+            try {
+                datumStream.flush();
+                datumStream.close();
+                datumStream = null;
+            } catch (Exception e) {
+                Log.w(TAG, "IOException closing Datum file - e=", e);
+            }
+        }
+    }
 }
