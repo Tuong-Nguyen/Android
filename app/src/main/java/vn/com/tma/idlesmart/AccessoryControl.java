@@ -211,6 +211,7 @@ public class AccessoryControl {
     private UsbManager usbManager;
     public UsbReader usbreader;
 
+
     public enum OpenStatus {
         CONNECTED,
         REQUESTING_PERMISSION,
@@ -779,7 +780,15 @@ public class AccessoryControl {
         }
     }
 
+
+
     public void openDatumFile() {
+        DatumUtils datumUtils = new DatumUtils(TAG);
+        this.datumStream = datumUtils.openDatumFile();
+    }
+    // TODO Moved openDatumFile to DatumUtils
+
+  /*  public void openDatumFile() {
         if (this.datumStream == null) {
             if ("mounted".equals(Environment.getExternalStorageState())) {
                 File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
@@ -801,7 +810,7 @@ public class AccessoryControl {
             }
             Log.w(TAG, "Error opening Datum file - SDCard is not mounted");
         }
-    }
+    }*/
 
     public void writeDatumString(String datumstring) {
         if (this.datumStream != null && !datumstring.trim().isEmpty()) {

@@ -671,8 +671,8 @@ public class httpClient extends Activity {
         byte[] data = new byte[2];
         int responseCode = -1;
         Log.i(TAG, "UpdateTask");
-        // TODO new StringAndVoltUtils object;
-        StringAndVoltUtils stringAndVoltUtils = new StringAndVoltUtils();
+        // TODO new BatteryVoltageConverter object;
+        BatteryVoltageConverter batteryVoltageConverter = new BatteryVoltageConverter();
 
         CommLog(PhoneHomeState.ACTIVATE, "UpdateTask");
         try {
@@ -692,7 +692,7 @@ public class httpClient extends Activity {
                 this.jsonDeviceNode.accumulate("CABINCOMFORT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinTempRange]));
                 this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_SETPOINT", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTargetTemp]));
                 this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTempRange]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", stringAndVoltUtils.battmv2Str(MainActivity.aParam[Params.PARAM_VoltageSetPoint]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", batteryVoltageConverter.batteryVoltageToString(MainActivity.aParam[Params.PARAM_VoltageSetPoint]));
                 this.jsonDeviceNode.accumulate("BATTERYMONITOR_RUNTIME", Integer.valueOf(MainActivity.aParam[Params.PARAM_EngineRunTime]));
                 this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_IDEAL_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_IdealCoolantTemp]));
                 this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_MIN_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_MinCoolantTemp]));
@@ -743,7 +743,7 @@ public class httpClient extends Activity {
                 this.mInstance.SaveDownloadedParamValue(Params.PARAM_CabinTempRange, jsonServerNode.getInt("CABINCOMFORT_RANGE"));
                 this.mInstance.SaveDownloadedParamValue(Params.PARAM_OutsideTargetTemp, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_SETPOINT"));
                 this.mInstance.SaveDownloadedParamValue(Params.PARAM_OutsideTempRange, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_RANGE"));
-                int battmv = stringAndVoltUtils.battStr2mv(jsonServerNode.getString("BATTERYMONITOR_VOLTAGE"));
+                int battmv = batteryVoltageConverter.batteryStringToVoltage(jsonServerNode.getString("BATTERYMONITOR_VOLTAGE"));
                 if (battmv != 0) {
                     this.mInstance.SaveDownloadedParamValue(Params.PARAM_VoltageSetPoint, battmv);
                 }
@@ -821,7 +821,7 @@ public class httpClient extends Activity {
     }
 
     // TODO: Move to StringAndVoltUtil class
-   /* public int battStr2mv(String battstr) {
+   /* public int batteryStringToVoltage(String battstr) {
         try {
             return (Integer.parseInt(battstr.substring(0, 2)) * 10) + Integer.parseInt(battstr.substring(3, 4));
         } catch (NumberFormatException e) {
@@ -831,7 +831,7 @@ public class httpClient extends Activity {
     }*/
 
     // TODO: Move to StringAndVoltUtil class
-    /*public String battmv2Str(int battvolt) {
+    /*public String batteryVoltageToString(int battvolt) {
         int volts = battvolt / 10;
         String voltstr = Integer.toString(volts);
         return voltstr + "." + Integer.toString(battvolt - (volts * 10));
@@ -1147,9 +1147,10 @@ public class httpClient extends Activity {
                 e4.printStackTrace();
             }
         }
-        // TODO: Move closeDatumStream, deleteDatumFile, openDatumFile into single class
-        closeDatumStream(datumStream);
-        deleteDatumFile();
+
+        DatumUtils datumUtils =new DatumUtils(TAG);
+        datumUtils.closeDatumStream(datumStream);
+        datumUtils.deleteDatumFile();
         this.mInstance.accessoryControl.openDatumFile();
         return responseCode;
     }
@@ -1265,7 +1266,6 @@ public class httpClient extends Activity {
         */
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertDatumToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
     }
-
     /**
      * Open datum BufferedInputStream
      * @return BufferedInputStream object
@@ -1294,11 +1294,9 @@ public class httpClient extends Activity {
         return returnstream;
     }
 
-    /**
-     * Close a buffered input stream
-     * @param datumStream
-     */
-    public void closeDatumStream(BufferedInputStream datumStream) {
+    // TODO: Move closeDatumStream, deleteDatumFile, openDatumFile into single class
+
+    /*public void closeDatumStream(BufferedInputStream datumStream) {
         if (datumStream != null) {
             try {
                 datumStream.close();
@@ -1308,10 +1306,7 @@ public class httpClient extends Activity {
         }
     }
 
-    /**
-     * Delete data file in Logs
-     */
-    public void deleteDatumFile() {
+   public void deleteDatumFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
             if (path.exists()) {
@@ -1323,7 +1318,7 @@ public class httpClient extends Activity {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Check there is APK update or not
