@@ -671,6 +671,9 @@ public class httpClient extends Activity {
         byte[] data = new byte[2];
         int responseCode = -1;
         Log.i(TAG, "UpdateTask");
+        // TODO new StringAndVoltUtils object;
+        StringAndVoltUtils stringAndVoltUtils = new StringAndVoltUtils();
+
         CommLog(PhoneHomeState.ACTIVATE, "UpdateTask");
         try {
             JSONObject jsonRequest = new JSONObject();
@@ -679,6 +682,7 @@ public class httpClient extends Activity {
             JSONObject jsonDevice = new JSONObject();
             jsonDevice.accumulate("serial", Integer.valueOf(this.jsonGateway.getInt("serial")));
             jsonRequest.accumulate("device", jsonDevice);
+
             this.jsonDeviceNode = new JSONObject();
             if (!this.NewTruckActivation) {
                 this.jsonDeviceNode.accumulate("DRIVER_CABINCOMFORT_ENABLE", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinComfort]));
@@ -688,7 +692,7 @@ public class httpClient extends Activity {
                 this.jsonDeviceNode.accumulate("CABINCOMFORT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_CabinTempRange]));
                 this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_SETPOINT", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTargetTemp]));
                 this.jsonDeviceNode.accumulate("CABINCOMFORT_AMBIENT_RANGE", Integer.valueOf(MainActivity.aParam[Params.PARAM_OutsideTempRange]));
-                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", battmv2Str(MainActivity.aParam[Params.PARAM_VoltageSetPoint]));
+                this.jsonDeviceNode.accumulate("BATTERYMONITOR_VOLTAGE", stringAndVoltUtils.battmv2Str(MainActivity.aParam[Params.PARAM_VoltageSetPoint]));
                 this.jsonDeviceNode.accumulate("BATTERYMONITOR_RUNTIME", Integer.valueOf(MainActivity.aParam[Params.PARAM_EngineRunTime]));
                 this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_IDEAL_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_IdealCoolantTemp]));
                 this.jsonDeviceNode.accumulate("COLDWEATHERGUARD_MIN_COOLANT", Integer.valueOf(MainActivity.aParam[Params.PARAM_MinCoolantTemp]));
@@ -739,7 +743,7 @@ public class httpClient extends Activity {
                 this.mInstance.SaveDownloadedParamValue(Params.PARAM_CabinTempRange, jsonServerNode.getInt("CABINCOMFORT_RANGE"));
                 this.mInstance.SaveDownloadedParamValue(Params.PARAM_OutsideTargetTemp, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_SETPOINT"));
                 this.mInstance.SaveDownloadedParamValue(Params.PARAM_OutsideTempRange, jsonServerNode.getInt("CABINCOMFORT_AMBIENT_RANGE"));
-                int battmv = battStr2mv(jsonServerNode.getString("BATTERYMONITOR_VOLTAGE"));
+                int battmv = stringAndVoltUtils.battStr2mv(jsonServerNode.getString("BATTERYMONITOR_VOLTAGE"));
                 if (battmv != 0) {
                     this.mInstance.SaveDownloadedParamValue(Params.PARAM_VoltageSetPoint, battmv);
                 }
@@ -816,22 +820,22 @@ public class httpClient extends Activity {
         return responseCode;
     }
 
-    // TODO: Move to Util class
-    public int battStr2mv(String battstr) {
+    // TODO: Move to StringAndVoltUtil class
+   /* public int battStr2mv(String battstr) {
         try {
             return (Integer.parseInt(battstr.substring(0, 2)) * 10) + Integer.parseInt(battstr.substring(3, 4));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return 0;
         }
-    }
+    }*/
 
-    // TODO: Move to Util class
-    public String battmv2Str(int battvolt) {
+    // TODO: Move to StringAndVoltUtil class
+    /*public String battmv2Str(int battvolt) {
         int volts = battvolt / 10;
         String voltstr = Integer.toString(volts);
         return voltstr + "." + Integer.toString(battvolt - (volts * 10));
-    }
+    }*/
 
     /**
      * Calling ServerTask to upload log from external storage to server
