@@ -1,4 +1,4 @@
-package vn.com.tma.idlesmart;
+package vn.com.tma.idlesmart.Utils;
 
 
 public class BatteryVoltageConverter {

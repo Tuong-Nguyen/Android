@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
+import vn.com.tma.idlesmart.Utils.PrefUtils;
+
 public class OnScreenOffReceiver extends BroadcastReceiver {
     private static final String TAG = "IdleSmart.OnScreenOff";
 

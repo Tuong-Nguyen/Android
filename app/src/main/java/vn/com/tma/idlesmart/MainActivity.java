@@ -43,10 +43,9 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
+import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
 import static android.content.pm.PackageManager.GET_ACTIVITIES;

@@ -17,6 +17,8 @@ import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import vn.com.tma.idlesmart.Utils.PrefUtils;
+
 import static android.app.PendingIntent.FLAG_ONE_SHOT;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.Window.FEATURE_NO_TITLE;

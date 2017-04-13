@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import vn.com.tma.idlesmart.Utils.DatumUtils;
+
 public class AccessoryControl {
     private static final String ACC_MANUF = "Idle Smart LLC";
     private static final String ACC_MODEL = "Idle Smart Gateway";

@@ -1,4 +1,4 @@
-package vn.com.tma.idlesmart;
+package vn.com.tma.idlesmart.Utils;
 
 import android.content.Context;
 import android.os.Environment;

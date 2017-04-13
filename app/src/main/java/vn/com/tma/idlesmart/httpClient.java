@@ -25,6 +25,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import vn.com.tma.idlesmart.Utils.BatteryVoltageConverter;
+import vn.com.tma.idlesmart.Utils.DatumUtils;
+import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.params.PhoneHomeState;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 import vn.com.tma.idlesmart.tasks.ServerTask;
