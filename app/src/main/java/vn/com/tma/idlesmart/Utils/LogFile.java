@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import vn.com.tma.idlesmart.AoaMessage;
+import vn.com.tma.idlesmart.MainActivity;
 
 import static vn.com.tma.idlesmart.AccessoryControl.getUTCdatetimeAsString;
 
@@ -19,15 +20,18 @@ import static vn.com.tma.idlesmart.AccessoryControl.getUTCdatetimeAsString;
 public class LogFile {
     private BufferedOutputStream outputStream;
     private String fileName;
+    private String fileNamePath;
     private String tag;
 
     /**
      * LogFile constructor
      * @param fileName
+     * @param fileNamePath
      * @param tag
      */
-    public LogFile(String fileName, String tag) {
+    public LogFile(String fileName, String fileNamePath, String tag) {
         this.fileName = fileName;
+        this.fileNamePath = fileNamePath;
         this.tag = tag;
     }
 
@@ -91,7 +95,7 @@ public class LogFile {
     private void open() {
         if (outputStream == null) {
             if ("mounted".equals(Environment.getExternalStorageState())) {
-                File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
+                File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
                 if (path.exists()) {
                     Log.i(tag, this.fileName + " directory already exists");
                 } else if (path.mkdirs()) {

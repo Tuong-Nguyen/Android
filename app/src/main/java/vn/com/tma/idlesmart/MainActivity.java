@@ -1057,7 +1057,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         if (DebugLog) {
             Log.i(TAG, "==>>onDestroy");
         }
-        this.accessoryControl.closeLogFile();
         Log.i(TAG, "Cancel PhoneHome()..");
         CancelPhoneHome();
         Log.w(TAG, "Send APICMD_DISCONNECT to Gateway..");

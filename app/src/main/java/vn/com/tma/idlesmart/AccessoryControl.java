@@ -214,6 +214,7 @@ public class AccessoryControl {
     private UsbManager usbManager;
     public UsbReader usbreader;
     private String fileName;
+    private String fileNamePath;
 
 
     public enum OpenStatus {
@@ -423,13 +424,17 @@ public class AccessoryControl {
                                 Log.i(TAG, "(Recv)APIEVENT_LDR_VERSION = " + MainActivity.Gateway_LDRversion);
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
+                                //TODO It was replaced by method writeArray()
                                 fileName = "Log.bin";
-                                LogFile logFile = new LogFile(fileName, TAG);
+                                fileNamePath = "Logs";
+                                LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
                                 logFile.writeArray(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_DATUM /*91*/:
+                                //TODO It was replaced by method writeArray()
                                 fileName = "Datum.bin";
-                                LogFile datumFile = new LogFile(fileName, TAG);
+                                fileNamePath = "Logs";
+                                LogFile datumFile = new LogFile(fileName, fileNamePath, TAG);
                                 datumFile.writeArray(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_HANDLER_DISCONNECT /*125*/:
@@ -571,7 +576,8 @@ public class AccessoryControl {
                 Log.i(TAG, "   ---> Thread(receiver).start()..");
                 //TODO Use write() in LogFile
                 fileName = "Log.bin";
-                LogFile logFile = new LogFile(fileName, TAG);
+                fileNamePath = "Logs";
+                LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
                 logFile.write("Gateway Connected");
                 MainActivity.demo_mode = false;
                 Log.i(TAG, "   Send APICMD_CONNECT to Gateway..");
@@ -594,7 +600,8 @@ public class AccessoryControl {
         if (this.isOpen) {
             //TODO Use write() in LogFile
             fileName = "Log.bin";
-            LogFile logFile = new LogFile(fileName, TAG);
+            fileNamePath = "Logs";
+            LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
             logFile.write("   Gateway Disconnected");
             // TODO Moved close datum file into writeArray() mehthod in LogFile
            /* DatumUtils datumUtils = new DatumUtils(TAG);
@@ -769,7 +776,7 @@ public class AccessoryControl {
             }
         }
     }
-
+    // TODO It was replaced by open() in LogFile class
     public void openCANLogFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "CANLogs");
