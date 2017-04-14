@@ -153,12 +153,12 @@ public class LogFile {
     }
     /**
      * Close a buffered input stream
-     * @param datumStream
+     * @param inputStream
      */
-    public void closeInputStream(BufferedInputStream datumStream) {
-        if (datumStream != null) {
+    public void closeInputStream(BufferedInputStream inputStream) {
+        if (inputStream != null) {
             try {
-                datumStream.close();
+                inputStream.close();
             } catch (Exception e) {
                 Log.w(tag, "IOException closing Datum file - e=", e);
             }

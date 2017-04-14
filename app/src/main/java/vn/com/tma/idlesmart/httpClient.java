@@ -26,7 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import vn.com.tma.idlesmart.Utils.BatteryVoltageConverter;
-import vn.com.tma.idlesmart.Utils.DatumUtils;
 import vn.com.tma.idlesmart.Utils.LogFile;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.params.PhoneHomeState;
@@ -1158,8 +1157,9 @@ public class httpClient extends Activity {
             }
         }
 
-        DatumUtils datumUtils =new DatumUtils(TAG);
-        datumUtils.closeDatumStream(datumStream);
+       /* DatumUtils datumUtils =new DatumUtils(TAG);
+        datumUtils.closeDatumStream(datumStream);*/
+        logFile.closeInputStream(datumStream);
         logFile.deleteFile();
         // TODO Continue working
         //this.mInstance.accessoryControl.openDatumFile();
