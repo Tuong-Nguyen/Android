@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import vn.com.tma.idlesmart.Utils.BatteryVoltageConverter;
 import vn.com.tma.idlesmart.Utils.DatumUtils;
+import vn.com.tma.idlesmart.Utils.LogFile;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.params.PhoneHomeState;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
@@ -109,6 +110,8 @@ public class httpClient extends Activity {
     JSONObject jsonVersion;
     private MainActivity mInstance;
     final Runnable phonehomeRunnable;
+    private String fileName;
+    private String fileNamePath;
 
     /* renamed from: com.idlesmarter.aoa.httpClient.1 */
     class C00111 implements Runnable {
@@ -853,10 +856,11 @@ public class httpClient extends Activity {
         int responseCode = -1;
         Log.i(TAG, "LogTask");
         CommLog(PhoneHomeState.UPDATE, "LogTask");
-        if (this.mInstance.accessoryControl.logStream != null) {
-            this.mInstance.accessoryControl.writeLogString("Start Upload");
-            this.mInstance.accessoryControl.closeLogFile();
-        }
+        fileName = "Log.bin";
+        fileNamePath = "Logs";
+        LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
+        logFile.write("Start Upload");
+
         BufferedInputStream logStream = openLogBufferedInputStream();
         if (logStream == null) {
             Log.i(TAG, "Log file does not exist or is empty");
@@ -920,8 +924,7 @@ public class httpClient extends Activity {
         }
         closeLogStream(logStream);
         deleteLogFile();
-        this.mInstance.accessoryControl.openLogFile();
-        this.mInstance.accessoryControl.writeLogString("End Upload");
+        logFile.write("End Upload");
         return responseCode;
     }
 
@@ -1093,9 +1096,13 @@ public class httpClient extends Activity {
     public int PerformDatumTask() {
         int responseCode = -1;
         Log.i(TAG, "DatumTask");
+        fileName = "Datum.bin";
+        fileNamePath = "Logs";
+        LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
         if (this.mInstance.accessoryControl.datumStream != null) {
-            this.mInstance.accessoryControl.closeDatumFile();
+            // TODO Continue working
+           // this.mInstance.accessoryControl.closeDatumFile();
         }
         BufferedInputStream datumStream = openDatumBufferedInputStream();
         if (datumStream == null) {
@@ -1153,8 +1160,9 @@ public class httpClient extends Activity {
 
         DatumUtils datumUtils =new DatumUtils(TAG);
         datumUtils.closeDatumStream(datumStream);
-        datumUtils.deleteDatumFile();
-        this.mInstance.accessoryControl.openDatumFile();
+        logFile.deleteFile();
+        // TODO Continue working
+        //this.mInstance.accessoryControl.openDatumFile();
         return responseCode;
     }
 
@@ -1297,7 +1305,7 @@ public class httpClient extends Activity {
         return returnstream;
     }
 
-    // TODO: Move closeDatumStream, deleteDatumFile, openDatumFile into single class
+    // TODO: Move closeDatumStream, deleteFile, openDatumFile into single class
 
     /*public void closeDatumStream(BufferedInputStream datumStream) {
         if (datumStream != null) {
@@ -1309,7 +1317,7 @@ public class httpClient extends Activity {
         }
     }
 
-   public void deleteDatumFile() {
+   public void deleteFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
             if (path.exists()) {

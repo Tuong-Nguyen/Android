@@ -9,6 +9,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import vn.com.tma.idlesmart.AccessoryControl;
+import vn.com.tma.idlesmart.AoaMessage;
+
 
 /**
  * Created by ntmhanh on 4/13/2017.
@@ -16,6 +19,7 @@ import java.io.FileOutputStream;
 
 public class DatumUtils {
     public String TAG;
+    public BufferedOutputStream datumStream;
 
     public DatumUtils(String tag) {
         this.TAG = tag;
