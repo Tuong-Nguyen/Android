@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import vn.com.tma.idlesmart.Utils.DatumUtils;
+import vn.com.tma.idlesmart.Utils.LogFile;
 
 public class AccessoryControl {
     private static final String ACC_MANUF = "Idle Smart LLC";
@@ -212,6 +213,7 @@ public class AccessoryControl {
     private boolean permissionRequested;
     private UsbManager usbManager;
     public UsbReader usbreader;
+    private String fileName;
 
 
     public enum OpenStatus {
@@ -421,39 +423,15 @@ public class AccessoryControl {
                                 Log.i(TAG, "(Recv)APIEVENT_LDR_VERSION = " + MainActivity.Gateway_LDRversion);
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
-                                if (AccessoryControl.this.logStream == null) {
-                                    break;
-                                }
-                                try {
-                                    ts = AccessoryControl.getUTCdatetimeAsString().getBytes();
-                                    AccessoryControl.this.logStream.write(ts, 0, ts.length);
-                                    AccessoryControl.this.logStream.write(' ');
-                                    AccessoryControl.this.logStream.write(buffer, AoaMessage.START_DATA_POSITION, (len - 1) - 2);
-                                    AccessoryControl.this.logStream.write('\n');
-                                    AccessoryControl.this.logStream.write('\r');
-                                    AccessoryControl.this.logStream.flush();
-                                    break;
-                                } catch (Exception e2) {
-                                    Log.w(TAG, "IOException writing Log file - e=", e2);
-                                    break;
-                                }
+                                fileName = "Log.bin";
+                                LogFile logFile = new LogFile(fileName, TAG);
+                                logFile.writeArray(buffer, len);
+                                break;
                             case AccessoryControl.APIEVENT_DATUM /*91*/:
-                                if (AccessoryControl.this.datumStream == null) {
-                                    break;
-                                }
-                                try {
-                                    ts = AccessoryControl.getUTCdatetimeAsString().getBytes();
-                                    AccessoryControl.this.datumStream.write(ts, 0, ts.length);
-                                    AccessoryControl.this.datumStream.write(' ');
-                                    AccessoryControl.this.datumStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 3);
-                                    AccessoryControl.this.datumStream.write('\n');
-                                    AccessoryControl.this.datumStream.write('\r');
-                                    AccessoryControl.this.datumStream.flush();
-                                    break;
-                                } catch (Exception e22) {
-                                    Log.w(TAG, "IOException writing Datum file - e=", e22);
-                                    break;
-                                }
+                                fileName = "Datum.bin";
+                                LogFile datumFile = new LogFile(fileName, TAG);
+                                datumFile.writeArray(buffer, len);
+                                break;
                             case AccessoryControl.APIEVENT_HANDLER_DISCONNECT /*125*/:
                                 this.done = true;
                                 break;
@@ -570,8 +548,8 @@ public class AccessoryControl {
             Log.i(TAG, "   <== AccessoryControl.open(accessory)");
             return OpenStatus.CONNECTED;
         }
-        openLogFile();
-        openDatumFile();
+        // TODO Moved open datum file into writeArray() mehthod in LogFile
+        //openDatumFile();
         openCANLogFile();
         Log.i(TAG, "   USB device is: " + accessory.getManufacturer() + " " + accessory.getModel());
         if (ACC_MANUF.equals(accessory.getManufacturer()) && ACC_MODEL.equals(accessory.getModel())) {
@@ -591,8 +569,10 @@ public class AccessoryControl {
                 this.usbreader = new UsbReader(new BufferedInputStream(this.accInputStream, 16384));
                 new Thread(this.usbreader).start();
                 Log.i(TAG, "   ---> Thread(receiver).start()..");
-
-                writeLogString("Gateway Connected");
+                //TODO Use write() in LogFile
+                fileName = "Log.bin";
+                LogFile logFile = new LogFile(fileName, TAG);
+                logFile.write("Gateway Connected");
                 MainActivity.demo_mode = false;
                 Log.i(TAG, "   Send APICMD_CONNECT to Gateway..");
                 writeCommand(USB_OPEN_EXCEPTION, APICMD_BASE, APICMD_BASE);
@@ -612,10 +592,13 @@ public class AccessoryControl {
     public void close() {
         Log.i(TAG, "==> AccessoryControl::close()..");
         if (this.isOpen) {
-            writeLogString("   Gateway Disconnected");
-            DatumUtils datumUtils = new DatumUtils(TAG);
-            datumUtils.closeDatumFile(this.datumStream);
-            closeLogFile();
+            //TODO Use write() in LogFile
+            fileName = "Log.bin";
+            LogFile logFile = new LogFile(fileName, TAG);
+            logFile.write("   Gateway Disconnected");
+            // TODO Moved close datum file into writeArray() mehthod in LogFile
+           /* DatumUtils datumUtils = new DatumUtils(TAG);
+            datumUtils.closeDatumFile(this.datumStream);*/
             closeCANLogFile();
             this.permissionRequested = false;
             this.isOpen = false;
@@ -727,68 +710,6 @@ public class AccessoryControl {
         this.handler.sendMessage(m);
     }
 
-    public void openLogFile() {
-        if (this.logStream == null) {
-            if ("mounted".equals(Environment.getExternalStorageState())) {
-                File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
-                if (path.exists()) {
-                    Log.i(TAG, "Log directory already exists");
-                } else if (path.mkdirs()) {
-                    Log.i(TAG, "Log directory created");
-                } else {
-                    Log.i(TAG, "ERROR: Cannot create Log directory");
-                }
-                try {
-                    this.logStream = new BufferedOutputStream(new FileOutputStream(new File(path, "Log.bin"), true));
-                    Log.i(TAG, "Log file opened");
-                } catch (Exception e) {
-                    Log.w(TAG, "IOException creating Log file - ioe=", e);
-                }
-            } else {
-                Log.w(TAG, "Error opening Log file - SDCard is not mounted");
-            }
-        }
-        if (this.logStream != null) {
-            writeLogString("\\\\IdleSmart log start");
-        }
-    }
-
-    public void writeLogString(String logstring) {
-        if (this.logStream != null && !logstring.trim().isEmpty()) {
-            try {
-                byte[] ts = getUTCdatetimeAsString().getBytes();
-                this.logStream.write(ts, 0, ts.length);
-                this.logStream.write(' ');
-                byte[] bstr = logstring.getBytes();
-                this.logStream.write(bstr, 0, bstr.length);
-                this.logStream.write('\n');
-                this.logStream.write('\r');
-                this.logStream.flush();
-            } catch (Exception e) {
-                Log.w(TAG, "IOException writing Log file - e=", e);
-            }
-        }
-    }
-
-    public void closeLogFile() {
-        if (this.logStream != null) {
-            writeLogString("\\\\IdleSmart log stop");
-            try {
-                this.logStream.flush();
-                this.logStream.close();
-                this.logStream = null;
-            } catch (Exception e) {
-                Log.w(TAG, "IOException closing Log file - e=", e);
-            }
-        }
-    }
-
-
-
-    public void openDatumFile() {
-        DatumUtils datumUtils = new DatumUtils(TAG);
-        this.datumStream = datumUtils.openDatumFile();
-    }
     // TODO Moved openDatumFile to DatumUtils
 
   /*  public void openDatumFile() {
