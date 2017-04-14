@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import vn.com.tma.idlesmart.Utils.DatumUtils;
 import vn.com.tma.idlesmart.Utils.LogFile;
 
 public class AccessoryControl {
@@ -424,18 +423,18 @@ public class AccessoryControl {
                                 Log.i(TAG, "(Recv)APIEVENT_LDR_VERSION = " + MainActivity.Gateway_LDRversion);
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
-                                //TODO It was replaced by method writeArray()
+                                //TODO It was replaced by method write()
                                 fileName = "Log.bin";
                                 fileNamePath = "Logs";
                                 LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
-                                logFile.writeArray(buffer, len);
+                                logFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_DATUM /*91*/:
-                                //TODO It was replaced by method writeArray()
+                                //TODO It was replaced by method write()
                                 fileName = "Datum.bin";
                                 fileNamePath = "Logs";
                                 LogFile datumFile = new LogFile(fileName, fileNamePath, TAG);
-                                datumFile.writeArray(buffer, len);
+                                datumFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_HANDLER_DISCONNECT /*125*/:
                                 this.done = true;
@@ -553,7 +552,7 @@ public class AccessoryControl {
             Log.i(TAG, "   <== AccessoryControl.open(accessory)");
             return OpenStatus.CONNECTED;
         }
-        // TODO Moved open datum file into writeArray() mehthod in LogFile
+        // TODO Moved open datum file into write() mehthod in LogFile
         //openDatumFile();
         openCANLogFile();
         Log.i(TAG, "   USB device is: " + accessory.getManufacturer() + " " + accessory.getModel());
@@ -603,7 +602,7 @@ public class AccessoryControl {
             fileNamePath = "Logs";
             LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
             logFile.write("   Gateway Disconnected");
-            // TODO Moved close datum file into writeArray() mehthod in LogFile
+            // TODO Moved close datum file into write() mehthod in LogFile
            /* DatumUtils datumUtils = new DatumUtils(TAG);
             datumUtils.closeDatumFile(this.datumStream);*/
             closeCANLogFile();

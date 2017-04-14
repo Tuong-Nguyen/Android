@@ -67,7 +67,7 @@ public class LogFile {
      * @param buffer
      * @param len
      */
-    public void writeArray (byte[] buffer, int len) {
+    public void write(byte[] buffer, int len) {
         if (outputStream == null) {
             // Open file
             this.open();
