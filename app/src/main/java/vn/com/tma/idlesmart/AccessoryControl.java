@@ -424,16 +424,12 @@ public class AccessoryControl {
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
                                 //TODO It was replaced by method write()
-                                fileName = "Log.bin";
-                                fileNamePath = "Logs";
-                                LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
+                                LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
                                 logFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_DATUM /*91*/:
                                 //TODO It was replaced by method write()
-                                fileName = "Datum.bin";
-                                fileNamePath = "Logs";
-                                LogFile datumFile = new LogFile(fileName, fileNamePath, TAG);
+                                LogFile datumFile = new LogFile(LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
                                 datumFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_HANDLER_DISCONNECT /*125*/:
@@ -574,9 +570,7 @@ public class AccessoryControl {
                 new Thread(this.usbreader).start();
                 Log.i(TAG, "   ---> Thread(receiver).start()..");
                 //TODO Use write() in LogFile
-                fileName = "Log.bin";
-                fileNamePath = "Logs";
-                LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
+                LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
                 logFile.write("Gateway Connected");
                 MainActivity.demo_mode = false;
                 Log.i(TAG, "   Send APICMD_CONNECT to Gateway..");
@@ -598,9 +592,7 @@ public class AccessoryControl {
         Log.i(TAG, "==> AccessoryControl::close()..");
         if (this.isOpen) {
             //TODO Use write() in LogFile
-            fileName = "Log.bin";
-            fileNamePath = "Logs";
-            LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
+            LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
             logFile.write("   Gateway Disconnected");
             // TODO Moved close datum file into write() mehthod in LogFile
            /* DatumUtils datumUtils = new DatumUtils(TAG);
