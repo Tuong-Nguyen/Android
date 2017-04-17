@@ -111,8 +111,6 @@ public class httpClient extends Activity {
     JSONObject jsonVersion;
     private MainActivity mInstance;
     final Runnable phonehomeRunnable;
-    private String fileName;
-    private String fileNamePath;
 
     /* renamed from: com.idlesmarter.aoa.httpClient.1 */
     class C00111 implements Runnable {
@@ -857,7 +855,7 @@ public class httpClient extends Activity {
         int responseCode = -1;
         Log.i(TAG, "LogTask");
         CommLog(PhoneHomeState.UPDATE, "LogTask");
-        LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+        LogFile logFile = new LogFile(context,LogFile.LOGNAME, LogFile.LOGPATH, TAG);
         logFile.write("Start Upload");
 
         BufferedInputStream logStream = openLogBufferedInputStream();
@@ -866,6 +864,15 @@ public class httpClient extends Activity {
             CommLog(PhoneHomeState.UPDATE, "Log file does not exist or is empty");
             return -1;
         }
+
+        responseCode = logFile.read(jsonGateway, responseCode, logStream);
+        logFile.closeInputStream(logStream);
+        logFile.deleteFile(LogFile.LOGNAME);
+        logFile.write("End Upload");
+        return responseCode;
+    }
+
+   /* private int read(int responseCode, BufferedInputStream logStream) {
         BufferedReader logIn = new BufferedReader(new InputStreamReader(logStream));
         while (logIn != null) {
             JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
@@ -921,16 +928,14 @@ public class httpClient extends Activity {
                 e4.printStackTrace();
             }
         }
-        logFile.closeInputStream(logStream);
-        logFile.deleteFile(LogFile.LOGNAME);
-        logFile.write("End Upload");
         return responseCode;
     }
-
+*/
+    // TODO Move convertLogToJsonArray to LogFile
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public JSONArray convertLogToJsonArray(BufferedReader r17, int r18) {
-        /*
+   /* public JSONArray convertLogToJsonArray(BufferedReader r17, int r18) {
+        *//*
         r16 = this;
         r7 = 0;
         r11 = 0;
@@ -1031,9 +1036,9 @@ public class httpClient extends Activity {
     L_0x009f:
         r7 = r8;
         goto L_0x0096;
-        */
+        *//*
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertLogToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
-    }
+    }*/
 
     /**
      * Read log file store in external storage
@@ -1097,7 +1102,7 @@ public class httpClient extends Activity {
     public int PerformDatumTask() {
         int responseCode = -1;
         Log.i(TAG, "DatumTask");
-        LogFile logFile = new LogFile(LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
+        LogFile logFile = new LogFile(context, LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
         if (this.mInstance.accessoryControl.datumStream != null) {
             // TODO Continue working
