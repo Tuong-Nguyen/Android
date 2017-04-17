@@ -17,6 +17,13 @@ import static vn.com.tma.idlesmart.AccessoryControl.getUTCdatetimeAsString;
  */
 
 public class LogFile {
+
+    public static final String LOGNAME= "Log.bin";
+    public static final String LOGPATH= "Logs";
+    public static final String DATUMNAME= "Datum.bin";
+    public static final String CANLOGNAME= "CANLog.bin";
+    public static final String CANLOGPATH= "CANLogs";
+
     private BufferedOutputStream outputStream;
     private String fileName;
     private String fileNamePath;
@@ -137,12 +144,12 @@ public class LogFile {
     /**
      * Delete data file in Logs
      */
-    public boolean deleteFile() {
+    public boolean deleteFile(String fileName) {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
             if (path.exists()) {
                 try {
-                    new File(path, this.fileName).delete();
+                    new File(path, fileName).delete();
                     Log.i(tag, "Datum file deleted");
                     return true;
                 } catch (Exception e) {
