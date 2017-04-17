@@ -12,6 +12,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.ExecutionException;
@@ -39,6 +40,7 @@ public class LogFile {
     public static final String CANLOGPATH= "CANLogs";
 
     private BufferedOutputStream outputStream;
+    private BufferedInputStream inputStream;
     private String fileName;
     private String fileNamePath;
     private String tag;
@@ -63,11 +65,11 @@ public class LogFile {
      * @param data
      */
     public void write(String data) {
-        if (outputStream == null) {
+        if (this.outputStream == null) {
             // Open file
-            this.open();
+            this.openBufferOutPutStream();
         }
-        if (outputStream != null && !data.trim().isEmpty()) {
+        if (this.outputStream != null && !data.trim().isEmpty()) {
             try {
                 byte[] ts = getUTCdatetimeAsString().getBytes();
                 this.outputStream.write(ts, 0, ts.length);
@@ -91,19 +93,19 @@ public class LogFile {
      * @param len
      */
     public void write(byte[] buffer, int len) {
-        if (outputStream == null) {
+        if (this.outputStream == null) {
             // Open file
-            this.open();
+            this.openBufferOutPutStream();
         }
-        if (outputStream != null) {
+        if (this.outputStream != null) {
             try {
                 byte[] ts = getUTCdatetimeAsString().getBytes();
-                outputStream.write(ts, 0, ts.length);
-                outputStream.write(' ');
-                outputStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 3);
-                outputStream.write('\n');
-                outputStream.write('\r');
-                outputStream.flush();
+                this.outputStream.write(ts, 0, ts.length);
+                this.outputStream.write(' ');
+                this.outputStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                this.outputStream.write('\n');
+                this.outputStream.write('\r');
+                this.outputStream.flush();
             } catch (Exception e22) {
                 Log.w(tag, "IOException writing Datum file - e=", e22);
             }
@@ -116,70 +118,74 @@ public class LogFile {
      * Read Json data
      * @param jsonGateway
      * @param responseCode
-     * @param logStream
      * @return
      */
-    public int read(JSONObject jsonGateway, int responseCode, BufferedInputStream logStream) {
-
-        BufferedReader logIn = new BufferedReader(new InputStreamReader(logStream));
-        while (logIn != null) {
-            JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
-            if (jsonLog == null) {
-                break;
-            }
-            try {
-                JSONObject jsonRequest = new JSONObject();
-                jsonRequest.accumulate("vin", this.jsonGateway.getString("vin"));
-                jsonRequest.accumulate("guid", Integer.valueOf(jsonGateway.getInt("guid")));
-                JSONObject jsonDevice = new JSONObject();
-                jsonDevice.accumulate("serial", Integer.valueOf(jsonGateway.getInt("serial")));
-                jsonRequest.accumulate("device", jsonDevice);
-                jsonRequest.accumulate("log", jsonLog);
-                if (MainActivity.DebugLog) {
-                    Log.i(tag, "jsonLogRequest:" + jsonRequest.toString(1));
+    public int read(JSONObject jsonGateway, int responseCode) {
+        if (this.inputStream == null){
+            this.openBufferedInputStream();
+        }
+        if (this.inputStream != null) {
+            BufferedReader logIn = new BufferedReader(new InputStreamReader(inputStream));
+            while (logIn != null) {
+                JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
+                if (jsonLog == null) {
+                    break;
                 }
-                // TODO Refactor CommLog later
-                //CommLog(PhoneHomeState.UPDATE, "jsonLogRequest:" + jsonRequest.toString(1));
-                ServerTask servertask = new ServerTask();
-
-                servertask.setContext(this.context);
-                Log.i(tag, "logTask:servertask.execute..");
-                String[] strArr = new String[2];
-                strArr[0] = "http://" + MainActivity.APIroute + "/api/truck/update";
-                strArr[1] = jsonRequest.toString();
-                servertask.execute(strArr);
-                String response = servertask.get(5, TimeUnit.MINUTES);
-                if (MainActivity.DebugLog) {
-                    Log.i(TAG, "logTask:servertask.get response=" + response);
-                }
-                // TODO Refactor CommLog later
-                //CommLog(PhoneHomeState.UPDATE, "servertask.get - finished");
-                if (response.isEmpty()) {
-                    responseCode = 1;
-                    Log.e(TAG, "ERROR: logTaskResponse is empty");
-                    // TODO Refactor CommLog later
-                    //CommLog(PhoneHomeState.UPDATE, "ERROR: logTaskResponse is empty");
-                } else {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    responseCode = jsonResponse.getInt("code");
+                try {
+                    JSONObject jsonRequest = new JSONObject();
+                    jsonRequest.accumulate("vin", this.jsonGateway.getString("vin"));
+                    jsonRequest.accumulate("guid", Integer.valueOf(jsonGateway.getInt("guid")));
+                    JSONObject jsonDevice = new JSONObject();
+                    jsonDevice.accumulate("serial", Integer.valueOf(jsonGateway.getInt("serial")));
+                    jsonRequest.accumulate("device", jsonDevice);
+                    jsonRequest.accumulate("log", jsonLog);
                     if (MainActivity.DebugLog) {
-                        Log.i(TAG, "jsonLogResponse:" + jsonResponse.toString(1));
+                        Log.i(tag, "jsonLogRequest:" + jsonRequest.toString(1));
                     }
                     // TODO Refactor CommLog later
-                    //CommLog(PhoneHomeState.UPDATE, "jsonLogResponse:" + jsonResponse.toString(1));
-                    if (responseCode != 10) {
-                        Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
+                    //CommLog(PhoneHomeState.UPDATE, "jsonLogRequest:" + jsonRequest.toString(1));
+                    ServerTask servertask = new ServerTask();
+
+                    servertask.setContext(this.context);
+                    Log.i(tag, "logTask:servertask.execute..");
+                    String[] strArr = new String[2];
+                    strArr[0] = "http://" + MainActivity.APIroute + "/api/truck/update";
+                    strArr[1] = jsonRequest.toString();
+                    servertask.execute(strArr);
+                    String response = servertask.get(5, TimeUnit.MINUTES);
+                    if (MainActivity.DebugLog) {
+                        Log.i(TAG, "logTask:servertask.get response=" + response);
                     }
+                    // TODO Refactor CommLog later
+                    //CommLog(PhoneHomeState.UPDATE, "servertask.get - finished");
+                    if (response.isEmpty()) {
+                        responseCode = 1;
+                        Log.e(TAG, "ERROR: logTaskResponse is empty");
+                        // TODO Refactor CommLog later
+                        //CommLog(PhoneHomeState.UPDATE, "ERROR: logTaskResponse is empty");
+                    } else {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        responseCode = jsonResponse.getInt("code");
+                        if (MainActivity.DebugLog) {
+                            Log.i(TAG, "jsonLogResponse:" + jsonResponse.toString(1));
+                        }
+                        // TODO Refactor CommLog later
+                        //CommLog(PhoneHomeState.UPDATE, "jsonLogResponse:" + jsonResponse.toString(1));
+                        if (responseCode != 10) {
+                            Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e2) {
+                    e2.printStackTrace();
+                } catch (ExecutionException e3) {
+                    e3.printStackTrace();
+                } catch (TimeoutException e4) {
+                    e4.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e2) {
-                e2.printStackTrace();
-            } catch (ExecutionException e3) {
-                e3.printStackTrace();
-            } catch (TimeoutException e4) {
-                e4.printStackTrace();
             }
+
         }
         return responseCode;
     }
@@ -295,8 +301,8 @@ public class LogFile {
     /**
      * Open file
      */
-    public void open() {
-        if (outputStream == null) {
+    public BufferedOutputStream openBufferOutPutStream() {
+        if (this.outputStream == null) {
             if ("mounted".equals(Environment.getExternalStorageState())) {
                 File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
                 if (path.exists()) {
@@ -307,7 +313,7 @@ public class LogFile {
                     Log.i(tag, "ERROR: Cannot create " + this.fileName + " directory");
                 }
                 try {
-                    outputStream = new BufferedOutputStream(new FileOutputStream(new File(path, this.fileName), true));
+                    this.outputStream = new BufferedOutputStream(new FileOutputStream(new File(path, this.fileName), true));
                     Log.i(tag,  this.fileName + " file opened");
                 } catch (Exception e) {
                     Log.w(tag, "IOException creating"+ this.fileName + " file - ioe=", e);
@@ -316,9 +322,34 @@ public class LogFile {
                 Log.w(tag, "Error opening" + this.fileName + " file - SDCard is not mounted");
             }
         }
-        if (outputStream != null) {
+        if (this.outputStream != null) {
             this.write("\\\\IdleSmart "+ this.fileName +" start");
         }
+        return this.outputStream;
+    }
+    /**
+     * Read file store in external storage
+     * @return BufferedInputStream object
+     */
+    public BufferedInputStream openBufferedInputStream() {
+
+        BufferedInputStream bufferedInputStream = null;
+        if ("mounted".equals(Environment.getExternalStorageState())) {
+            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
+            if (path.exists()) {
+                try {
+                    Log.i(TAG, "Log file opened for Read");
+                    bufferedInputStream = new BufferedInputStream(new FileInputStream(new File(path, this.fileName)));
+                } catch (Exception e) {
+                    Log.w(TAG, "IOException opening Log file - ioe=", e);
+                }
+            } else {
+                Log.i(TAG, "ERROR: Log file directory does not exist");
+            }
+        } else {
+            Log.w(TAG, "Error opening Log file for Read - SDCard is not mounted");
+        }
+        return bufferedInputStream;
     }
 
     /**
@@ -358,12 +389,11 @@ public class LogFile {
     }
     /**
      * Close a buffered input stream
-     * @param inputStream
      */
-    public void closeInputStream(BufferedInputStream inputStream) {
-        if (inputStream != null) {
+    public void closeInputStream() {
+        if (this.inputStream != null) {
             try {
-                inputStream.close();
+                this.inputStream.close();
             } catch (Exception e) {
                 Log.w(tag, "IOException closing Datum file - e=", e);
             }

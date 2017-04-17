@@ -857,80 +857,14 @@ public class httpClient extends Activity {
         CommLog(PhoneHomeState.UPDATE, "LogTask");
         LogFile logFile = new LogFile(context,LogFile.LOGNAME, LogFile.LOGPATH, TAG);
         logFile.write("Start Upload");
-
-        BufferedInputStream logStream = openLogBufferedInputStream();
-        if (logStream == null) {
-            Log.i(TAG, "Log file does not exist or is empty");
-            CommLog(PhoneHomeState.UPDATE, "Log file does not exist or is empty");
-            return -1;
-        }
-
-        responseCode = logFile.read(jsonGateway, responseCode, logStream);
-        logFile.closeInputStream(logStream);
+        responseCode = logFile.read(jsonGateway, responseCode);
+        logFile.closeInputStream();
         logFile.deleteFile(LogFile.LOGNAME);
         logFile.write("End Upload");
         return responseCode;
     }
 
-   /* private int read(int responseCode, BufferedInputStream logStream) {
-        BufferedReader logIn = new BufferedReader(new InputStreamReader(logStream));
-        while (logIn != null) {
-            JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
-            if (jsonLog == null) {
-                break;
-            }
-            try {
-                JSONObject jsonRequest = new JSONObject();
-                jsonRequest.accumulate("vin", this.jsonGateway.getString("vin"));
-                jsonRequest.accumulate("guid", Integer.valueOf(this.jsonGateway.getInt("guid")));
-                JSONObject jsonDevice = new JSONObject();
-                jsonDevice.accumulate("serial", Integer.valueOf(this.jsonGateway.getInt("serial")));
-                jsonRequest.accumulate("device", jsonDevice);
-                jsonRequest.accumulate("log", jsonLog);
-                if (MainActivity.DebugLog) {
-                    Log.i(TAG, "jsonLogRequest:" + jsonRequest.toString(1));
-                }
-                CommLog(PhoneHomeState.UPDATE, "jsonLogRequest:" + jsonRequest.toString(1));
-                ServerTask servertask = new ServerTask();
-                servertask.setContext(this.mInstance.getApplicationContext());
-                Log.i(TAG, "logTask:servertask.execute..");
-                String[] strArr = new String[2];
-                strArr[0] = "http://" + MainActivity.APIroute + "/api/truck/update";
-                strArr[1] = jsonRequest.toString();
-                servertask.execute(strArr);
-                String response = servertask.get(5, TimeUnit.MINUTES);
-                if (MainActivity.DebugLog) {
-                    Log.i(TAG, "logTask:servertask.get response=" + response);
-                }
-                CommLog(PhoneHomeState.UPDATE, "servertask.get - finished");
-                if (response.isEmpty()) {
-                    responseCode = 1;
-                    Log.e(TAG, "ERROR: logTaskResponse is empty");
-                    CommLog(PhoneHomeState.UPDATE, "ERROR: logTaskResponse is empty");
-                } else {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    responseCode = jsonResponse.getInt("code");
-                    if (MainActivity.DebugLog) {
-                        Log.i(TAG, "jsonLogResponse:" + jsonResponse.toString(1));
-                    }
-                    CommLog(PhoneHomeState.UPDATE, "jsonLogResponse:" + jsonResponse.toString(1));
-                    if (responseCode != 10) {
-                        Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e2) {
-                e2.printStackTrace();
-            } catch (ExecutionException e3) {
-                e3.printStackTrace();
-            } catch (TimeoutException e4) {
-                e4.printStackTrace();
-            }
-        }
-        return responseCode;
-    }
-*/
+
     // TODO Move convertLogToJsonArray to LogFile
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
@@ -1040,10 +974,8 @@ public class httpClient extends Activity {
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertLogToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
     }*/
 
-    /**
-     * Read log file store in external storage
-     * @return BufferedInputStream object
-     */
+    // TODO Moved openLogBufferedInputStream to LogFile
+/*
     public BufferedInputStream openLogBufferedInputStream() {
         BufferedInputStream bufferedInputStream = null;
         if ("mounted".equals(Environment.getExternalStorageState())) {
@@ -1062,7 +994,7 @@ public class httpClient extends Activity {
             Log.w(TAG, "Error opening Log file for Read - SDCard is not mounted");
         }
         return bufferedInputStream;
-    }
+    }*/
     // TODO Moved deleteLogFile, closeLogStream method into LogFile
 /*
     public void closeLogStream(BufferedInputStream logStream) {
@@ -1104,10 +1036,11 @@ public class httpClient extends Activity {
         Log.i(TAG, "DatumTask");
         LogFile logFile = new LogFile(context, LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
-        if (this.mInstance.accessoryControl.datumStream != null) {
-            // TODO Continue working
-           // this.mInstance.accessoryControl.closeDatumFile();
-        }
+        // TODO Moved this method into LogFile
+       /* if (this.mInstance.accessoryControl.datumStream != null) {
+
+           this.mInstance.accessoryControl.closeDatumFile();
+        }*/
         BufferedInputStream datumStream = openDatumBufferedInputStream();
         if (datumStream == null) {
             Log.i(TAG, "Datum file does not exist or is empty");
@@ -1164,7 +1097,7 @@ public class httpClient extends Activity {
 
        /* DatumUtils datumUtils =new DatumUtils(TAG);
         datumUtils.closeDatumStream(datumStream);*/
-        logFile.closeInputStream(datumStream);
+        logFile.closeInputStream();
         logFile.deleteFile(LogFile.DATUMNAME);
         // TODO Continue working
         //this.mInstance.accessoryControl.openDatumFile();

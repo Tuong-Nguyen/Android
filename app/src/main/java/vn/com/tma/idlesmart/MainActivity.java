@@ -940,7 +940,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         Log.i(TAG, "    --> <connectUSB>");
         Log.i(TAG, "      PackageUpdatePending:" + (PackageUpdatePending ? "true" : "false"));
         if (!(PackageUpdatePending || gateway_connected)) {
-            Log.w(TAG, "        connectUSB::Not connected - open AccessoryControl and attempt to reconnect to gateway..");
+            Log.w(TAG, "        connectUSB::Not connected - openBufferOutPutStream AccessoryControl and attempt to reconnect to gateway..");
             AccessoryControl.OpenStatus status = this.accessoryControl.open();
             Log.i(TAG, "        connectUSB::status=" + status.toString());
             if (status == AccessoryControl.OpenStatus.CONNECTED) {
