@@ -424,12 +424,12 @@ public class AccessoryControl {
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
                                 //TODO It was replaced by method write()
-                                LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+                                LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
                                 logFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_DATUM /*91*/:
                                 //TODO It was replaced by method write()
-                                LogFile datumFile = new LogFile(LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
+                                LogFile datumFile = new LogFile(context, LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
                                 datumFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_HANDLER_DISCONNECT /*125*/:
@@ -537,18 +537,18 @@ public class AccessoryControl {
     }
 
     public OpenStatus open() {
-        Log.i(TAG, "   --> AccessoryControl.open..");
+        Log.i(TAG, "   --> AccessoryControl.openBufferOutPutStream..");
         return ValidConfig.status;
     }
 
     public OpenStatus open(UsbAccessory accessory) {
-        Log.i(TAG, "   ==>AccessoryControl.open(accessory)..");
+        Log.i(TAG, "   ==>AccessoryControl.openBufferOutPutStream(accessory)..");
         if (this.isOpen) {
-            Log.i(TAG, "   already open");
-            Log.i(TAG, "   <== AccessoryControl.open(accessory)");
+            Log.i(TAG, "   already openBufferOutPutStream");
+            Log.i(TAG, "   <== AccessoryControl.openBufferOutPutStream(accessory)");
             return OpenStatus.CONNECTED;
         }
-        // TODO Moved open datum file into write() mehthod in LogFile
+        // TODO Moved openBufferOutPutStream datum file into write() mehthod in LogFile
         //openDatumFile();
         openCANLogFile();
         Log.i(TAG, "   USB device is: " + accessory.getManufacturer() + " " + accessory.getModel());
@@ -570,21 +570,21 @@ public class AccessoryControl {
                 new Thread(this.usbreader).start();
                 Log.i(TAG, "   ---> Thread(receiver).start()..");
                 //TODO Use write() in LogFile
-                LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+                LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
                 logFile.write("Gateway Connected");
                 MainActivity.demo_mode = false;
                 Log.i(TAG, "   Send APICMD_CONNECT to Gateway..");
                 writeCommand(USB_OPEN_EXCEPTION, APICMD_BASE, APICMD_BASE);
                 Log.i(TAG, "   The USB is now connected");
-                Log.i(TAG, "   <== AccessoryControl.open(accessory)");
+                Log.i(TAG, "   <== AccessoryControl.openBufferOutPutStream(accessory)");
                 return OpenStatus.CONNECTED;
             }
             Log.e(TAG, "   Open Failed: Could not get a ParcelDescriptor");
-            Log.i(TAG, "   <== AccessoryControl.open(accessory)");
+            Log.i(TAG, "   <== AccessoryControl.openBufferOutPutStream(accessory)");
             return OpenStatus.NO_PARCEL;
         }
         Log.i(TAG, "   Unknown accessory: " + accessory.getManufacturer() + ", " + accessory.getModel());
-        Log.i(TAG, "   <== AccessoryControl.open(accessory)");
+        Log.i(TAG, "   <== AccessoryControl.openBufferOutPutStream(accessory)");
         return OpenStatus.UNKNOWN_ACCESSORY;
     }
 
@@ -592,7 +592,7 @@ public class AccessoryControl {
         Log.i(TAG, "==> AccessoryControl::close()..");
         if (this.isOpen) {
             //TODO Use write() in LogFile
-            LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+            LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
             logFile.write("   Gateway Disconnected");
             // TODO Moved close datum file into write() mehthod in LogFile
            /* DatumUtils datumUtils = new DatumUtils(TAG);
@@ -767,7 +767,7 @@ public class AccessoryControl {
             }
         }
     }
-    // TODO It was replaced by open() in LogFile class
+    // TODO It was replaced by openBufferOutPutStream() in LogFile class
     public void openCANLogFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "CANLogs");
