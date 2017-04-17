@@ -857,9 +857,7 @@ public class httpClient extends Activity {
         int responseCode = -1;
         Log.i(TAG, "LogTask");
         CommLog(PhoneHomeState.UPDATE, "LogTask");
-        fileName = "Log.bin";
-        fileNamePath = "Logs";
-        LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
+        LogFile logFile = new LogFile(LogFile.LOGNAME, LogFile.LOGPATH, TAG);
         logFile.write("Start Upload");
 
         BufferedInputStream logStream = openLogBufferedInputStream();
@@ -923,8 +921,8 @@ public class httpClient extends Activity {
                 e4.printStackTrace();
             }
         }
-        closeLogStream(logStream);
-        deleteLogFile();
+        logFile.closeInputStream(logStream);
+        logFile.deleteFile(LogFile.LOGNAME);
         logFile.write("End Upload");
         return responseCode;
     }
@@ -1060,7 +1058,8 @@ public class httpClient extends Activity {
         }
         return bufferedInputStream;
     }
-
+    // TODO Moved deleteLogFile, closeLogStream method into LogFile
+/*
     public void closeLogStream(BufferedInputStream logStream) {
         if (logStream != null) {
             try {
@@ -1070,8 +1069,9 @@ public class httpClient extends Activity {
             }
         }
     }
+*/
 
-    public void deleteLogFile() {
+   /* public void deleteLogFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
             if (path.exists()) {
@@ -1083,7 +1083,7 @@ public class httpClient extends Activity {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Calling ServerTask to get data from server
@@ -1097,9 +1097,7 @@ public class httpClient extends Activity {
     public int PerformDatumTask() {
         int responseCode = -1;
         Log.i(TAG, "DatumTask");
-        fileName = "Datum.bin";
-        fileNamePath = "Logs";
-        LogFile logFile = new LogFile(fileName, fileNamePath, TAG);
+        LogFile logFile = new LogFile(LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
         if (this.mInstance.accessoryControl.datumStream != null) {
             // TODO Continue working
@@ -1162,7 +1160,7 @@ public class httpClient extends Activity {
        /* DatumUtils datumUtils =new DatumUtils(TAG);
         datumUtils.closeDatumStream(datumStream);*/
         logFile.closeInputStream(datumStream);
-        logFile.deleteFile();
+        logFile.deleteFile(LogFile.DATUMNAME);
         // TODO Continue working
         //this.mInstance.accessoryControl.openDatumFile();
         return responseCode;
