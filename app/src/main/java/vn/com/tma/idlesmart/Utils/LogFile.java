@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import vn.com.tma.idlesmart.AoaMessage;
-import vn.com.tma.idlesmart.MainActivity;
 
 import static vn.com.tma.idlesmart.AccessoryControl.getUTCdatetimeAsString;
 
@@ -92,7 +91,7 @@ public class LogFile {
     /**
      * Open file
      */
-    private void open() {
+    public void open() {
         if (outputStream == null) {
             if ("mounted".equals(Environment.getExternalStorageState())) {
                 File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
@@ -138,18 +137,20 @@ public class LogFile {
     /**
      * Delete data file in Logs
      */
-    public void deleteFile() {
+    public boolean deleteFile() {
         if ("mounted".equals(Environment.getExternalStorageState())) {
-            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
+            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
             if (path.exists()) {
                 try {
                     new File(path, this.fileName).delete();
                     Log.i(tag, "Datum file deleted");
+                    return true;
                 } catch (Exception e) {
                     Log.w(tag, "IOException deleting Datum file - ioe=", e);
                 }
             }
         }
+        return false;
     }
     /**
      * Close a buffered input stream
