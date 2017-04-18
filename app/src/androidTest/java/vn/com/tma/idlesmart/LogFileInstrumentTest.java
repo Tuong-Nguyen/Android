@@ -1,6 +1,8 @@
 package vn.com.tma.idlesmart;
 
+import android.content.Context;
 import android.os.Environment;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -20,6 +22,7 @@ import static junit.framework.Assert.assertEquals;
  */
 @RunWith(AndroidJUnit4.class)
 public class LogFileInstrumentTest {
+    private Context context;
 
         @Test
     public void deleteFile_CreateANewFileAndDeleteThisFile_CheckExistThisFileReturnFail() throws Exception {
@@ -28,6 +31,7 @@ public class LogFileInstrumentTest {
             String fileNamePath = "Logs";
             String filename = "Log.bin";
             String tag = "test";
+           context = InstrumentationRegistry.getTargetContext();
             if ("mounted".equals(Environment.getExternalStorageState())) {
                 File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileNamePath);
                 if (path.exists()) {
@@ -47,10 +51,10 @@ public class LogFileInstrumentTest {
                 Log.w(tag, "Error opening" + filename + " file - SDCard is not mounted");
             }
 
-            LogFile logFile = new LogFile(filename, fileNamePath, tag);
+            LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
 
             // Action
-            boolean isDelete = logFile.deleteFile();
+            boolean isDelete = logFile.deleteFile(filename);
 
             // Assert
             assertEquals("File was deleted ", true, isDelete);
