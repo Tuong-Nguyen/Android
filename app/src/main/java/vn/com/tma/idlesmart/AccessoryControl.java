@@ -212,8 +212,6 @@ public class AccessoryControl {
     private boolean permissionRequested;
     private UsbManager usbManager;
     public UsbReader usbreader;
-    private String fileName;
-    private String fileNamePath;
 
 
     public enum OpenStatus {
@@ -548,8 +546,6 @@ public class AccessoryControl {
             Log.i(TAG, "   <== AccessoryControl.openBufferOutPutStream(accessory)");
             return OpenStatus.CONNECTED;
         }
-        // TODO Moved openBufferOutPutStream datum file into write() mehthod in LogFile
-        //openDatumFile();
         openCANLogFile();
         Log.i(TAG, "   USB device is: " + accessory.getManufacturer() + " " + accessory.getModel());
         if (ACC_MANUF.equals(accessory.getManufacturer()) && ACC_MODEL.equals(accessory.getModel())) {
@@ -594,9 +590,6 @@ public class AccessoryControl {
             //TODO Use write() in LogFile
             LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
             logFile.write("   Gateway Disconnected");
-            // TODO Moved close datum file into write() mehthod in LogFile
-           /* DatumUtils datumUtils = new DatumUtils(TAG);
-            datumUtils.closeDatumFile(this.datumStream);*/
             closeCANLogFile();
             this.permissionRequested = false;
             this.isOpen = false;
@@ -708,44 +701,6 @@ public class AccessoryControl {
         this.handler.sendMessage(m);
     }
 
-    // TODO Moved openDatumFile to DatumUtils
-
-  /*  public void openDatumFile() {
-        if (this.datumStream == null) {
-            if ("mounted".equals(Environment.getExternalStorageState())) {
-                File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
-                if (path.exists()) {
-                    Log.i(TAG, "Log directory already exists");
-                } else if (path.mkdirs()) {
-                    Log.i(TAG, "Log directory created");
-                } else {
-                    Log.i(TAG, "ERROR: Cannot create Log directory");
-                }
-                try {
-                    this.datumStream = new BufferedOutputStream(new FileOutputStream(new File(path, "Datum.bin"), true));
-                    Log.i(TAG, "Datum file opened");
-                    return;
-                } catch (Exception e) {
-                    Log.w(TAG, "IOException creating Datum file - ioe=", e);
-                    return;
-                }
-            }
-            Log.w(TAG, "Error opening Datum file - SDCard is not mounted");
-        }
-    }*/
-
-    // TODO Move closeDatumFile to DatumUtils
-  /*  public void closeDatumFile() {
-        if (this.datumStream != null) {
-            try {
-                this.datumStream.flush();
-                this.datumStream.close();
-                this.datumStream = null;
-            } catch (Exception e) {
-                Log.w(TAG, "IOException closing Datum file - e=", e);
-            }
-        }
-    }*/
 
     public void writefmtCANLogStream(String str) {
         if (MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE] && str != null && this.canStream != null) {

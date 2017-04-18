@@ -4,14 +4,13 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import vn.com.tma.idlesmart.AoaMessage;
@@ -37,7 +36,7 @@ public class LogFile {
     private String fileNamePath;
     private String tag;
     Context context;
-    JSONObject jsonGateway;
+
 
     /**
      * LogFile constructor
@@ -107,19 +106,34 @@ public class LogFile {
     }
 
     /**
-     * Read Json data
+     * Read InputStream
      * @return
      */
     public BufferedReader read() {
-        BufferedReader logIn = null;
-        if (this.inputStream == null){
-             this.openBufferedInputStream();
-        } else {
-            logIn = new BufferedReader(new InputStreamReader(inputStream));
-            return logIn;
+        if (this.inputStream == null) {
+            this.openBufferedInputStream();
         }
+
+        BufferedReader logIn = new BufferedReader(new InputStreamReader(this.inputStream));
         this.closeInputStream();
         return logIn;
+    }
+
+    public String readString() throws IOException {
+        if (this.inputStream == null) {
+            this.openBufferedInputStream();
+        }
+       // BufferedReader logIn = new BufferedReader(new InputStreamReader(this.inputStream));
+        StringBuilder inputStringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.inputStream));
+        String line = bufferedReader.readLine();
+        while(line != null){
+            inputStringBuilder.append(line);
+            line = bufferedReader.readLine();
+        }
+
+        this.closeInputStream();
+        return inputStringBuilder.toString();
     }
 
 
@@ -127,7 +141,7 @@ public class LogFile {
     /**
      * Open file
      */
-    public BufferedOutputStream openBufferOutPutStream() {
+    public void openBufferOutPutStream() {
         if (this.outputStream == null) {
             if ("mounted".equals(Environment.getExternalStorageState())) {
                 File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
@@ -148,34 +162,29 @@ public class LogFile {
                 Log.w(tag, "Error opening" + this.fileName + " file - SDCard is not mounted");
             }
         }
-        if (this.outputStream != null) {
-            this.write("\\\\IdleSmart "+ this.fileName +" start");
-        }
-        return this.outputStream;
     }
     /**
      * Read file store in external storage
-     * @return BufferedInputStream object
      */
-    public BufferedInputStream openBufferedInputStream() {
-
-        BufferedInputStream bufferedInputStream = null;
-        if ("mounted".equals(Environment.getExternalStorageState())) {
-            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
-            if (path.exists()) {
-                try {
-                    Log.i(TAG, "Log file opened for Read");
-                    bufferedInputStream = new BufferedInputStream(new FileInputStream(new File(path, this.fileName)));
-                } catch (Exception e) {
-                    Log.w(TAG, "IOException opening Log file - ioe=", e);
+    public void openBufferedInputStream() {
+        if (this.inputStream == null) {
+            if ("mounted".equals(Environment.getExternalStorageState())) {
+                File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
+                if (path.exists()) {
+                    try {
+                        Log.i(TAG, "Log file opened for Read");
+                        this.inputStream = new BufferedInputStream(new FileInputStream(new File(path, this.fileName)));
+                        //InputStream s = new BufferedInputStream( new ReaderInputStream( new StringReader("a string")));
+                    } catch (Exception e) {
+                        Log.w(TAG, "IOException opening Log file - ioe=", e);
+                    }
+                } else {
+                    Log.i(TAG, "ERROR: Log file directory does not exist");
                 }
             } else {
-                Log.i(TAG, "ERROR: Log file directory does not exist");
+                Log.w(TAG, "Error opening Log file for Read - SDCard is not mounted");
             }
-        } else {
-            Log.w(TAG, "Error opening Log file for Read - SDCard is not mounted");
         }
-        return bufferedInputStream;
     }
 
     /**
@@ -184,11 +193,10 @@ public class LogFile {
 
     private void closeOutputStream() {
         if (this.outputStream != null) {
-            this.write("\\\\IdleSmart log stop");
+            //this.write("\\\\IdleSmart log stop");
             try {
                 this.outputStream.flush();
                 this.outputStream.close();
-                this.outputStream = null;
             } catch (Exception e) {
                 Log.w(tag, "IOException closing Log file - e=", e);
             }

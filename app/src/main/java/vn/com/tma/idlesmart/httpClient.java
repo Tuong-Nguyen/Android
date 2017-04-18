@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -1020,8 +1021,16 @@ public class httpClient extends Activity {
         Log.i(TAG, "DatumTask");
         LogFile logFile = new LogFile(context, LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
+        String datumStr="";
+        try {
+            datumStr = logFile.readString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InputStream inputStream = new ByteArrayInputStream(datumStr.getBytes());
 
-        BufferedReader datumIn = logFile.read();
+        BufferedReader datumIn = new BufferedReader(new InputStreamReader(inputStream));
+
         // TODO original while (logIn != null)
         if (datumIn != null) {
             JSONArray jsonDatum = convertDatumToJsonArray(datumIn, PhoneHomeState.DATUM_STATUS);
