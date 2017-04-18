@@ -7,7 +7,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
@@ -15,10 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -825,23 +821,6 @@ public class httpClient extends Activity {
         return responseCode;
     }
 
-    // TODO: Move to StringAndVoltUtil class
-   /* public int batteryStringToMilliVolt(String battstr) {
-        try {
-            return (Integer.parseInt(battstr.substring(0, 2)) * 10) + Integer.parseInt(battstr.substring(3, 4));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }*/
-
-    // TODO: Move to StringAndVoltUtil class
-    /*public String batteryMilliVoltToString(int battvolt) {
-        int volts = battvolt / 10;
-        String voltstr = Integer.toString(volts);
-        return voltstr + "." + Integer.toString(battvolt - (volts * 10));
-    }*/
-
     /**
      * Calling ServerTask to upload log from external storage to server
      * @return
@@ -855,21 +834,73 @@ public class httpClient extends Activity {
         int responseCode = -1;
         Log.i(TAG, "LogTask");
         CommLog(PhoneHomeState.UPDATE, "LogTask");
-        LogFile logFile = new LogFile(context,LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+        LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
         logFile.write("Start Upload");
-        responseCode = logFile.read(jsonGateway, responseCode);
-        logFile.closeInputStream();
+        BufferedReader logIn = logFile.read();
+        // TODO original while (logIn != null)
+        if (logIn != null) {
+            JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
+            if (jsonLog == null) {
+                return responseCode;
+            }
+            try {
+                JSONObject jsonRequest = new JSONObject();
+                jsonRequest.accumulate("vin", this.jsonGateway.getString("vin"));
+                jsonRequest.accumulate("guid", Integer.valueOf(jsonGateway.getInt("guid")));
+                JSONObject jsonDevice = new JSONObject();
+                jsonDevice.accumulate("serial", Integer.valueOf(jsonGateway.getInt("serial")));
+                jsonRequest.accumulate("device", jsonDevice);
+                jsonRequest.accumulate("log", jsonLog);
+                if (MainActivity.DebugLog) {
+                    Log.i(TAG, "jsonLogRequest:" + jsonRequest.toString(1));
+                }
+                CommLog(PhoneHomeState.UPDATE, "jsonLogRequest:" + jsonRequest.toString(1));
+                ServerTask servertask = new ServerTask();
+                servertask.setContext(this.mInstance.getApplicationContext());
+                Log.i(TAG, "logTask:servertask.execute..");
+                String[] strArr = new String[2];
+                strArr[0] = "http://" + MainActivity.APIroute + "/api/truck/update";
+                strArr[1] = jsonRequest.toString();
+                servertask.execute(strArr);
+                String response = servertask.get(5, TimeUnit.MINUTES);
+                if (MainActivity.DebugLog) {
+                    Log.i(TAG, "logTask:servertask.get response=" + response);
+                }
+                CommLog(PhoneHomeState.UPDATE, "servertask.get - finished");
+                if (response.isEmpty()) {
+                    responseCode = 1;
+                    Log.e(TAG, "ERROR: logTaskResponse is empty");
+                    CommLog(PhoneHomeState.UPDATE, "ERROR: logTaskResponse is empty");
+                } else {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    responseCode = jsonResponse.getInt("code");
+                    if (MainActivity.DebugLog) {
+                        Log.i(TAG, "jsonLogResponse:" + jsonResponse.toString(1));
+                    }
+                    CommLog(PhoneHomeState.UPDATE, "jsonLogResponse:" + jsonResponse.toString(1));
+                    if (responseCode != 10) {
+                        Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
+                    }
+                }
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            }
+        }
         logFile.deleteFile(LogFile.LOGNAME);
         logFile.write("End Upload");
         return responseCode;
     }
-
-
-    // TODO Move convertLogToJsonArray to LogFile
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-   /* public JSONArray convertLogToJsonArray(BufferedReader r17, int r18) {
-        *//*
+    public JSONArray convertLogToJsonArray(BufferedReader r17, int r18) {
+        /*
         r16 = this;
         r7 = 0;
         r11 = 0;
@@ -970,57 +1001,10 @@ public class httpClient extends Activity {
     L_0x009f:
         r7 = r8;
         goto L_0x0096;
-        *//*
+        */
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertLogToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
-    }*/
-
-    // TODO Moved openLogBufferedInputStream to LogFile
-/*
-    public BufferedInputStream openLogBufferedInputStream() {
-        BufferedInputStream bufferedInputStream = null;
-        if ("mounted".equals(Environment.getExternalStorageState())) {
-            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
-            if (path.exists()) {
-                try {
-                    Log.i(TAG, "Log file opened for Read");
-                    bufferedInputStream = new BufferedInputStream(new FileInputStream(new File(path, "Log.bin")));
-                } catch (Exception e) {
-                    Log.w(TAG, "IOException opening Log file - ioe=", e);
-                }
-            } else {
-                Log.i(TAG, "ERROR: Log file directory does not exist");
-            }
-        } else {
-            Log.w(TAG, "Error opening Log file for Read - SDCard is not mounted");
-        }
-        return bufferedInputStream;
-    }*/
-    // TODO Moved deleteLogFile, closeLogStream method into LogFile
-/*
-    public void closeLogStream(BufferedInputStream logStream) {
-        if (logStream != null) {
-            try {
-                logStream.close();
-            } catch (Exception e) {
-                Log.w(TAG, "IOException closing Log file - e=", e);
-            }
-        }
     }
-*/
 
-   /* public void deleteLogFile() {
-        if ("mounted".equals(Environment.getExternalStorageState())) {
-            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
-            if (path.exists()) {
-                try {
-                    new File(path, "Log.bin").delete();
-                    Log.i(TAG, "Log file deleted");
-                } catch (Exception e) {
-                    Log.w(TAG, "IOException deleting Log file - ioe=", e);
-                }
-            }
-        }
-    }*/
 
     /**
      * Calling ServerTask to get data from server
@@ -1036,22 +1020,13 @@ public class httpClient extends Activity {
         Log.i(TAG, "DatumTask");
         LogFile logFile = new LogFile(context, LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
-        // TODO Moved this method into LogFile
-       /* if (this.mInstance.accessoryControl.datumStream != null) {
 
-           this.mInstance.accessoryControl.closeDatumFile();
-        }*/
-        BufferedInputStream datumStream = openDatumBufferedInputStream();
-        if (datumStream == null) {
-            Log.i(TAG, "Datum file does not exist or is empty");
-            CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "Datum file does not exist or is empty");
-            return responseCode;
-        }
-        BufferedReader datumIn = new BufferedReader(new InputStreamReader(datumStream));
-        while (datumIn != null) {
+        BufferedReader datumIn = logFile.read();
+        // TODO original while (logIn != null)
+        if (datumIn != null) {
             JSONArray jsonDatum = convertDatumToJsonArray(datumIn, PhoneHomeState.DATUM_STATUS);
             if (jsonDatum == null) {
-                break;
+                return responseCode;
             }
             try {
                 JSONObject jsonRequest = new JSONObject();
@@ -1094,13 +1069,7 @@ public class httpClient extends Activity {
                 e4.printStackTrace();
             }
         }
-
-       /* DatumUtils datumUtils =new DatumUtils(TAG);
-        datumUtils.closeDatumStream(datumStream);*/
-        logFile.closeInputStream();
         logFile.deleteFile(LogFile.DATUMNAME);
-        // TODO Continue working
-        //this.mInstance.accessoryControl.openDatumFile();
         return responseCode;
     }
 
@@ -1215,59 +1184,6 @@ public class httpClient extends Activity {
         */
         throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertDatumToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
     }
-    /**
-     * Open datum BufferedInputStream
-     * @return BufferedInputStream object
-     */
-    public BufferedInputStream openDatumBufferedInputStream() {
-        BufferedInputStream returnstream = null;
-        if ("mounted".equals(Environment.getExternalStorageState())) {
-            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
-            if (path.exists()) {
-                File file = new File(path, "Datum.bin");
-                if (file.length() == 0) {
-                    return null;
-                }
-                try {
-                    Log.i(TAG, "Datum file opened for Read");
-                    returnstream = new BufferedInputStream(new FileInputStream(file));
-                } catch (Exception e) {
-                    Log.w(TAG, "IOException opening Datum file - ioe=", e);
-                }
-            } else {
-                Log.i(TAG, "ERROR: Log file directory does not exist");
-            }
-        } else {
-            Log.w(TAG, "Error opening Datum file for Read - SDCard is not mounted");
-        }
-        return returnstream;
-    }
-
-    // TODO: Move closeDatumStream, deleteFile, openDatumFile into single class
-
-    /*public void closeDatumStream(BufferedInputStream datumStream) {
-        if (datumStream != null) {
-            try {
-                datumStream.close();
-            } catch (Exception e) {
-                Log.w(TAG, "IOException closing Datum file - e=", e);
-            }
-        }
-    }
-
-   public void deleteFile() {
-        if ("mounted".equals(Environment.getExternalStorageState())) {
-            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Logs");
-            if (path.exists()) {
-                try {
-                    new File(path, "Datum.bin").delete();
-                    Log.i(TAG, "Datum file deleted");
-                } catch (Exception e) {
-                    Log.w(TAG, "IOException deleting Datum file - ioe=", e);
-                }
-            }
-        }
-    }*/
 
     /**
      * Check there is APK update or not
