@@ -837,7 +837,16 @@ public class httpClient extends Activity {
         CommLog(PhoneHomeState.UPDATE, "LogTask");
         LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
         logFile.write("Start Upload");
-        BufferedReader logIn = logFile.read();
+        String logInStr = null;
+        try {
+            logInStr = logFile.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InputStream inputStream = new ByteArrayInputStream(logInStr.getBytes());
+
+        BufferedReader logIn = new BufferedReader(new InputStreamReader(inputStream));
+
         // TODO original while (logIn != null)
         if (logIn != null) {
             JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
@@ -1023,7 +1032,7 @@ public class httpClient extends Activity {
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
         String datumStr="";
         try {
-            datumStr = logFile.readString();
+            datumStr = logFile.read();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -109,21 +109,11 @@ public class LogFile {
      * Read InputStream
      * @return
      */
-    public BufferedReader read() {
+
+    public String read() throws IOException {
         if (this.inputStream == null) {
             this.openBufferedInputStream();
         }
-
-        BufferedReader logIn = new BufferedReader(new InputStreamReader(this.inputStream));
-        this.closeInputStream();
-        return logIn;
-    }
-
-    public String readString() throws IOException {
-        if (this.inputStream == null) {
-            this.openBufferedInputStream();
-        }
-       // BufferedReader logIn = new BufferedReader(new InputStreamReader(this.inputStream));
         StringBuilder inputStringBuilder = new StringBuilder();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.inputStream));
         String line = bufferedReader.readLine();
@@ -131,7 +121,6 @@ public class LogFile {
             inputStringBuilder.append(line);
             line = bufferedReader.readLine();
         }
-
         this.closeInputStream();
         return inputStringBuilder.toString();
     }
@@ -174,7 +163,6 @@ public class LogFile {
                     try {
                         Log.i(TAG, "Log file opened for Read");
                         this.inputStream = new BufferedInputStream(new FileInputStream(new File(path, this.fileName)));
-                        //InputStream s = new BufferedInputStream( new ReaderInputStream( new StringReader("a string")));
                     } catch (Exception e) {
                         Log.w(TAG, "IOException opening Log file - ioe=", e);
                     }
