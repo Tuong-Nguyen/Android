@@ -1,15 +1,15 @@
 package vn.com.tma.idlesmart;
 
 import android.content.Context;
-import android.os.Environment;
+import android.hardware.usb.UsbAccessory;
+import android.hardware.usb.UsbManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import android.hardware.usb.*;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -546,7 +546,6 @@ public class AccessoryControl {
             Log.i(TAG, "   <== AccessoryControl.openBufferOutPutStream(accessory)");
             return OpenStatus.CONNECTED;
         }
-        openCANLogFile();
         Log.i(TAG, "   USB device is: " + accessory.getManufacturer() + " " + accessory.getModel());
         if (ACC_MANUF.equals(accessory.getManufacturer()) && ACC_MODEL.equals(accessory.getModel())) {
             Log.i(TAG, "   USB device is known and supported");
@@ -590,7 +589,6 @@ public class AccessoryControl {
             //TODO Use write() in LogFile
             LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
             logFile.write("   Gateway Disconnected");
-            closeCANLogFile();
             this.permissionRequested = false;
             this.isOpen = false;
             try {
@@ -701,67 +699,6 @@ public class AccessoryControl {
         this.handler.sendMessage(m);
     }
 
-
-    public void writefmtCANLogStream(String str) {
-        if (MainActivity.aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE] && str != null && this.canStream != null) {
-            int paddingCount = 16;
-            try {
-                int lth = str.length();
-                int reccnt = lth / paddingCount;
-                if (reccnt * paddingCount != lth) {
-                    reccnt += 1;
-                    str = padRight(str, (reccnt * paddingCount) - lth, ' ');
-                }
-                byte[] bytes = str.getBytes();
-                for (int irec = 0; irec < reccnt; irec += 1) {
-                    this.canStream.write(bytes, 0, paddingCount);
-                }
-                this.canStream.flush();
-            } catch (Exception e) {
-                Log.w(TAG, "IOException writing CANLog file - e=", e);
-            }
-        }
-    }
-    // TODO It was replaced by openBufferOutPutStream() in LogFile class
-    public void openCANLogFile() {
-        if ("mounted".equals(Environment.getExternalStorageState())) {
-            File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "CANLogs");
-            if (path.exists()) {
-                Log.i(TAG, "CANLog directory already exists");
-            } else if (path.mkdirs()) {
-                Log.i(TAG, "CANLog directory created");
-            } else {
-                Log.i(TAG, "ERROR: Cannot create CANLog directory");
-            }
-            try {
-                this.canStream = new BufferedOutputStream(new FileOutputStream(new File(path, "CANLog.bin"), true));
-                Log.i(TAG, "CANLog file opened");
-            } catch (Exception e) {
-                Log.w(TAG, "IOException creating CANLog file - ioe=", e);
-            }
-        } else {
-            Log.w(TAG, "Error opening CANLog file - SDCard is not mounted");
-        }
-        if (this.canStream != null) {
-            try {
-                this.canStream.write("================".getBytes(), 0, 16);
-            } catch (Exception e2) {
-                Log.w(TAG, "IOException writing CANLog header - ioe=", e2);
-            }
-        }
-    }
-
-    public void closeCANLogFile() {
-        if (this.canStream != null) {
-            try {
-                this.canStream.flush();
-                this.canStream.close();
-                this.canStream = null;
-            } catch (Exception e) {
-                Log.w(TAG, "IOException closing CANLog file - e=", e);
-            }
-        }
-    }
 
     private int toInt(byte hi, byte lo) {
         return ((((hi & 255) << 8) | (lo & 255)) << 16) >> 16;
