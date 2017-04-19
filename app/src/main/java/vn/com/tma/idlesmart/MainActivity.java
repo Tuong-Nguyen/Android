@@ -45,6 +45,8 @@ import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import vn.com.tma.idlesmart.Utils.CANLogFile;
+import vn.com.tma.idlesmart.Utils.LogFileAbstract;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
@@ -1399,7 +1401,9 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 this.test_mark_counter += 1;
                 Log.i(TAG, "************************************ TEST MARK: " + this.test_mark_counter);
                 if (gateway_connected) {
-                    this.accessoryControl.writefmtCANLogStream("TEST MARK: " + Integer.toString(this.test_mark_counter));
+                    // TODO original this.accessoryControl.writeftmCANLogFile()
+                    CANLogFile canLogFile = new CANLogFile(MainActivity.this, LogFileAbstract.CANLOGNAME, LogFileAbstract.CANLOGPATH, TAG);
+                    canLogFile.write("TEST MARK: " + Integer.toString(this.test_mark_counter));
                     if (test_mode) {
                         setGatewayStatus("Gateway Connected");
                         test_mode = false;
