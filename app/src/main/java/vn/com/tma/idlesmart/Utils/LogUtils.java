@@ -17,11 +17,11 @@ import static android.content.ContentValues.TAG;
 
 
 public abstract class LogUtils {
-    public static final String LOGNAME= "Log.bin";
-    public static final String LOGPATH= "Logs";
-    public static final String DATUMNAME= "Datum.bin";
-    public static final String CANLOGNAME= "CANLog.bin";
-    public static final String CANLOGPATH= "CANLogs";
+    public static final String LOGNAME = "Log.bin";
+    public static final String LOGPATH = "Logs";
+    public static final String DATUMNAME = "Datum.bin";
+    public static final String CANLOGNAME = "CANLog.bin";
+    public static final String CANLOGPATH = "CANLogs";
 
     public BufferedOutputStream outputStream = null;
     public BufferedInputStream inputStream = null;
@@ -33,6 +33,7 @@ public abstract class LogUtils {
 
     /**
      * LogFile constructor
+     *
      * @param fileName
      * @param fileNamePath
      * @param tag
@@ -46,6 +47,7 @@ public abstract class LogUtils {
 
     /**
      * Writing with string data
+     *
      * @param data
      */
     public void write(String data) {
@@ -53,6 +55,7 @@ public abstract class LogUtils {
 
     /**
      * Writing with array data
+     *
      * @param buffer
      * @param len
      */
@@ -61,24 +64,34 @@ public abstract class LogUtils {
 
     /**
      * Read InputStream
+     *
      * @return
      */
 
-    public String read() throws IOException {
+    public String read() {
+        String data = null;
         if (this.inputStream == null) {
             this.openBufferedInputStream();
         }
-        StringBuilder inputStringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.inputStream));
-        String line = bufferedReader.readLine();
-        while(line != null){
-            inputStringBuilder.append(line);
-            line = bufferedReader.readLine();
+        if (this.inputStream != null) {
+            StringBuilder inputStringBuilder = new StringBuilder();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.inputStream));
+            String line = null;
+            try {
+                line = bufferedReader.readLine();
+                while (line != null) {
+                    inputStringBuilder.append(line);
+                    line = bufferedReader.readLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            data = inputStringBuilder.toString();
+            this.closeInputStream();
+            return data;
         }
-        this.closeInputStream();
-        return inputStringBuilder.toString();
+        return data;
     }
-
 
 
     /**
@@ -97,15 +110,16 @@ public abstract class LogUtils {
                 }
                 try {
                     this.outputStream = new BufferedOutputStream(new FileOutputStream(new File(path, this.fileName), true));
-                    Log.i(tag,  this.fileName + " file opened");
+                    Log.i(tag, this.fileName + " file opened");
                 } catch (Exception e) {
-                    Log.w(tag, "IOException creating"+ this.fileName + " file - ioe=", e);
+                    Log.w(tag, "IOException creating" + this.fileName + " file - ioe=", e);
                 }
             } else {
                 Log.w(tag, "Error opening" + this.fileName + " file - SDCard is not mounted");
             }
         }
     }
+
     /**
      * Read file store in external storage
      */
@@ -163,6 +177,7 @@ public abstract class LogUtils {
         }
         return false;
     }
+
     /**
      * Close a buffered input stream
      */
