@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import static android.content.ContentValues.TAG;
 
 
-public abstract class LogFileAbstract {
+public abstract class LogUtils {
     public static final String LOGNAME= "Log.bin";
     public static final String LOGPATH= "Logs";
     public static final String DATUMNAME= "Datum.bin";
@@ -37,7 +37,7 @@ public abstract class LogFileAbstract {
      * @param fileNamePath
      * @param tag
      */
-    public LogFileAbstract(Context context, String fileName, String fileNamePath, String tag) {
+    public LogUtils(Context context, String fileName, String fileNamePath, String tag) {
         this.fileName = fileName;
         this.fileNamePath = fileNamePath;
         this.tag = tag;

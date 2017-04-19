@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 
-public class CANLogFile extends LogFileAbstract {
+public class CANLogFile extends LogUtils {
     /**
      * LogFile constructor
      *
