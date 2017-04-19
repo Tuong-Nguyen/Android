@@ -15,9 +15,6 @@ import java.io.InputStreamReader;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by ntmhanh on 4/19/2017.
- */
 
 public abstract class LogFileAbstract {
     public static final String LOGNAME= "Log.bin";

@@ -7,9 +7,6 @@ import vn.com.tma.idlesmart.AoaMessage;
 
 import static vn.com.tma.idlesmart.AccessoryControl.getUTCdatetimeAsString;
 
-/**
- * Created by ntmhanh on 4/13/2017.
- */
 
 public class LogFile extends LogFileAbstract{
     /**

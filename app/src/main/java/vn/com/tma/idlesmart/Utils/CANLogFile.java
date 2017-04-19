@@ -3,9 +3,6 @@ package vn.com.tma.idlesmart.Utils;
 import android.content.Context;
 import android.util.Log;
 
-/**
- * Created by ntmhanh on 4/19/2017.
- */
 
 public class CANLogFile extends LogFileAbstract {
     /**
