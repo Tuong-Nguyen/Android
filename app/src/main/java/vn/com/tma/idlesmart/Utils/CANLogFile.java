@@ -48,5 +48,7 @@ public class CANLogFile extends LogUtils {
                 Log.w(tag, "IOException writing CANLog file - e=", e);
             }
         }
+        // Close file
+        this.closeOutputStream();
     }
 }
