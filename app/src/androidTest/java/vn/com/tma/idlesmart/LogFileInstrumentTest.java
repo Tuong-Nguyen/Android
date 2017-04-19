@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import vn.com.tma.idlesmart.Utils.CANLogFile;
 import vn.com.tma.idlesmart.Utils.LogFile;
 
 import static junit.framework.Assert.assertEquals;
@@ -182,25 +181,4 @@ public class LogFileInstrumentTest {
         // Assert
         assertNull(data);
     }
-    @Test
-    public void writeCANLogFile_inputStringDataIntoANewFile_returnTheDataExistInThatFile() throws IOException {
-        //Arrange
-        String fileNamePath = "CANLogs";
-        String filename = "CANLog.bin";
-        String tag = "test";
-        context = InstrumentationRegistry.getTargetContext();
-        CANLogFile canLogFile = new CANLogFile(context, filename, fileNamePath, tag);
-        canLogFile.deleteFile(filename);// Ensure this is new file
-        String input = "This is instrument test";
-
-        // Action
-        canLogFile.write(input);
-        String data = canLogFile.read();
-        boolean result = data.matches("(?i).*This is instrume.*");
-
-        // Assert
-        assertTrue(result);
-    }
-
-
 }
