@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import vn.com.tma.idlesmart.Utils.BatteryVoltageConverter;
+import vn.com.tma.idlesmart.Utils.FileName;
 import vn.com.tma.idlesmart.Utils.LogFile;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.params.PhoneHomeState;
@@ -835,7 +836,7 @@ public class httpClient extends Activity {
         int responseCode = -1;
         Log.i(TAG, "LogTask");
         CommLog(PhoneHomeState.UPDATE, "LogTask");
-        LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+        LogFile logFile = new LogFile(context, FileName.LOGNAME, FileName.LOGPATH, TAG);
         logFile.write("Start Upload");
         String logInStr = null;
         logInStr = logFile.read();
@@ -899,7 +900,7 @@ public class httpClient extends Activity {
                 e.printStackTrace();
             }
         }
-        logFile.deleteFile(LogFile.LOGNAME);
+        logFile.deleteFile(FileName.LOGNAME);
         logFile.write("End Upload");
         return responseCode;
     }
@@ -1024,7 +1025,7 @@ public class httpClient extends Activity {
     public int PerformDatumTask() {
         int responseCode = -1;
         Log.i(TAG, "DatumTask");
-        LogFile logFile = new LogFile(context, LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
+        LogFile logFile = new LogFile(context, FileName.DATUMNAME, FileName.LOGPATH, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
         String datumStr="";
         datumStr = logFile.read();
@@ -1077,7 +1078,7 @@ public class httpClient extends Activity {
                 e4.printStackTrace();
             }
         }
-        logFile.deleteFile(LogFile.DATUMNAME);
+        logFile.deleteFile(FileName.DATUMNAME);
         return responseCode;
     }
 

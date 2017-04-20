@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import vn.com.tma.idlesmart.Utils.FileName;
 import vn.com.tma.idlesmart.Utils.LogFile;
 
 public class AccessoryControl {
@@ -422,12 +423,12 @@ public class AccessoryControl {
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
                                 //TODO It was replaced by method write()
-                                LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+                                LogFile logFile = new LogFile(context, FileName.LOGNAME, FileName.LOGPATH, TAG);
                                 logFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_DATUM /*91*/:
                                 //TODO It was replaced by method write()
-                                LogFile datumFile = new LogFile(context, LogFile.DATUMNAME, LogFile.LOGPATH, TAG);
+                                LogFile datumFile = new LogFile(context, FileName.DATUMNAME, FileName.LOGPATH, TAG);
                                 datumFile.write(buffer, len);
                                 break;
                             case AccessoryControl.APIEVENT_HANDLER_DISCONNECT /*125*/:
@@ -565,7 +566,7 @@ public class AccessoryControl {
                 new Thread(this.usbreader).start();
                 Log.i(TAG, "   ---> Thread(receiver).start()..");
                 //TODO Use write() in LogFile
-                LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+                LogFile logFile = new LogFile(context, FileName.LOGNAME, FileName.LOGPATH, TAG);
                 logFile.write("Gateway Connected");
                 MainActivity.demo_mode = false;
                 Log.i(TAG, "   Send APICMD_CONNECT to Gateway..");
@@ -587,7 +588,7 @@ public class AccessoryControl {
         Log.i(TAG, "==> AccessoryControl::close()..");
         if (this.isOpen) {
             //TODO Use write() in LogFile
-            LogFile logFile = new LogFile(context, LogFile.LOGNAME, LogFile.LOGPATH, TAG);
+            LogFile logFile = new LogFile(context, FileName.LOGNAME, FileName.LOGPATH, TAG);
             logFile.write("   Gateway Disconnected");
             this.permissionRequested = false;
             this.isOpen = false;

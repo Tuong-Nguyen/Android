@@ -16,12 +16,7 @@ import java.io.InputStreamReader;
 import static android.content.ContentValues.TAG;
 
 
-public abstract class LogUtils {
-    public static final String LOGNAME = "Log.bin";
-    public static final String LOGPATH = "Logs";
-    public static final String DATUMNAME = "Datum.bin";
-    public static final String CANLOGNAME = "CANLog.bin";
-    public static final String CANLOGPATH = "CANLogs";
+public abstract class LogAbstract {
 
     public BufferedOutputStream outputStream = null;
     public BufferedInputStream inputStream = null;
@@ -38,7 +33,7 @@ public abstract class LogUtils {
      * @param fileNamePath
      * @param tag
      */
-    public LogUtils(Context context, String fileName, String fileNamePath, String tag) {
+    public LogAbstract(Context context, String fileName, String fileNamePath, String tag) {
         this.fileName = fileName;
         this.fileNamePath = fileNamePath;
         this.tag = tag;
@@ -50,17 +45,8 @@ public abstract class LogUtils {
      *
      * @param data
      */
-    public void write(String data) {
-    }
+    public abstract void write(String data);
 
-    /**
-     * Writing with array data
-     *
-     * @param buffer
-     * @param len
-     */
-    public void write(byte[] buffer, int len) {
-    }
 
     /**
      * Read InputStream

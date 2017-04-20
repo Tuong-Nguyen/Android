@@ -8,7 +8,7 @@ import vn.com.tma.idlesmart.AoaMessage;
 import static vn.com.tma.idlesmart.AccessoryControl.getUTCdatetimeAsString;
 
 
-public class LogFile extends LogUtils {
+public class LogFile extends LogAbstract {
     /**
      * LogFile constructor
      *
