@@ -139,6 +139,7 @@ public abstract class LogAbstract {
             try {
                 this.outputStream.flush();
                 this.outputStream.close();
+                this.outputStream = null;
             } catch (Exception e) {
                 Log.w(tag, "IOException closing Log file - e=", e);
             }
