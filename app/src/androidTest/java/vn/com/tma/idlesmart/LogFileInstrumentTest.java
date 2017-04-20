@@ -1,17 +1,12 @@
 package vn.com.tma.idlesmart;
 
 import android.content.Context;
-import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import vn.com.tma.idlesmart.Utils.LogFile;
@@ -93,24 +88,8 @@ public class LogFileInstrumentTest {
         LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
         logFile.deleteFile(filename);// Ensure this is a new file
 
-        File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileNamePath);
-        if (path.exists()) {
-            Log.i(tag, filename + " directory already exists");
-        } else if (path.mkdirs()) {
-            Log.i(tag,filename + " directory created");
-        } else {
-            Log.i(tag, "ERROR: Cannot create " +filename + " directory");
-        }
-        try {
-            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File(path, filename), true));
-            byte[] bytes = input1.getBytes();
-            outputStream.write(bytes);
-            Log.i(tag, filename + " file opened");
-        } catch (Exception e) {
-            Log.w(tag, "IOException creating"+ filename + " file - ioe=", e);
-        }
-
         // Action
+        logFile.write(input1);
         logFile.write(input2);
         String data = logFile.read();
         boolean result1 = data.matches("(?i).*This is the first input.*");
