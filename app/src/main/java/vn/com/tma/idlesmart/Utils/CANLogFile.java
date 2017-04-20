@@ -25,6 +25,11 @@ public class CANLogFile extends LogAbstract {
         return padded.toString();
     }
 
+    /**
+     * Write String data into File
+     * @param data
+     */
+
     @Override
     public void write(String data) {
         if (this.outputStream == null) {
