@@ -246,56 +246,23 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
 
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscTRAToGateway(JSONObject r10) {
-        /*
-        r9 = this;
-        r0 = "IdleSmart.UpdateGateway";
-        r7 = 16767; // 0x417f float:2.3496E-41 double:8.284E-320;
-        r1 = new byte[r7];
-        r5 = 0;
-        r7 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r7 == 0) goto L_0x0012;
-    L_0x000b:
-        r7 = "IdleSmart.UpdateGateway";
-        r8 = "<sendCSCTRAToGateway>";
-        android.util.Log.i(r7, r8);
-    L_0x0012:
-        r7 = "tra";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x0039 }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x0039 }
-        r4 = 0;
-        r6 = r5;
-    L_0x001e:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x003e }
-        if (r4 >= r7) goto L_0x002b;
-    L_0x0021:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0039 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0039 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x001e;
-    L_0x002b:
-        r7 = 1;
-        com.idlesmarter.aoa.MainActivity.GatewayUpdatePending = r7;	 Catch:{ JSONException -> 0x003e }
-        r7 = r9.mInstance;	 Catch:{ JSONException -> 0x003e }
-        r7 = r7.accessoryControl;	 Catch:{ JSONException -> 0x003e }
-        r8 = 191; // 0xbf float:2.68E-43 double:9.44E-322;
-        r7.writeCommandBlock(r8, r6, r1);	 Catch:{ JSONException -> 0x003e }
-        r5 = r6;
-    L_0x0038:
-        return;
-    L_0x0039:
-        r3 = move-exception;
-    L_0x003a:
-        r3.printStackTrace();
-        goto L_0x0038;
-    L_0x003e:
-        r3 = move-exception;
-        r5 = r6;
-        goto L_0x003a;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscTRAToGateway(org.json.JSONObject):void");
+    public void sendCscTRAToGateway(JSONObject jsonObject) {
+        byte[] parentArray = new byte[16767];
+        int i = 0;
+        if (MainActivity.DebugLog) {
+            Log.i("IdleSmart.UpdateGateway", "<sendCSCTRAToGateway>");
+        }
+        try {
+            String tra = "tra";
+            buildChildArray(i, parentArray, tra, jsonObject);
+
+            MainActivity.GatewayUpdatePending = true;
+            this.mInstance.accessoryControl.writeCommandBlock(191, i, parentArray);
+            return;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
 
