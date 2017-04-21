@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -18,7 +19,6 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 import vn.com.tma.idlesmart.MainActivity;
-import vn.com.tma.idlesmart.httpClient;
 import vn.com.tma.idlesmart.params.UpdateTaskConfig;
 
 /**
@@ -26,7 +26,8 @@ import vn.com.tma.idlesmart.params.UpdateTaskConfig;
  */
 public class UpdateGateway extends AsyncTask<String, Void, Void> {
     private static final String TAG = "IdleSmart.UpdateGateway";
-    private Context context;
+    public Context context;
+    public MainActivity mInstance;
 
     public void setContext(Context contextf) {
         this.context = contextf;
@@ -135,208 +136,88 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
         //CommLog(STATE_APKUPDATE, "     CSC has been sent to Gateway");
     }
 
+    /**
+     * Build child array
+     * @param i
+     * @param parentArray
+     * @param feature
+     * @param jsonObject
+     */
+
+    public void buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject){
+        byte[] childArray;
+        int j = 0;
+        try {
+            childArray = hexStringToByteArray(jsonObject.getString(feature));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        while (childArray.length > j){
+            parentArray[i] = childArray[j];
+            j = j +1;
+            i = i + 1;
+        }
+    }
+
+
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscHeaderToGateway(JSONObject r14) {
-        /*
-        r13 = this;
-        r0 = "IdleSmart.UpdateGateway";
-        r11 = 16767; // 0x417f float:2.3496E-41 double:8.284E-320;
-        r1 = new byte[r11];
-        r6 = 0;
-        r11 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r11 == 0) goto L_0x0012;
-    L_0x000b:
-        r11 = "IdleSmart.UpdateGateway";
-        r12 = "<sendCSCHeaderToGateway>";
-        android.util.Log.i(r11, r12);
-    L_0x0012:
-        r11 = "format";
-        r4 = r14.getInt(r11);	 Catch:{ JSONException -> 0x0120 }
-        r7 = r6 + 1;
-        r11 = r4 & 255;
-        r11 = (byte) r11;
-        r1[r6] = r11;	 Catch:{ JSONException -> 0x0125 }
-        r11 = "start";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x002a:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0037;
-    L_0x002d:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x002a;
-    L_0x0037:
-        r11 = "size";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x0042:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x004f;
-    L_0x0045:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0042;
-    L_0x004f:
-        r11 = "tra";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x005a:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0067;
-    L_0x005d:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x005a;
-    L_0x0067:
-        r11 = "signature";
-        r8 = r14.getJSONObject(r11);	 Catch:{ JSONException -> 0x0125 }
-        r11 = "crc_0";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x0078:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0085;
-    L_0x007b:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0078;
-    L_0x0085:
-        r11 = "crc_1";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x0090:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x009d;
-    L_0x0093:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0090;
-    L_0x009d:
-        r11 = "crc_2";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x00a8:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x00b5;
-    L_0x00ab:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00a8;
-    L_0x00b5:
-        r11 = "crc_3";
-        r11 = r8.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x00c0:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x00cd;
-    L_0x00c3:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00c0;
-    L_0x00cd:
-        r11 = "block_count";
-        r11 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r2 = hexStringToByteArray(r11);	 Catch:{ JSONException -> 0x0125 }
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        r12 = 1;
-        if (r11 != r12) goto L_0x0128;
-    L_0x00db:
-        r6 = r7 + 1;
-        r11 = 0;
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-    L_0x00e0:
-        r5 = 0;
-        r7 = r6;
-    L_0x00e2:
-        r11 = r2.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x00ef;
-    L_0x00e5:
-        r6 = r7 + 1;
-        r11 = r2[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00e2;
-    L_0x00ef:
-        r11 = "version";
-        r9 = r14.getString(r11);	 Catch:{ JSONException -> 0x0125 }
-        r10 = r9.getBytes();	 Catch:{ JSONException -> 0x0125 }
-        r5 = 0;
-    L_0x00fa:
-        r11 = r10.length;	 Catch:{ JSONException -> 0x0125 }
-        if (r5 >= r11) goto L_0x0107;
-    L_0x00fd:
-        r6 = r7 + 1;
-        r11 = r10[r5];	 Catch:{ JSONException -> 0x0120 }
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x00fa;
-    L_0x0107:
-        r5 = r10.length;	 Catch:{ JSONException -> 0x0125 }
-    L_0x0108:
-        r11 = 10;
-        if (r5 >= r11) goto L_0x0115;
-    L_0x010c:
-        r6 = r7 + 1;
-        r11 = 0;
-        r1[r7] = r11;	 Catch:{ JSONException -> 0x0120 }
-        r5 = r5 + 1;
-        r7 = r6;
-        goto L_0x0108;
-    L_0x0115:
-        r11 = r13.mInstance;	 Catch:{ JSONException -> 0x0125 }
-        r11 = r11.accessoryControl;	 Catch:{ JSONException -> 0x0125 }
-        r12 = 188; // 0xbc float:2.63E-43 double:9.3E-322;
-        r11.writeCommandBlock(r12, r7, r1);	 Catch:{ JSONException -> 0x0125 }
-        r6 = r7;
-    L_0x011f:
-        return;
-    L_0x0120:
-        r3 = move-exception;
-    L_0x0121:
-        r3.printStackTrace();
-        goto L_0x011f;
-    L_0x0125:
-        r3 = move-exception;
-        r6 = r7;
-        goto L_0x0121;
-    L_0x0128:
-        r6 = r7;
-        goto L_0x00e0;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscHeaderToGateway(org.json.JSONObject):void");
-    }
+    public void sendCscHeaderToGateway(JSONObject jsonObject) {
+        byte[] parentArray = new byte[16767];
+            if (MainActivity.DebugLog) {
+                Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
+            }
+            try {
+                int r4 = jsonObject.getInt("format");
+                int i = 1;
+                parentArray[0] = (byte) (r4 & 255);
+
+                String start = "start";
+                buildChildArray(i, parentArray,start, jsonObject);
+
+                String size = "size";
+                buildChildArray(i, parentArray, size, jsonObject);
+
+                String tra = "tra";
+                buildChildArray(i, parentArray, tra, jsonObject);
+
+                String signature = "signature";
+                buildChildArray(i, parentArray, signature, jsonObject);
+
+                String crc_1 = "crc_1";
+                buildChildArray(i, parentArray, crc_1, jsonObject);
+
+                String crc_2 = "crc_2";
+                buildChildArray(i, parentArray, crc_2, jsonObject);
+
+                String crc_3 = "crc_3";
+                buildChildArray(i, parentArray, crc_3, jsonObject);
+
+                while (hexStringToByteArray(jsonObject.getString("block_count")).length == 1) {
+                    parentArray[i] = 0;
+                    i=i+1;
+                    String block_count = "block_count";
+                    buildChildArray(i, parentArray, block_count, jsonObject);
+
+                    String version = "version";
+                    buildChildArray(i, parentArray, version, jsonObject);
+
+                    int j = jsonObject.getString("version").getBytes().length;
+                    while (j<10){
+                        parentArray[i] = 0;
+                        j = j + 1;
+                        i = i + 1;
+                    }
+                    this.mInstance.accessoryControl.writeCommandBlock(188, i, parentArray );
+                    return;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+            throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscHeaderToGateway(org.json.JSONObject):void");
+        }
 
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
