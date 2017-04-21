@@ -144,19 +144,14 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
      * @param jsonObject
      */
 
-    public void buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject){
+    public void buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject) throws JSONException {
         byte[] childArray;
         int j = 0;
-        try {
             childArray = hexStringToByteArray(jsonObject.getString(feature));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return;
-        }
         while (childArray.length > j){
             parentArray[i] = childArray[j];
-            j = j +1;
-            i = i + 1;
+            j++;
+            i++;
         }
     }
 
@@ -165,13 +160,13 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public void sendCscHeaderToGateway(JSONObject jsonObject) {
         byte[] parentArray = new byte[16767];
+        int i = 0;
             if (MainActivity.DebugLog) {
                 Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
             }
             try {
-                int r4 = jsonObject.getInt("format");
-                int i = 1;
-                parentArray[0] = (byte) (r4 & 255);
+                parentArray[i] = (byte) (jsonObject.getInt("format") & 255);
+                i++;
 
                 String start = "start";
                 buildChildArray(i, parentArray,start, jsonObject);
@@ -196,7 +191,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
 
                 while (hexStringToByteArray(jsonObject.getString("block_count")).length == 1) {
                     parentArray[i] = 0;
-                    i=i+1;
+                    i++;
                     String block_count = "block_count";
                     buildChildArray(i, parentArray, block_count, jsonObject);
 
@@ -206,8 +201,8 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
                     int j = jsonObject.getString("version").getBytes().length;
                     while (j<10){
                         parentArray[i] = 0;
-                        j = j + 1;
-                        i = i + 1;
+                        j++;
+                        i++;
                     }
                     this.mInstance.accessoryControl.writeCommandBlock(188, i, parentArray );
                     return;
@@ -216,99 +211,37 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
                 e.printStackTrace();
                 return;
             }
-            throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscHeaderToGateway(org.json.JSONObject):void");
         }
 
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscDataBlockToGateway(JSONObject r10, int r11) {
-        /*
-        r9 = this;
-        r0 = "IdleSmart.UpdateGateway";
-        r7 = 16767; // 0x417f float:2.3496E-41 double:8.284E-320;
-        r1 = new byte[r7];
-        r5 = 0;
-        r7 = com.idlesmarter.aoa.MainActivity.DebugLog;
-        if (r7 == 0) goto L_0x0012;
-    L_0x000b:
-        r7 = "IdleSmart.UpdateGateway";
-        r8 = "<sendCSCDataBlockToGateway>";
-        android.util.Log.i(r7, r8);
-    L_0x0012:
-        r6 = r5 + 1;
-        r7 = 0;
-        r1[r5] = r7;
-        r5 = r6 + 1;
-        r7 = r11 & 255;
-        r7 = (byte) r7;
-        r1[r6] = r7;
-        r7 = "addr";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x0076 }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x0076 }
-        r4 = 0;
-        r6 = r5;
-    L_0x002a:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x007b }
-        if (r4 >= r7) goto L_0x0037;
-    L_0x002d:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0076 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0076 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x002a;
-    L_0x0037:
-        r7 = "size";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x007b }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x007b }
-        r4 = 0;
-    L_0x0042:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x007b }
-        if (r4 >= r7) goto L_0x004f;
-    L_0x0045:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0076 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0076 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x0042;
-    L_0x004f:
-        r7 = "load_image";
-        r7 = r10.getString(r7);	 Catch:{ JSONException -> 0x007b }
-        r2 = hexStringToByteArray(r7);	 Catch:{ JSONException -> 0x007b }
-        r4 = 0;
-    L_0x005a:
-        r7 = r2.length;	 Catch:{ JSONException -> 0x007b }
-        if (r4 >= r7) goto L_0x0067;
-    L_0x005d:
-        r5 = r6 + 1;
-        r7 = r2[r4];	 Catch:{ JSONException -> 0x0076 }
-        r1[r6] = r7;	 Catch:{ JSONException -> 0x0076 }
-        r4 = r4 + 1;
-        r6 = r5;
-        goto L_0x005a;
-    L_0x0067:
-        r7 = r9.mInstance;	 Catch:{ JSONException -> 0x007b }
-        r7 = r7.accessoryControl;	 Catch:{ JSONException -> 0x007b }
-        r8 = 189; // 0xbd float:2.65E-43 double:9.34E-322;
-        r7.writeCommandBlock(r8, r6, r1);	 Catch:{ JSONException -> 0x007b }
-        r7 = com.idlesmarter.aoa.MainActivity.DebugLog;	 Catch:{ JSONException -> 0x007b }
-        if (r7 == 0) goto L_0x0074;
-    L_0x0074:
-        r5 = r6;
-    L_0x0075:
-        return;
-    L_0x0076:
-        r3 = move-exception;
-    L_0x0077:
-        r3.printStackTrace();
-        goto L_0x0075;
-    L_0x007b:
-        r3 = move-exception;
-        r5 = r6;
-        goto L_0x0077;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.sendCscDataBlockToGateway(org.json.JSONObject, int):void");
+    public void sendCscDataBlockToGateway(JSONObject jsonObject, int r11) {
+        byte[] parentArray = new byte[16767];
+        int i = 0;
+        if (MainActivity.DebugLog) {
+            Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlockToGateway>");
+        }
+        try {
+
+            parentArray[i] = 0;
+            i++;
+            parentArray[i] = (byte) (r11 & 255);
+
+            String addr = "addr";
+            buildChildArray(i, parentArray, addr, jsonObject);
+
+            String size = "size";
+            buildChildArray(i, parentArray, size, jsonObject);
+
+            String load_image = "load_image";
+            buildChildArray(i, parentArray, load_image, jsonObject);
+
+            this.mInstance.accessoryControl.writeCommandBlock(189, i, parentArray);
+            return;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
     /* JADX WARNING: inconsistent code. */
