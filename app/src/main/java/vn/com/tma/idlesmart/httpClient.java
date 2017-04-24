@@ -178,7 +178,13 @@ public class httpClient extends Activity {
                 	break;
 				case PhoneHomeState.LOG /*5*/:
                     Log.i(httpClient.TAG, "       Log..");
-                    httpClient.this.PerformLogTask();
+                    try {
+                        httpClient.this.PerformLogTask();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     httpClient.phonehome_state = PhoneHomeState.LOG_STATUS;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
@@ -832,7 +838,7 @@ public class httpClient extends Activity {
      * others: server error code
      * Default API link: [POST] http://api.idlesmart.com/api/truck/update
      */
-    public int PerformLogTask() {
+    public int PerformLogTask() throws IOException, JSONException {
         int responseCode = -1;
         Log.i(TAG, "LogTask");
         CommLog(PhoneHomeState.UPDATE, "LogTask");
@@ -906,7 +912,145 @@ public class httpClient extends Activity {
     }
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public JSONArray convertLogToJsonArray(BufferedReader r17, int r18) {
+    public JSONArray convertLogToJsonArray(BufferedReader bufferedReader, int phonehome_state) throws IOException, JSONException {
+
+        JSONArray jsonArray = null;
+        JSONObject jsonObject = new JSONObject();
+        int i = 0;
+        String r12 = "";
+        String r3 = "";
+        String r13 = "";
+        String r1 = "";
+
+
+
+        L_0x0003:
+        while (phonehome_state > i) {
+
+            // L_0x0007:
+            if (bufferedReader.readLine() == null) {
+                i = i + 1;
+                continue L_0x0003;
+            }
+            //L_0x000d:
+            if (i != 0) {
+                if (bufferedReader.readLine().indexOf(" ") <= 0) {
+                    r12 = bufferedReader.readLine();
+                    caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                    jsonArray.put(jsonObject);
+                    i = i + 1;
+                    continue L_0x0003;
+                }
+            }
+            // L_0x000f:
+            jsonArray = new JSONArray();
+
+            //L_0x0014:
+            int r4 = bufferedReader.readLine().indexOf(" ");
+            if (r4 <= 0) {
+                r12 = bufferedReader.readLine();
+                caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                jsonArray.put(jsonObject);
+                i = i + 1;
+                continue L_0x0003;
+            }
+            //L_0x0024:
+            r12 = bufferedReader.readLine().substring(0, r4);
+            int r5 = bufferedReader.readLine().indexOf("\\");
+            if (r5 <= 0) {
+                r4++;
+                if (bufferedReader.readLine().length() <= r5) {
+                    caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                }
+                jsonArray.put(jsonObject);
+                i = i + 1;
+                continue L_0x0003;
+            }
+
+            // L_0x0031:
+            r4++;
+            r3 = bufferedReader.readLine().substring(r4, r5);
+            int r6 = bufferedReader.readLine().lastIndexOf("\\");
+            if (r6 <= 0) {
+                r5++;
+                if (bufferedReader.readLine().length() <= r5) {
+                    caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                    jsonArray.put(jsonObject);
+                    i = i + 1;
+                    continue L_0x0003;
+                }
+            }
+
+            //L_0x003f:
+            r5++;
+            r13 = bufferedReader.readLine().substring(r5, r6);
+            r6++;
+            r1 = bufferedReader.readLine().substring(r6);
+            //L_0x004b:
+            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            //L_0x0064:
+            jsonArray.put(jsonObject);
+            //L_0x0067:
+            i = i + 1;
+            if (phonehome_state > i) {
+                continue L_0x0003;
+            }
+            // L_0x006b
+            //r5++;
+            if (bufferedReader.readLine().length() <= r5) {
+                caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                jsonArray.put(jsonObject);
+                i = i + 1;
+                continue L_0x0003;
+            }
+
+            // L_0x0073:
+            r13 = bufferedReader.readLine().substring(r5);
+            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            jsonArray.put(jsonObject);
+            i = i + 1;
+            if (phonehome_state > i) {
+                continue L_0x0003;
+            }
+
+            // L_0x0078:
+            r4++;
+            if (bufferedReader.readLine().length() <= r4) {
+                caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                jsonArray.put(jsonObject);
+                i = i + 1;
+                continue L_0x0003;
+            }
+            // L_0x0080:
+            r4++;
+            r3 = bufferedReader.readLine().substring(r4);
+            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            jsonArray.put(jsonObject);
+            i = i + 1;
+            if (phonehome_state > i) {
+                continue L_0x0003;
+            }
+
+            // L_0x0087:
+            r12 = bufferedReader.readLine();
+            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            jsonArray.put(jsonObject);
+            i = i + 1;
+            if (phonehome_state > i) {
+                continue L_0x0003;
+            }
+            //L_0x0089:
+            jsonArray.put(jsonObject);
+            i = i + 1;
+            if (phonehome_state > i) {
+                continue L_0x0003;
+            }
+            //L_0x008f:
+            Log.w("IdleSmart.HTTPClient", "IOException reading Log file - e=");
+            return jsonArray;
+        }
+        return jsonArray;
+
         /*
         r16 = this;
         r7 = 0;
@@ -1000,8 +1144,8 @@ public class httpClient extends Activity {
         r7 = r8;
         goto L_0x008f;
     L_0x009a:
-        r7 = r8;
-        goto L_0x0014;
+            r7 = r8;
+            goto L_0x0014;
     L_0x009d:
         r7 = r8;
         goto L_0x0067;
@@ -1009,7 +1153,13 @@ public class httpClient extends Activity {
         r7 = r8;
         goto L_0x0096;
         */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertLogToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
+    }
+
+    public void caseL_0x004b(JSONObject jsonObject, String r12, String r3, String r13, String r1) throws JSONException {
+        jsonObject.put("timestamp",r12);
+        jsonObject.put("event",r3);
+        jsonObject.put("event_trigger",r13);
+        jsonObject.put("event_comment",r1);
     }
 
 
