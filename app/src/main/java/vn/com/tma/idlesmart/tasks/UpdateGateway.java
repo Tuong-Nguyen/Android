@@ -215,7 +215,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
 
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscDataBlockToGateway(JSONObject jsonObject, int r11) {
+    public void sendCscDataBlockToGateway(JSONObject jsonObject, int index) {
         byte[] parentArray = new byte[16767];
         int i = 0;
         if (MainActivity.DebugLog) {
@@ -225,7 +225,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
 
             parentArray[i] = 0;
             i++;
-            parentArray[i] = (byte) (r11 & 255);
+            parentArray[i] = (byte) (index & 255);
 
             String addr = "addr";
             buildChildArray(i, parentArray, addr, jsonObject);
