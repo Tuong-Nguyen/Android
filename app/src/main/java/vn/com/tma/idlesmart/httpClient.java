@@ -912,21 +912,19 @@ public class httpClient extends Activity {
     }
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
+    // TODO Continue working
     public JSONArray convertLogToJsonArray(BufferedReader bufferedReader, int phonehome_state) throws IOException, JSONException {
 
         JSONArray jsonArray = null;
         JSONObject jsonObject = new JSONObject();
         int i = 0;
-        String r12 = "";
-        String r3 = "";
-        String r13 = "";
-        String r1 = "";
-
-
+        String timestamp = "";
+        String event = "";
+        String event_trigger = "";
+        String event_comment = "";
 
         L_0x0003:
         while (phonehome_state > i) {
-
             // L_0x0007:
             if (bufferedReader.readLine() == null) {
                 i = i + 1;
@@ -935,8 +933,8 @@ public class httpClient extends Activity {
             //L_0x000d:
             if (i != 0) {
                 if (bufferedReader.readLine().indexOf(" ") <= 0) {
-                    r12 = bufferedReader.readLine();
-                    caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                    timestamp = bufferedReader.readLine();
+                    caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
                     jsonArray.put(jsonObject);
                     i = i + 1;
                     continue L_0x0003;
@@ -946,21 +944,21 @@ public class httpClient extends Activity {
             jsonArray = new JSONArray();
 
             //L_0x0014:
-            int r4 = bufferedReader.readLine().indexOf(" ");
-            if (r4 <= 0) {
-                r12 = bufferedReader.readLine();
-                caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            int indexOfWhiteSpace = bufferedReader.readLine().indexOf(" ");
+            if (indexOfWhiteSpace <= 0) {
+                timestamp = bufferedReader.readLine();
+                caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
                 jsonArray.put(jsonObject);
                 i = i + 1;
                 continue L_0x0003;
             }
             //L_0x0024:
-            r12 = bufferedReader.readLine().substring(0, r4);
-            int r5 = bufferedReader.readLine().indexOf("\\");
-            if (r5 <= 0) {
-                r4++;
-                if (bufferedReader.readLine().length() <= r5) {
-                    caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            timestamp = bufferedReader.readLine().substring(0, indexOfWhiteSpace);
+            int indexOfSlash = bufferedReader.readLine().indexOf("\\");
+            if (indexOfSlash <= 0) {
+                indexOfWhiteSpace++;
+                if (bufferedReader.readLine().length() <= indexOfSlash) {
+                    caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
                 }
                 jsonArray.put(jsonObject);
                 i = i + 1;
@@ -968,13 +966,13 @@ public class httpClient extends Activity {
             }
 
             // L_0x0031:
-            r4++;
-            r3 = bufferedReader.readLine().substring(r4, r5);
+            indexOfWhiteSpace++;
+            event = bufferedReader.readLine().substring(indexOfWhiteSpace, indexOfSlash);
             int r6 = bufferedReader.readLine().lastIndexOf("\\");
             if (r6 <= 0) {
-                r5++;
-                if (bufferedReader.readLine().length() <= r5) {
-                    caseL_0x004b(jsonObject, r12, r3, r13, r1);
+                indexOfSlash++;
+                if (bufferedReader.readLine().length() <= indexOfSlash) {
+                    caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
                     jsonArray.put(jsonObject);
                     i = i + 1;
                     continue L_0x0003;
@@ -982,12 +980,12 @@ public class httpClient extends Activity {
             }
 
             //L_0x003f:
-            r5++;
-            r13 = bufferedReader.readLine().substring(r5, r6);
+            indexOfSlash++;
+            event_trigger = bufferedReader.readLine().substring(indexOfSlash, r6);
             r6++;
-            r1 = bufferedReader.readLine().substring(r6);
+            event_comment = bufferedReader.readLine().substring(r6);
             //L_0x004b:
-            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
             //L_0x0064:
             jsonArray.put(jsonObject);
             //L_0x0067:
@@ -997,16 +995,16 @@ public class httpClient extends Activity {
             }
             // L_0x006b
             //r5++;
-            if (bufferedReader.readLine().length() <= r5) {
-                caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            if (bufferedReader.readLine().length() <= indexOfSlash) {
+                caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
                 jsonArray.put(jsonObject);
                 i = i + 1;
                 continue L_0x0003;
             }
 
             // L_0x0073:
-            r13 = bufferedReader.readLine().substring(r5);
-            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            event_trigger = bufferedReader.readLine().substring(indexOfSlash);
+            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
             jsonArray.put(jsonObject);
             i = i + 1;
             if (phonehome_state > i) {
@@ -1014,17 +1012,17 @@ public class httpClient extends Activity {
             }
 
             // L_0x0078:
-            r4++;
-            if (bufferedReader.readLine().length() <= r4) {
-                caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            indexOfWhiteSpace++;
+            if (bufferedReader.readLine().length() <= indexOfWhiteSpace) {
+                caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
                 jsonArray.put(jsonObject);
                 i = i + 1;
                 continue L_0x0003;
             }
             // L_0x0080:
-            r4++;
-            r3 = bufferedReader.readLine().substring(r4);
-            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            indexOfWhiteSpace++;
+            event = bufferedReader.readLine().substring(indexOfWhiteSpace);
+            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
             jsonArray.put(jsonObject);
             i = i + 1;
             if (phonehome_state > i) {
@@ -1032,8 +1030,8 @@ public class httpClient extends Activity {
             }
 
             // L_0x0087:
-            r12 = bufferedReader.readLine();
-            caseL_0x004b(jsonObject, r12, r3, r13, r1);
+            timestamp = bufferedReader.readLine();
+            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
             jsonArray.put(jsonObject);
             i = i + 1;
             if (phonehome_state > i) {
