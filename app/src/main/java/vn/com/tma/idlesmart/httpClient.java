@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -286,7 +287,13 @@ public class httpClient extends Activity {
                 	break;
 				case PhoneHomeState.DATUM /*20*/:
                     Log.i(httpClient.TAG, "       Datum..");
-                    httpClient.this.PerformDatumTask();
+                    try {
+                        httpClient.this.PerformDatumTask();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     httpClient.phonehome_state = PhoneHomeState.DATUM_STATUS;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
@@ -923,18 +930,20 @@ public class httpClient extends Activity {
         String event_trigger = "";
         String event_comment = "";
 
+
         L_0x0003:
         while (phonehome_state > i) {
+            String line = bufferedReader.readLine();
             // L_0x0007:
-            if (bufferedReader.readLine() == null) {
+            if (line == null) {
                 i = i + 1;
                 continue L_0x0003;
             }
             //L_0x000d:
             if (i != 0) {
-                if (bufferedReader.readLine().indexOf(" ") <= 0) {
-                    timestamp = bufferedReader.readLine();
-                    caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+                if (line.indexOf(" ") <= 0) {
+                    timestamp = line;
+                    getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
                     jsonArray.put(jsonObject);
                     i = i + 1;
                     continue L_0x0003;
@@ -944,21 +953,21 @@ public class httpClient extends Activity {
             jsonArray = new JSONArray();
 
             //L_0x0014:
-            int indexOfWhiteSpace = bufferedReader.readLine().indexOf(" ");
+            int indexOfWhiteSpace = line.indexOf(" ");
             if (indexOfWhiteSpace <= 0) {
-                timestamp = bufferedReader.readLine();
-                caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+                timestamp = line;
+                getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
                 jsonArray.put(jsonObject);
                 i = i + 1;
                 continue L_0x0003;
             }
             //L_0x0024:
-            timestamp = bufferedReader.readLine().substring(0, indexOfWhiteSpace);
-            int indexOfSlash = bufferedReader.readLine().indexOf("\\");
+            timestamp = line.substring(0, indexOfWhiteSpace);
+            int indexOfSlash = line.indexOf("\\");
             if (indexOfSlash <= 0) {
                 indexOfWhiteSpace++;
-                if (bufferedReader.readLine().length() <= indexOfSlash) {
-                    caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+                if (line.length() <= indexOfSlash) {
+                    getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
                 }
                 jsonArray.put(jsonObject);
                 i = i + 1;
@@ -967,12 +976,12 @@ public class httpClient extends Activity {
 
             // L_0x0031:
             indexOfWhiteSpace++;
-            event = bufferedReader.readLine().substring(indexOfWhiteSpace, indexOfSlash);
-            int r6 = bufferedReader.readLine().lastIndexOf("\\");
+            event = line.substring(indexOfWhiteSpace, indexOfSlash);
+            int r6 = line.lastIndexOf("\\");
             if (r6 <= 0) {
                 indexOfSlash++;
-                if (bufferedReader.readLine().length() <= indexOfSlash) {
-                    caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+                if (line.length() <= indexOfSlash) {
+                    getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
                     jsonArray.put(jsonObject);
                     i = i + 1;
                     continue L_0x0003;
@@ -981,11 +990,11 @@ public class httpClient extends Activity {
 
             //L_0x003f:
             indexOfSlash++;
-            event_trigger = bufferedReader.readLine().substring(indexOfSlash, r6);
+            event_trigger = line.substring(indexOfSlash, r6);
             r6++;
-            event_comment = bufferedReader.readLine().substring(r6);
+            event_comment = line.substring(r6);
             //L_0x004b:
-            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+            getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
             //L_0x0064:
             jsonArray.put(jsonObject);
             //L_0x0067:
@@ -995,16 +1004,16 @@ public class httpClient extends Activity {
             }
             // L_0x006b
             //r5++;
-            if (bufferedReader.readLine().length() <= indexOfSlash) {
-                caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+            if (line.length() <= indexOfSlash) {
+                getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
                 jsonArray.put(jsonObject);
                 i = i + 1;
                 continue L_0x0003;
             }
 
             // L_0x0073:
-            event_trigger = bufferedReader.readLine().substring(indexOfSlash);
-            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+            event_trigger = line.substring(indexOfSlash);
+            getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
             jsonArray.put(jsonObject);
             i = i + 1;
             if (phonehome_state > i) {
@@ -1013,16 +1022,16 @@ public class httpClient extends Activity {
 
             // L_0x0078:
             indexOfWhiteSpace++;
-            if (bufferedReader.readLine().length() <= indexOfWhiteSpace) {
-                caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+            if (line.length() <= indexOfWhiteSpace) {
+                getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
                 jsonArray.put(jsonObject);
                 i = i + 1;
                 continue L_0x0003;
             }
             // L_0x0080:
             indexOfWhiteSpace++;
-            event = bufferedReader.readLine().substring(indexOfWhiteSpace);
-            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+            event = line.substring(indexOfWhiteSpace);
+            getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
             jsonArray.put(jsonObject);
             i = i + 1;
             if (phonehome_state > i) {
@@ -1030,8 +1039,8 @@ public class httpClient extends Activity {
             }
 
             // L_0x0087:
-            timestamp = bufferedReader.readLine();
-            caseL_0x004b(jsonObject, timestamp, event, event_trigger, event_comment);
+            timestamp = line;
+            getLogJSONObject(jsonObject, timestamp, event, event_trigger, event_comment);
             jsonArray.put(jsonObject);
             i = i + 1;
             if (phonehome_state > i) {
@@ -1048,116 +1057,22 @@ public class httpClient extends Activity {
             return jsonArray;
         }
         return jsonArray;
-
-        /*
-        r16 = this;
-        r7 = 0;
-        r11 = 0;
-        r8 = r7;
-    L_0x0003:
-        r0 = r18;
-        if (r11 >= r0) goto L_0x009f;
-    L_0x0007:
-        r9 = r17.readLine();	 Catch:{ Exception -> 0x0097 }
-        if (r9 == 0) goto L_0x009d;
-    L_0x000d:
-        if (r11 != 0) goto L_0x009a;
-    L_0x000f:
-        r7 = new org.json.JSONArray;	 Catch:{ Exception -> 0x0097 }
-        r7.<init>();	 Catch:{ Exception -> 0x0097 }
-    L_0x0014:
-        r12 = "";
-        r3 = "";
-        r13 = "";
-        r1 = "";
-        r14 = " ";
-        r4 = r9.indexOf(r14);	 Catch:{ Exception -> 0x008e }
-        if (r4 <= 0) goto L_0x0087;
-    L_0x0024:
-        r14 = 0;
-        r12 = r9.substring(r14, r4);	 Catch:{ Exception -> 0x008e }
-        r14 = "\\";
-        r5 = r9.indexOf(r14);	 Catch:{ Exception -> 0x008e }
-        if (r5 <= 0) goto L_0x0078;
-    L_0x0031:
-        r14 = r4 + 1;
-        r3 = r9.substring(r14, r5);	 Catch:{ Exception -> 0x008e }
-        r14 = "\\";
-        r6 = r9.lastIndexOf(r14);	 Catch:{ Exception -> 0x008e }
-        if (r6 <= 0) goto L_0x006b;
-    L_0x003f:
-        r14 = r5 + 1;
-        r13 = r9.substring(r14, r6);	 Catch:{ Exception -> 0x008e }
-        r14 = r6 + 1;
-        r1 = r9.substring(r14);	 Catch:{ Exception -> 0x008e }
-    L_0x004b:
-        r10 = new org.json.JSONObject;	 Catch:{ Exception -> 0x008e }
-        r10.<init>();	 Catch:{ Exception -> 0x008e }
-        r14 = "timestamp";
-        r10.put(r14, r12);	 Catch:{ JSONException -> 0x0089 }
-        r14 = "event";
-        r10.put(r14, r3);	 Catch:{ JSONException -> 0x0089 }
-        r14 = "event_trigger";
-        r10.put(r14, r13);	 Catch:{ JSONException -> 0x0089 }
-        r14 = "event_comment";
-        r10.put(r14, r1);	 Catch:{ JSONException -> 0x0089 }
-    L_0x0064:
-        r7.put(r10);	 Catch:{ Exception -> 0x008e }
-    L_0x0067:
-        r11 = r11 + 1;
-        r8 = r7;
-        goto L_0x0003;
-    L_0x006b:
-        r14 = r9.length();	 Catch:{ Exception -> 0x008e }
-        r15 = r5 + 1;
-        if (r14 <= r15) goto L_0x004b;
-    L_0x0073:
-        r13 = r9.substring(r5);	 Catch:{ Exception -> 0x008e }
-        goto L_0x004b;
-    L_0x0078:
-        r14 = r9.length();	 Catch:{ Exception -> 0x008e }
-        r15 = r4 + 1;
-        if (r14 <= r15) goto L_0x004b;
-    L_0x0080:
-        r14 = r4 + 1;
-        r3 = r9.substring(r14);	 Catch:{ Exception -> 0x008e }
-        goto L_0x004b;
-    L_0x0087:
-        r12 = r9;
-        goto L_0x004b;
-    L_0x0089:
-        r2 = move-exception;
-        r2.printStackTrace();	 Catch:{ Exception -> 0x008e }
-        goto L_0x0064;
-    L_0x008e:
-        r2 = move-exception;
-    L_0x008f:
-        r14 = "IdleSmart.HTTPClient";
-        r15 = "IOException reading Log file - e=";
-        android.util.Log.w(r14, r15, r2);
-    L_0x0096:
-        return r7;
-    L_0x0097:
-        r2 = move-exception;
-        r7 = r8;
-        goto L_0x008f;
-    L_0x009a:
-            r7 = r8;
-            goto L_0x0014;
-    L_0x009d:
-        r7 = r8;
-        goto L_0x0067;
-    L_0x009f:
-        r7 = r8;
-        goto L_0x0096;
-        */
     }
 
-    public void caseL_0x004b(JSONObject jsonObject, String r12, String r3, String r13, String r1) throws JSONException {
-        jsonObject.put("timestamp",r12);
-        jsonObject.put("event",r3);
-        jsonObject.put("event_trigger",r13);
-        jsonObject.put("event_comment",r1);
+    /**
+     *
+     * @param jsonObject
+     * @param timestamp
+     * @param event
+     * @param event_trigger
+     * @param event_comment
+     * @throws JSONException
+     */
+    public void getLogJSONObject(JSONObject jsonObject, String timestamp, String event, String event_trigger, String event_comment) throws JSONException {
+        jsonObject.put("timestamp",timestamp);
+        jsonObject.put("event",event);
+        jsonObject.put("event_trigger",event_trigger);
+        jsonObject.put("event_comment",event_comment);
     }
 
 
@@ -1170,7 +1085,7 @@ public class httpClient extends Activity {
      * others: server error code
      * Default API link: [POST] http://api.idlesmart.com/api/datacollection
      */
-    public int PerformDatumTask() {
+    public int PerformDatumTask() throws IOException, JSONException {
         int responseCode = -1;
         Log.i(TAG, "DatumTask");
         LogFile logFile = new LogFile(context, FileName.DATUMNAME, FileName.LOGPATH, TAG);
@@ -1232,114 +1147,366 @@ public class httpClient extends Activity {
 
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public JSONArray convertDatumToJsonArray(BufferedReader r17, int r18) {
-        /*
-        r16 = this;
-        r8 = 0;
-        r12 = 0;
-        r9 = r8;
-    L_0x0003:
-        r0 = r18;
-        if (r12 >= r0) goto L_0x00a6;
-    L_0x0007:
-        r10 = r17.readLine();	 Catch:{ Exception -> 0x00a0 }
-        if (r10 == 0) goto L_0x009e;
-    L_0x000d:
-        if (r12 != 0) goto L_0x00a3;
-    L_0x000f:
-        r8 = new org.json.JSONArray;	 Catch:{ Exception -> 0x00a0 }
-        r8.<init>();	 Catch:{ Exception -> 0x00a0 }
-    L_0x0014:
-        r13 = "";
-        r2 = "";
-        r3 = "";
-        r1 = "";
-        r14 = " ";
-        r5 = r10.indexOf(r14);	 Catch:{ Exception -> 0x0095 }
-        if (r5 <= 0) goto L_0x008e;
-    L_0x0024:
-        r14 = 0;
-        r13 = r10.substring(r14, r5);	 Catch:{ Exception -> 0x0095 }
-        r14 = "\\";
-        r6 = r10.indexOf(r14);	 Catch:{ Exception -> 0x0095 }
-        if (r6 <= 0) goto L_0x007f;
-    L_0x0031:
-        r14 = r5 + 1;
-        r2 = r10.substring(r14, r6);	 Catch:{ Exception -> 0x0095 }
-        r14 = "\\";
-        r7 = r10.lastIndexOf(r14);	 Catch:{ Exception -> 0x0095 }
-        if (r7 <= 0) goto L_0x0072;
-    L_0x003f:
-        r14 = r6 + 1;
-        r3 = r10.substring(r14, r7);	 Catch:{ Exception -> 0x0095 }
-        r14 = r7 + 1;
-        r1 = r10.substring(r14);	 Catch:{ Exception -> 0x0095 }
-    L_0x004b:
-        r14 = r2.isEmpty();	 Catch:{ Exception -> 0x0095 }
-        if (r14 != 0) goto L_0x006e;
-    L_0x0051:
-        r14 = r3.isEmpty();	 Catch:{ Exception -> 0x0095 }
-        if (r14 != 0) goto L_0x006e;
-    L_0x0057:
-        r11 = new org.json.JSONObject;	 Catch:{ Exception -> 0x0095 }
-        r11.<init>();	 Catch:{ Exception -> 0x0095 }
-        r14 = "time_stamp";
-        r11.put(r14, r13);	 Catch:{ JSONException -> 0x0090 }
-        r14 = "datum_name";
-        r11.put(r14, r2);	 Catch:{ JSONException -> 0x0090 }
-        r14 = "datum_value";
-        r11.put(r14, r3);	 Catch:{ JSONException -> 0x0090 }
-    L_0x006b:
-        r8.put(r11);	 Catch:{ Exception -> 0x0095 }
-    L_0x006e:
-        r12 = r12 + 1;
-        r9 = r8;
-        goto L_0x0003;
-    L_0x0072:
-        r14 = r10.length();	 Catch:{ Exception -> 0x0095 }
-        r15 = r6 + 1;
-        if (r14 <= r15) goto L_0x004b;
-    L_0x007a:
-        r1 = r10.substring(r6);	 Catch:{ Exception -> 0x0095 }
-        goto L_0x004b;
-    L_0x007f:
-        r14 = r10.length();	 Catch:{ Exception -> 0x0095 }
-        r15 = r5 + 1;
-        if (r14 <= r15) goto L_0x004b;
-    L_0x0087:
-        r14 = r5 + 1;
-        r2 = r10.substring(r14);	 Catch:{ Exception -> 0x0095 }
-        goto L_0x004b;
-    L_0x008e:
-        r13 = r10;
-        goto L_0x004b;
-    L_0x0090:
-        r4 = move-exception;
-        r4.printStackTrace();	 Catch:{ Exception -> 0x0095 }
-        goto L_0x006b;
-    L_0x0095:
-        r4 = move-exception;
-    L_0x0096:
-        r14 = "IdleSmart.HTTPClient";
-        r15 = "IOException reading Datum file - e=";
-        android.util.Log.w(r14, r15, r4);
-    L_0x009d:
-        return r8;
-    L_0x009e:
-        r8 = r9;
-        goto L_0x009d;
-    L_0x00a0:
-        r4 = move-exception;
-        r8 = r9;
-        goto L_0x0096;
-    L_0x00a3:
-        r8 = r9;
-        goto L_0x0014;
-    L_0x00a6:
-        r8 = r9;
-        goto L_0x009d;
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.idlesmarter.aoa.httpClient.convertDatumToJsonArray(java.io.BufferedReader, int):org.json.JSONArray");
+    public JSONArray convertDatumToJsonArray(BufferedReader bufferedReader, int datumStatus) throws IOException, JSONException {
+
+        JSONArray jsonArray = null;
+        JSONObject jsonObject;
+
+        int i = 0;//r12
+        String timestamp = ""; //r13
+        String datum_name = ""; //r2
+        String datum_value = "";//r3
+
+        L_0x0003:
+        while (datumStatus > i) {
+            String line = bufferedReader.readLine();
+
+            int indexOfWhiteSpace;
+            int indexOfSlash;
+            int lastIndexOfSlash;
+
+            //L_0x0007:
+            if (line == null) {
+                return jsonArray;
+            }
+            //L_0x000d:
+            if (i != 0) {
+                //L_0x0014
+                indexOfWhiteSpace = line.indexOf(" ");
+                if (indexOfWhiteSpace <= 0) {
+                    //L_0x008e
+                    timestamp = line;
+                    //L_0x004b
+                    if (!datum_name.isEmpty()) {
+                        i++;
+                        continue L_0x0003;
+                    }
+                    //L_0x0051
+                    if (!datum_value.isEmpty()){
+                        i++;
+                        continue L_0x0003;
+                    }
+                    //L_0x0057
+                    jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+                    //L_0x006b
+                    jsonArray.put(jsonObject);
+                    //L_0x006e
+                    i++;
+                    continue L_0x0003;
+
+                }else {
+                    //L_0x0024:
+                    timestamp = line.substring(0, indexOfWhiteSpace);
+                    indexOfSlash = line.indexOf("\\");
+                    if (indexOfSlash <= 0){
+                        //L_0x007f
+                        indexOfWhiteSpace++;
+                        if (line.length() <= indexOfWhiteSpace) {
+                            //L_0x004b
+                            if (!datum_name.isEmpty()) {
+                                i++;
+                                continue L_0x0003;
+                            }
+                            //L_0x0051
+                            if (!datum_value.isEmpty()){
+                                i++;
+                                continue L_0x0003;
+                            }
+                            //L_0x0057
+                            jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                            //L_0x006b
+                            jsonArray.put(jsonObject);
+                            //L_0x006e
+                            i++;
+                            continue L_0x0003;
+                        }
+                    }else{
+                        //L_0x0031:
+                        indexOfWhiteSpace++;
+                        datum_name = line.substring(indexOfWhiteSpace, indexOfSlash);
+                        lastIndexOfSlash = line.lastIndexOf("\\");
+                        if (lastIndexOfSlash <= 0){
+                            //L_0x0072:
+                            indexOfSlash++;
+                            if (line.length() <= indexOfSlash){
+                                if (!datum_name.isEmpty()) {
+                                    i++;
+                                    continue L_0x0003;
+                                }
+                                if (!datum_value.isEmpty()){
+                                    i++;
+                                    continue L_0x0003;
+                                }
+                                jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                                jsonArray.put(jsonObject);
+                                i++;
+                                continue L_0x0003;
+                            }
+                            else{
+                                //L_0x007a
+                                if (!datum_name.isEmpty()) {
+                                    i++;
+                                    continue L_0x0003;
+                                }
+                                if (!datum_value.isEmpty()){
+                                    i++;
+                                    continue L_0x0003;
+                                }
+                                jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                                jsonArray.put(jsonObject);
+                                i++;
+                                continue L_0x0003;
+                            }
+                        }
+                        else{
+                            //L_0x003f:
+                            indexOfSlash++;
+                            datum_value = line.substring(indexOfSlash, lastIndexOfSlash);
+                            lastIndexOfSlash++;
+                            if (!datum_name.isEmpty()) {
+                                i++;
+                                continue L_0x0003;
+                            }
+                            if (!datum_value.isEmpty()){
+                                i++;
+                                continue L_0x0003;
+                            }
+                            jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                            jsonArray.put(jsonObject);
+                            i++;
+                            continue L_0x0003;
+                        }
+                    }
+                }
+            }
+            //L_0x000f
+           jsonArray = new JSONArray();
+
+            //L_0x0014:
+            indexOfWhiteSpace = line.indexOf(" ");
+            if (indexOfWhiteSpace <= 0) {
+                //L_0x008e
+                timestamp = line;
+                //L_0x004b
+                if (!datum_name.isEmpty()) {
+                    i++;
+                    continue L_0x0003;
+                }
+                //L_0x0051
+                if (!datum_value.isEmpty()) {
+                    i++;
+                    continue L_0x0003;
+                }
+                //L_0x0057
+                jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+                //L_0x006b
+                jsonArray.put(jsonObject);
+                //L_0x006e
+                i++;
+                continue L_0x0003;
+            }
+
+            //L_0x0024:
+            timestamp = line.substring(0, indexOfWhiteSpace);
+            indexOfSlash = line.indexOf("\\");
+            if (indexOfSlash <= 0){
+                //L_0x007f
+                indexOfWhiteSpace++;
+                if (line.length() <= indexOfWhiteSpace) {
+                    //L_0x004b
+                    if (!datum_name.isEmpty()) {
+                        i++;
+                        continue L_0x0003;
+                    }
+                    //L_0x0051
+                    if (!datum_value.isEmpty()){
+                        i++;
+                        continue L_0x0003;
+                    }
+                    //L_0x0057
+                    jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                    //L_0x006b
+                    jsonArray.put(jsonObject);
+                    //L_0x006e
+                    i++;
+                    continue L_0x0003;
+                }
+            }
+            //
+            //L_0x0031:
+            indexOfWhiteSpace++;
+            datum_name = line.substring(indexOfWhiteSpace, indexOfSlash);
+            lastIndexOfSlash = line.lastIndexOf("\\");
+            if (lastIndexOfSlash <= 0){
+                //L_0x0072:
+                indexOfSlash++;
+                if (line.length() <= indexOfSlash){
+                    if (!datum_name.isEmpty()) {
+                        i++;
+                        continue L_0x0003;
+                    }
+                    if (!datum_value.isEmpty()){
+                        i++;
+                        continue L_0x0003;
+                    }
+                    jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                    jsonArray.put(jsonObject);
+                    i++;
+                    continue L_0x0003;
+                } else {
+                    //L_0x007a
+                    if (!datum_name.isEmpty()) {
+                        i++;
+                        continue L_0x0003;
+                    }
+                    if (!datum_value.isEmpty()){
+                        i++;
+                        continue L_0x0003;
+                    }
+                    jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                    jsonArray.put(jsonObject);
+                    i++;
+                    continue L_0x0003;
+                }
+            }
+            //L_0x003f:
+            indexOfSlash++;
+            datum_value = line.substring(indexOfSlash, lastIndexOfSlash);
+            lastIndexOfSlash++;
+            // L_0x004b:
+            if (!datum_name.isEmpty()) {
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x0051
+            if (!datum_value.isEmpty()) {
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x0057
+            jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+            //L_0x006b
+            jsonArray.put(jsonObject);
+            //L_0x006e:
+            i++;
+            if (datumStatus > i){
+                continue L_0x0003;
+            }
+            //  L_0x0072:
+            indexOfSlash++;
+            if (line.length() <= indexOfSlash) {
+                //L_0x004b
+                if (!datum_name.isEmpty()) {
+                    i++;
+                    continue L_0x0003;
+                }
+                //L_0x0051
+                if (!datum_value.isEmpty()){
+                    i++;
+                    continue L_0x0003;
+                }
+                //L_0x0057
+                jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                //L_0x006b
+                jsonArray.put(jsonObject);
+                //L_0x006e
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x007f:
+            indexOfWhiteSpace++;
+            if (line.length() <= indexOfWhiteSpace){
+                //L_0x004b
+                if (!datum_name.isEmpty()) {
+                    i++;
+                    continue L_0x0003;
+                }
+                //L_0x0051
+                if (!datum_value.isEmpty()){
+                    i++;
+                    continue L_0x0003;
+                }
+                //L_0x0057
+                jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+                //L_0x006b
+                jsonArray.put(jsonObject);
+                //L_0x006e
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x0087:
+            indexOfWhiteSpace++;
+            datum_name = line.substring(indexOfWhiteSpace);
+            //L_0x004b
+            if (!datum_name.isEmpty()) {
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x0051
+            if (!datum_value.isEmpty()){
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x0057
+            jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+            //L_0x006b
+            jsonArray.put(jsonObject);
+            //L_0x006e
+            i++;
+            if(datumStatus > i) {
+                continue L_0x0003;
+            }
+            //L_0x008e:
+            timestamp = bufferedReader.readLine();
+            //L_0x004b
+            if (!datum_name.isEmpty()) {
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x0051
+            if (!datum_value.isEmpty()){
+                i++;
+                continue L_0x0003;
+            }
+            //L_0x0057
+            jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+
+            //L_0x006b
+            jsonArray.put(jsonObject);
+            //L_0x006e
+            i++;
+            if (datumStatus>i) {
+                continue L_0x0003;
+            }
+            // L_0x0090:
+            jsonArray.put(jsonObject);
+
+            //L_0x0096:
+            Log.w("IdleSmart.HTTPClient", "IOException reading Datum file - e=");
+            // L_0x009d:
+            return jsonArray;
+        }
+
+       return jsonArray;
+    }
+
+    @NonNull
+    private JSONObject getDatumJsonObject(String timestamp, String datum_name, String datum_value) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("time_stamp", timestamp);
+        jsonObject.put("datum_name", datum_name);
+        jsonObject.put("datum_value", datum_value);
+        return jsonObject;
     }
 
     /**
