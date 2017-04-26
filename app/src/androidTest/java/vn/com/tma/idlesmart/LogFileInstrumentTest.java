@@ -47,7 +47,6 @@ public class LogFileInstrumentTest {
         }
     @Test
     public void deleteFile_deleteNotExistFile_returnFalse() throws Exception {
-
         // Action
         boolean isDelete = logFile.deleteFile(filename);
 
@@ -55,7 +54,7 @@ public class LogFileInstrumentTest {
         assertEquals("File isn't exist", false, isDelete);
     }
     @Test
-    public void writeLogFile_inputStringDataIntoANewFile_returnTheDataExistInThatFile() throws IOException {
+    public void writeLogFile_inputStringDataIntoANewFile_returnTheDataExistInThatFileWithRightFormat() throws IOException {
             //Arrange
             logFile.deleteFile(filename);// Ensure this is new file
             String input = "This is instrument test";
@@ -63,15 +62,14 @@ public class LogFileInstrumentTest {
             // Action
             logFile.write(input);
             String data = logFile.read();
-            String dateTime = logFile.dateTime;
-            //boolean result = data.matches(time + " " + "(?i).*This is instrument test.*");
-            boolean result = data.contains(dateTime + " " + "This is instrument test");
 
-        // Assert
+            boolean result = data.matches(".*\\sThis is the first input\\n");
+
+            // Assert
             assertTrue(result);
     }
     @Test
-    public void writeLogFile_inputStringDataIntoExistFile_returnOldAndNewDataInThatFile() throws IOException {
+    public void writeLogFile_inputStringDataIntoExistFile_returnOldAndNewDataInThatFileWithRightFormat() throws IOException {
         //Arrange
         String input1 = "This is the first input";
         String input2 = "This is the second input";
@@ -82,24 +80,20 @@ public class LogFileInstrumentTest {
         logFile.write(input1);
         logFile.write(input2);
         String data = logFile.read();
-        boolean result1 = data.matches("(?i).*This is the first input.*");
-        boolean result2 = data.matches("(?i).*This is the second input.*");
-        boolean result;
-        if (result1 == true && result2 == true){
-            result = true;
-        } else {
-            result = false;
-        }
+
+        boolean result = data.matches(".*\\sThis is the first input\\n.*\\sThis is the second input\\n");
+
         // Assert
         assertTrue(result);
     }
+
     @Test
     public void readLogFile_readDataInExistFileHasData_returnTrue() throws IOException {
         //Arrange
         logFile.deleteFile(filename);// Ensure this is new file
         String input = "This is instrument test";
 
-        // Action
+        //Action
         logFile.write(input);
         String data = logFile.read();
         int size = data.length();
