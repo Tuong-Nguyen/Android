@@ -67,6 +67,7 @@ public abstract class LogAbstract {
                 line = bufferedReader.readLine();
                 while (line != null) {
                     inputStringBuilder.append(line);
+                    inputStringBuilder.append(System.getProperty("line.separator"));
                     line = bufferedReader.readLine();
                 }
             } catch (IOException e) {
