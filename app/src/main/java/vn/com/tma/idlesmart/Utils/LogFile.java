@@ -65,7 +65,6 @@ public class LogFile extends LogAbstract {
                 this.outputStream.write(' ');
                 this.outputStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 3);
                 this.outputStream.write('\n');
-                this.outputStream.write('\r');
                 this.outputStream.flush();
             } catch (Exception e22) {
                 Log.w(tag, "IOException writing Datum file - e=", e22);

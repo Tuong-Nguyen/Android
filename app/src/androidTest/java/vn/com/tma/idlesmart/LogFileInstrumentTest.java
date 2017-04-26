@@ -88,26 +88,6 @@ public class LogFileInstrumentTest {
     }
 
     @Test
-    public void readLogFile_readDataInExistFileHasData_returnTrue() throws IOException {
-        //Arrange
-        logFile.deleteFile(filename);// Ensure this is new file
-        String input = "This is instrument test";
-
-        //Action
-        logFile.write(input);
-        String data = logFile.read();
-        int size = data.length();
-        boolean result;
-        if (size > 0){
-            result = true;
-        } else {
-            result = false;
-        }
-        // Assert
-        assertTrue(result);
-    }
-
-    @Test
     public void readLogFile_readDataInExistFileEmptyData_return0() throws IOException {
         //Arrange
         logFile.deleteFile(filename);// Ensure that this is new file
