@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,35 +21,32 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 public class LogFileInstrumentTest {
+
     private Context context;
+    private LogFile logFile;
+    private String fileNamePath = "Logs";
+    private String filename = "Log.bin";
+    private String tag = "Test";
+    @Before
+    public void setUp() {
+        //Arrange
+        context = InstrumentationRegistry.getTargetContext();
+        logFile = new LogFile(context, filename, fileNamePath, tag);
+    }
 
-        @Test
+    @Test
     public void deleteFile_deleteExistFile_returnTrue() throws Exception {
+        //Arrange
+         logFile.openBufferOutPutStream();
 
-            //Arrange
-            String fileNamePath = "Logs";
-            String filename = "Log2.bin";
-            String tag = "test";
-           context = InstrumentationRegistry.getTargetContext();
-            LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
-            logFile.openBufferOutPutStream();
+        // Action
+        boolean isDelete = logFile.deleteFile(filename);
 
-            // Action
-            boolean isDelete = logFile.deleteFile(filename);
-
-            // Assert
-            assertEquals("File was deleted ", true, isDelete);
+        // Assert
+        assertEquals("File was deleted ", true, isDelete);
         }
     @Test
     public void deleteFile_deleteNotExistFile_returnFalse() throws Exception {
-
-        //Arrange
-        String fileNamePath = "LogFile";
-        String filename = "logFile.bin";
-        String tag = "test";
-        context = InstrumentationRegistry.getTargetContext();
-        LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
-        //logFile.openBufferOutPutStream();
 
         // Action
         boolean isDelete = logFile.deleteFile(filename);
@@ -59,33 +57,25 @@ public class LogFileInstrumentTest {
     @Test
     public void writeLogFile_inputStringDataIntoANewFile_returnTheDataExistInThatFile() throws IOException {
             //Arrange
-            String fileNamePath = "Logs";
-            String filename = "Log1.bin";
-            String tag = "test";
-            context = InstrumentationRegistry.getTargetContext();
-            LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
             logFile.deleteFile(filename);// Ensure this is new file
             String input = "This is instrument test";
 
             // Action
             logFile.write(input);
             String data = logFile.read();
-            boolean result = data.matches("(?i).*This is instrument test.*");
+            String dateTime = logFile.dateTime;
+            //boolean result = data.matches(time + " " + "(?i).*This is instrument test.*");
+            boolean result = data.contains(dateTime + " " + "This is instrument test");
 
-            // Assert
+        // Assert
             assertTrue(result);
     }
     @Test
     public void writeLogFile_inputStringDataIntoExistFile_returnOldAndNewDataInThatFile() throws IOException {
         //Arrange
-        String fileNamePath = "Logs";
-        String filename = "Log2.bin";
-        String tag = "test";
         String input1 = "This is the first input";
         String input2 = "This is the second input";
-        context = InstrumentationRegistry.getTargetContext();
 
-        LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
         logFile.deleteFile(filename);// Ensure this is a new file
 
         // Action
@@ -106,11 +96,6 @@ public class LogFileInstrumentTest {
     @Test
     public void readLogFile_readDataInExistFileHasData_returnTrue() throws IOException {
         //Arrange
-        String fileNamePath = "Logs";
-        String filename = "Log1.bin";
-        String tag = "test";
-        context = InstrumentationRegistry.getTargetContext();
-        LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
         logFile.deleteFile(filename);// Ensure this is new file
         String input = "This is instrument test";
 
@@ -131,11 +116,6 @@ public class LogFileInstrumentTest {
     @Test
     public void readLogFile_readDataInExistFileEmptyData_return0() throws IOException {
         //Arrange
-        String fileNamePath = "Logs";
-        String filename = "Log1.bin";
-        String tag = "test";
-        context = InstrumentationRegistry.getTargetContext();
-        LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
         logFile.deleteFile(filename);// Ensure that this is new file
         // Action
         logFile.openBufferOutPutStream(); //Create a new file with empty data
@@ -148,11 +128,6 @@ public class LogFileInstrumentTest {
     @Test
     public void readLogFile_readDataInNotExistFile_returnNullData(){
         //Arrange
-        String fileNamePath = "Logs";
-        String filename = "Log1.bin";
-        String tag = "test";
-        context = InstrumentationRegistry.getTargetContext();
-        LogFile logFile = new LogFile(context, filename, fileNamePath, tag);
         logFile.deleteFile(filename);// Ensure that this is a new file
         // Action
         String data;
