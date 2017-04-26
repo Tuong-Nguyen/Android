@@ -9,6 +9,8 @@ import static vn.com.tma.idlesmart.AccessoryControl.getUTCdatetimeAsString;
 
 
 public class LogFile extends LogAbstract {
+    // Set Date Time for Testing
+    public static String dateTime;
     /**
      * LogFile constructor
      *
@@ -33,7 +35,8 @@ public class LogFile extends LogAbstract {
         }
         if (this.outputStream != null && !data.trim().isEmpty()) {
             try {
-                byte[] ts = getUTCdatetimeAsString().getBytes();
+                dateTime = getUTCdatetimeAsString();
+                byte[] ts = dateTime.getBytes();
                 this.outputStream.write(ts, 0, ts.length);
                 this.outputStream.write(' ');
                 byte[] bstr = data.getBytes();
@@ -61,7 +64,8 @@ public class LogFile extends LogAbstract {
         }
         if (this.outputStream != null) {
             try {
-                byte[] ts = getUTCdatetimeAsString().getBytes();
+                dateTime = getUTCdatetimeAsString();
+                byte[] ts = dateTime.getBytes();
                 this.outputStream.write(ts, 0, ts.length);
                 this.outputStream.write(' ');
                 this.outputStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 3);
