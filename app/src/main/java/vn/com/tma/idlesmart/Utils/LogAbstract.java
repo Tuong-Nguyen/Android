@@ -62,7 +62,7 @@ public abstract class LogAbstract {
         if (this.inputStream != null) {
             StringBuilder inputStringBuilder = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.inputStream));
-            String line = null;
+            String line;
             try {
                 line = bufferedReader.readLine();
                 while (line != null) {
@@ -154,9 +154,13 @@ public abstract class LogAbstract {
             File path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), this.fileNamePath);
             if (path.exists()) {
                 try {
-                    new File(path, fileName).delete();
-                    Log.i(tag, "Datum file deleted");
-                    return true;
+                    File file = new File(path, fileName);
+                    if (file.exists()){
+                        file.delete();
+                        Log.i(tag, "Datum file deleted");
+                        return true;
+                    }
+                   return false;
                 } catch (Exception e) {
                     Log.w(tag, "IOException deleting Datum file - ioe=", e);
                 }
