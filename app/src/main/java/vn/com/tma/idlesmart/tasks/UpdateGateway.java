@@ -21,6 +21,9 @@ import java.nio.charset.Charset;
 import vn.com.tma.idlesmart.MainActivity;
 import vn.com.tma.idlesmart.params.UpdateTaskConfig;
 
+import static vn.com.tma.idlesmart.AccessoryControl.APIDATA_FW_HEADER;
+import static vn.com.tma.idlesmart.AccessoryControl.APIDATA_FW_TRA;
+
 /**
  * Created by lnthao on 3/30/2017.
  */
@@ -28,6 +31,9 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
     private static final String TAG = "IdleSmart.UpdateGateway";
     public Context context;
     public MainActivity mInstance;
+    private int dataCscHeaderLength;
+    private int CscDataBlockLength;
+    private int CscTRATLength;
 
     public void setContext(Context contextf) {
         this.context = contextf;
@@ -102,6 +108,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
 
     private void parseCSC(String file) {
         FileInputStream is = null;
+        mInstance = new MainActivity();
         String TAG = "IdleSmart.UpdateGateway";
         try {
             Log.i("IdleSmart.UpdateGateway", "     ParseCSC and send to Gateway..");
@@ -112,12 +119,12 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             String jsonStr = Charset.defaultCharset().decode(fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size())).toString();
             is.close();
             JSONObject jsonCsc = new JSONObject(jsonStr);
-            sendCscHeaderToGateway(jsonCsc);
+            mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, sendCscHeaderToGateway(jsonCsc) );
             Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlocks ToGateway>");
             for (int i = 0; i < jsonCsc.getInt("block_count"); i += 1) {
-                sendCscDataBlockToGateway(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
+                mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, sendCscDataBlockToGateway(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i));
             }
-            sendCscTRAToGateway(jsonCsc);
+            mInstance.accessoryControl.writeCommandBlock(191,  APIDATA_FW_TRA,  sendCscTRAToGateway(jsonCsc));
             MainActivity.gateway_restarting = true;
         } catch (Exception e) {
             Log.e("IdleSmart.UpdateGateway", "     ParseCSC IOException");
@@ -156,9 +163,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
     }
 
 
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscHeaderToGateway(JSONObject jsonObject) {
+    public byte[] sendCscHeaderToGateway(JSONObject jsonObject) {
         byte[] parentArray = new byte[16767];
         int i = 0;
             if (MainActivity.DebugLog) {
@@ -204,18 +209,18 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
                         j++;
                         i++;
                     }
-                    this.mInstance.accessoryControl.writeCommandBlock(188, i, parentArray );
-                    return;
+                    dataCscHeaderLength = i;
+                    return parentArray;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                return;
+                return parentArray;
             }
-        }
+        return parentArray;
+    }
 
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscDataBlockToGateway(JSONObject jsonObject, int index) {
+
+    public byte[] sendCscDataBlockToGateway(JSONObject jsonObject, int index) {
         byte[] parentArray = new byte[16767];
         int i = 0;
         if (MainActivity.DebugLog) {
@@ -236,17 +241,16 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             String load_image = "load_image";
             buildChildArray(i, parentArray, load_image, jsonObject);
 
-            this.mInstance.accessoryControl.writeCommandBlock(189, i, parentArray);
-            return;
+           // this.mInstance.accessoryControl.writeCommandBlock(189, i, parentArray);
+            CscDataBlockLength = i;
+            return parentArray;
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
+            return parentArray;
         }
     }
 
-    /* JADX WARNING: inconsistent code. */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    public void sendCscTRAToGateway(JSONObject jsonObject) {
+    public byte[] sendCscTRAToGateway(JSONObject jsonObject) {
         byte[] parentArray = new byte[16767];
         int i = 0;
         if (MainActivity.DebugLog) {
@@ -255,13 +259,12 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
         try {
             String tra = "tra";
             buildChildArray(i, parentArray, tra, jsonObject);
-
+            CscTRATLength = i;
             MainActivity.GatewayUpdatePending = true;
-            this.mInstance.accessoryControl.writeCommandBlock(191, i, parentArray);
-            return;
+            return parentArray;
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
+            return parentArray;
         }
     }
 
