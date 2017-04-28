@@ -241,7 +241,6 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             String load_image = "load_image";
             buildChildArray(i, parentArray, load_image, jsonObject);
 
-           // this.mInstance.accessoryControl.writeCommandBlock(189, i, parentArray);
             CscDataBlockLength = i;
             return parentArray;
         } catch (JSONException e) {
