@@ -17,7 +17,7 @@ public class PhoneHomeState {
     public static final int CSC_AUTO_UPDATE = 9;
     public static final int LOG_STATUS = 15;
     public static final int DATUM = 20;
-    public static final int DATUM_STATUS = 25;
+    public static final int DATUM_LIMIT_LINE = 25;
     public static final int DONE = 90;
     public static final int ERROR = 99;
     public static final int CLEANUP = 100;
