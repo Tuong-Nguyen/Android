@@ -109,4 +109,38 @@ public class LogFileInstrumentTest {
         // Assert
         assertNull(data);
     }
+    @Test
+    public void writeByteArrayInLogFile_InputByteArrayIntoFile_returnTrueForCheckingTheseByteArrayExistInThatFile(){
+        // Arrange
+       byte[] input = new byte[7];
+        char a = 'a';
+        char b = 'b';
+        char c = 'c';
+        char d = 'd';
+        int head1 = 1;
+        int head2 = 5;
+        int ID = 1;
+
+        //length
+        input[0] = (byte) head1;
+        input[1] = (byte) head2;
+        //ID
+        input[2] = (byte) ID;
+        //data
+        input[3] = (byte) a;
+        input[4] = (byte) b;
+        input[5] = (byte) c;
+        input[6] = (byte) d;
+
+        logFile.deleteFile(filename);// Ensure that this is a new file
+
+        //Action
+        logFile.write(input,4);
+        String data = logFile.read();
+
+        boolean result = data.matches(".*\\sabcd\\n.*");
+
+        // Assert
+        assertTrue(result);
+    }
 }
