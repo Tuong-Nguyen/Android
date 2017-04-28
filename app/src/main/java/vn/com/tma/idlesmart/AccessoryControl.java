@@ -371,11 +371,11 @@ public class AccessoryControl {
                                 break;
                             case AccessoryControl.APIEVENT_FW_VERSION /*73*/:
                                 MainActivity.GatewayUpdatePending = false;
-                                MainActivity.Gateway_FWversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                MainActivity.Gateway_FWversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                 Log.i(TAG, "(Recv)APIEVENT_FW_VERSION = " + MainActivity.Gateway_FWversion);
                                 break;
                             case AccessoryControl.APIEVENT_API_VERSION /*74*/:
-                                MainActivity.Gateway_APIversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                MainActivity.Gateway_APIversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                 Log.i(TAG, "(Recv)APIEVENT_API_VERSION = " + MainActivity.Gateway_APIversion);
                                 break;
                             case AccessoryControl.APIEVENT_CANLOG /*77*/:
@@ -407,7 +407,7 @@ public class AccessoryControl {
                                 }
                                 break;
                             case AccessoryControl.APIEVENT_GATEWAY_SERIALID /*79*/:
-                                MainActivity.Gateway_SerialID = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                MainActivity.Gateway_SerialID = new String(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                 Log.i(TAG, "(Recv)APIEVENT_GATEWAY_SERIALID = " + MainActivity.Gateway_SerialID);
                                 break;
                             case AccessoryControl.APIEVENT_ACTIVATED /*80*/:
@@ -418,7 +418,7 @@ public class AccessoryControl {
                                 }
                                 break;
                             case AccessoryControl.APIEVENT_LDR_VERSION /*82*/:
-                                MainActivity.Gateway_LDRversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                MainActivity.Gateway_LDRversion = new String(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                 Log.i(TAG, "(Recv)APIEVENT_LDR_VERSION = " + MainActivity.Gateway_LDRversion);
                                 break;
                             case AccessoryControl.APIEVENT_LOG /*90*/:
@@ -455,7 +455,7 @@ public class AccessoryControl {
                                 Log.i(TAG, "(Recv)APIDATA_SYNC_NEXT= " + MainActivity.SyncNext);
                                 break;
                             case AccessoryControl.APIDATA_VIN /*168*/:
-                                MainActivity.Gateway_VIN = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                MainActivity.Gateway_VIN = new String(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                 Log.i(TAG, "(Recv)APIDATA_VIN = " + MainActivity.Gateway_VIN);
                                 break;
                             case AccessoryControl.APIDATA_ACTIVATION_CODE /*169*/:
@@ -463,11 +463,11 @@ public class AccessoryControl {
                                 Log.i(TAG, "(Recv)APIDATA_ACTIVATION_CODE = " + MainActivity.ActivationCode);
                                 break;
                             case AccessoryControl.APIDATA_FLEET /*170*/:
-                                MainActivity.Gateway_Fleet = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                MainActivity.Gateway_Fleet = new String(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                 Log.i(TAG, "(Recv)APIDATA_FLEET = " + MainActivity.Gateway_Fleet);
                                 break;
                             case AccessoryControl.APIDATA_SERVER_ROUTE /*180*/:
-                                MainActivity.APIroute = new String(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                                MainActivity.APIroute = new String(buffer, AoaMessage.START_DATA_POSITION, len - 1);
                                 MainActivity.APIroute = MainActivity.APIroute.trim();
                                 if (MainActivity.APIroute.trim().isEmpty()) {
                                     MainActivity.APIroute = MainActivity.DefaultAPIroute;
