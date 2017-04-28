@@ -19,15 +19,15 @@ import java.io.InputStreamReader;
 public class ConvertToJsonArray {
     /**
      * Convert Datum To JsonArray
-     * @param datumStr
-     * @param datumMaxLine
+     * @param datum
+     * @param datumLimitLine
      * @return
      * @throws IOException
      * @throws JSONException
      */
-    public JSONArray convertDatumToJsonArray(String datumStr, int datumMaxLine) throws IOException, JSONException {
+    public JSONArray convertDatumToJsonArray(String datum, int datumLimitLine) throws IOException, JSONException {
 
-        InputStream inputStream = new ByteArrayInputStream(datumStr.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(datum.getBytes());
         BufferedReader datumIn = new BufferedReader(new InputStreamReader(inputStream));
 
         JSONArray jsonArray = new JSONArray();
@@ -57,7 +57,7 @@ public class ConvertToJsonArray {
                         jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
                         jsonArray.put(jsonObject);
                         i++;
-                        if (i > datumMaxLine) {
+                        if (i > datumLimitLine) {
                             break;
                         }
                         line = datumIn.readLine();
@@ -75,5 +75,85 @@ public class ConvertToJsonArray {
         jsonObject.put("datum_name", datum_name);
         jsonObject.put("datum_value", datum_value);
         return jsonObject;
+    }
+
+    /**
+     * Convert Log To JsonArray
+     * @param log
+     * @param logLimitLine
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
+
+    public JSONArray convertLogToJsonArray(String log, int logLimitLine) throws IOException, JSONException {
+        InputStream inputStream = new ByteArrayInputStream(log.getBytes());
+        BufferedReader logIn = new BufferedReader(new InputStreamReader(inputStream));
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject;
+        int i = 0;
+        String line = logIn.readLine();
+        while (line != null){
+            String timestamp;
+            String event;
+            String event_trigger;
+            String event_comment;
+
+            int indexOfWhiteSpace = line.indexOf(" ");
+            if (indexOfWhiteSpace <= 0){
+                return jsonArray;
+            }else{
+                timestamp = line.substring(0, indexOfWhiteSpace);
+                int indexOfSlashFirst = line.indexOf("\\");
+                if (indexOfSlashFirst <= 0){
+                    return jsonArray;
+                }else{
+                    event = line.substring(indexOfWhiteSpace, indexOfSlashFirst);
+                    int indexOfSlashSecond =line.indexOf("\\", indexOfSlashFirst);
+
+                    if (indexOfSlashSecond <= 0){
+                        return jsonArray;
+                    }else{
+                        event_trigger =  line.substring(indexOfSlashFirst, indexOfSlashSecond);
+                        int lastIndexOfSlash = line.lastIndexOf("\\");
+                        if (lastIndexOfSlash <= 0){
+                            return jsonArray;
+
+                        }else{
+                            event_comment = line.substring(indexOfSlashSecond, lastIndexOfSlash);
+                            jsonObject = getLogJSONObject(timestamp, event, event_trigger, event_comment);
+                            jsonArray.put(jsonObject);
+                            i++;
+                            if (logLimitLine > i){
+                                break;
+                            }
+                            line = logIn.readLine();
+                        }
+                    }
+
+                }
+            }
+        }
+        return jsonArray;
+    }
+
+    /**
+     * Put Data into Log JsonObject
+     * @param timestamp
+     * @param event
+     * @param event_trigger
+     * @param event_comment
+     * @return
+     * @throws JSONException
+     */
+    @NonNull
+    public JSONObject getLogJSONObject( String timestamp, String event, String event_trigger, String event_comment) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("timestamp",timestamp);
+        jsonObject.put("event",event);
+        jsonObject.put("event_trigger",event_trigger);
+        jsonObject.put("event_comment",event_comment);
+        return  jsonObject;
     }
 }
