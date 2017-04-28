@@ -63,7 +63,7 @@ public class LogFile extends LogAbstract {
                 byte[] ts = getUTCdatetimeAsString().getBytes();
                 this.outputStream.write(ts, 0, ts.length);
                 this.outputStream.write(' ');
-                this.outputStream.write(buffer, AoaMessage.START_DATA_POSITION, len - 3);
+                this.outputStream.write(buffer, AoaMessage.START_DATA_POSITION, len);
                 this.outputStream.write('\n');
                 this.outputStream.flush();
             } catch (Exception e22) {
@@ -73,5 +73,6 @@ public class LogFile extends LogAbstract {
             this.closeOutputStream();
         }
     }
+
 
 }
