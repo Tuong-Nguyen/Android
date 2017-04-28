@@ -258,7 +258,7 @@ public class AccessoryControl {
 
                 if (!IOError) {
                     // Get message length = 2 bytes for header + length (represent by byte 0 and byte 1 -> interger value)
-                    int reclth = AoaMessage.HEADER_LENGTH + (((buffer[AccessoryControl.APICMD_BASE] & 255) << 8) + (buffer[AccessoryControl.USB_OPEN_EXCEPTION] & 255));
+                    int reclth = AoaMessage.HEADER_LENGTH + (((buffer[0] & 255) << 8) + (buffer[1] & 255));
                     while (pos < reclth) {
                         try {
                             int rdlth = this.inputStream.read(buffer, pos, reclth - pos);
