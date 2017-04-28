@@ -294,10 +294,10 @@ public class httpClient extends Activity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    httpClient.phonehome_state = PhoneHomeState.DATUM_STATUS;
+                    httpClient.phonehome_state = PhoneHomeState.DATUM_LIMIT_LINE;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
                 	break;
-				case PhoneHomeState.DATUM_STATUS /*25*/:
+				case PhoneHomeState.DATUM_LIMIT_LINE /*25*/:
                     httpClient.this.dialog.setMessage("Checking for software updates");
                     httpClient.phonehome_state = PhoneHomeState.VERSION;
                     httpClient.phonehomeHandler.postDelayed(httpClient.this.phonehomeRunnable, (long) httpClient.progressUpdateRate);
@@ -859,7 +859,7 @@ public class httpClient extends Activity {
 
         // TODO original while (logIn != null)
         if (logIn != null) {
-            JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_STATUS);
+            JSONArray jsonLog = convertLogToJsonArray(logIn, PhoneHomeState.DATUM_LIMIT_LINE);
             if (jsonLog == null) {
                 return responseCode;
             }
@@ -1092,7 +1092,7 @@ public class httpClient extends Activity {
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
         String datumIn = logFile.read();
         if (datumIn != null) {
-            JSONArray jsonDatum = convertDatumToJsonArray(datumIn, PhoneHomeState.DATUM_STATUS);
+            JSONArray jsonDatum = convertDatumToJsonArray(datumIn, PhoneHomeState.DATUM_LIMIT_LINE);
             if (jsonDatum == null) {
                 return responseCode;
             }
@@ -1140,6 +1140,15 @@ public class httpClient extends Activity {
         logFile.deleteFile(FileName.DATUMNAME);
         return responseCode;
     }
+
+    /**
+     * Convert Datum To JsonArray
+     * @param datumStr
+     * @param datumStatus
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
     public JSONArray convertDatumToJsonArray(String datumStr, int datumStatus) throws IOException, JSONException {
 
         InputStream inputStream = new ByteArrayInputStream(datumStr.getBytes());
@@ -1153,19 +1162,18 @@ public class httpClient extends Activity {
             String timestamp;
             String datum_name;
             String datum_value;
-            int indexOfSlash;
-            int lastIndexOfSlash;
+
             int indexOfWhiteSpace = line.indexOf(" ");
             if (indexOfWhiteSpace <= 0){
                 return jsonArray;
             }else{
                 timestamp = line.substring(0, indexOfWhiteSpace);
-                indexOfSlash = line.indexOf("\\");
+                int indexOfSlash = line.indexOf("\\");
                 if (indexOfSlash <= 0){
                     return jsonArray;
                 }else{
                     datum_name = line.substring(indexOfWhiteSpace, indexOfSlash);
-                    lastIndexOfSlash = line.lastIndexOf("\\");
+                    int lastIndexOfSlash = line.lastIndexOf("\\");
                     if (lastIndexOfSlash <= 0){
                         return  jsonArray;
                     }else{
@@ -1173,7 +1181,7 @@ public class httpClient extends Activity {
                         jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
                         jsonArray.put(jsonObject);
                         i++;
-                        if (datumStatus > i) {
+                        if (i > datumStatus) {
                             break;
                         }
                         line = datumIn.readLine();
