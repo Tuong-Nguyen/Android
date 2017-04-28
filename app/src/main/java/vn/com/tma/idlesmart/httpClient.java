@@ -917,9 +917,9 @@ public class httpClient extends Activity {
         logFile.write("End Upload");
         return responseCode;
     }
+
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    // TODO Continue working
     public JSONArray convertLogToJsonArray(BufferedReader bufferedReader, int phonehome_state) throws IOException, JSONException {
 
         JSONArray jsonArray = null;
@@ -1090,11 +1090,7 @@ public class httpClient extends Activity {
         Log.i(TAG, "DatumTask");
         LogFile logFile = new LogFile(context, FileName.DATUMNAME, FileName.LOGPATH, TAG);
         CommLog(PhoneHomeState.CSC_AUTO_UPDATE, "DatumTask");
-        String datumStr="";
-        datumStr = logFile.read();
-        InputStream inputStream = new ByteArrayInputStream(datumStr.getBytes());
-        BufferedReader datumIn = new BufferedReader(new InputStreamReader(inputStream));
-        // TODO original while (logIn != null)
+        String datumIn = logFile.read();
         if (datumIn != null) {
             JSONArray jsonDatum = convertDatumToJsonArray(datumIn, PhoneHomeState.DATUM_STATUS);
             if (jsonDatum == null) {
@@ -1144,10 +1140,54 @@ public class httpClient extends Activity {
         logFile.deleteFile(FileName.DATUMNAME);
         return responseCode;
     }
+    public JSONArray convertDatumToJsonArray(String datumStr, int datumStatus) throws IOException, JSONException {
+
+        InputStream inputStream = new ByteArrayInputStream(datumStr.getBytes());
+        BufferedReader datumIn = new BufferedReader(new InputStreamReader(inputStream));
+
+        JSONArray jsonArray = null;
+        JSONObject jsonObject;
+        int i = 0;
+        String line = datumIn.readLine();
+        while (line != null){
+            String timestamp;
+            String datum_name;
+            String datum_value;
+            int indexOfSlash;
+            int lastIndexOfSlash;
+            int indexOfWhiteSpace = line.indexOf(" ");
+            if (indexOfWhiteSpace <= 0){
+                return jsonArray;
+            }else{
+                timestamp = line.substring(0, indexOfWhiteSpace);
+                indexOfSlash = line.indexOf("\\");
+                if (indexOfSlash <= 0){
+                    return jsonArray;
+                }else{
+                    datum_name = line.substring(indexOfWhiteSpace, indexOfSlash);
+                    lastIndexOfSlash = line.lastIndexOf("\\");
+                    if (lastIndexOfSlash <= 0){
+                        return  jsonArray;
+                    }else{
+                        datum_value = line.substring(indexOfSlash, lastIndexOfSlash);
+                        jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+                        jsonArray.put(jsonObject);
+                        i++;
+                        if (datumStatus > i) {
+                            break;
+                        }
+                        line = datumIn.readLine();
+                    }
+                }
+            }
+        }
+
+        return jsonArray;
+    }
 
     /* JADX WARNING: inconsistent code. */
     /* Code decompiled incorrectly, please refer to instructions dump. */
-    public JSONArray convertDatumToJsonArray(BufferedReader bufferedReader, int datumStatus) throws IOException, JSONException {
+   /* public JSONArray convertDatumToJsonArray(BufferedReader bufferedReader, int datumStatus) throws IOException, JSONException {
 
         JSONArray jsonArray = null;
         JSONObject jsonObject;
@@ -1498,7 +1538,7 @@ public class httpClient extends Activity {
         }
 
        return jsonArray;
-    }
+    }*/
 
     @NonNull
     private JSONObject getDatumJsonObject(String timestamp, String datum_name, String datum_value) throws JSONException {
