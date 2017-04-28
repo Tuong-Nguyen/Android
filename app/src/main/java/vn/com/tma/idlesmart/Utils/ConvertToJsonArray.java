@@ -48,20 +48,17 @@ public class ConvertToJsonArray {
                 if (indexOfSlash <= 0){
                     return jsonArray;
                 }else{
+                    indexOfWhiteSpace++;
                     datum_name = line.substring(indexOfWhiteSpace, indexOfSlash);
-                    int lastIndexOfSlash = line.lastIndexOf("\\");
-                    if (lastIndexOfSlash <= 0){
-                        return  jsonArray;
-                    }else{
-                        datum_value = line.substring(indexOfSlash, lastIndexOfSlash);
-                        jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
-                        jsonArray.put(jsonObject);
-                        i++;
-                        if (i > datumLimitLine) {
-                            break;
-                        }
-                        line = datumIn.readLine();
+                    indexOfSlash++;
+                    datum_value = line.substring(indexOfSlash);
+                    jsonObject = getDatumJsonObject(timestamp, datum_name, datum_value);
+                    jsonArray.put(jsonObject);
+                    i++;
+                    if (i > datumLimitLine) {
+                        break;
                     }
+                    line = datumIn.readLine();
                 }
             }
         }
@@ -105,23 +102,24 @@ public class ConvertToJsonArray {
                 return jsonArray;
             }else{
                 timestamp = line.substring(0, indexOfWhiteSpace);
-                int indexOfSlashFirst = line.indexOf("\\");
-                if (indexOfSlashFirst <= 0){
+                int indexOfSlash = line.indexOf("\\");
+                if (indexOfSlash <= 0){
                     return jsonArray;
                 }else{
-                    event = line.substring(indexOfWhiteSpace, indexOfSlashFirst);
-                    int indexOfSlashSecond =line.indexOf("\\", indexOfSlashFirst);
-
-                    if (indexOfSlashSecond <= 0){
+                    indexOfWhiteSpace++;
+                    event = line.substring(indexOfWhiteSpace, indexOfSlash);
+                    int lastIndexOfSlash = line.lastIndexOf("\\");
+                    if (lastIndexOfSlash <= 0){
                         return jsonArray;
                     }else{
-                        event_trigger =  line.substring(indexOfSlashFirst, indexOfSlashSecond);
-                        int lastIndexOfSlash = line.lastIndexOf("\\");
+                        indexOfSlash++;
+                        event_trigger =  line.substring(indexOfSlash, lastIndexOfSlash);
                         if (lastIndexOfSlash <= 0){
                             return jsonArray;
 
                         }else{
-                            event_comment = line.substring(indexOfSlashSecond, lastIndexOfSlash);
+                            lastIndexOfSlash++;
+                            event_comment = line.substring(lastIndexOfSlash);
                             jsonObject = getLogJSONObject(timestamp, event, event_trigger, event_comment);
                             jsonArray.put(jsonObject);
                             i++;

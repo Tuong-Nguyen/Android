@@ -23,7 +23,7 @@ import static junit.framework.Assert.assertEquals;
  * Created by ntmhanh on 4/28/2017.
  */
 @RunWith(AndroidJUnit4.class)
-public class ConvertToJsonArrayInstrumentTest {
+public class ConvertDatumToJsonArrayInstrumentTest {
     private Context context;
     private LogFile logFile;
     private String fileNamePath = "Datums";
@@ -40,13 +40,13 @@ public class ConvertToJsonArrayInstrumentTest {
     @Test
     public void convertDatumToJsonArray_readDataFromFileAndConvertToJsonArray_returnDataLikeInput() throws IOException, JSONException {
         //Arrange
-        String input = "datumname\\datumValue";
+        String input = "datumName\\datumValue";
         logFile.deleteFile(filename);// Ensure this is a new file
         logFile.write(input);
         String data = logFile.read();
         // Action
         ConvertToJsonArray convertToJsonArray= new ConvertToJsonArray();
-        JSONArray jsonArray = convertToJsonArray.convertDatumToJsonArray(data, PhoneHomeState.DATUM_MAX_LINE);
+        JSONArray jsonArray = convertToJsonArray.convertDatumToJsonArray(data, PhoneHomeState.DATUM_LIMIT_LINE);
         JSONObject jsonObject = jsonArray.getJSONObject(0);
         String datumName = jsonObject.getString("datum_name");
         String datumValue = jsonObject.getString("datum_value");
@@ -66,7 +66,7 @@ public class ConvertToJsonArrayInstrumentTest {
         String data = logFile.read();
         // Action
         ConvertToJsonArray convertToJsonArray= new ConvertToJsonArray();
-        JSONArray jsonArray = convertToJsonArray.convertDatumToJsonArray(data, PhoneHomeState.DATUM_MAX_LINE);
+        JSONArray jsonArray = convertToJsonArray.convertDatumToJsonArray(data, PhoneHomeState.DATUM_LIMIT_LINE);
         int number = jsonArray.length();
         //Assert
         assertEquals(2, number);
