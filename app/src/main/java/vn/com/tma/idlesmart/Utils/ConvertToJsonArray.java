@@ -123,7 +123,7 @@ public class ConvertToJsonArray {
                             jsonObject = getLogJSONObject(timestamp, event, event_trigger, event_comment);
                             jsonArray.put(jsonObject);
                             i++;
-                            if (logLimitLine > i){
+                            if (logLimitLine < i){
                                 break;
                             }
                             line = logIn.readLine();

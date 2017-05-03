@@ -55,5 +55,21 @@ public class ConvertLogToJsonArrayInstrumentTest {
         assertEquals("eventTrigger", eventTrigger);
         assertEquals("eventComment", eventComment);
     }
+    @Test
+    public void convertLogToJsonArray_readDataFromFileHasManyLineAndConvertToJsonArray_returnTheNumberOfObjectLikeInput() throws IOException, JSONException {
+        //Arrange
+        String input1 = "event_1\\eventTrigger_1\\eventComment_1";
+        String input2 = "event_2\\eventTrigger_2\\eventComment_2";
+        logFile.deleteFile(filename);// Ensure this is a new file
+        logFile.write(input1);
+        logFile.write(input2);
+        String data = logFile.read();
+        // Action
+        ConvertToJsonArray convertToJsonArray= new ConvertToJsonArray();
+        JSONArray jsonArray = convertToJsonArray.convertLogToJsonArray(data, PhoneHomeState.DATUM_LIMIT_LINE);
+        int number = jsonArray.length();
+        //Assert
+        assertEquals(2, number);
+    }
 
 }
