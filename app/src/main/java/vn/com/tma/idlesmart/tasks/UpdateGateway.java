@@ -151,7 +151,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
      * @param jsonObject
      */
 
-    public void buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject) throws JSONException {
+    public int buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject) throws JSONException {
         byte[] childArray;
         int j = 0;
             childArray = hexStringToByteArray(jsonObject.getString(feature));
@@ -160,6 +160,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             j++;
             i++;
         }
+        return i;
     }
 
 
@@ -174,34 +175,34 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
                 i++;
 
                 String start = "start";
-                buildChildArray(i, parentArray,start, jsonObject);
+                i = buildChildArray(i, parentArray, start, jsonObject);
 
                 String size = "size";
-                buildChildArray(i, parentArray, size, jsonObject);
+                i = buildChildArray(i, parentArray, size, jsonObject);
 
                 String tra = "tra";
-                buildChildArray(i, parentArray, tra, jsonObject);
+                i = buildChildArray(i, parentArray, tra, jsonObject);
 
                 String signature = "signature";
-                buildChildArray(i, parentArray, signature, jsonObject);
+                i = buildChildArray(i, parentArray, signature, jsonObject);
 
                 String crc_1 = "crc_1";
-                buildChildArray(i, parentArray, crc_1, jsonObject);
+                i = buildChildArray(i, parentArray, crc_1, jsonObject);
 
                 String crc_2 = "crc_2";
-                buildChildArray(i, parentArray, crc_2, jsonObject);
+                i = buildChildArray(i, parentArray, crc_2, jsonObject);
 
                 String crc_3 = "crc_3";
-                buildChildArray(i, parentArray, crc_3, jsonObject);
+                i = buildChildArray(i, parentArray, crc_3, jsonObject);
 
                 while (hexStringToByteArray(jsonObject.getString("block_count")).length == 1) {
                     parentArray[i] = 0;
                     i++;
                     String block_count = "block_count";
-                    buildChildArray(i, parentArray, block_count, jsonObject);
+                    i = buildChildArray(i, parentArray, block_count, jsonObject);
 
                     String version = "version";
-                    buildChildArray(i, parentArray, version, jsonObject);
+                    i = buildChildArray(i, parentArray, version, jsonObject);
 
                     int j = jsonObject.getString("version").getBytes().length;
                     while (j<10){
