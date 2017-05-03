@@ -63,7 +63,7 @@ public class LogFileInstrumentTest {
             logFile.write(input);
             String data = logFile.read();
 
-            boolean result = data.matches(".*\\sThis is the first input\\n");
+            boolean result = data.matches(".*\\s"+input+"\\n");
 
             // Assert
             assertTrue(result);
