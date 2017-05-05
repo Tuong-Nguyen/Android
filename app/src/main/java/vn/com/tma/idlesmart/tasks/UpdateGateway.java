@@ -17,8 +17,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import vn.com.tma.idlesmart.MainActivity;
+import vn.com.tma.idlesmart.Utils.ConvertJsonObjectToByteArray;
 import vn.com.tma.idlesmart.params.UpdateTaskConfig;
 
 import static vn.com.tma.idlesmart.AccessoryControl.APIDATA_FW_HEADER;
@@ -118,8 +120,17 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             FileChannel fc = is.getChannel();
             String jsonStr = Charset.defaultCharset().decode(fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size())).toString();
             is.close();
+            //convert CscHeader Object To ByteArray
+            ConvertJsonObjectToByteArray convertJsonObjectToByteArray = new ConvertJsonObjectToByteArray();
             JSONObject jsonCsc = new JSONObject(jsonStr);
-            mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, sendCscHeaderToGateway(jsonCsc, new byte[16767]) );
+            List<Byte> cscHeaderByteArray = convertJsonObjectToByteArray.convertCscHeaderObjectToByteArray(jsonCsc);
+            dataCscHeaderLength = cscHeaderByteArray.size();
+            byte[] cscHeaderbyteArray = new byte[cscHeaderByteArray.size()];
+            for (int i = 0; i < cscHeaderByteArray.size(); i++) {
+                cscHeaderbyteArray[i] = cscHeaderByteArray.get(i);
+            }
+
+            mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, cscHeaderbyteArray);
             Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlocks ToGateway>");
             for (int i = 0; i < jsonCsc.getInt("block_count"); i += 1) {
                 mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, sendCscDataBlockToGateway(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i));
@@ -161,62 +172,6 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             i++;
         }
         return i;
-    }
-
-    public byte[] sendCscHeaderToGateway(JSONObject jsonObject,  byte[] parentArray) {
-       // = new byte[16767];
-        int i = 0;
-            if (MainActivity.DebugLog) {
-                Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
-            }
-            try {
-                parentArray[i] = (byte) (jsonObject.getInt("format") & 255);
-                i++;
-
-                String start = "start";
-                i = buildChildArray(i, parentArray, start, jsonObject);
-
-                String size = "size";
-                i = buildChildArray(i, parentArray, size, jsonObject);
-
-                String tra = "tra";
-                i = buildChildArray(i, parentArray, tra, jsonObject);
-
-                String signature = "signature";
-                i = buildChildArray(i, parentArray, signature, jsonObject);
-
-                String crc_1 = "crc_1";
-                i = buildChildArray(i, parentArray, crc_1, jsonObject);
-
-                String crc_2 = "crc_2";
-                i = buildChildArray(i, parentArray, crc_2, jsonObject);
-
-                String crc_3 = "crc_3";
-                i = buildChildArray(i, parentArray, crc_3, jsonObject);
-
-                while (hexStringToByteArray(jsonObject.getString("block_count")).length == 1) {
-                    parentArray[i] = 0;
-                    i++;
-                    String block_count = "block_count";
-                    i = buildChildArray(i, parentArray, block_count, jsonObject);
-
-                   /* String version = "version";
-                    i = buildChildArray(i, parentArray, version, jsonObject);
-*/
-                    int j = jsonObject.getString("version").getBytes().length;
-                    while (j<10){
-                        parentArray[i] = 0;
-                        j++;
-                        i++;
-                    }
-                    dataCscHeaderLength = i;
-                    return parentArray;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return parentArray;
-            }
-        return parentArray;
     }
 
 

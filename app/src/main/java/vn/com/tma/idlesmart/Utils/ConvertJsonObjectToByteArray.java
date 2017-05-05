@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,14 @@ import vn.com.tma.idlesmart.MainActivity;
 
 
 public class ConvertJsonObjectToByteArray {
-//    public byte[] send(JSONObject jsonObject);
-
-    public int ConvertCscHeaderObjectToByteArray(JSONObject jsonObject, byte[] parentArray) throws JSONException {
-
+    /**
+     * Convert CscHeader Object to Byte Array
+     * @param jsonObject
+     * @return
+     * @throws JSONException
+     */
+    public List<Byte> convertCscHeaderObjectToByteArray(JSONObject jsonObject) throws JSONException {
+        List<Byte> parentArray = new ArrayList<>();
         if (MainActivity.DebugLog){
             Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
         }
@@ -30,43 +35,50 @@ public class ConvertJsonObjectToByteArray {
         feature.add("crc_2");
         feature.add("crc_3");
         feature.add("block_count");
-        parentArray[0] = (byte) (jsonObject.getInt("format") & 255);
-        int i = 1;
-        if (i < parentArray.length){
+        if (jsonObject.has("format")){
+            parentArray.add((byte) (jsonObject.getInt("format") & 255));
             for (int j = 0; j < feature.size(); j++){
                 if (feature.get(j) == "block_count"){
                     if (hexStringToByteArray(jsonObject.getString("block_count")).length == 1){
-                        parentArray[i] = 0;
-                        i++;
+
+                        BigInteger bigInt = BigInteger.valueOf(0);
+                        parentArray.add(bigInt.byteValue());
+
                         byte[] childArray = hexStringToByteArray(jsonObject.getString(feature.get(j)));
                         int l = 0;
                         while (childArray.length > l){
-                            parentArray[i] = childArray[l];
+                            parentArray.add(childArray[l]);
                             l++;
-                            i++;
                         }
 
                         int h = 0;
                         while (jsonObject.getString("version").getBytes().length < 10){
-                            parentArray[i] = jsonObject.getString("version").getBytes()[h];
+                            parentArray.add(jsonObject.getString("version").getBytes()[h]);
                             h++;
-                            i++;
                         }
                     }
-                    return i;
+
+                    return parentArray;
                 }
                 byte[] childArray = hexStringToByteArray(jsonObject.getString(feature.get(j)));
                 int k = 0;
                 while (childArray.length > k){
-                    parentArray[i] = childArray[k];
+                    parentArray.add(childArray[k]);
                     k++;
-                    i++;
+
                 }
             }
-        }
-        return i;
 
+        }
+
+        return parentArray;
     }
+
+    /**
+     * Convert String hex to byte Array
+     * @param str
+     * @return
+     */
     public byte[] hexStringToByteArray(String str) {
         String TAG = "IdleSmart.UpdateGateway";
         try {

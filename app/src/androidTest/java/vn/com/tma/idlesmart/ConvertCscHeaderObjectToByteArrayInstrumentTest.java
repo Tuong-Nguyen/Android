@@ -52,9 +52,8 @@ public class ConvertCscHeaderObjectToByteArrayInstrumentTest {
     public void ConvertCscHeaderObjectToByteArray_InputJsonObjectWithLengthOfblock_countBiggerThanOne_returnTheNumberOfCountToCallhexStringToByteArrayIsEight() throws JSONException {
         //Arrange
          ConvertJsonObjectToByteArray mock = Mockito.spy(ConvertJsonObjectToByteArray.class);
-        byte[] parentArray = new byte[16767];
         //Action
-        mock.ConvertCscHeaderObjectToByteArray(jsonObject_1, parentArray);
+        mock.convertCscHeaderObjectToByteArray(jsonObject_1);
         //Assert
         verify(mock, times(8)).hexStringToByteArray(anyString());
     }
@@ -63,9 +62,8 @@ public class ConvertCscHeaderObjectToByteArrayInstrumentTest {
     public void ConvertCscHeaderObjectToByteArray_InputJsonObjectWithLengthOfblock_countEqualToOne_returnTheNumberOfCountToCallhexStringToByteArrayIsNine() throws JSONException {
         //Arrange
         ConvertJsonObjectToByteArray mock = Mockito.spy(ConvertJsonObjectToByteArray.class);
-        byte[] parentArray = new byte[16767];
         //Action
-        mock.ConvertCscHeaderObjectToByteArray(jsonObject_2, parentArray);
+        mock.convertCscHeaderObjectToByteArray(jsonObject_2);
         //Assert
         verify(mock, times(9)).hexStringToByteArray(anyString());
     }
