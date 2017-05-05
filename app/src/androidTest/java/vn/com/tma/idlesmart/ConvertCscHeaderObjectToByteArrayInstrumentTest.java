@@ -11,13 +11,11 @@ import org.mockito.Mockito;
 
 import vn.com.tma.idlesmart.Utils.ConvertJsonObjectToByteArray;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by ntmhanh on 5/3/2017.
- */
 @RunWith(AndroidJUnit4.class)
 public class ConvertCscHeaderObjectToByteArrayInstrumentTest {
     JSONObject jsonObject_1 = new JSONObject();
@@ -66,6 +64,32 @@ public class ConvertCscHeaderObjectToByteArrayInstrumentTest {
         mock.convertCscHeaderObjectToByteArray(jsonObject_2);
         //Assert
         verify(mock, times(9)).hexStringToByteArray(anyString());
+    }
+    @Test
+    public void hexStringToByteArray_InputStringHexWithout0x_ReturnArrayByteWith26Byte(){
+        //Arrange
+        String hex = "1a";
+        ConvertJsonObjectToByteArray convertJsonObjectToByteArray = new ConvertJsonObjectToByteArray();
+        byte[] byteTest = new byte[1];
+        byteTest[0] = 26;
+        //Action
+        byte[] returnArray = convertJsonObjectToByteArray.hexStringToByteArray(hex);
+        //Assert
+        assertEquals(returnArray.length, byteTest.length);
+        assertEquals(returnArray[0], byteTest[0]);
+    }
+    @Test
+    public void hexStringToByteArray_InputStringHexWith0x_ReturnArrayByteWith26Byte(){
+        //Arrange
+        String hex = "0x1a";
+        ConvertJsonObjectToByteArray convertJsonObjectToByteArray = new ConvertJsonObjectToByteArray();
+        byte[] byteTest = new byte[1];
+        byteTest[0] = 26;
+        //Action
+        byte[] returnArray = convertJsonObjectToByteArray.hexStringToByteArray(hex);
+        //Assert
+        assertEquals(returnArray.length, byteTest.length);
+        assertEquals(returnArray[0], byteTest[0]);
     }
 
 }

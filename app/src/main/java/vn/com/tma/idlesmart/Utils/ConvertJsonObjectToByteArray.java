@@ -9,10 +9,10 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import vn.com.tma.idlesmart.MainActivity;
-
 
 public class ConvertJsonObjectToByteArray {
+    private boolean isDebug = false;
+
     /**
      * Convert CscHeader Object to Byte Array
      * @param jsonObject
@@ -20,8 +20,9 @@ public class ConvertJsonObjectToByteArray {
      * @throws JSONException
      */
     public List<Byte> convertCscHeaderObjectToByteArray(JSONObject jsonObject) throws JSONException {
+
         List<Byte> parentArray = new ArrayList<>();
-        if (MainActivity.DebugLog){
+        if (isDebug){
             Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
         }
         List<String> feature;
