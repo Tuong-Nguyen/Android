@@ -37,7 +37,7 @@ public class sendCscheaderToGatewayInstrumentTest {
         jsonObject.put("version", "0123456789ABCDEF");
     }
     @Test
-    public void sendCscHeaderToGateway_InputJsonObject_return() throws JSONException {
+    public void sendCscHeaderToGateway_InputJsonObjectWithLengthOfblock_countBiggerThanOne_return() throws JSONException {
         //Arrange
          SendToGateway mock = Mockito.spy(SendToGateway.class);
         byte[] parentArray = new byte[16767];
@@ -45,7 +45,6 @@ public class sendCscheaderToGatewayInstrumentTest {
         int index = mock.sendCscHeaderToGateway(jsonObject, parentArray);
 
         verify(mock, times(9)).hexStringToByteArray(anyString());
-
     }
 
 }
