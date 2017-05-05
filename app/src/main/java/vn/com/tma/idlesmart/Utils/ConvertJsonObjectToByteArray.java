@@ -11,10 +11,10 @@ import java.util.List;
 import vn.com.tma.idlesmart.MainActivity;
 
 
-public class SendToGateway {
+public class ConvertJsonObjectToByteArray {
 //    public byte[] send(JSONObject jsonObject);
 
-    public int sendCscHeaderToGateway(JSONObject jsonObject,  byte[] parentArray) throws JSONException {
+    public int ConvertCscHeaderObjectToByteArray(JSONObject jsonObject, byte[] parentArray) throws JSONException {
 
         if (MainActivity.DebugLog){
             Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
@@ -53,6 +53,7 @@ public class SendToGateway {
                             i++;
                         }
                     }
+                    return i;
                 }
                 byte[] childArray = hexStringToByteArray(jsonObject.getString(feature.get(j)));
                 int k = 0;
