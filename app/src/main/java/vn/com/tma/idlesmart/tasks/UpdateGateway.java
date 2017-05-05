@@ -119,7 +119,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             String jsonStr = Charset.defaultCharset().decode(fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size())).toString();
             is.close();
             JSONObject jsonCsc = new JSONObject(jsonStr);
-            mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, sendCscHeaderToGateway(jsonCsc) );
+            mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, sendCscHeaderToGateway(jsonCsc, new byte[16767]) );
             Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlocks ToGateway>");
             for (int i = 0; i < jsonCsc.getInt("block_count"); i += 1) {
                 mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, sendCscDataBlockToGateway(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i));
@@ -163,9 +163,8 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
         return i;
     }
 
-
-    public byte[] sendCscHeaderToGateway(JSONObject jsonObject) {
-        byte[] parentArray = new byte[16767];
+    public byte[] sendCscHeaderToGateway(JSONObject jsonObject,  byte[] parentArray) {
+       // = new byte[16767];
         int i = 0;
             if (MainActivity.DebugLog) {
                 Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
@@ -201,9 +200,9 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
                     String block_count = "block_count";
                     i = buildChildArray(i, parentArray, block_count, jsonObject);
 
-                    String version = "version";
+                   /* String version = "version";
                     i = buildChildArray(i, parentArray, version, jsonObject);
-
+*/
                     int j = jsonObject.getString("version").getBytes().length;
                     while (j<10){
                         parentArray[i] = 0;
@@ -269,7 +268,7 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
     }
 
 
-    public static byte[] hexStringToByteArray(String str) {
+    public byte[] hexStringToByteArray(String str) {
         String TAG = "IdleSmart.UpdateGateway";
         try {
             String s;
