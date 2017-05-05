@@ -7,10 +7,13 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
-import java.io.UnsupportedEncodingException;
+import vn.com.tma.idlesmart.Utils.SendToGateway;
 
-import vn.com.tma.idlesmart.tasks.UpdateGateway;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by ntmhanh on 5/3/2017.
@@ -33,19 +36,17 @@ public class sendCscheaderToGatewayInstrumentTest {
         jsonObject.put("block_count", "0123456789ABCDEF");
         jsonObject.put("version", "0123456789ABCDEF");
     }
-    // Continue working
     @Test
-    public void sendCscHeaderToGateway_InputJsonObject_return(){
+    public void sendCscHeaderToGateway_InputJsonObject_return() throws JSONException {
         //Arrange
-        UpdateGateway updateGateway = new UpdateGateway();
-        byte[] array = updateGateway.sendCscHeaderToGateway(jsonObject);
+         SendToGateway mock = Mockito.spy(SendToGateway.class);
+        byte[] parentArray = new byte[16767];
 
-        String strArray = null;
-        try {
-            strArray = new String(array, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        int index = mock.sendCscHeaderToGateway(jsonObject, parentArray);
+
+        verify(mock, times(9)).hexStringToByteArray(anyString());
+
     }
+
 }
 
