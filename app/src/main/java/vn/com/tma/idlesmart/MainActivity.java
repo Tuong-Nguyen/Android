@@ -3044,67 +3044,25 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public void sendMaintInfo() {
         byte[] data = new byte[2];
         // Log File (J1939 data)
-        if (aMaintEnable[MaintenanceFeature.LOG_FILE]) {
-            data[0] = (byte) ((aMaintValue[MaintenanceFeature.LOG_FILE] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[MaintenanceFeature.LOG_FILE] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[1]);
-        } else {
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, 0, 0);
-        }
+       informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.LOG_FILE],aMaintValue[MaintenanceFeature.LOG_FILE], AccessoryControl.APIDEBUG1);
 
         // Clutch Override
-        if (aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE]) {
-            data[0] = (byte) ((aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, data[0], data[1]);
-        } else {
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG2, 0, 0);
-        }
+       informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE],aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE], AccessoryControl.APIDEBUG2);
 
         // Idle Timer Override (1='brake', 2='long brake', 3=spn_1237)
-        if (aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE]) {
-            data[0] = (byte) ((aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, data[0], data[1]);
-        } else {
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG3, 0, 0);
-        }
+        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE],aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE], AccessoryControl.APIDEBUG3);
 
         // Engine Speed Adjustments (1=during idleup, 2=while running)
-        if (aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS]) {
-            data[0] = (byte) ((aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, data[0], data[1]);
-        } else {
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG4, 0, 0);
-        }
+        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS],aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS], AccessoryControl.APIDEBUG4);
 
         // Timestamp/RPM logging
-        if (aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM]) {
-            data[0] = (byte) ((aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, data[0], data[1]);
-        } else {
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG5, 0, 0);
-        }
+        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM],aMaintValue[MaintenanceFeature.TIMESTAMP_RPM], AccessoryControl.APIDEBUG5);
 
         // Neutral switch detection
-        if (aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION]) {
-            data[0] = (byte) ((aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, data[0], data[1]);
-        } else {
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG6, 0, 0);
-        }
+        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION],aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION], AccessoryControl.APIDEBUG6);
 
         // Reserved
-        if (aMaintEnable[MaintenanceFeature.RESERVED]) {
-            data[0] = (byte) ((aMaintValue[MaintenanceFeature.RESERVED] >> 8) & 255);
-            data[1] = (byte) (aMaintValue[MaintenanceFeature.RESERVED] & 255);
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, data[0], data[1]);
-        } else {
-            this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG7, 0, 0);
-        }
+        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.RESERVED],aMaintValue[MaintenanceFeature.RESERVED], AccessoryControl.APIDEBUG7);
 
         // Server Route
         if (aMaintEnable[MaintenanceFeature.SERVER_ROUTE]) {

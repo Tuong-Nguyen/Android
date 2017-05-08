@@ -103,4 +103,29 @@ public class InformationSender {
         bytestring[i] = (byte) 0;
         this.accessoryControl.writeCommandBlock(AccessoryControl.APICMD_VIN, i, bytestring);
     }
+
+    /**
+     * write CommandMaintenance Feature
+     * @param isTrue
+     * @param value
+     * @param APIDEBUG
+     */
+    public void writeCommandMaintenanceAPIDEBUG(boolean isTrue, int value, int APIDEBUG ){
+        byte[] data = new byte[2];
+        if (isTrue){
+            data[0] = (byte) ((value >> 8) & 255);
+            data[1] = (byte) (value & 255);
+            this.accessoryControl.writeCommand(APIDEBUG, data[0], data[1]);
+        } else{
+            this.accessoryControl.writeCommand(APIDEBUG, 0, 0);
+        }
+
+    }
+    /*if (aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE]) {
+        data[0] = (byte) ((aMaintValue[MainActivity.MaintenanceFeature.LOG_FILE] >> 8) & 255);
+        data[1] = (byte) (aMaintValue[MainActivity.MaintenanceFeature.LOG_FILE] & 255);
+        this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[1]);
+    } else {
+        this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, 0, 0);
+    }*/
 }
