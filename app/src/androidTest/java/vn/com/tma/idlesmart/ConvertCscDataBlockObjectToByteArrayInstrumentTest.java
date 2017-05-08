@@ -30,12 +30,13 @@ public class ConvertCscDataBlockObjectToByteArrayInstrumentTest {
         jsonObject.put("load_image", "0123456789ABCDEF");
     }
     @Test
-    public void ConvertCscDataBlockObjectToByteArray_InputJsonObject_returnTheNumberOfCountToCallhexStringToByteArrayIsEight() throws JSONException {
+    public void ConvertCscDataBlockObjectToByteArray_InputJsonObject_returnTheNumberOfCountToCallhexStringToByteArrayIsThree() throws JSONException {
         //Arrange
         JsonObjectConverter mock = Mockito.spy(JsonObjectConverter.class);
+        int index = 1;
         //Action
-        mock.convertCscHeaderObjectToByteArray(jsonObject);
+        mock.convertCscDataBlockObjectToByteArray(jsonObject, index);
         //Assert
-        verify(mock, times(8)).hexStringToByteArray(anyString());
+        verify(mock, times(3)).hexStringToByteArray(anyString());
     }
 }
