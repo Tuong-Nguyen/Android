@@ -165,6 +165,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     private LinearLayout topLayout;
     final Handler verificationHandler;
     final Runnable verificationRunnable;
+    private InformationSender informationSender;
 
     /**
      * Define verification steps
@@ -304,7 +305,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         break;
                     case R.id.VINCodeEditText /*2131362092*/:
                         MainActivity.Gateway_VIN = ((EditText) v).getText().toString();
-                        InformationSender informationSender = new InformationSender(accessoryControl);
                         informationSender.sendVIN(MainActivity.Gateway_VIN);
                         Log.i(MainActivity.TAG, "(send) APICMD_VIN=" + MainActivity.Gateway_VIN);
                         break;
@@ -563,6 +563,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.isScreenOn = true;
         this.timeoutRunnable = new ScreenOffRunnable();
         this.mEditorActionListener = new ActivationCodeVINCodeListener();
+        this.informationSender = new InformationSender(accessoryControl);
         this.verificationRunnable = new Runnable() {
             public void run() {
                 MainActivity.this.nextVerificationStep();
@@ -3042,8 +3043,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
 
     public void sendMaintInfo() {
         byte[] data = new byte[2];
-        InformationSender informationSender = new InformationSender(accessoryControl);
-
         // Log File (J1939 data)
         if (aMaintEnable[MaintenanceFeature.LOG_FILE]) {
             data[0] = (byte) ((aMaintValue[MaintenanceFeature.LOG_FILE] >> 8) & 255);

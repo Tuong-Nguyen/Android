@@ -111,6 +111,7 @@ public class httpClient extends Activity {
     JSONObject jsonVersion;
     private MainActivity mInstance;
     final Runnable phonehomeRunnable;
+    private InformationSender informationSender;
 
     /* renamed from: com.idlesmarter.aoa.httpClient.1 */
     class C00111 implements Runnable {
@@ -390,6 +391,7 @@ public class httpClient extends Activity {
         this.crlf = "\n\r";
         this.phonehomeRunnable = new C00111();
         this.mInstance = act;
+        this. informationSender = new InformationSender(this.mInstance.accessoryControl);
     }
 
     public httpClient() {
@@ -610,7 +612,6 @@ public class httpClient extends Activity {
      */
     public int PerformActivationTask() {
         int responseCode = -1;
-        InformationSender informationSender = new InformationSender(this.mInstance.accessoryControl);
         Log.i(TAG, "ActivationTask");
         CommLog(PhoneHomeState.FREEZE_GATEWAY, "ActivationTask");
         try {
@@ -822,7 +823,6 @@ public class httpClient extends Activity {
                 if (this.jsonUpdate.has("features") && !this.jsonUpdate.isNull("features")) {
                     Features.parseFeatureList(this.jsonUpdate.getString("features"));
                 }
-                InformationSender informationSender = new InformationSender(this.mInstance.accessoryControl);
                 informationSender.sendFeatures();
             } else {
                 Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
