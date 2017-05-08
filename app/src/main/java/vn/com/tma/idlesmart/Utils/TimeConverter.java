@@ -6,7 +6,7 @@ package vn.com.tma.idlesmart.Utils;
 
 public class TimeConverter {
 
-    public String Time2MinsSecsStr(int time) {
+    public String time2MinsSecsStr(int time) {
         int mins = time / 60;
         int secs = time - (mins * 60);
         if (secs < 10) {

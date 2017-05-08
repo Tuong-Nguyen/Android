@@ -502,9 +502,9 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_TIMEREMAINING /*158*/:
                         if (mainActivityClass.GatewayMode != GatewayModes.BATTERY_PROTECT || msg.arg1 <= 0) {
-                            str = timeConverter.Time2MinsSecsStr(MainActivity.aParam[Params.PARAM_EngineRunTime] * 60);
+                            str = timeConverter.time2MinsSecsStr(MainActivity.aParam[Params.PARAM_EngineRunTime] * 60);
                         } else {
-                            str = timeConverter.Time2MinsSecsStr(msg.arg1);
+                            str = timeConverter.time2MinsSecsStr(msg.arg1);
                         }
                         ((TextView) mainActivityClass.findViewById(R.id.bpFragTimeRemainingValue)).setText(str);
                     	break;
@@ -2647,7 +2647,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 break;
             case 4 /*4*/:
                 TimeConverter timeConverter = new TimeConverter();
-                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(timeConverter.Time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
+                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(timeConverter.time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
                 String str = Integer.toString(aParam[Params.PARAM_VoltageSetPoint]);
                 ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[Params.PARAM_VoltageSetPoint]);
                 ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[Params.PARAM_EngineRunTime]) + this.params.aParamSfx[Params.PARAM_EngineRunTime]);
