@@ -29,6 +29,7 @@ import vn.com.tma.idlesmart.Utils.BatteryVoltageConverter;
 import vn.com.tma.idlesmart.Utils.FileName;
 import vn.com.tma.idlesmart.Utils.LogFile;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
+import vn.com.tma.idlesmart.Utils.InformationSender;
 import vn.com.tma.idlesmart.params.PhoneHomeState;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 import vn.com.tma.idlesmart.tasks.ServerTask;
@@ -609,6 +610,7 @@ public class httpClient extends Activity {
      */
     public int PerformActivationTask() {
         int responseCode = -1;
+        InformationSender informationSender = new InformationSender(this.mInstance.accessoryControl);
         Log.i(TAG, "ActivationTask");
         CommLog(PhoneHomeState.FREEZE_GATEWAY, "ActivationTask");
         try {
@@ -658,7 +660,7 @@ public class httpClient extends Activity {
                         MainActivity.Gateway_Fleet = temp;
                     }
                 }
-                this.mInstance.sendFleet(MainActivity.Gateway_Fleet);
+                informationSender.sendFleet(MainActivity.Gateway_Fleet);
             } else {
                 Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
             }
@@ -820,7 +822,8 @@ public class httpClient extends Activity {
                 if (this.jsonUpdate.has("features") && !this.jsonUpdate.isNull("features")) {
                     Features.parseFeatureList(this.jsonUpdate.getString("features"));
                 }
-                this.mInstance.sendFeatures();
+                InformationSender informationSender = new InformationSender(this.mInstance.accessoryControl);
+                informationSender.sendFeatures();
             } else {
                 Log.e(TAG, "*** Server Error Code: " + Integer.toString(responseCode));
             }
