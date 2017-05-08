@@ -74,6 +74,47 @@ public class ConvertJsonObjectToByteArray {
 
         return parentArray;
     }
+    public byte[] covertListByteTobyteArray(List<Byte> arrayObject) throws JSONException {
+        byte[] cscHeaderbyteArray = new byte[arrayObject.size()];
+        for (int i = 0; i < arrayObject.size(); i++) {
+            cscHeaderbyteArray[i] = arrayObject.get(i);
+        }
+        return cscHeaderbyteArray;
+    }
+    /**
+     * Convert CscHeader Object to Byte Array
+     * @param jsonObject
+     * @return
+     * @throws JSONException
+     */
+    public List<Byte> convertCscDataBlockObjectToByteArray(JSONObject jsonObject, int index) throws JSONException {
+
+        List<Byte> parentArray = new ArrayList<>();
+        if (isDebug){
+            Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
+        }
+        List<String> feature;
+
+        feature = new ArrayList<String>();
+        feature.add("addr");
+        feature.add("size");
+        feature.add("load_image");
+        parentArray.add((byte) (index & 255));
+
+        for (int j = 0; j < feature.size(); j++){
+                byte[] childArray = hexStringToByteArray(jsonObject.getString(feature.get(j)));
+                int k = 0;
+                while (childArray.length > k){
+                    parentArray.add(childArray[k]);
+                    k++;
+
+                }
+            }
+
+        return parentArray;
+    }
+
+
 
     /**
      * Convert String hex to byte Array

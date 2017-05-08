@@ -124,16 +124,15 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             ConvertJsonObjectToByteArray convertJsonObjectToByteArray = new ConvertJsonObjectToByteArray();
             JSONObject jsonCsc = new JSONObject(jsonStr);
             List<Byte> cscHeaderByteArray = convertJsonObjectToByteArray.convertCscHeaderObjectToByteArray(jsonCsc);
-            dataCscHeaderLength = cscHeaderByteArray.size();
-            byte[] cscHeaderbyteArray = new byte[cscHeaderByteArray.size()];
-            for (int i = 0; i < cscHeaderByteArray.size(); i++) {
-                cscHeaderbyteArray[i] = cscHeaderByteArray.get(i);
-            }
-
+            byte[] cscHeaderbyteArray = convertJsonObjectToByteArray.covertListByteTobyteArray(cscHeaderByteArray);
+            dataCscHeaderLength = cscHeaderbyteArray.length;
             mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, cscHeaderbyteArray);
             Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlocks ToGateway>");
             for (int i = 0; i < jsonCsc.getInt("block_count"); i += 1) {
-                mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, sendCscDataBlockToGateway(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i));
+                List<Byte> cscDataBlockByteArray = convertJsonObjectToByteArray.convertCscDataBlockObjectToByteArray(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
+                byte[] cscDataBlockbyteArray = convertJsonObjectToByteArray.covertListByteTobyteArray(cscDataBlockByteArray);
+                CscDataBlockLength = cscDataBlockbyteArray.length;
+                mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, cscHeaderbyteArray);
             }
             mInstance.accessoryControl.writeCommandBlock(191,  APIDATA_FW_TRA,  sendCscTRAToGateway(jsonCsc));
             MainActivity.gateway_restarting = true;
@@ -155,54 +154,25 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
     }
 
     /**
-     * Build child array
-     * @param i
-     * @param parentArray
-     * @param feature
-     * @param jsonObject
-     */
+         * Build child array
+         * @param i
+         * @param parentArray
+         * @param feature
+         * @param jsonObject
+         */
 
-    public int buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject) throws JSONException {
-        byte[] childArray;
-        int j = 0;
-            childArray = hexStringToByteArray(jsonObject.getString(feature));
-        while (childArray.length > j){
-            parentArray[i] = childArray[j];
-            j++;
-            i++;
-        }
-        return i;
-    }
+            public int buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject) throws JSONException {
+                byte[] childArray;
+                int j = 0;
+                childArray = hexStringToByteArray(jsonObject.getString(feature));
+                while (childArray.length > j){
+                    parentArray[i] = childArray[j];
+                    j++;
+                    i++;
+                }
+                return i;
+            }
 
-
-    public byte[] sendCscDataBlockToGateway(JSONObject jsonObject, int index) {
-        byte[] parentArray = new byte[16767];
-        int i = 0;
-        if (MainActivity.DebugLog) {
-            Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlockToGateway>");
-        }
-        try {
-
-            parentArray[i] = 0;
-            i++;
-            parentArray[i] = (byte) (index & 255);
-
-            String addr = "addr";
-            buildChildArray(i, parentArray, addr, jsonObject);
-
-            String size = "size";
-            buildChildArray(i, parentArray, size, jsonObject);
-
-            String load_image = "load_image";
-            buildChildArray(i, parentArray, load_image, jsonObject);
-
-            CscDataBlockLength = i;
-            return parentArray;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return parentArray;
-        }
-    }
 
     public byte[] sendCscTRAToGateway(JSONObject jsonObject) {
         byte[] parentArray = new byte[16767];
