@@ -85,8 +85,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public static String Gateway_SerialID = null;
     public static String Gateway_VIN = null;
     public static boolean HasFocus = false;
-    // TODO Moved KioskMode to KioskModeActivity
-    // public static boolean KioskMode = false;
     static final long MONITOR_RATE = 3000;
     public static boolean PackageUpdatePending = false;
     public static int Password = 0;
@@ -136,9 +134,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public AccessoryControl accessoryControl;
     private int activation_step;
     private Dialog alertDialog;
-
-    // TODO Moved blockedKeys to KioskModeActivity
-    //private final List blockedKeys;
 
     public Faults faults;
     private int initialScreenBrightness;
@@ -559,11 +554,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.initialScreenTimeout = 0;
         this.ScreenOn = true;
         this.USBReconnectRunnable = new UsbConnectionChecker();
-        // TODO These variable was declared in KiosModeActivity
-       /* Integer[] numArr = new Integer[2];
-        numArr[0] = KeyEvent.KEYCODE_VOLUME_DOWN;
-        numArr[1] = KeyEvent.KEYCODE_VOLUME_UP;
-        this.blockedKeys = new ArrayList(Arrays.asList(numArr));*/
         this.ETrunnable = new SetSyncTimeRunnable();
         this.isScreenOn = true;
         this.timeoutRunnable = new ScreenOffRunnable();
@@ -1083,16 +1073,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             Log.i(TAG, "<<==end OnDestroy");
         }
     }
-    // TODO implemented this method in KioskModeActivity
-    /**
-     * Kioskmode: Disable back button
-     */
-   /* public void onBackPressed() {
-        if (!KioskMode) {
-            super.onBackPressed();
-        }
-    }*/
-
     /**
      * Kiosk mode: When the window is focused - hide the Android's NavBar
      * @param hasFocus
@@ -1110,14 +1090,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             Log.i(TAG, "<<== OnWindowFocusChanged");
         }
     }
-    // TODO implement dispatchKeyEvent on KioskModeActivity
-
-   /* public boolean dispatchKeyEvent(KeyEvent event) {
-        if (KioskMode && this.blockedKeys.contains(event.getKeyCode())) {
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
-    }*/
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
@@ -1401,7 +1373,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 this.test_mark_counter += 1;
                 Log.i(TAG, "************************************ TEST MARK: " + this.test_mark_counter);
                 if (gateway_connected) {
-                    // TODO original this.accessoryControl.writeftmCANLogFile()
                     CANLogFile canLogFile = new CANLogFile(MainActivity.this, FileName.CANLOGNAME, FileName.CANLOGPATH, TAG);
                     canLogFile.write("TEST MARK: " + Integer.toString(this.test_mark_counter));
                     if (test_mode) {
@@ -1853,8 +1824,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         openPasswordDialog();
         return false;
     }
-
-    // TODO Refactor updateFunctionModes
 
     private void updateFunctionModes() {
         Button ccEnableButton = (Button) findViewById(R.id.cabinComfortEnableButton);
