@@ -17,7 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import vn.com.tma.idlesmart.MainActivity;
 import vn.com.tma.idlesmart.Utils.JsonObjectConverter;
@@ -123,14 +122,12 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             //convert CscHeader Object To ByteArray
             JsonObjectConverter jsonObjectConverter = new JsonObjectConverter();
             JSONObject jsonCsc = new JSONObject(jsonStr);
-            List<Byte> cscHeaderByteArray = jsonObjectConverter.convertCscHeaderObjectToByteArray(jsonCsc);
-            byte[] cscHeaderbyteArray = jsonObjectConverter.covertListByteTobyteArray(cscHeaderByteArray);
+            byte[] cscHeaderbyteArray = jsonObjectConverter.convertCscHeaderObjectToByteArray(jsonCsc);
             dataCscHeaderLength = cscHeaderbyteArray.length;
             mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, cscHeaderbyteArray);
             Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlocks ToGateway>");
             for (int i = 0; i < jsonCsc.getInt("block_count"); i += 1) {
-                List<Byte> cscDataBlockByteArray = jsonObjectConverter.convertCscDataBlockObjectToByteArray(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
-                byte[] cscDataBlockbyteArray = jsonObjectConverter.covertListByteTobyteArray(cscDataBlockByteArray);
+                byte[] cscDataBlockbyteArray = jsonObjectConverter.convertCscDataBlockObjectToByteArray(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
                 CscDataBlockLength = cscDataBlockbyteArray.length;
                 mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, cscHeaderbyteArray);
             }

@@ -19,7 +19,7 @@ public class JsonObjectConverter {
      * @return
      * @throws JSONException
      */
-    public List<Byte> convertCscHeaderObjectToByteArray(JSONObject jsonObject) throws JSONException {
+    public byte[] convertCscHeaderObjectToByteArray(JSONObject jsonObject) throws JSONException {
 
         List<Byte> parentArray = new ArrayList<>();
         if (isDebug){
@@ -58,8 +58,7 @@ public class JsonObjectConverter {
                             h++;
                         }
                     }
-
-                    return parentArray;
+                break;
                 }
                 byte[] childArray = hexStringToByteArray(jsonObject.getString(feature.get(j)));
                 int k = 0;
@@ -71,15 +70,14 @@ public class JsonObjectConverter {
             }
 
         }
-
-        return parentArray;
+        return covertListByteTobyteArray(parentArray);
     }
-    public byte[] covertListByteTobyteArray(List<Byte> arrayObject) throws JSONException {
-        byte[] cscHeaderbyteArray = new byte[arrayObject.size()];
-        for (int i = 0; i < arrayObject.size(); i++) {
-            cscHeaderbyteArray[i] = arrayObject.get(i);
+    public byte[] covertListByteTobyteArray(List<Byte> listObject) throws JSONException {
+        byte[] arrayObject = new byte[listObject.size()];
+        for (int i = 0; i < listObject.size(); i++) {
+            arrayObject[i] = listObject.get(i);
         }
-        return cscHeaderbyteArray;
+        return arrayObject;
     }
     /**
      * Convert CscHeader Object to Byte Array
@@ -87,7 +85,7 @@ public class JsonObjectConverter {
      * @return
      * @throws JSONException
      */
-    public List<Byte> convertCscDataBlockObjectToByteArray(JSONObject jsonObject, int index) throws JSONException {
+    public byte[] convertCscDataBlockObjectToByteArray(JSONObject jsonObject, int index) throws JSONException {
 
         List<Byte> parentArray = new ArrayList<>();
         if (isDebug){
@@ -111,7 +109,7 @@ public class JsonObjectConverter {
                 }
             }
 
-        return parentArray;
+        return covertListByteTobyteArray(parentArray);
     }
 
 
