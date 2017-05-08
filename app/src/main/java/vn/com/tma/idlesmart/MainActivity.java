@@ -47,7 +47,10 @@ import java.util.Calendar;
 
 import vn.com.tma.idlesmart.Utils.CANLogFile;
 import vn.com.tma.idlesmart.Utils.FileName;
+import vn.com.tma.idlesmart.Utils.IntegerParser;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
+import vn.com.tma.idlesmart.Utils.InformationSender;
+import vn.com.tma.idlesmart.Utils.TimeConverter;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
@@ -301,7 +304,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         break;
                     case R.id.VINCodeEditText /*2131362092*/:
                         MainActivity.Gateway_VIN = ((EditText) v).getText().toString();
-                        MainActivity.this.sendVIN(MainActivity.Gateway_VIN);
+                        InformationSender informationSender = new InformationSender(accessoryControl);
+                        informationSender.sendVIN(MainActivity.Gateway_VIN);
                         Log.i(MainActivity.TAG, "(send) APICMD_VIN=" + MainActivity.Gateway_VIN);
                         break;
                 }
@@ -336,6 +340,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         public void handleMessage(Message msg) {
             boolean z = true;
             MainActivity mainActivityClass = this.mainActivityClassWeakReference.get();
+            TimeConverter timeConverter = new TimeConverter();
             if (mainActivityClass != null) {
                 String str;
                 switch (msg.what) {
@@ -497,9 +502,9 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_TIMEREMAINING /*158*/:
                         if (mainActivityClass.GatewayMode != GatewayModes.BATTERY_PROTECT || msg.arg1 <= 0) {
-                            str = mainActivityClass.Time2MinsSecsStr(MainActivity.aParam[Params.PARAM_EngineRunTime] * 60);
+                            str = timeConverter.Time2MinsSecsStr(MainActivity.aParam[Params.PARAM_EngineRunTime] * 60);
                         } else {
-                            str = mainActivityClass.Time2MinsSecsStr(msg.arg1);
+                            str = timeConverter.Time2MinsSecsStr(msg.arg1);
                         }
                         ((TextView) mainActivityClass.findViewById(R.id.bpFragTimeRemainingValue)).setText(str);
                     	break;
@@ -1806,7 +1811,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     class PaswordContinueListener implements OnClickListener {
         public void onClick(View v) {
             MainActivity.this.passwordDialog.dismiss();
-            int pwtemp = MainActivity.this.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
+            IntegerParser integerParser = new IntegerParser();
+            int pwtemp = integerParser.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
             MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
             if (MainActivity.test_mode && pwtemp == 8800) {
                 MainActivity.PasswordEnable = false;
@@ -2640,7 +2646,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[Params.PARAM_IdealCoolantTemp]) + this.params.aParamSfx[Params.PARAM_IdealCoolantTemp]);
                 break;
             case 4 /*4*/:
-                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(Time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
+                TimeConverter timeConverter = new TimeConverter();
+                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(timeConverter.Time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
                 String str = Integer.toString(aParam[Params.PARAM_VoltageSetPoint]);
                 ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[Params.PARAM_VoltageSetPoint]);
                 ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[Params.PARAM_EngineRunTime]) + this.params.aParamSfx[Params.PARAM_EngineRunTime]);
@@ -2648,15 +2655,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             default:
                 break;
         }
-    }
-
-    private String Time2MinsSecsStr(int time) {
-        int mins = time / 60;
-        int secs = time - (mins * 60);
-        if (secs < 10) {
-            return Integer.toString(mins) + ":0" + Integer.toString(secs);
-        }
-        return Integer.toString(mins) + ":" + Integer.toString(secs);
     }
 
     private void updateFragmentParamValue(int vId, int pId) {
@@ -2947,6 +2945,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     // region Maintenance Dialog
 
     public void openMaintDialog() {
+        final IntegerParser integerParser = new IntegerParser();
         if (this.maintDialog != null && this.maintDialog.isShowing()) {
             this.maintDialog.dismiss();
         }
@@ -2978,24 +2977,24 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.maintDialog.findViewById(R.id.maintDoneButton).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 MainActivity.aMaintEnable[MaintenanceFeature.LOG_FILE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.LOG_FILE] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.LOG_FILE] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_4)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_5)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_5)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_5)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_6)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_6)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_6)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.RESERVED] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_7)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.RESERVED] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_7)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.RESERVED] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_7)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.SERVER_ROUTE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_8)).isChecked();
                 MainActivity.aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_9)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_9)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_9)).getText().toString());
                 MainActivity.aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_10)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = MainActivity.this.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_10)).getText().toString());
+                MainActivity.aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_10)).getText().toString());
                 MainActivity.this.sendMaintInfo();
                 MainActivity.this.maintDialog.dismiss();
             }
@@ -3043,6 +3042,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
 
     public void sendMaintInfo() {
         byte[] data = new byte[2];
+        InformationSender informationSender = new InformationSender(accessoryControl);
 
         // Log File (J1939 data)
         if (aMaintEnable[MaintenanceFeature.LOG_FILE]) {
@@ -3119,7 +3119,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             }
             APIroute = ServerRoute.trim();
             Log.w(TAG, "(send) APIDATA_SERVER_ROUTE=" + APIroute);
-            sendCmdString(AccessoryControl.APIDATA_SERVER_ROUTE, APIroute);
+            informationSender.sendCmdString(AccessoryControl.APIDATA_SERVER_ROUTE, APIroute);
             ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(false);
             aMaintEnable[MaintenanceFeature.SERVER_ROUTE] = false;
         }
@@ -3127,10 +3127,10 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         // Reset VIN and Restore Factory Defaults
         if (aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]) {
             Gateway_VIN = "";
-            sendVIN(Gateway_VIN);
+            informationSender.sendVIN(Gateway_VIN);
             Log.i(TAG, "(send) APICMD_VIN= " + Gateway_VIN);
             Gateway_Fleet = "";
-            sendFleet(Gateway_Fleet);
+            informationSender.sendFleet(Gateway_Fleet);
             Log.i(TAG, "(send) APICMD_Fleet= " + Gateway_Fleet);
             ActivationCode = 0;
             this.accessoryControl.writeCommand(AccessoryControl.APIDATA_ACTIVATION_CODE, 0, 0);
@@ -3151,60 +3151,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG10, 0, 0);
     }
     // endregion
-
-    public void sendVIN(String vin) {
-        Log.i(TAG, "sendVIN.." + vin);
-        int i = 0;
-        byte[] bytestring = new byte[41];
-        if (vin.length() < 41) {
-            i = 0;
-            while (i < vin.length()) {
-                bytestring[i] = (byte) vin.charAt(i);
-                if (bytestring[i] == 0) {
-                    break;
-                }
-                i += 1;
-            }
-        }
-        bytestring[i] = (byte) 0;
-        this.accessoryControl.writeCommandBlock(AccessoryControl.APICMD_VIN, i, bytestring);
-    }
-
-    public void sendFleet(String fleet) {
-        Log.i(TAG, "sendFleet.." + fleet);
-        int i = 0;
-        byte[] bytestring = new byte[41];
-        if (fleet.length() < 41) {
-            i = 0;
-            while (i < fleet.length()) {
-                bytestring[i] = (byte) fleet.charAt(i);
-                if (bytestring[i] == 0) {
-                    break;
-                }
-                i += 1;
-            }
-        }
-        bytestring[i] = (byte) 0;
-        this.accessoryControl.writeCommandBlock(AccessoryControl.APIDATA_FLEET, i, bytestring);
-    }
-
-    public void sendFeatures() {
-        int i;
-        Log.i(TAG, "sendFeatures..");
-        byte[] bytestring = new byte[202];
-        for (i = 0; i < 100; i += 1) {
-            bytestring[i * 2] = (byte) (Features.feature_value[i] & 255);
-            bytestring[(i * 2) + 1] = (byte) ((Features.feature_value[i] & 65280) >> 8);
-        }
-        this.accessoryControl.writeCommandBlock(AccessoryControl.APIDATA_FEATURE_VALUES, 200, bytestring);
-        for (i = 0; i < 100; i += 1) {
-            bytestring[i] = (byte) (Features.feature_status[i] & 255);
-        }
-        this.accessoryControl.writeCommandBlock(AccessoryControl.APIDATA_FEATURE_CODES, 100, bytestring);
-        for (i = 0; i < 5; i += 1) {
-            Log.i(TAG, "****** Feature Code[" + i + "]: status=" + ((byte) (Features.feature_status[i] & 255)) + "   value=" + Features.feature_value[i]);
-        }
-    }
 
     public boolean isAnyBloatware() {
         Log.i(TAG, "*** Checking for Bloatware...");
@@ -3268,36 +3214,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         }
     }
 
-    public void sendCmdString(int cmd, String str) {
-        Log.i(TAG, "sendCmdString..cmd:" + cmd + " string:" + str);
-        byte[] bytestring = new byte[81];
-        int i = 0;
-        while (i < str.length()) {
-            bytestring[i] = (byte) str.charAt(i);
-            if (bytestring[i] == 0) {
-                break;
-            }
-            i += 1;
-        }
-        bytestring[i] = (byte) 0;
-        this.accessoryControl.writeCommandBlock(cmd, i, bytestring);
-    }
 
-    public boolean isInteger(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
-    public int toInteger(String input) {
-        if (isInteger(input)) {
-            return Integer.valueOf(input).intValue();
-        }
-        return 0;
-    }
 
     public Handler getUIHandler() {
         return new UIHandler(this);
