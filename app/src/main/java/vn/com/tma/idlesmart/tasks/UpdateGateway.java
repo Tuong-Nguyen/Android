@@ -20,7 +20,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import vn.com.tma.idlesmart.MainActivity;
-import vn.com.tma.idlesmart.Utils.ConvertJsonObjectToByteArray;
+import vn.com.tma.idlesmart.Utils.JsonObjectConverter;
 import vn.com.tma.idlesmart.params.UpdateTaskConfig;
 
 import static vn.com.tma.idlesmart.AccessoryControl.APIDATA_FW_HEADER;
@@ -121,16 +121,16 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
             String jsonStr = Charset.defaultCharset().decode(fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size())).toString();
             is.close();
             //convert CscHeader Object To ByteArray
-            ConvertJsonObjectToByteArray convertJsonObjectToByteArray = new ConvertJsonObjectToByteArray();
+            JsonObjectConverter jsonObjectConverter = new JsonObjectConverter();
             JSONObject jsonCsc = new JSONObject(jsonStr);
-            List<Byte> cscHeaderByteArray = convertJsonObjectToByteArray.convertCscHeaderObjectToByteArray(jsonCsc);
-            byte[] cscHeaderbyteArray = convertJsonObjectToByteArray.covertListByteTobyteArray(cscHeaderByteArray);
+            List<Byte> cscHeaderByteArray = jsonObjectConverter.convertCscHeaderObjectToByteArray(jsonCsc);
+            byte[] cscHeaderbyteArray = jsonObjectConverter.covertListByteTobyteArray(cscHeaderByteArray);
             dataCscHeaderLength = cscHeaderbyteArray.length;
             mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, dataCscHeaderLength, cscHeaderbyteArray);
             Log.i("IdleSmart.UpdateGateway", "<sendCSCDataBlocks ToGateway>");
             for (int i = 0; i < jsonCsc.getInt("block_count"); i += 1) {
-                List<Byte> cscDataBlockByteArray = convertJsonObjectToByteArray.convertCscDataBlockObjectToByteArray(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
-                byte[] cscDataBlockbyteArray = convertJsonObjectToByteArray.covertListByteTobyteArray(cscDataBlockByteArray);
+                List<Byte> cscDataBlockByteArray = jsonObjectConverter.convertCscDataBlockObjectToByteArray(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
+                byte[] cscDataBlockbyteArray = jsonObjectConverter.covertListByteTobyteArray(cscDataBlockByteArray);
                 CscDataBlockLength = cscDataBlockbyteArray.length;
                 mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, cscHeaderbyteArray);
             }

@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
-import vn.com.tma.idlesmart.Utils.ConvertJsonObjectToByteArray;
+import vn.com.tma.idlesmart.Utils.JsonObjectConverter;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -22,7 +22,7 @@ public class ConvertCscHeaderObjectToByteArrayInstrumentTest {
 
     @Before
     public void setUp() throws JSONException {
-        //jsonObject_1
+        //jsonObject
         jsonObject_1.put("format", 12);
         jsonObject_1.put("start", "0123456789ABCDEF");
         jsonObject_1.put("size", "0123456789ABCDEF");
@@ -48,7 +48,7 @@ public class ConvertCscHeaderObjectToByteArrayInstrumentTest {
     @Test
     public void ConvertCscHeaderObjectToByteArray_InputJsonObjectWithLengthOfblock_countBiggerThanOne_returnTheNumberOfCountToCallhexStringToByteArrayIsEight() throws JSONException {
         //Arrange
-         ConvertJsonObjectToByteArray mock = Mockito.spy(ConvertJsonObjectToByteArray.class);
+         JsonObjectConverter mock = Mockito.spy(JsonObjectConverter.class);
         //Action
         mock.convertCscHeaderObjectToByteArray(jsonObject_1);
         //Assert
@@ -58,7 +58,7 @@ public class ConvertCscHeaderObjectToByteArrayInstrumentTest {
     @Test
     public void ConvertCscHeaderObjectToByteArray_InputJsonObjectWithLengthOfblock_countEqualToOne_returnTheNumberOfCountToCallhexStringToByteArrayIsNine() throws JSONException {
         //Arrange
-        ConvertJsonObjectToByteArray mock = Mockito.spy(ConvertJsonObjectToByteArray.class);
+        JsonObjectConverter mock = Mockito.spy(JsonObjectConverter.class);
         //Action
         mock.convertCscHeaderObjectToByteArray(jsonObject_2);
         //Assert
