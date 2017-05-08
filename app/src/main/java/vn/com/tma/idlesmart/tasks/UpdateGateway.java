@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -130,8 +129,10 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
                 byte[] cscDataBlockbyteArray = jsonObjectConverter.convertCscDataBlockObjectToByteArray(jsonCsc.getJSONObject("block_" + Integer.toString(i)), i);
                 CscDataBlockLength = cscDataBlockbyteArray.length;
                 mInstance.accessoryControl.writeCommandBlock(APIDATA_FW_HEADER, CscDataBlockLength, cscHeaderbyteArray);
-            }
-            mInstance.accessoryControl.writeCommandBlock(191,  APIDATA_FW_TRA,  sendCscTRAToGateway(jsonCsc));
+            };
+            byte[] cscTRAbyteArray = jsonObjectConverter.convertCscTRAObjectToByteArray(jsonCsc);
+            mInstance.accessoryControl.writeCommandBlock(191,  APIDATA_FW_TRA, cscTRAbyteArray);
+            MainActivity.GatewayUpdatePending = true;
             MainActivity.gateway_restarting = true;
         } catch (Exception e) {
             Log.e("IdleSmart.UpdateGateway", "     ParseCSC IOException");
@@ -150,64 +151,4 @@ public class UpdateGateway extends AsyncTask<String, Void, Void> {
         //CommLog(STATE_APKUPDATE, "     CSC has been sent to Gateway");
     }
 
-    /**
-         * Build child array
-         * @param i
-         * @param parentArray
-         * @param feature
-         * @param jsonObject
-         */
-
-            public int buildChildArray(int i, byte[] parentArray, String feature, JSONObject jsonObject) throws JSONException {
-                byte[] childArray;
-                int j = 0;
-                childArray = hexStringToByteArray(jsonObject.getString(feature));
-                while (childArray.length > j){
-                    parentArray[i] = childArray[j];
-                    j++;
-                    i++;
-                }
-                return i;
-            }
-
-
-    public byte[] sendCscTRAToGateway(JSONObject jsonObject) {
-        byte[] parentArray = new byte[16767];
-        int i = 0;
-        if (MainActivity.DebugLog) {
-            Log.i("IdleSmart.UpdateGateway", "<sendCSCTRAToGateway>");
-        }
-        try {
-            String tra = "tra";
-            buildChildArray(i, parentArray, tra, jsonObject);
-            CscTRATLength = i;
-            MainActivity.GatewayUpdatePending = true;
-            return parentArray;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return parentArray;
-        }
-    }
-
-
-    public byte[] hexStringToByteArray(String str) {
-        String TAG = "IdleSmart.UpdateGateway";
-        try {
-            String s;
-            if (str.charAt(0) == '0' && str.charAt(1) == 'x') {
-                s = str.substring(2);
-            } else {
-                s = str;
-            }
-            int len = s.length();
-            byte[] bArr = new byte[(len / 2)];
-            for (int i = 0; i < len; i += 2) {
-                bArr[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
-            }
-            return bArr;
-        } catch (StringIndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

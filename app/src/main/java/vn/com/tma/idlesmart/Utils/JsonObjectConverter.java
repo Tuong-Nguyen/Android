@@ -112,6 +112,29 @@ public class JsonObjectConverter {
         return covertListByteTobyteArray(parentArray);
     }
 
+    public byte[] convertCscTRAObjectToByteArray(JSONObject jsonObject) throws JSONException {
+
+        List<Byte> parentArray = new ArrayList<>();
+        if (isDebug){
+            Log.i("IdleSmart.UpdateGateway", "<sendCSCHeaderToGateway>");
+        }
+        List<String> feature;
+
+        feature = new ArrayList<String>();
+        feature.add("tra");
+
+        for (int j = 0; j < feature.size(); j++){
+            byte[] childArray = hexStringToByteArray(jsonObject.getString(feature.get(j)));
+            int k = 0;
+            while (childArray.length > k){
+                parentArray.add(childArray[k]);
+                k++;
+
+            }
+        }
+
+        return covertListByteTobyteArray(parentArray);
+    }
 
 
     /**
