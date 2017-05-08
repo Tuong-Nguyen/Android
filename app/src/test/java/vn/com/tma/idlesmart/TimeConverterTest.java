@@ -17,7 +17,7 @@ public class TimeConverterTest {
         //Arrange
         TimeConverter timeConverter = new TimeConverter();
         //Action
-        String time = timeConverter.time2MinsSecsStr(540);
+        String time = timeConverter.time2MinsSecsStr(541);
         //Assert
         assertEquals("9:01", time);
     }
