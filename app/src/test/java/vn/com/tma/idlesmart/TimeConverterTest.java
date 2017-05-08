@@ -13,15 +13,21 @@ import static junit.framework.Assert.assertEquals;
 public class TimeConverterTest {
 
     @Test
-    public void time2MinsSecsStr_Input560SecsWithSurplusOfSecsSmallerThan10_Return9Mins_0Secs(){
+    public void time2MinsSecsStr_Input541SecsWithSurplusOfSecsSmallerThan10_ReturnLikeFormatIs9Mins_01Secs(){
+        //Arrange
         TimeConverter timeConverter = new TimeConverter();
+        //Action
         String time = timeConverter.time2MinsSecsStr(540);
-        assertEquals("9:00", time);
+        //Assert
+        assertEquals("9:01", time);
     }
     @Test
-    public void time2MinsSecsStr_Input560SecsWithSurplusOfSecsBiggerThan10_Return9Mins_0Secs(){
+    public void time2MinsSecsStr_Input560SecsWithSurplusOfSecsIs20_Return9Mins_20Secs(){
+        //Arrange
         TimeConverter timeConverter = new TimeConverter();
+        //Action
         String time = timeConverter.time2MinsSecsStr(560);
+        //Assert
         assertEquals("9:20", time);
     }
 

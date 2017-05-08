@@ -103,5 +103,4 @@ public class InformationSender {
         bytestring[i] = (byte) 0;
         this.accessoryControl.writeCommandBlock(AccessoryControl.APICMD_VIN, i, bytestring);
     }
-
 }
