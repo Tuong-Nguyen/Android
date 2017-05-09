@@ -53,12 +53,22 @@ public class Params {
     public String[] aParamPfx;      // Parameter prefix
     public String[] aParamSfx;      // Parameter suffix
     public int[] aParamType;        // Data type of parameter
-    private int[] aParam;
+
+    private int[] currentParamValues;
 
 
-    public int[] getAParam() {
-        return aParam;
+    public int[] getCurrentParamValues() {
+        return currentParamValues;
     }
+
+    public int getCurrentParamValue(int paramIndex){
+        return currentParamValues[paramIndex];
+    }
+
+    public void setCurrentParamValue(int paramIndex,int currentParamValues) {
+        this.currentParamValues[paramIndex] = currentParamValues;
+    }
+
 
     public Params() {
         this.aParamName = new String[PARAM_MAX];
@@ -71,7 +81,7 @@ public class Params {
         this.aParamDef = new int[PARAM_MAX];
         this.aParamPfx = new String[PARAM_MAX];
         this.aParamSfx = new String[PARAM_MAX];
-        this.aParam = new int[Params.PARAM_MAX];
+        this.currentParamValues = new int[Params.PARAM_MAX];
         initializeParameters();
     }
 
@@ -153,10 +163,9 @@ public class Params {
      * @param paramId
      */
     public void incrParam(int paramId) {
-        int[] iArr = aParam;
-        iArr[paramId] = iArr[paramId] + aParamIncr[paramId];
-        if (aParam[paramId] > aParamMax[paramId]) {
-            aParam[paramId] = aParamMax[paramId];
+        currentParamValues[paramId] = currentParamValues[paramId] + aParamIncr[paramId];
+        if (currentParamValues[paramId] > aParamMax[paramId]) {
+            currentParamValues[paramId] = aParamMax[paramId];
         }
     }
 
@@ -165,10 +174,10 @@ public class Params {
      * @param paramId
      */
     public void decrParam(int paramId) {
-        int[] iArr = aParam;
+        int[] iArr = currentParamValues;
         iArr[paramId] = iArr[paramId] - aParamIncr[paramId];
-        if (aParam[paramId] < aParamMin[paramId]) {
-            aParam[paramId] = aParamMin[paramId];
+        if (currentParamValues[paramId] < aParamMin[paramId]) {
+            currentParamValues[paramId] = aParamMin[paramId];
         }
     }
 
@@ -178,7 +187,7 @@ public class Params {
      * @return
      */
     public boolean isCabinTempCommonIncrValid(int value) {
-        if (aParamIncr[Params.PARAM_CabinTargetTemp] + value <= aParam[Params.PARAM_FleetCabinTargetTemp] + aParam[Params.PARAM_DriverTempCommon]) {
+        if (aParamIncr[Params.PARAM_CabinTargetTemp] + value <= currentParamValues[Params.PARAM_FleetCabinTargetTemp] + currentParamValues[Params.PARAM_DriverTempCommon]) {
             return true;
         }
         return false;
@@ -190,7 +199,7 @@ public class Params {
      * @return
      */
     public boolean isCabinTempCommonDecrValid(int value) {
-        if (value - aParamIncr[Params.PARAM_CabinTargetTemp] >= aParam[Params.PARAM_FleetCabinTargetTemp] - aParam[Params.PARAM_DriverTempCommon]) {
+        if (value - aParamIncr[Params.PARAM_CabinTargetTemp] >= currentParamValues[Params.PARAM_FleetCabinTargetTemp] - currentParamValues[Params.PARAM_DriverTempCommon]) {
             return true;
         }
         return false;
@@ -201,7 +210,7 @@ public class Params {
      */
     public void initializeRunningParams() {
         for (int i = 0; i < Params.PARAM_MAX; i += 1) {
-            aParam[i] = aParamDef[i];
+            currentParamValues[i] = aParamDef[i];
         }
     }
 
