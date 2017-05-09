@@ -53,6 +53,12 @@ public class Params {
     public String[] aParamPfx;      // Parameter prefix
     public String[] aParamSfx;      // Parameter suffix
     public int[] aParamType;        // Data type of parameter
+    private int[] aParam;
+
+
+    public int[] getAParam() {
+        return aParam;
+    }
 
     public Params() {
         this.aParamName = new String[PARAM_MAX];
@@ -65,6 +71,7 @@ public class Params {
         this.aParamDef = new int[PARAM_MAX];
         this.aParamPfx = new String[PARAM_MAX];
         this.aParamSfx = new String[PARAM_MAX];
+        this.aParam = new int[Params.PARAM_MAX];
         initializeParameters();
     }
 
