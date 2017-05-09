@@ -3044,25 +3044,25 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public void sendMaintInfo() {
         byte[] data = new byte[2];
         // Log File (J1939 data)
-       informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.LOG_FILE],aMaintValue[MaintenanceFeature.LOG_FILE], AccessoryControl.APIDEBUG1);
+       informationSender.writeMaintenanceFeatureCommand(aMaintEnable[MaintenanceFeature.LOG_FILE],aMaintValue[MaintenanceFeature.LOG_FILE], AccessoryControl.APIDEBUG1);
 
         // Clutch Override
-       informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE],aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE], AccessoryControl.APIDEBUG2);
+       informationSender.writeMaintenanceFeatureCommand(aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE],aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE], AccessoryControl.APIDEBUG2);
 
         // Idle Timer Override (1='brake', 2='long brake', 3=spn_1237)
-        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE],aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE], AccessoryControl.APIDEBUG3);
+        informationSender.writeMaintenanceFeatureCommand(aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE],aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE], AccessoryControl.APIDEBUG3);
 
         // Engine Speed Adjustments (1=during idleup, 2=while running)
-        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS],aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS], AccessoryControl.APIDEBUG4);
+        informationSender.writeMaintenanceFeatureCommand(aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS],aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS], AccessoryControl.APIDEBUG4);
 
         // Timestamp/RPM logging
-        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM],aMaintValue[MaintenanceFeature.TIMESTAMP_RPM], AccessoryControl.APIDEBUG5);
+        informationSender.writeMaintenanceFeatureCommand(aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM],aMaintValue[MaintenanceFeature.TIMESTAMP_RPM], AccessoryControl.APIDEBUG5);
 
         // Neutral switch detection
-        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION],aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION], AccessoryControl.APIDEBUG6);
+        informationSender.writeMaintenanceFeatureCommand(aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION],aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION], AccessoryControl.APIDEBUG6);
 
         // Reserved
-        informationSender.writeCommandMaintenanceAPIDEBUG(aMaintEnable[MaintenanceFeature.RESERVED],aMaintValue[MaintenanceFeature.RESERVED], AccessoryControl.APIDEBUG7);
+        informationSender.writeMaintenanceFeatureCommand(aMaintEnable[MaintenanceFeature.RESERVED],aMaintValue[MaintenanceFeature.RESERVED], AccessoryControl.APIDEBUG7);
 
         // Server Route
         if (aMaintEnable[MaintenanceFeature.SERVER_ROUTE]) {

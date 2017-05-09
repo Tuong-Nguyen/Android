@@ -106,26 +106,19 @@ public class InformationSender {
 
     /**
      * write CommandMaintenance Feature
-     * @param isTrue
+     * @param isEnable
      * @param value
-     * @param APIDEBUG
+     * @param APIdebug
      */
-    public void writeCommandMaintenanceAPIDEBUG(boolean isTrue, int value, int APIDEBUG ){
+    public void writeMaintenanceFeatureCommand(boolean isEnable, int value, int APIdebug ){
         byte[] data = new byte[2];
-        if (isTrue){
+        if (isEnable){
             data[0] = (byte) ((value >> 8) & 255);
             data[1] = (byte) (value & 255);
-            this.accessoryControl.writeCommand(APIDEBUG, data[0], data[1]);
+            this.accessoryControl.writeCommand(APIdebug, data[0], data[1]);
         } else{
-            this.accessoryControl.writeCommand(APIDEBUG, 0, 0);
+            this.accessoryControl.writeCommand(APIdebug, 0, 0);
         }
 
     }
-    /*if (aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE]) {
-        data[0] = (byte) ((aMaintValue[MainActivity.MaintenanceFeature.LOG_FILE] >> 8) & 255);
-        data[1] = (byte) (aMaintValue[MainActivity.MaintenanceFeature.LOG_FILE] & 255);
-        this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, data[0], data[1]);
-    } else {
-        this.accessoryControl.writeCommand(AccessoryControl.APIDEBUG1, 0, 0);
-    }*/
 }
