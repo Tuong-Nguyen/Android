@@ -147,4 +147,62 @@ public class Params {
             this.aParamMin[PARAM_HoursBetweenStart] = 0;
         }
     }
+
+    /**
+     * Increase Params
+     * @param paramId
+     */
+    public void incrParam(int paramId) {
+        int[] iArr = aParam;
+        iArr[paramId] = iArr[paramId] + aParamIncr[paramId];
+        if (aParam[paramId] > aParamMax[paramId]) {
+            aParam[paramId] = aParamMax[paramId];
+        }
+    }
+
+    /**
+     * Decrease Params
+     * @param paramId
+     */
+    public void decrParam(int paramId) {
+        int[] iArr = aParam;
+        iArr[paramId] = iArr[paramId] - aParamIncr[paramId];
+        if (aParam[paramId] < aParamMin[paramId]) {
+            aParam[paramId] = aParamMin[paramId];
+        }
+    }
+
+    /**
+     * Checking for Cabin Temperature Common increase is validate
+     * @param value
+     * @return
+     */
+    public boolean isCabinTempCommonIncrValid(int value) {
+        if (aParamIncr[Params.PARAM_CabinTargetTemp] + value <= aParam[Params.PARAM_FleetCabinTargetTemp] + aParam[Params.PARAM_DriverTempCommon]) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checking for Cabin Temperature Common decrease is validate
+     * @param value
+     * @return
+     */
+    public boolean isCabinTempCommonDecrValid(int value) {
+        if (value - aParamIncr[Params.PARAM_CabinTargetTemp] >= aParam[Params.PARAM_FleetCabinTargetTemp] - aParam[Params.PARAM_DriverTempCommon]) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Initialize for running params
+     */
+    public void initializeRunningParams() {
+        for (int i = 0; i < Params.PARAM_MAX; i += 1) {
+            aParam[i] = aParamDef[i];
+        }
+    }
+
 }

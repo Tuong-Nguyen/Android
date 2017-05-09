@@ -108,9 +108,9 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
 
     public static boolean[] aMaintEnable = null;
     public static int[] aMaintValue = null;
-
+    //TODO Delete
     // Store PBC Parameter values
-    public static int[] aParam = null;
+    //public static int[] aParam = null;
 
     private static Dialog commDialog = null;
     private static String commlogstr = null;
@@ -341,28 +341,29 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             boolean z = true;
             MainActivity mainActivityClass = this.mainActivityClassWeakReference.get();
             TimeConverter timeConverter = new TimeConverter();
+            Params params = new Params();
             if (mainActivityClass != null) {
                 String str;
                 switch (msg.what) {
                     case Params.PARAM_TruckTimer /*18*/:
-                        MainActivity.aParam[Params.PARAM_DimTabletScreen] = msg.arg1;
+                        params.getAParam()[Params.PARAM_DimTabletScreen] = msg.arg1;
                         mainActivityClass.setScreenTimeout(msg.arg1);
                     	break;
 					case Params.PARAM_PasswordEnable /*19*/:
-                        MainActivity.aParam[Params.PARAM_AudibleSound] = msg.arg1;
+                        params.getAParam()[Params.PARAM_AudibleSound] = msg.arg1;
                         if (msg.arg1 == 0) {
                             z = false;
                         }
                         mainActivityClass.setSoundOn(z);
                     	break;
 					case AccessoryControl.APICMD_ENGINE_IDLE_RPM /*30*/:
-                        MainActivity.aParam[Params.PARAM_TruckRPMs] = msg.arg1;
+                        params.getAParam()[Params.PARAM_TruckRPMs] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_ENGINE_RESTART_INTERVAL /*31*/:
-                        MainActivity.aParam[Params.PARAM_EngineRunTime] = msg.arg1;
+                        params.getAParam()[Params.PARAM_EngineRunTime] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_AUTO_SHUTOFF_TIMEOUT /*32*/:
-                        MainActivity.aParam[Params.PARAM_AutoDisable] = msg.arg1;
+                        params.getAParam()[Params.PARAM_AutoDisable] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_CABIN_COMFORT_ENABLE /*40*/:
                         if (msg.arg1 == 0) {
@@ -372,22 +373,22 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         }
                     	break;
 					case AccessoryControl.VIN_ID_MAX /*41*/:
-                        MainActivity.aParam[Params.PARAM_CabinTargetTemp] = msg.arg1;
+                        params.getAParam()[Params.PARAM_CabinTargetTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_CABIN_TEMP_RANGE /*42*/:
-                        MainActivity.aParam[Params.PARAM_CabinTempRange] = msg.arg1;
+                        params.getAParam()[Params.PARAM_CabinTempRange] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_AMBIENT_TEMP_SETPOINT /*43*/:
-                        MainActivity.aParam[Params.PARAM_OutsideTargetTemp] = msg.arg1;
+                        params.getAParam()[Params.PARAM_OutsideTargetTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_AMBIENT_TEMP_RANGE /*44*/:
-                        MainActivity.aParam[Params.PARAM_OutsideTempRange] = msg.arg1;
+                        params.getAParam()[Params.PARAM_OutsideTempRange] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_SYSTEMTIMER /*45*/:
-                        MainActivity.aParam[Params.PARAM_TruckTimer] = msg.arg1;
+                        params.getAParam()[Params.PARAM_TruckTimer] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_DRIVER_TEMP_COMMON /*48*/:
-                        MainActivity.aParam[Params.PARAM_DriverTempCommon] = msg.arg1;
+                        params.getAParam()[Params.PARAM_DriverTempCommon] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE /*50*/:
                         if (msg.arg1 == 0) {
@@ -397,10 +398,10 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         }
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_VOLTAGE /*51*/:
-                        MainActivity.aParam[Params.PARAM_VoltageSetPoint] = msg.arg1;
+                        params.getAParam()[Params.PARAM_VoltageSetPoint] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_BATTERY_MONITOR_RUNTIME /*52*/:
-                        MainActivity.aParam[Params.PARAM_EngineRunTime] = msg.arg1;
+                        params.getAParam()[Params.PARAM_EngineRunTime] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_SYNC_START /*53*/:
                         mainActivityClass.SetNextPhoneHome();
@@ -416,16 +417,16 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         }
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_START_TEMP /*56*/:
-                        MainActivity.aParam[Params.PARAM_TemperatureSetPoint] = msg.arg1;
+                        params.getAParam()[Params.PARAM_TemperatureSetPoint] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_RESTART_INTERVAL /*58*/:
-                        MainActivity.aParam[Params.PARAM_HoursBetweenStart] = msg.arg1;
+                        params.getAParam()[Params.PARAM_HoursBetweenStart] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_MIN_COOLANT /*59*/:
-                        MainActivity.aParam[Params.PARAM_MinCoolantTemp] = msg.arg1;
+                        params.getAParam()[Params.PARAM_MinCoolantTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICMD_COLD_WEATHER_GUARD_IDEAL_COOLANT /*60*/:
-                        MainActivity.aParam[Params.PARAM_IdealCoolantTemp] = msg.arg1;
+                        params.getAParam()[Params.PARAM_IdealCoolantTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APIEVENT_SYNC /*69*/:
                         if (MainActivity.SyncWithServer) {
@@ -502,7 +503,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_TIMEREMAINING /*158*/:
                         if (mainActivityClass.GatewayMode != GatewayModes.BATTERY_PROTECT || msg.arg1 <= 0) {
-                            str = timeConverter.time2MinsSecsStr(MainActivity.aParam[Params.PARAM_EngineRunTime] * 60);
+                            str = timeConverter.time2MinsSecsStr(params.getAParam()[Params.PARAM_EngineRunTime] * 60);
                         } else {
                             str = timeConverter.time2MinsSecsStr(msg.arg1);
                         }
@@ -510,13 +511,13 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     	break;
 					case AccessoryControl.APIDATA_FLEET_CABIN_COMFORT_ENABLE /*159*/:
                         if (msg.arg1 == 0) {
-                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = 0;
+                            params.getAParam()[Params.PARAM_FleetCabinComfort] = 0;
                         } else {
-                            MainActivity.aParam[Params.PARAM_FleetCabinComfort] = 1;
+                            params.getAParam()[Params.PARAM_FleetCabinComfort] = 1;
                         }
                     	break;
 					case AccessoryControl.APIDATA_FLEET_CABIN_TEMP_SETPOINT /*160*/:
-                        MainActivity.aParam[Params.PARAM_FleetCabinTargetTemp] = msg.arg1;
+                        params.getAParam()[Params.PARAM_FleetCabinTargetTemp] = msg.arg1;
                     	break;
 					case AccessoryControl.APICAN_ENGINE_COOLANT_TEMP /*193*/:
                         str = Integer.toString(msg.arg1) + "\u00b0";
@@ -654,7 +655,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         Password = 0;
         PasswordEnable = false;
         PasswordValid = false;
-        aParam = new int[Params.PARAM_MAX];
+        //TODO Delete
+        //aParam = new int[Params.PARAM_MAX];
         aMaintEnable = new boolean[10];
         aMaintValue = new int[10];
         Gateway_HWver = 0;
@@ -783,7 +785,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.topLayout.setBackgroundColor(0xff000000);
         if (!Restart) {
             Features.initFeatureCodeTable();
-            initializeRunningParams();
+            this.params.initializeRunningParams();
         }
         IntentFilter filter = new IntentFilter(AccessoryControl.ACTION_USB_PERMISSION);
         filter.addAction("android.hardware.usb.action.USB_ACCESSORY_DETACHED");
@@ -806,7 +808,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 Log.i(TAG, "initialScreenTimeout = " + this.initialScreenTimeout);
             }
         }
-        startScreenHandler(aParam[Params.PARAM_DimTabletScreen]);
+        startScreenHandler(params.getAParam()[Params.PARAM_DimTabletScreen]);
         PrefUtils.setApkUpdateState(0, getApplicationContext());
         Restart = true;
         Log.i(TAG, "<<==onCreate done");
@@ -873,7 +875,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         if (!this.mWakeLock.isHeld()) {
             this.mWakeLock.acquire();
         }
-        resetScreenTimeout(aParam[Params.PARAM_DimTabletScreen]);
+        resetScreenTimeout(params.getAParam()[Params.PARAM_DimTabletScreen]);
         PasswordValid = false;
         PackageUpdatePending = false;
         GatewayUpdatePending = false;
@@ -1099,7 +1101,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
-        resetScreenTimeout(aParam[Params.PARAM_DimTabletScreen]);
+        resetScreenTimeout(params.getAParam()[Params.PARAM_DimTabletScreen]);
         if (httpclient.dialog != null && httpclient.dialog.isShowing()) {
             httpclient.dialog.cancel();
         }
@@ -1460,7 +1462,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             	break;
 			case R.id.ccFragStopButton /*2131361989*/:
                 Log.i(TAG, "-->cabinComfortEnableButton");
-                if (aParam[Params.PARAM_FleetCabinComfort] != 0 || this.CabinComfortMode == Modes.ENGINE_RUNNING || ValidPassword()) {
+                if (params.getAParam()[Params.PARAM_FleetCabinComfort] != 0 || this.CabinComfortMode == Modes.ENGINE_RUNNING || ValidPassword()) {
                     setFunctionMode(Functionality.CABIN_COMFORT, toggleFunctionMode(this.CabinComfortMode));
                     updateFunctionModes();
                     PasswordValid = false;
@@ -1487,12 +1489,12 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 }
             	break;
 			case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
-                if (isCabinTempCommonDecrValid(aParam[Params.PARAM_CabinTargetTemp]) || ValidPassword()) {
+                if (this.params.isCabinTempCommonDecrValid(this.params.getAParam()[Params.PARAM_CabinTargetTemp]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
             	break;
 			case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
-                if (isCabinTempCommonIncrValid(aParam[Params.PARAM_CabinTargetTemp]) || ValidPassword()) {
+                if (this.params.isCabinTempCommonIncrValid(this.params.getAParam()[Params.PARAM_CabinTargetTemp]) || ValidPassword()) {
                     updateFragmentParamValue(v.getId(), 3);
                 }
             	break;
@@ -1995,12 +1997,12 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.CabinComfortMode = Modes.ENGINE_STOPPED;
                 }
-                iArr = aParam;
+                iArr = params.getAParam();
                 if (this.CabinComfortMode == Modes.DISABLED) {
                     i = 0;
                 }
                 iArr[Params.PARAM_CabinComfort] = i;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, 0, aParam[Params.PARAM_CabinComfort] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_CABIN_COMFORT_ENABLE, 0, params.getAParam()[Params.PARAM_CabinComfort] & 255);
                 break;
             case Functionality.COLD_WEATHER_GUARD /*2*/:
                 int i2;
@@ -2010,14 +2012,14 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.ColdWeatherGuardMode = Modes.ENGINE_STOPPED;
                 }
-                int[] iArr2 = aParam;
+                int[] iArr2 = params.getAParam();
                 if (this.ColdWeatherGuardMode == Modes.DISABLED) {
                     i2 = 0;
                 } else {
                     i2 = 1;
                 }
                 iArr2[Params.PARAM_ColdWeatherGuard] = i2;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, 0, aParam[Params.PARAM_ColdWeatherGuard] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_COLD_WEATHER_GUARD_ENABLE, 0, params.getAParam()[Params.PARAM_ColdWeatherGuard] & 255);
                 break;
             case Functionality.BATTERY_PROTECT: /*3*/
                 if (this.GatewayMode != GatewayModes.BATTERY_PROTECT) {
@@ -2026,12 +2028,12 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     this.accessoryControl.writeCommand(AccessoryControl.APICMD_STOP, 0, 1);
                     this.BatteryProtectMode = Modes.ENGINE_STOPPED;
                 }
-                iArr = aParam;
+                iArr = params.getAParam();
                 if (this.BatteryProtectMode == Modes.DISABLED) {
                     i = 0;
                 }
                 iArr[Params.PARAM_BatteryProtect] = i;
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, 0, aParam[Params.PARAM_BatteryProtect] & 255);
+                this.accessoryControl.writeCommand(AccessoryControl.APICMD_BATTERY_MONITOR_ENABLE, 0, params.getAParam()[Params.PARAM_BatteryProtect] & 255);
                 break;
         }
         updateFunctionModes();
@@ -2391,24 +2393,24 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         }
         PasswordValid = false;
     }
-
-    private void initializeRunningParams() {
+    // TODO Delete
+   /* private void initializeRunningParams() {
         for (int i = 0; i < Params.PARAM_MAX; i += 1) {
             aParam[i] = this.params.aParamDef[i];
         }
     }
-
+*/
     private void viewParamValue() {
         selectSettingsEntry(1);
         this.param_id = Menus.getSubmenuId(this.settings_menu1_index, this.settings_menu2_index);
-        pValue = aParam[this.param_id];
+        pValue = params.getAParam()[this.param_id];
         String pName = this.params.aParamName[this.param_id];
         String pPfx = this.params.aParamPfx[this.param_id];
         String pSfx = this.params.aParamSfx[this.param_id];
         if (this.param_id >= 0) {
             switch (this.params.aParamType[this.param_id]) {
                 case Params.BooleanType /*1*/:
-                    if (aParam[this.param_id] != 0) {
+                    if (params.getAParam()[this.param_id] != 0) {
                         ((TextView) findViewById(R.id.settingsEntryDisableDescription)).setText(pName + " feature is currently Enabled.");
                         selectSettingsEntry(2);
                         return;
@@ -2419,12 +2421,12 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 case Params.IntegerType /*2*/:
                 case Params.TempType /*3*/:
                     ((TextView) findViewById(R.id.settingsEntryDescription)).setText(pName);
-                    ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(aParam[this.param_id]) + pSfx);
+                    ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(this.params.getAParam()[this.param_id]) + pSfx);
                     selectSettingsEntry(3);
                     return;
                 case Params.VoltageType /*4*/:
                     ((TextView) findViewById(R.id.settingsEntryDescription)).setText(pName);
-                    String str = Integer.toString(aParam[this.param_id]);
+                    String str = Integer.toString(params.getAParam()[this.param_id]);
                     ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                     selectSettingsEntry(3);
                     return;
@@ -2452,14 +2454,14 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         String pSfx = this.params.aParamSfx[this.param_id];
         String pPfx = this.params.aParamPfx[this.param_id];
         boolean bypass = false;
-        if (pId == 0 && aParam[Params.PARAM_FleetCabinComfort] == 1) {
+        if (pId == 0 && params.getAParam()[Params.PARAM_FleetCabinComfort] == 1) {
             bypass = true;
         }
         if (pId == 3) {
-            if (vId == R.id.settingsEntryIncrementButton && isCabinTempCommonIncrValid(pValue)) {
+            if (vId == R.id.settingsEntryIncrementButton && this.params.isCabinTempCommonIncrValid(pValue)) {
                 bypass = true;
             }
-            if (vId == R.id.settingsEntryDecrementButton && isCabinTempCommonDecrValid(pValue)) {
+            if (vId == R.id.settingsEntryDecrementButton && this.params.isCabinTempCommonDecrValid(pValue)) {
                 bypass = true;
             }
         }
@@ -2516,13 +2518,14 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             }
         }
     }
-
-    private boolean isCabinTempCommonIncrValid(int value) {
+   //TODO Delete
+  /*  private boolean isCabinTempCommonIncrValid(int value) {
         if (this.params.aParamIncr[Params.PARAM_CabinTargetTemp] + value <= aParam[Params.PARAM_FleetCabinTargetTemp] + aParam[Params.PARAM_DriverTempCommon]) {
             return true;
         }
         return false;
-    }
+    }*/
+/*
 
     private boolean isCabinTempCommonDecrValid(int value) {
         if (value - this.params.aParamIncr[Params.PARAM_CabinTargetTemp] >= aParam[Params.PARAM_FleetCabinTargetTemp] - aParam[Params.PARAM_DriverTempCommon]) {
@@ -2530,6 +2533,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         }
         return false;
     }
+*/
 
     private void incrValue(int paramId) {
         pValue += this.params.aParamIncr[paramId];
@@ -2553,11 +2557,11 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     private void saveParamValue(int paramId) {
         switch (this.params.aParamType[paramId]) {
             case Params.BooleanType /*1*/:
-                aParam[paramId] = pValue;
+                this.params.getAParam()[paramId] = pValue;
                 boolean z;
                 switch (paramId) {
                     case Params.PARAM_CabinComfort /*0*/:
-                        if (aParam[paramId] != 0) {
+                        if (this.params.getAParam()[paramId] != 0) {
                             setFunctionMode(Functionality.CABIN_COMFORT, 1);
                         } else {
                             setFunctionMode(Functionality.CABIN_COMFORT, 0);
@@ -2565,7 +2569,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         updateFunctionModes();
                         break;
                     case Params.PARAM_ColdWeatherGuard /*1*/:
-                        if (aParam[paramId] != 0) {
+                        if (this.params.getAParam()[paramId] != 0) {
                             setFunctionMode(Functionality.COLD_WEATHER_GUARD, 1);
                         } else {
                             setFunctionMode(Functionality.COLD_WEATHER_GUARD, 0);
@@ -2573,7 +2577,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         updateFunctionModes();
                         break;
                     case Params.PARAM_BatteryProtect /*2*/:
-                        if (aParam[paramId] != 0) {
+                        if (this.params.getAParam()[paramId] != 0) {
                             setFunctionMode(Functionality.BATTERY_PROTECT, 1);
                         } else {
                             setFunctionMode(Functionality.BATTERY_PROTECT, 0);
@@ -2607,7 +2611,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         break;
                 }
             case Params.IntegerType /*2*/:
-                aParam[paramId] = pValue;
+                this.params.getAParam()[paramId] = pValue;
                 switch (paramId) {
                     case Params.PARAM_DimTabletScreen /*14*/:
                         setScreenTimeout(pValue);
@@ -2619,7 +2623,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 }
             case Params.TempType /*3*/:
             case Params.VoltageType /*4*/:
-                aParam[paramId] = pValue;
+                this.params.getAParam()[paramId] = pValue;
                 sendParam(paramId);
                 break;
         }
@@ -2631,8 +2635,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         byte[] data = new byte[2];
         int api = this.params.aParamAPIcmd[paramId];
         if (api != 0) {
-            data[0] = (byte) ((aParam[paramId] >> 8) & 255);
-            data[1] = (byte) (aParam[paramId] & 255);
+            data[0] = (byte) ((this.params.getAParam()[paramId] >> 8) & 255);
+            data[1] = (byte) (this.params.getAParam()[paramId] & 255);
             this.accessoryControl.writeCommand(api, data[0], data[1]);
         }
     }
@@ -2640,18 +2644,18 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     private void viewFragmentParamValue(int fragmentId) {
         switch (fragmentId) {
             case 2 /*2*/:
-                ((TextView) findViewById(R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(aParam[Params.PARAM_CabinTargetTemp]) + this.params.aParamSfx[Params.PARAM_CabinTargetTemp]);
+                ((TextView) findViewById(R.id.ccFragTargetTemperatureValue)).setText(Integer.toString(params.getAParam()[Params.PARAM_CabinTargetTemp]) + this.params.aParamSfx[Params.PARAM_CabinTargetTemp]);
                 break;
             case 3 /*3*/:
-                ((TextView) findViewById(R.id.cwgFragMinTempValue)).setText(Integer.toString(aParam[Params.PARAM_MinCoolantTemp]) + this.params.aParamSfx[Params.PARAM_MinCoolantTemp]);
-                ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(aParam[Params.PARAM_IdealCoolantTemp]) + this.params.aParamSfx[Params.PARAM_IdealCoolantTemp]);
+                ((TextView) findViewById(R.id.cwgFragMinTempValue)).setText(Integer.toString(params.getAParam()[Params.PARAM_MinCoolantTemp]) + this.params.aParamSfx[Params.PARAM_MinCoolantTemp]);
+                ((TextView) findViewById(R.id.cwgFragIdealTempValue)).setText(Integer.toString(params.getAParam()[Params.PARAM_IdealCoolantTemp]) + this.params.aParamSfx[Params.PARAM_IdealCoolantTemp]);
                 break;
             case 4 /*4*/:
                 TimeConverter timeConverter = new TimeConverter();
-                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(timeConverter.time2MinsSecsStr(aParam[Params.PARAM_EngineRunTime] * 60));
-                String str = Integer.toString(aParam[Params.PARAM_VoltageSetPoint]);
+                ((TextView) findViewById(R.id.bpFragTimeRemainingValue)).setText(timeConverter.time2MinsSecsStr(params.getAParam()[Params.PARAM_EngineRunTime] * 60));
+                String str = Integer.toString(params.getAParam()[Params.PARAM_VoltageSetPoint]);
                 ((TextView) findViewById(R.id.bpFragSetpointValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + this.params.aParamSfx[Params.PARAM_VoltageSetPoint]);
-                ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(aParam[Params.PARAM_EngineRunTime]) + this.params.aParamSfx[Params.PARAM_EngineRunTime]);
+                ((TextView) findViewById(R.id.bpEngineRuntimeValue)).setText(Integer.toString(params.getAParam()[Params.PARAM_EngineRunTime]) + this.params.aParamSfx[Params.PARAM_EngineRunTime]);
                 break;
             default:
                 break;
@@ -2662,66 +2666,66 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         byte[] data = new byte[2];
         switch (vId) {
             case R.id.ccFragTargetTemperatureDecrButton /*2131361991*/:
-                decrParam(pId);
+                params.decrParam(pId);
                 viewFragmentParamValue(2);
                 break;
             case R.id.ccFragTargetTemperatureIncrButton /*2131361992*/:
-                incrParam(pId);
+                params.incrParam(pId);
                 viewFragmentParamValue(2);
                 break;
             case R.id.cwgFragMinTempDecrButton /*2131361998*/:
-                decrParam(pId);
+                params.decrParam(pId);
                 viewFragmentParamValue(3);
                 break;
             case R.id.cwgFragMinTempIncrButton /*2131361999*/:
-                incrParam(pId);
+                params.incrParam(pId);
                 viewFragmentParamValue(3);
                 break;
             case R.id.cwgFragIdealTempDecrButton /*2131362001*/:
-                decrParam(pId);
+                params.decrParam(pId);
                 viewFragmentParamValue(3);
                 break;
             case R.id.cwgFragIdealTempIncrButton /*2131362002*/:
-                incrParam(pId);
+                params.incrParam(pId);
                 viewFragmentParamValue(3);
                 break;
             case R.id.bpFragSetpointDecrButton /*2131362007*/:
-                decrParam(pId);
+                params.decrParam(pId);
                 viewFragmentParamValue(4);
                 break;
             case R.id.bpFragSetpointIncrButton /*2131362008*/:
-                incrParam(pId);
+                params.incrParam(pId);
                 viewFragmentParamValue(4);
                 break;
             case R.id.bpEngineRuntimeDecrButton /*2131362010*/:
-                decrParam(pId);
+                params.decrParam(pId);
                 viewFragmentParamValue(4);
                 break;
             case R.id.bpEngineRuntimeIncrButton /*2131362011*/:
-                incrParam(pId);
+                params.incrParam(pId);
                 viewFragmentParamValue(4);
                 break;
         }
-        data[0] = (byte) ((aParam[pId] >> 8) & 255);
-        data[1] = (byte) (aParam[pId] & 255);
+        data[0] = (byte) ((params.getAParam()[pId] >> 8) & 255);
+        data[1] = (byte) (params.getAParam()[pId] & 255);
         this.accessoryControl.writeCommand(this.params.aParamAPIcmd[pId], data[0], data[1]);
     }
-
-    private void incrParam(int paramId) {
+    // TODO Delete
+   /* private void incrParam(int paramId) {
         int[] iArr = aParam;
         iArr[paramId] = iArr[paramId] + this.params.aParamIncr[paramId];
         if (aParam[paramId] > this.params.aParamMax[paramId]) {
             aParam[paramId] = this.params.aParamMax[paramId];
         }
-    }
+    }*/
 
-    private void decrParam(int paramId) {
+   /* private void decrParam(int paramId) {
         int[] iArr = aParam;
         iArr[paramId] = iArr[paramId] - this.params.aParamIncr[paramId];
         if (aParam[paramId] < this.params.aParamMin[paramId]) {
             aParam[paramId] = this.params.aParamMin[paramId];
         }
-    }
+    }*/
 
     private void selectActivationFragment(int fragment) {
         findViewById(R.id.verificationFragment).setVisibility(View.GONE);
@@ -2866,7 +2870,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             this.alertDialog.findViewById(R.id.alertRefreshButton).setOnClickListener(new AlertDialogListener(faultId));
             this.alertDialog.show();
             wakeup();
-            if (aParam[Params.PARAM_AudibleSound] != 0) {
+            if (params.getAParam()[Params.PARAM_AudibleSound] != 0) {
                 alertTone();
             }
             back2sleep();
@@ -2894,7 +2898,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     }
 
     private void alertTone() {
-        if (aParam[Params.PARAM_AudibleSound] != 0) {
+        if (params.getAParam()[Params.PARAM_AudibleSound] != 0) {
             if (this.mMediaPlayer != null) {
                 closeMediaPlayer();
             }
