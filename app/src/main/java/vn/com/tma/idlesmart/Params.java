@@ -53,9 +53,16 @@ public class Params {
     public String[] aParamPfx;      // Parameter prefix
     public String[] aParamSfx;      // Parameter suffix
     public int[] aParamType;        // Data type of parameter
-
+    private int paramValue;
     private int[] currentParamValues;
 
+    public int getParamValue() {
+        return paramValue;
+    }
+
+    public void setParamValue(int paramValue) {
+        this.paramValue = paramValue;
+    }
 
     public int[] getCurrentParamValues() {
         return currentParamValues;
@@ -174,8 +181,7 @@ public class Params {
      * @param paramId
      */
     public void decrParam(int paramId) {
-        int[] iArr = currentParamValues;
-        iArr[paramId] = iArr[paramId] - aParamIncr[paramId];
+        currentParamValues[paramId] = currentParamValues[paramId] - aParamIncr[paramId];
         if (currentParamValues[paramId] < aParamMin[paramId]) {
             currentParamValues[paramId] = aParamMin[paramId];
         }
@@ -211,6 +217,28 @@ public class Params {
     public void initializeRunningParams() {
         for (int i = 0; i < Params.PARAM_MAX; i += 1) {
             currentParamValues[i] = aParamDef[i];
+        }
+    }
+
+    /**
+     * Increase value
+     * @param paramId
+     */
+    public void incrValue(int paramId) {
+        paramValue += aParamIncr[paramId];
+        if (paramValue > aParamMax[paramId]) {
+            paramValue = aParamMax[paramId];
+        }
+    }
+
+    /**
+     * Decrease value
+     * @param paramId
+     */
+    public void decrValue(int paramId) {
+        paramValue -= aParamIncr[paramId];
+        if (paramValue < aParamMin[paramId]) {
+            paramValue = aParamMin[paramId];
         }
     }
 

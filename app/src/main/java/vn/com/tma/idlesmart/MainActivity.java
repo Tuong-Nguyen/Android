@@ -116,8 +116,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public static boolean gateway_restarting;
     public static httpClient httpclient;
     static int monitor_iter;
-    // TODO Delete
-    static int pValue;
     public static boolean packagemanagernag;
     public static boolean test_mode;
     private int BatteryProtectMode;
@@ -2390,14 +2388,14 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     private void viewParamValue() {
         selectSettingsEntry(1);
         this.param_id = Menus.getSubmenuId(this.settings_menu1_index, this.settings_menu2_index);
-        pValue = this.params.getCurrentParamValue(this.param_id);
+        this.params.setParamValue(this.params.getCurrentParamValue(this.param_id));
         String pName = this.params.aParamName[this.param_id];
         String pPfx = this.params.aParamPfx[this.param_id];
         String pSfx = this.params.aParamSfx[this.param_id];
         if (this.param_id >= 0) {
             switch (this.params.aParamType[this.param_id]) {
                 case Params.BooleanType /*1*/:
-                    if (params.getCurrentParamValue(this.param_id) != 0) {
+                    if (this.params.getCurrentParamValue(this.param_id) != 0) {
                         ((TextView) findViewById(R.id.settingsEntryDisableDescription)).setText(pName + " feature is currently Enabled.");
                         selectSettingsEntry(2);
                         return;
@@ -2445,10 +2443,10 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             bypass = true;
         }
         if (pId == 3) {
-            if (vId == R.id.settingsEntryIncrementButton && this.params.isCabinTempCommonIncrValid(pValue)) {
+            if (vId == R.id.settingsEntryIncrementButton && this.params.isCabinTempCommonIncrValid(this.params.getParamValue())) {
                 bypass = true;
             }
-            if (vId == R.id.settingsEntryDecrementButton && this.params.isCabinTempCommonDecrValid(pValue)) {
+            if (vId == R.id.settingsEntryDecrementButton && this.params.isCabinTempCommonDecrValid(this.params.getParamValue())) {
                 bypass = true;
             }
         }
@@ -2457,26 +2455,26 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             switch (vId) {
                 case R.id.settingsEntryEnableButton /*2131362065*/:
                     if (this.params.aParamType[pId] == Params.BooleanType) {
-                        pValue = 1;
+                        this.params.setParamValue(1);
                     }
                 	break;
 			    case R.id.settingsEntryDisableButton /*2131362068*/:
                     if (this.params.aParamType[pId] == Params.BooleanType) {
-                        pValue = 0;
+                        this.params.setParamValue(0);
                     }
                 	break;
 			    case R.id.settingsEntryDecrementButton /*2131362072*/:
-                    decrValue(pId);
-                    if (pId == Params.PARAM_TruckTimer && pValue < 4) {
-                        pValue = 0;
+                    this.params.decrValue(pId);
+                    if (pId == Params.PARAM_TruckTimer && this.params.getParamValue() < 4) {
+                        this.params.setParamValue(0);
                     }
                     switch (this.params.aParamType[pId]) {
                         case Params.IntegerType /*2*/:
 			            case Params.TempType /*3*/:
-                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(pValue) + pSfx);
+                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(pPfx + Integer.toString(this.params.getParamValue()) + pSfx);
                         	break;
 			            case Params.VoltageType /*4*/:
-                            str = Integer.toString(pValue);
+                            str = Integer.toString(this.params.getParamValue());
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                             break;
                         default:
@@ -2484,17 +2482,17 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                     }
                 	break;
 			    case R.id.settingsEntryIncrementButton /*2131362073*/:
-                    incrValue(pId);
-                    if (pId == Params.PARAM_TruckTimer && pValue < 4) {
-                        pValue = 4;
+                    this.params.incrValue(pId);
+                    if (pId == Params.PARAM_TruckTimer && this.params.getParamValue() < 4) {
+                        this.params.setParamValue(4);
                     }
                     switch (this.params.aParamType[pId]) {
 			            case Params.IntegerType /*2*/:
             			case Params.TempType /*3*/:
-                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(Integer.toString(pValue) + pSfx);
+                            ((TextView) findViewById(R.id.settingsEntryValue)).setText(Integer.toString(this.params.getParamValue()) + pSfx);
                         	break;
 			            case Params.VoltageType /*4*/:
-                            str = Integer.toString(pValue);
+                            str = Integer.toString(this.params.getParamValue());
                             ((TextView) findViewById(R.id.settingsEntryValue)).setText(str.substring(0, str.length() - 1) + "." + str.substring(str.length() - 1) + pSfx);
                             break;
                         default:
@@ -2505,29 +2503,16 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             }
         }
     }
-    private void incrValue(int paramId) {
-        pValue += this.params.aParamIncr[paramId];
-        if (pValue > this.params.aParamMax[paramId]) {
-            pValue = this.params.aParamMax[paramId];
-        }
-    }
-
-    private void decrValue(int paramId) {
-        pValue -= this.params.aParamIncr[paramId];
-        if (pValue < this.params.aParamMin[paramId]) {
-            pValue = this.params.aParamMin[paramId];
-        }
-    }
 
     public void SaveDownloadedParamValue(int paramId, int value) {
-        pValue = value;
+        this.params.setParamValue(value);
         saveParamValue(paramId);
     }
 
     private void saveParamValue(int paramId) {
         switch (this.params.aParamType[paramId]) {
             case Params.BooleanType /*1*/:
-                this.params.setCurrentParamValue(paramId, pValue);
+                this.params.setCurrentParamValue(paramId, this.params.getParamValue());
                 boolean z;
                 switch (paramId) {
                     case Params.PARAM_CabinComfort /*0*/:
@@ -2555,7 +2540,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         updateFunctionModes();
                         break;
                     case Params.PARAM_AudibleSound /*15*/:
-                        if (pValue != 0) {
+                        if (this.params.getParamValue() != 0) {
                             z = true;
                         } else {
                             z = false;
@@ -2564,7 +2549,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         sendParam(paramId);
                         break;
                     case Params.PARAM_PasswordEnable /*19*/:
-                        if (pValue != 0) {
+                        if (this.params.getParamValue() != 0) {
                             z = true;
                         } else {
                             z = false;
@@ -2573,7 +2558,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         sendParam(paramId);
                         break;
                     case Params.PARAM_Password /*20*/:
-                        Password = pValue;
+                        Password = this.params.getParamValue();
                         sendParam(paramId);
                         break;
                     default:
@@ -2581,10 +2566,10 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                         break;
                 }
             case Params.IntegerType /*2*/:
-                this.params.setCurrentParamValue(paramId, pValue);
+                this.params.setCurrentParamValue(paramId, this.params.getParamValue());
                 switch (paramId) {
                     case Params.PARAM_DimTabletScreen /*14*/:
-                        setScreenTimeout(pValue);
+                        setScreenTimeout(this.params.getParamValue());
                         sendParam(paramId);
                         break;
                     default:
@@ -2593,7 +2578,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
                 }
             case Params.TempType /*3*/:
             case Params.VoltageType /*4*/:
-                this.params.setCurrentParamValue(paramId, pValue);
+                this.params.setCurrentParamValue(paramId, this.params.getParamValue());
                 sendParam(paramId);
                 break;
         }
