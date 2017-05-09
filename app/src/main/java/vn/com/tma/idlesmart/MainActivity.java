@@ -108,10 +108,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
 
     public static boolean[] aMaintEnable = null;
     public static int[] aMaintValue = null;
-    //TODO Delete
-    // Store PBC Parameter values
-    //public static int[] aParam = null;
-
     private static Dialog commDialog = null;
     private static String commlogstr = null;
     private static TextView commlogtext = null;
@@ -654,8 +650,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         Password = 0;
         PasswordEnable = false;
         PasswordValid = false;
-        //TODO Delete
-        //aParam = new int[Params.PARAM_MAX];
         aMaintEnable = new boolean[10];
         aMaintValue = new int[10];
         Gateway_HWver = 0;
@@ -2392,17 +2386,11 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         }
         PasswordValid = false;
     }
-    // TODO Delete
-   /* private void initializeRunningParams() {
-        for (int i = 0; i < Params.PARAM_MAX; i += 1) {
-            aParam[i] = this.params.aParamDef[i];
-        }
-    }
-*/
+
     private void viewParamValue() {
         selectSettingsEntry(1);
         this.param_id = Menus.getSubmenuId(this.settings_menu1_index, this.settings_menu2_index);
-        pValue = params.getCurrentParamValue(this.param_id);
+        pValue = this.params.getCurrentParamValue(this.param_id);
         String pName = this.params.aParamName[this.param_id];
         String pPfx = this.params.aParamPfx[this.param_id];
         String pSfx = this.params.aParamSfx[this.param_id];
@@ -2517,23 +2505,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             }
         }
     }
-   //TODO Delete
-  /*  private boolean isCabinTempCommonIncrValid(int value) {
-        if (this.params.aParamIncr[Params.PARAM_CabinTargetTemp] + value <= aParam[Params.PARAM_FleetCabinTargetTemp] + aParam[Params.PARAM_DriverTempCommon]) {
-            return true;
-        }
-        return false;
-    }*/
-/*
-
-    private boolean isCabinTempCommonDecrValid(int value) {
-        if (value - this.params.aParamIncr[Params.PARAM_CabinTargetTemp] >= aParam[Params.PARAM_FleetCabinTargetTemp] - aParam[Params.PARAM_DriverTempCommon]) {
-            return true;
-        }
-        return false;
-    }
-*/
-
     private void incrValue(int paramId) {
         pValue += this.params.aParamIncr[paramId];
         if (pValue > this.params.aParamMax[paramId]) {
@@ -2709,22 +2680,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         data[1] = (byte) (params.getCurrentParamValue(pId) & 255);
         this.accessoryControl.writeCommand(this.params.aParamAPIcmd[pId], data[0], data[1]);
     }
-    // TODO Delete
-   /* private void incrParam(int paramId) {
-        int[] iArr = aParam;
-        iArr[paramId] = iArr[paramId] + this.params.aParamIncr[paramId];
-        if (aParam[paramId] > this.params.aParamMax[paramId]) {
-            aParam[paramId] = this.params.aParamMax[paramId];
-        }
-    }*/
-
-   /* private void decrParam(int paramId) {
-        int[] iArr = aParam;
-        iArr[paramId] = iArr[paramId] - this.params.aParamIncr[paramId];
-        if (aParam[paramId] < this.params.aParamMin[paramId]) {
-            aParam[paramId] = this.params.aParamMin[paramId];
-        }
-    }*/
 
     private void selectActivationFragment(int fragment) {
         findViewById(R.id.verificationFragment).setVisibility(View.GONE);
