@@ -1,7 +1,7 @@
 package vn.com.tma.idlesmart;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Create KioskModeActivity to implement some method of KioskService instead of doing on MainActivity
  */
-public class KioskModeActivity extends Activity{
+public class KioskModeActivity extends FragmentActivity{
     public static boolean KioskMode = false;
     private  List blockedKeys;
 
