@@ -38,39 +38,31 @@ public class PasswordDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDialog().requestWindowFeature(FEATURE_NO_TITLE);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ((TextView) view.findViewById(R.id.passwordEditText)).setText("");
-        view.findViewById(R.id.passwordReturnButton).setOnClickListener(new PasswordReturnListener());
-        view.findViewById(R.id.passwordContinueButton).setOnClickListener(new PaswordContinueListener());
-    }
-
-    /**
-     * Action listener for PasswordReturn button
-     */
-    class PasswordReturnListener implements View.OnClickListener {
-        public void onClick(View v) {
-            dismiss();
-            MainActivity.PasswordValid = false;
-        }
-    }
-    /**
-     * Action listener for PasswordContinue button
-     */
-    class PaswordContinueListener implements View.OnClickListener {
-        public void onClick(View v) {
-            dismiss();
-            IntegerParser integerParser = new IntegerParser();
-            int pwtemp = integerParser.toInteger(((EditText) getView().findViewById(R.id.passwordEditText)).getText().toString());
-            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
-            if (MainActivity.test_mode && pwtemp == 8800) {
-                MainActivity.PasswordEnable = false;
-                MainActivity.PasswordValid = true;
+        view.findViewById(R.id.passwordReturnButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                MainActivity.PasswordValid = false;
             }
-        }
+        });
+        view.findViewById(R.id.passwordContinueButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                IntegerParser integerParser = new IntegerParser();
+                int pwtemp = integerParser.toInteger(((EditText) getView().findViewById(R.id.passwordEditText)).getText().toString());
+                MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
+                if (MainActivity.test_mode && pwtemp == 8800) {
+                    MainActivity.PasswordEnable = false;
+                    MainActivity.PasswordValid = true;
+                }
+            }
+        });
     }
-
 
 }
