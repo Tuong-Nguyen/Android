@@ -25,6 +25,7 @@ import android.os.PowerManager.WakeLock;
 import android.os.Process;
 import android.provider.Settings.SettingNotFoundException;
 import android.provider.Settings.System;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -47,10 +48,11 @@ import java.util.Calendar;
 
 import vn.com.tma.idlesmart.Utils.CANLogFile;
 import vn.com.tma.idlesmart.Utils.FileName;
+import vn.com.tma.idlesmart.Utils.InformationSender;
 import vn.com.tma.idlesmart.Utils.IntegerParser;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
-import vn.com.tma.idlesmart.Utils.InformationSender;
 import vn.com.tma.idlesmart.Utils.TimeConverter;
+import vn.com.tma.idlesmart.fragment.SerialDialogFragment;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
@@ -150,7 +152,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public Params params;
     private Dialog passwordDialog;
     final Handler screentimeoutHandler;
-    private Dialog serialDialog;
     private int settings_entrytype;
     public int settings_menu1_index;
     public int settings_menu2_index;
@@ -532,7 +533,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.USBReconnectHandler = new Handler();
         this.alertDialog = null;
         this.maintDialog = null;
-        this.serialDialog = null;
         this.passwordDialog = null;
         this.mTempWakeLock = null;
         this.menus = new Menus();
@@ -2858,32 +2858,15 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     }
 
     public void openSerialDialog() {
-        if (this.serialDialog != null && this.serialDialog.isShowing()) {
-            this.serialDialog.dismiss();
-        }
-        this.serialDialog = new Dialog(this);
-        this.serialDialog.requestWindowFeature(FEATURE_NO_TITLE);
-        this.serialDialog.setContentView(R.layout.serial_dialog);
-        this.serialDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ((TextView) this.serialDialog.findViewById(R.id.serialVIN_Text)).setText(Gateway_VIN);
-        ((TextView) this.serialDialog.findViewById(R.id.serialGWSerialID_Text)).setText(Gateway_SerialID);
-        ((TextView) this.serialDialog.findViewById(R.id.serialLDRversion_Text)).setText(Gateway_LDRversion);
-        ((TextView) this.serialDialog.findViewById(R.id.serialGWversion_Text)).setText(Gateway_FWversion);
         PackageInfo pInfo = null;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
-        if (pInfo != null) {
-            ((TextView) this.serialDialog.findViewById(R.id.serialAndroidVersion_Text)).setText(pInfo.versionName);
-        }
-        this.serialDialog.findViewById(R.id.serialDoneButton).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                MainActivity.this.serialDialog.dismiss();
-            }
-        });
-        this.serialDialog.show();
+        FragmentManager fm = getSupportFragmentManager();
+        SerialDialogFragment newFragment = SerialDialogFragment.newInstance(pInfo);
+        newFragment.show(fm, "SerialDialogFragment");
     }
 
     // region Maintenance Dialog
