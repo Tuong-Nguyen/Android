@@ -29,11 +29,11 @@ public class SerialDialogFragment extends DialogFragment {
     }
 
     public static SerialDialogFragment newInstance(Parcelable parcelable) {
-        SerialDialogFragment frag = new SerialDialogFragment();
+        SerialDialogFragment serialDialogFragment = new SerialDialogFragment();
         Bundle args = new Bundle();
         args.putParcelable("PackageInfo",parcelable);
-        frag.setArguments(args);
-        return frag;
+        serialDialogFragment.setArguments(args);
+        return serialDialogFragment;
     }
 
     @Nullable
