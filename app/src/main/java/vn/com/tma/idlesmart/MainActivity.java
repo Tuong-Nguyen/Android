@@ -62,7 +62,7 @@ import static android.view.Window.FEATURE_NO_TITLE;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
 
-public class MainActivity extends KioskModeActivity implements OnClickListener {
+public class MainActivity extends KioskModeActivity implements OnClickListener{
     public static String APIroute = null;
     public static int ActivationCode = 0;
     public static boolean ActivationProcessPending = false;
@@ -151,6 +151,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public Menus menus;
     int param_id;
     public Params params;
+    private Dialog passwordDialog;
     final Handler screentimeoutHandler;
     private int settings_entrytype;
     public int settings_menu1_index;
@@ -533,6 +534,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.USBReconnectHandler = new Handler();
         this.alertDialog = null;
         this.maintDialog = null;
+        this.passwordDialog = null;
         this.mTempWakeLock = null;
         this.menus = new Menus();
         this.params = new Params();
@@ -1776,7 +1778,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public void openPasswordDialog() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         PasswordDialogFragment passwordDialogFragment = PasswordDialogFragment.newInstance();
-        passwordDialogFragment.show(fragmentManager, "PasswordDialogFragment");
+        passwordDialogFragment.show(fragmentManager, "PasswordDialog");
     }
 
     // endregion
