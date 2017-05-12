@@ -53,6 +53,7 @@ import vn.com.tma.idlesmart.Utils.IntegerParser;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.Utils.TimeConverter;
 import vn.com.tma.idlesmart.fragment.CommDialogFragment;
+import vn.com.tma.idlesmart.fragment.PasswordDialogFragment;
 import vn.com.tma.idlesmart.fragment.SerialDialogFragment;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
@@ -111,7 +112,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
 
     public static boolean[] aMaintEnable = null;
     public static int[] aMaintValue = null;
-    private static Dialog commDialog = null;
     private static String commlogstr = null;
     private static TextView commlogtext = null;
     public static boolean demo_mode = false;
@@ -151,7 +151,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     public Menus menus;
     int param_id;
     public Params params;
-    private Dialog passwordDialog;
     final Handler screentimeoutHandler;
     private int settings_entrytype;
     public int settings_menu1_index;
@@ -534,7 +533,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
         this.USBReconnectHandler = new Handler();
         this.alertDialog = null;
         this.maintDialog = null;
-        this.passwordDialog = null;
         this.mTempWakeLock = null;
         this.menus = new Menus();
         this.params = new Params();
@@ -629,7 +627,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
 
     static {
         DebugLog = true;
-        commDialog = null;
         KioskMode = false;
         Restart = false;
         HasFocus = true;
@@ -1777,43 +1774,9 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
     // region Password Dialog for inputting password
 
     public void openPasswordDialog() {
-        if (this.passwordDialog != null && this.passwordDialog.isShowing()) {
-            this.passwordDialog.dismiss();
-        }
-        this.passwordDialog = new Dialog(this);
-        this.passwordDialog.requestWindowFeature(FEATURE_NO_TITLE);
-        this.passwordDialog.setContentView(R.layout.password_dialog);
-        this.passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ((TextView) this.passwordDialog.findViewById(R.id.passwordEditText)).setText("");
-        this.passwordDialog.findViewById(R.id.passwordReturnButton).setOnClickListener(new PasswordReturnListener());
-        this.passwordDialog.findViewById(R.id.passwordContinueButton).setOnClickListener(new PaswordContinueListener());
-        this.passwordDialog.show();
-    }
-
-    /**
-     * Action listener for PasswordReturn button
-     */
-    class PasswordReturnListener implements OnClickListener {
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            MainActivity.PasswordValid = false;
-        }
-    }
-
-    /**
-     * Action listener for PasswordContinue button
-     */
-    class PaswordContinueListener implements OnClickListener {
-        public void onClick(View v) {
-            MainActivity.this.passwordDialog.dismiss();
-            IntegerParser integerParser = new IntegerParser();
-            int pwtemp = integerParser.toInteger(((EditText) MainActivity.this.passwordDialog.findViewById(R.id.passwordEditText)).getText().toString());
-            MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
-            if (MainActivity.test_mode && pwtemp == 8800) {
-                MainActivity.PasswordEnable = false;
-                MainActivity.PasswordValid = true;
-            }
-        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        PasswordDialogFragment passwordDialogFragment = PasswordDialogFragment.newInstance();
+        passwordDialogFragment.show(fragmentManager, "PasswordDialogFragment");
     }
 
     // endregion
