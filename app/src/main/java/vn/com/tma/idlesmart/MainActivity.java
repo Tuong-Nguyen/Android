@@ -52,6 +52,7 @@ import vn.com.tma.idlesmart.Utils.InformationSender;
 import vn.com.tma.idlesmart.Utils.IntegerParser;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.Utils.TimeConverter;
+import vn.com.tma.idlesmart.fragment.CommDialogFragment;
 import vn.com.tma.idlesmart.fragment.SerialDialogFragment;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
@@ -2865,8 +2866,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
             e.printStackTrace();
         }
         FragmentManager fm = getSupportFragmentManager();
-        SerialDialogFragment newFragment = SerialDialogFragment.newInstance(pInfo);
-        newFragment.show(fm, "SerialDialogFragment");
+        SerialDialogFragment serialDialogFragment = SerialDialogFragment.newInstance(pInfo);
+        serialDialogFragment.show(fm, "SerialDialogFragment");
     }
 
     // region Maintenance Dialog
@@ -3136,22 +3137,10 @@ public class MainActivity extends KioskModeActivity implements OnClickListener {
      * Open a dialog with build flavor
      */
     public void openCommDialog() {
-        if (commDialog != null && commDialog.isShowing()) {
-            commDialog.dismiss();
-        }
-        commDialog = new Dialog(this);
-        commDialog.requestWindowFeature(FEATURE_NO_TITLE);
-        commDialog.setContentView(R.layout.comm_dialog);
-        commDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        commlogtext = (TextView) commDialog.findViewById(R.id.commlog_Text);
         commlogstr = "";
-        commlogtext.setText(commlogstr);
-        commDialog.findViewById(R.id.commDoneButton).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                MainActivity.commDialog.dismiss();
-            }
-        });
-        commDialog.show();
+        FragmentManager fm = getSupportFragmentManager();
+        CommDialogFragment commDialogFragment = CommDialogFragment.newInstance(commlogstr);
+        commDialogFragment.show(fm, "CommDialogFragment");
     }
 
     public void CommLogStr(String str) {
