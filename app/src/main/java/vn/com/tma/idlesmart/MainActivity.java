@@ -52,9 +52,11 @@ import vn.com.tma.idlesmart.Utils.InformationSender;
 import vn.com.tma.idlesmart.Utils.IntegerParser;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.Utils.TimeConverter;
+import vn.com.tma.idlesmart.fragment.AlertDialogFragment;
 import vn.com.tma.idlesmart.fragment.CommDialogFragment;
 import vn.com.tma.idlesmart.fragment.PasswordDialogFragment;
 import vn.com.tma.idlesmart.fragment.SerialDialogFragment;
+import vn.com.tma.idlesmart.listener.AlertDialogFragmentListener;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
@@ -62,7 +64,7 @@ import static android.view.Window.FEATURE_NO_TITLE;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
 
-public class MainActivity extends KioskModeActivity implements OnClickListener{
+public class MainActivity extends KioskModeActivity implements OnClickListener, AlertDialogFragmentListener {
     public static String APIroute = null;
     public static int ActivationCode = 0;
     public static boolean ActivationProcessPending = false;
@@ -151,7 +153,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener{
     public Menus menus;
     int param_id;
     public Params params;
-    private Dialog passwordDialog;
     final Handler screentimeoutHandler;
     private int settings_entrytype;
     public int settings_menu1_index;
@@ -534,7 +535,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener{
         this.USBReconnectHandler = new Handler();
         this.alertDialog = null;
         this.maintDialog = null;
-        this.passwordDialog = null;
         this.mTempWakeLock = null;
         this.menus = new Menus();
         this.params = new Params();
@@ -2760,20 +2760,20 @@ public class MainActivity extends KioskModeActivity implements OnClickListener{
         }
     }
 
+    @Override
+    public void onFreshListener(int faultId) {
+        new AlertDialogListener(faultId);
+    }
+
     public void openAlertDialog(int faultId) {
         if (faultId != 0 && faultId <= 23) {
-            if (this.alertDialog != null && this.alertDialog.isShowing()) {
-                this.alertDialog.dismiss();
-                this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, faultId);
-            }
-            this.alertDialog = new Dialog(this);
-            this.alertDialog.requestWindowFeature(FEATURE_NO_TITLE);
-            this.alertDialog.setContentView(R.layout.alert_dialog);
             HasFocus = true;
-            ((TextView) this.alertDialog.findViewById(R.id.alertName)).setText(this.faults.aFaultMessage[faultId]);
-            ((TextView) this.alertDialog.findViewById(R.id.alertDescription)).setText(this.faults.aFaultDesc[faultId]);
-            this.alertDialog.findViewById(R.id.alertRefreshButton).setOnClickListener(new AlertDialogListener(faultId));
-            this.alertDialog.show();
+            String faultMessage = this.faults.aFaultMessage[faultId];
+            String faultDesc = this.faults.aFaultDesc[faultId];
+            FragmentManager dialogFragment =getSupportFragmentManager();
+            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(faultId, faultMessage, faultDesc);
+            alertDialogFragment.show(dialogFragment, "AlertDialogFragment");
+            this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, faultId);
             wakeup();
             if (params.getCurrentParamValue(Params.PARAM_AudibleSound) != 0) {
                 alertTone();
