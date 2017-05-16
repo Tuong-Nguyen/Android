@@ -57,6 +57,7 @@ import vn.com.tma.idlesmart.fragment.CommDialogFragment;
 import vn.com.tma.idlesmart.fragment.PasswordDialogFragment;
 import vn.com.tma.idlesmart.fragment.SerialDialogFragment;
 import vn.com.tma.idlesmart.listener.AlertDialogFragmentListener;
+import vn.com.tma.idlesmart.listener.PasswordDialogFragmentListener;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
@@ -64,7 +65,7 @@ import static android.view.Window.FEATURE_NO_TITLE;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
 
-public class MainActivity extends KioskModeActivity implements OnClickListener, AlertDialogFragmentListener {
+public class MainActivity extends KioskModeActivity implements OnClickListener, AlertDialogFragmentListener, PasswordDialogFragmentListener {
     public static String APIroute = null;
     public static int ActivationCode = 0;
     public static boolean ActivationProcessPending = false;
@@ -1779,6 +1780,19 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         FragmentManager fragmentManager = getSupportFragmentManager();
         PasswordDialogFragment passwordDialogFragment = PasswordDialogFragment.newInstance();
         passwordDialogFragment.show(fragmentManager, "PasswordDialog");
+    }
+    @Override
+    public void onReturnListener() {
+        MainActivity.PasswordValid = false;
+    }
+
+    @Override
+    public void onContinueListener(int pwtemp) {
+        MainActivity.PasswordValid = pwtemp == MainActivity.Password ? true : false;
+        if (MainActivity.test_mode && pwtemp == 8800) {
+            MainActivity.PasswordEnable = false;
+            MainActivity.PasswordValid = true;
+        }
     }
 
     // endregion
