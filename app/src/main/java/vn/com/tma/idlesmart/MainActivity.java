@@ -32,7 +32,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -44,28 +43,29 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.com.tma.idlesmart.Utils.CANLogFile;
 import vn.com.tma.idlesmart.Utils.FileName;
 import vn.com.tma.idlesmart.Utils.InformationSender;
-import vn.com.tma.idlesmart.Utils.IntegerParser;
 import vn.com.tma.idlesmart.Utils.PrefUtils;
 import vn.com.tma.idlesmart.Utils.TimeConverter;
 import vn.com.tma.idlesmart.fragment.AlertDialogFragment;
 import vn.com.tma.idlesmart.fragment.CommDialogFragment;
+import vn.com.tma.idlesmart.fragment.MaintenanceDialogFragment;
 import vn.com.tma.idlesmart.fragment.PasswordDialogFragment;
 import vn.com.tma.idlesmart.fragment.SerialDialogFragment;
 import vn.com.tma.idlesmart.listener.AlertDialogFragmentListener;
+import vn.com.tma.idlesmart.listener.MaintenanceDialogFragmentListener;
 import vn.com.tma.idlesmart.listener.PasswordDialogFragmentListener;
 import vn.com.tma.idlesmart.params.PhoneHomeSyncStatus;
 
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
-import static android.view.Window.FEATURE_NO_TITLE;
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
 
-public class MainActivity extends KioskModeActivity implements OnClickListener, AlertDialogFragmentListener, PasswordDialogFragmentListener {
+public class MainActivity extends KioskModeActivity implements OnClickListener, AlertDialogFragmentListener, PasswordDialogFragmentListener, MaintenanceDialogFragmentListener {
     public static String APIroute = null;
     public static int ActivationCode = 0;
     public static boolean ActivationProcessPending = false;
@@ -166,6 +166,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
     final Runnable verificationRunnable;
     private InformationSender informationSender;
     FragmentManager fragmentManager;
+
 
     /**
      * Define verification steps
@@ -2874,86 +2875,102 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
     // region Maintenance Dialog
 
     public void openMaintDialog() {
-        final IntegerParser integerParser = new IntegerParser();
-        if (this.maintDialog != null && this.maintDialog.isShowing()) {
-            this.maintDialog.dismiss();
-        }
         this.kiosk_mode_counter = 0;
-        this.maintDialog = new Dialog(this);
-        this.maintDialog.requestWindowFeature(FEATURE_NO_TITLE);
-        this.maintDialog.setContentView(R.layout.maint_dialog);
-        this.maintDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_1)).setChecked(aMaintEnable[MaintenanceFeature.LOG_FILE]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_1)).setText(Integer.toString(aMaintValue[MaintenanceFeature.LOG_FILE]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_2)).setChecked(aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_2)).setText(Integer.toString(aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_3)).setChecked(aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_3)).setText(Integer.toString(aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_4)).setChecked(aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_4)).setText(Integer.toString(aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_5)).setChecked(aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_5)).setText(Integer.toString(aMaintValue[MaintenanceFeature.TIMESTAMP_RPM]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_6)).setChecked(aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_6)).setText(Integer.toString(aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_7)).setChecked(aMaintEnable[MaintenanceFeature.RESERVED]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_7)).setText(Integer.toString(aMaintValue[MaintenanceFeature.RESERVED]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_8)).setChecked(aMaintEnable[MaintenanceFeature.SERVER_ROUTE]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_8)).setText(APIroute);
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_9)).setChecked(aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_9)).setText(Integer.toString(aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]));
-        ((CheckBox) this.maintDialog.findViewById(R.id.maintCheckBox_10)).setChecked(aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION]);
-        ((EditText) this.maintDialog.findViewById(R.id.maintText_10)).setText(Integer.toString(aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION]));
-        this.maintDialog.findViewById(R.id.maintDoneButton).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                MainActivity.aMaintEnable[MaintenanceFeature.LOG_FILE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_1)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.LOG_FILE] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_1)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_2)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_2)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_3)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_3)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_4)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_4)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_5)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_5)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_6)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_6)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.RESERVED] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_7)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.RESERVED] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_7)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.SERVER_ROUTE] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_8)).isChecked();
-                MainActivity.aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_9)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_9)).getText().toString());
-                MainActivity.aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = ((CheckBox) MainActivity.this.maintDialog.findViewById(R.id.maintCheckBox_10)).isChecked();
-                MainActivity.aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = integerParser.toInteger(((EditText) MainActivity.this.maintDialog.findViewById(R.id.maintText_10)).getText().toString());
-                MainActivity.this.sendMaintInfo();
-                MainActivity.this.maintDialog.dismiss();
+        boolean enableLogFile = aMaintEnable[MainActivity.MaintenanceFeature.LOG_FILE];
+        String valueLogFile = Integer.toString(aMaintValue[MaintenanceFeature.LOG_FILE]);
+        boolean enableClutchOverride = aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE];
+        String valueClutchOverride = Integer.toString(aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE]);
+        boolean enableIdleTimeOverride = aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE];
+        String valueIdleTimeOverride = Integer.toString(aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE]);
+        boolean enableEngineSpeedAdjustments = aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS];
+        String valueEngineSpeedAdjustments = Integer.toString(aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS]);
+        boolean enableTimeStampRMP = aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM];
+        String valueTimeStampRMP = Integer.toString(aMaintValue[MaintenanceFeature.TIMESTAMP_RPM]);
+        boolean enableNeutralSwitchDetection = aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION];
+        String valueNeutralSwitchDetection = Integer.toString(aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION]);
+        boolean enableReserved = aMaintEnable[MaintenanceFeature.RESERVED];
+        String valueReserved = Integer.toString(aMaintValue[MaintenanceFeature.RESERVED]);
+        boolean enableSeveRoute = aMaintEnable[MaintenanceFeature.SERVER_ROUTE];
+        String apiRoute = APIroute;
+        boolean enableRestoreFactoryDefaults = aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS];
+        String valueRestoreFactoryDefaults = Integer.toString(aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS]);
+        boolean enableViewServeCommunication = aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION];
+        String valueViewServeCommunication = Integer.toString(aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION]);
+        Bundle bundle =  new Bundle();
+        bundle.putBoolean("enableLogFile", enableLogFile);
+        bundle.putString("valueLogFile", valueLogFile);
+        bundle.putBoolean("enableClutchOverride", enableClutchOverride);
+        bundle.putString("valueClutchOverride", valueClutchOverride);
+        bundle.putBoolean("enableIdleTimeOverride", enableIdleTimeOverride);
+        bundle.putString("valueIdleTimeOverride", valueIdleTimeOverride);
+        bundle.putBoolean("enableEngineSpeedAdjustments", enableEngineSpeedAdjustments);
+        bundle.putString("valueEngineSpeedAdjustments", valueEngineSpeedAdjustments);
+        bundle.putBoolean("enableTimeStampRMP", enableTimeStampRMP);
+        bundle.putString("valueTimeStampRMP", valueTimeStampRMP);
+        bundle.putBoolean("enableNeutralSwitchDetection", enableNeutralSwitchDetection);
+        bundle.putString("valueNeutralSwitchDetection", valueNeutralSwitchDetection);
+        bundle.putBoolean("enableReserved", enableReserved);
+        bundle.putString("valueReserved", valueReserved);
+        bundle.putBoolean("enableSeverRoute", enableSeveRoute);
+        bundle.putString("apiRoute", apiRoute);
+        bundle.putBoolean("enableRestoreFactoryDefaults", enableRestoreFactoryDefaults);
+        bundle.putString("valueRestoreFactoryDefaults", valueRestoreFactoryDefaults);
+        bundle.putBoolean("enableViewServeCommunication", enableViewServeCommunication);
+        bundle.putString("valueViewServeCommunication", valueViewServeCommunication);
+        MaintenanceDialogFragment maintenanceDialogFragment = new MaintenanceDialogFragment();
+        maintenanceDialogFragment.setArguments(bundle);
+        maintenanceDialogFragment.show(fragmentManager, "maintenanceDialogFragment");
+    }
+
+    @Override
+    public void onExitMaintenance() {
+        Log.w(MainActivity.TAG, "Kiosk SuperExit button pressed");
+        MainActivity mainActivity = MainActivity.this;
+        int i = mainActivity.kiosk_mode_counter + 1;
+        mainActivity.kiosk_mode_counter = i;
+        if (i == 3) { // Click 3 times for toggling Kiosk mode
+            boolean z;
+            MainActivity.this.kiosk_mode_counter = 0;
+            Context ctx = MainActivity.this.getApplicationContext();
+            if (PrefUtils.isKioskModeActive(ctx)) {
+                z = false;
+            } else {
+                z = true;
             }
-        });
-        this.maintDialog.findViewById(R.id.maintSuperExitButton).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Log.w(MainActivity.TAG, "Kiosk SuperExit button pressed");
-                MainActivity mainActivity = MainActivity.this;
-                int i = mainActivity.kiosk_mode_counter + 1;
-                mainActivity.kiosk_mode_counter = i;
-                if (i == 3) { // Click 3 times for toggling Kiosk mode
-                    boolean z;
-                    MainActivity.this.kiosk_mode_counter = 0;
-                    Context ctx = MainActivity.this.getApplicationContext();
-                    if (PrefUtils.isKioskModeActive(ctx)) {
-                        z = false;
-                    } else {
-                        z = true;
-                    }
-                    MainActivity.KioskMode = z;
-                    PrefUtils.setKioskModeActive(MainActivity.KioskMode, ctx);
-                    if (MainActivity.KioskMode) {
-                        Toast.makeText(ctx, "Shields are UP.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(ctx, "Shields are down Commander!", Toast.LENGTH_SHORT).show();
-                    }
-                }
+            MainActivity.KioskMode = z;
+            PrefUtils.setKioskModeActive(MainActivity.KioskMode, ctx);
+            if (MainActivity.KioskMode) {
+                Toast.makeText(ctx, "Shields are UP.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ctx, "Shields are down Commander!", Toast.LENGTH_SHORT).show();
             }
-        });
-        this.maintDialog.show();
+        }
+    }
+
+    @Override
+    public void onDoneMaintenance(ArrayList<Boolean> aMaintEnable, ArrayList<Integer> aMaintValue) {
+        MainActivity.aMaintEnable[MaintenanceFeature.LOG_FILE] = aMaintEnable.get(0);
+        MainActivity.aMaintEnable[MaintenanceFeature.CLUTCH_OVERRIDE] = aMaintEnable.get(1);
+        MainActivity.aMaintEnable[MaintenanceFeature.IDLE_TIME_OVERRIDE] = aMaintEnable.get(2);
+        MainActivity.aMaintEnable[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = aMaintEnable.get(3);
+        MainActivity.aMaintEnable[MaintenanceFeature.TIMESTAMP_RPM] = aMaintEnable.get(4);
+        MainActivity.aMaintEnable[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = aMaintEnable.get(5);
+        MainActivity.aMaintEnable[MaintenanceFeature.RESERVED] = aMaintEnable.get(6);
+        MainActivity.aMaintEnable[MaintenanceFeature.SERVER_ROUTE] = aMaintEnable.get(7);
+        MainActivity.aMaintEnable[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = aMaintEnable.get(8);
+        MainActivity.aMaintEnable[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = aMaintEnable.get(9);
+
+        MainActivity.aMaintValue[MaintenanceFeature.LOG_FILE] = aMaintValue.get(0);
+        MainActivity.aMaintValue[MaintenanceFeature.CLUTCH_OVERRIDE] = aMaintValue.get(1);
+        MainActivity.aMaintValue[MaintenanceFeature.IDLE_TIME_OVERRIDE] = aMaintValue.get(2);
+        MainActivity.aMaintValue[MaintenanceFeature.ENGINE_SPEED_ADJUSTMENTS] = aMaintValue.get(3);
+        MainActivity.aMaintValue[MaintenanceFeature.TIMESTAMP_RPM] = aMaintValue.get(4);
+        MainActivity.aMaintValue[MaintenanceFeature.NEUTRAL_SWITCH_DETECTION] = aMaintValue.get(5);
+        MainActivity.aMaintValue[MaintenanceFeature.RESERVED] = aMaintValue.get(6);
+        MainActivity.aMaintValue[MaintenanceFeature.RESET_VIN_RESTORE_FACTORY_DEFAULTS] = aMaintValue.get(7);
+        MainActivity.aMaintValue[MaintenanceFeature.VIEW_SERVER_COMMUNICATION] = aMaintValue.get(8);
+
+        MainActivity.this.sendMaintInfo();
     }
 
     public void clearMaintInfo() {
