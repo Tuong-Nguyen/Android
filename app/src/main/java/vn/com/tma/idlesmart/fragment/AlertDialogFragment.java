@@ -22,16 +22,6 @@ public class AlertDialogFragment extends DialogFragment {
     public AlertDialogFragment() {
     }
 
-    public static AlertDialogFragment newInstance(int faultId, String faultMessage, String faultDesc){
-        AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("faultId", faultId);
-        bundle.putString("faultMessage", faultMessage);
-        bundle.putString("faultDesc", faultDesc);
-        alertDialogFragment.setArguments(bundle);
-        return alertDialogFragment;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,9 +33,9 @@ public class AlertDialogFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDialog().requestWindowFeature(FEATURE_NO_TITLE);
-        String faultMessage = getArguments().getString("faultMessage");
-        String faultDesc = getArguments().getString("faultDesc");
-        final int faultId = getArguments().getInt("faultId");
+        String faultMessage = this.getArguments().getString("faultMessage");
+        String faultDesc = this.getArguments().getString("faultDesc");
+        final int faultId = this.getArguments().getInt("faultId");
         ((TextView) view.findViewById(R.id.alertName)).setText(faultMessage);
         ((TextView) view.findViewById(R.id.alertDescription)).setText(faultDesc);
         view.findViewById(R.id.alertRefreshButton).setOnClickListener(new View.OnClickListener() {

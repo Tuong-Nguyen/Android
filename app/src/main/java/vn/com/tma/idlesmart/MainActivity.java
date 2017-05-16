@@ -165,6 +165,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
     final Handler verificationHandler;
     final Runnable verificationRunnable;
     private InformationSender informationSender;
+    FragmentManager fragmentManager;
 
     /**
      * Define verification steps
@@ -560,6 +561,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         this.timeoutRunnable = new ScreenOffRunnable();
         this.mEditorActionListener = new ActivationCodeVINCodeListener();
         this.informationSender = new InformationSender(accessoryControl);
+        this.fragmentManager = getSupportFragmentManager();
         this.verificationRunnable = new Runnable() {
             public void run() {
                 MainActivity.this.nextVerificationStep();
@@ -1777,9 +1779,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
     // region Password Dialog for inputting password
 
     public void openPasswordDialog() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         PasswordDialogFragment passwordDialogFragment = PasswordDialogFragment.newInstance();
-        passwordDialogFragment.show(fragmentManager, "PasswordDialog");
+        passwordDialogFragment.show(this.fragmentManager, "PasswordDialog");
     }
     @Override
     public void onReturnListener() {
@@ -2784,9 +2785,16 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
             HasFocus = true;
             String faultMessage = this.faults.aFaultMessage[faultId];
             String faultDesc = this.faults.aFaultDesc[faultId];
-            FragmentManager dialogFragment =getSupportFragmentManager();
-            AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(faultId, faultMessage, faultDesc);
-            alertDialogFragment.show(dialogFragment, "AlertDialogFragment");
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("faultId", faultId);
+            bundle.putString("faultMessage", faultMessage);
+            bundle.putString("faultDesc", faultDesc);
+
+            AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+            alertDialogFragment.setArguments(bundle);
+
+            alertDialogFragment.show(this.fragmentManager, "AlertDialogFragment");
             this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, faultId);
             wakeup();
             if (params.getCurrentParamValue(Params.PARAM_AudibleSound) != 0) {
@@ -2799,21 +2807,36 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
     public void closeAlertDialog(int faultId) {
         if (faultId == 0) {
             closeAllAlertDialogs();
-        } else if (this.alertDialog != null) {
-            if (this.alertDialog.isShowing()) {
-                this.alertDialog.dismiss();
+        } else {
+            String faultMessage = this.faults.aFaultMessage[faultId];
+            String faultDesc = this.faults.aFaultDesc[faultId];
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("faultId", faultId);
+            bundle.putString("faultMessage", faultMessage);
+            bundle.putString("faultDesc", faultDesc);
+
+            AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+            alertDialogFragment.setArguments(bundle);
+
+            if (alertDialogFragment.getShowsDialog()) {
+                alertDialogFragment.dismiss();
             }
             back2sleep();
         }
     }
 
     public void closeAllAlertDialogs() {
-        if (this.alertDialog != null) {
-            if (this.alertDialog.isShowing()) {
-                this.alertDialog.dismiss();
-            }
-            back2sleep();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("faultId", 0);
+        bundle.putString("faultMessage", "");
+        bundle.putString("faultDesc", "");
+        AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+        if (alertDialogFragment.getShowsDialog()){
+            alertDialogFragment.dismiss();
         }
+            back2sleep();
     }
 
     private void alertTone() {
@@ -2844,9 +2867,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
-        FragmentManager fm = getSupportFragmentManager();
         SerialDialogFragment serialDialogFragment = SerialDialogFragment.newInstance(pInfo);
-        serialDialogFragment.show(fm, "SerialDialogFragment");
+        serialDialogFragment.show(this.fragmentManager, "SerialDialogFragment");
     }
 
     // region Maintenance Dialog
@@ -3117,9 +3139,8 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
      */
     public void openCommDialog() {
         commlogstr = "";
-        FragmentManager fm = getSupportFragmentManager();
         CommDialogFragment commDialogFragment = CommDialogFragment.newInstance(commlogstr);
-        commDialogFragment.show(fm, "CommDialogFragment");
+        commDialogFragment.show(this.fragmentManager, "CommDialogFragment");
     }
 
     public void CommLogStr(String str) {
