@@ -18,7 +18,9 @@ import static android.view.Window.FEATURE_NO_TITLE;
  */
 
 public class AlertDialogFragment extends DialogFragment {
-
+    private String faultMessage;
+    private String faultDesc;
+    private int faultId;
     public AlertDialogFragment() {
     }
 
@@ -33,19 +35,31 @@ public class AlertDialogFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDialog().requestWindowFeature(FEATURE_NO_TITLE);
-        String faultMessage = this.getArguments().getString("faultMessage");
-        String faultDesc = this.getArguments().getString("faultDesc");
-        final int faultId = this.getArguments().getInt("faultId");
-        ((TextView) view.findViewById(R.id.alertName)).setText(faultMessage);
-        ((TextView) view.findViewById(R.id.alertDescription)).setText(faultDesc);
-        view.findViewById(R.id.alertRefreshButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialogFragmentListener alertDialogListener = (AlertDialogFragmentListener) getActivity();
-                alertDialogListener.onFreshListener(faultId);
-                dismiss();
+        if (this.getArguments() == null){
+            dismiss();
+        }else {
+            faultMessage = "";
+            faultDesc = "";
+            faultId = 0;
+            if (this.getArguments().getString("faultMessage")!= null) {
+                faultMessage = this.getArguments().getString("faultMessage");
             }
-        });
-
+            if (this.getArguments().getString("faultDesc")!= null) {
+                faultDesc = this.getArguments().getString("faultDesc");
+            }
+            if (this.getArguments().getInt("faultId") > 0) {
+                faultId = this.getArguments().getInt("faultId");
+            }
+                ((TextView) view.findViewById(R.id.alertName)).setText(faultMessage);
+                ((TextView) view.findViewById(R.id.alertDescription)).setText(faultDesc);
+                view.findViewById(R.id.alertRefreshButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialogFragmentListener alertDialogListener = (AlertDialogFragmentListener) getActivity();
+                        alertDialogListener.onFreshListener(faultId);
+                        dismiss();
+                    }
+                });
+        }
     }
 }

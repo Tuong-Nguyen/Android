@@ -2809,17 +2809,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         if (faultId == 0) {
             closeAllAlertDialogs();
         } else {
-            String faultMessage = this.faults.aFaultMessage[faultId];
-            String faultDesc = this.faults.aFaultDesc[faultId];
-
-            Bundle bundle = new Bundle();
-            bundle.putInt("faultId", faultId);
-            bundle.putString("faultMessage", faultMessage);
-            bundle.putString("faultDesc", faultDesc);
-
             AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-            alertDialogFragment.setArguments(bundle);
-
             if (alertDialogFragment.getShowsDialog()) {
                 alertDialogFragment.dismiss();
             }
@@ -2829,10 +2819,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
 
     public void closeAllAlertDialogs() {
 
-        Bundle bundle = new Bundle();
-        bundle.putInt("faultId", 0);
-        bundle.putString("faultMessage", "");
-        bundle.putString("faultDesc", "");
         AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
         if (alertDialogFragment.getShowsDialog()){
             alertDialogFragment.dismiss();
