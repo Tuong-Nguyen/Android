@@ -2,6 +2,7 @@ package vn.com.tma.idlesmart;
 
 import android.app.ActivityManager;
 import android.app.Dialog;
+import android.support.v4.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +26,7 @@ import android.os.PowerManager.WakeLock;
 import android.os.Process;
 import android.provider.Settings.SettingNotFoundException;
 import android.provider.Settings.System;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -165,7 +166,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
     final Handler verificationHandler;
     final Runnable verificationRunnable;
     private InformationSender informationSender;
-    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
 
     /**
@@ -546,7 +547,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         this.timeoutRunnable = new ScreenOffRunnable();
         this.mEditorActionListener = new ActivationCodeVINCodeListener();
         this.informationSender = new InformationSender(accessoryControl);
-        this.fragmentManager = getSupportFragmentManager();
+        this.fragmentTransaction = getSupportFragmentManager().beginTransaction();
         this.verificationRunnable = new Runnable() {
             public void run() {
                 MainActivity.this.nextVerificationStep();
@@ -1765,7 +1766,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
 
     public void openPasswordDialog() {
         PasswordDialogFragment passwordDialogFragment = PasswordDialogFragment.newInstance();
-        passwordDialogFragment.show(this.fragmentManager, "PasswordDialog");
+        passwordDialogFragment.show(this.fragmentTransaction, "PasswordDialog");
     }
     @Override
     public void onReturnListener() {
@@ -2782,7 +2783,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
             AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
             alertDialogFragment.setArguments(bundle);
 
-            alertDialogFragment.show(this.fragmentManager, "AlertDialogFragment");
+            alertDialogFragment.show(this.fragmentTransaction, "AlertDialogFragment");
             this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, faultId);
             wakeup();
             if (params.getCurrentParamValue(Params.PARAM_AudibleSound) != 0) {
@@ -2796,19 +2797,20 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         if (faultId == 0) {
             closeAllAlertDialogs();
         } else {
-            AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-            if (alertDialogFragment.getShowsDialog()) {
-                alertDialogFragment.dismiss();
+            Fragment alertDialogFragment = getSupportFragmentManager().findFragmentByTag("AlertDialogFragment");
+            if (alertDialogFragment != null) {
+                AlertDialogFragment dialogFragment = (AlertDialogFragment) alertDialogFragment;
+                dialogFragment.dismiss();
             }
             back2sleep();
         }
     }
 
     public void closeAllAlertDialogs() {
-
-        AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
-        if (alertDialogFragment.getShowsDialog()){
-            alertDialogFragment.dismiss();
+        Fragment alertDialogFragment = getSupportFragmentManager().findFragmentByTag("AlertDialogFragment");
+        if (alertDialogFragment != null) {
+            AlertDialogFragment dialogFragment = (AlertDialogFragment) alertDialogFragment;
+            dialogFragment.dismiss();
         }
             back2sleep();
     }
@@ -2842,7 +2844,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
             e.printStackTrace();
         }
         SerialDialogFragment serialDialogFragment = SerialDialogFragment.newInstance(pInfo);
-        serialDialogFragment.show(this.fragmentManager, "SerialDialogFragment");
+        serialDialogFragment.show(this.fragmentTransaction, "SerialDialogFragment");
     }
 
     // region Maintenance Dialog
@@ -2892,7 +2894,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         bundle.putString("valueViewServeCommunication", valueViewServeCommunication);
         MaintenanceDialogFragment maintenanceDialogFragment = new MaintenanceDialogFragment();
         maintenanceDialogFragment.setArguments(bundle);
-        maintenanceDialogFragment.show(fragmentManager, "maintenanceDialogFragment");
+        maintenanceDialogFragment.show(fragmentTransaction, "maintenanceDialogFragment");
     }
 
     @Override
@@ -3130,7 +3132,7 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
     public void openCommDialog() {
         commlogstr = "";
         CommDialogFragment commDialogFragment = CommDialogFragment.newInstance(commlogstr);
-        commDialogFragment.show(this.fragmentManager, "CommDialogFragment");
+        commDialogFragment.show(this.fragmentTransaction, "CommDialogFragment");
     }
 
     public void CommLogStr(String str) {
