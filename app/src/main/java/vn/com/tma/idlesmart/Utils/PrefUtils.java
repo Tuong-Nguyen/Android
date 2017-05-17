@@ -1,8 +1,10 @@
-package vn.com.tma.idlesmart;
+package vn.com.tma.idlesmart.Utils;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import vn.com.tma.idlesmart.MainActivity;
 
 public class PrefUtils {
     public static final String PREF_APK_UPDATE = "pref_apk_update";
@@ -44,7 +46,7 @@ public class PrefUtils {
     }
 
     public static String getServerUpdateVersion(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_SERVER_UPDATE_VERSION, BuildConfig.FLAVOR).trim();
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_SERVER_UPDATE_VERSION, "").trim();
     }
 
     public static void setServerUpdateVersion(String version, Context context) {

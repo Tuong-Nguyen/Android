@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/coldWeatherGuardFunction"
+    android:layout_width="match_parent"
+    android:layout_height="159dp"
+    android:layout_marginTop="2dp"
+    android:background="#717171"
+    android:clickable="true"
+    android:visibility="visible"
+    android:weightSum="1.0"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    tools:showIn="@layout/main">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="10dp"
+        android:background="#00000000"
+        android:src="@mipmap/ic_snowflake" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="Cold Weather Guard"
+        android:textSize="18sp" />
+</LinearLayout>

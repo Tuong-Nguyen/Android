@@ -1,6 +1,7 @@
 package vn.com.tma.idlesmart;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
@@ -27,6 +28,9 @@ public class AppContext extends Application {
         Log.i(TAG, "<<==onCreate");
     }
 
+    /**
+     * Register screen off broadcast to dim the screen instead of turning it off
+     */
     private void registerKioskModeScreenOffReceiver() {
         IntentFilter filter = new IntentFilter("android.intent.action.SCREEN_OFF");
         filter.addAction("android.intent.action.SCREEN_ON");
@@ -35,9 +39,15 @@ public class AppContext extends Application {
         registerReceiver(this.onScreenOffReceiver, filter);
     }
 
+    /**
+     * Get the WakeLock - create it if it does not yet created.
+     * @return
+     */
     public WakeLock getWakeLock() {
         if (this.wakeLock == null) {
-            this.wakeLock = ((PowerManager) getSystemService("power")).newWakeLock(805306369, "IdleSmartAppContextWakeup");
+            this.wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE)).newWakeLock(
+                    PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE
+                    , "IdleSmartAppContextWakeup");
             Log.i(TAG, "WakeLock acquired? " + this.wakeLock);
         }
         return this.wakeLock;

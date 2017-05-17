@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/functionStatus"
+    android:layout_width="8dp"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:visibility="visible"
+    android:weightSum="1.0"
+    android:orientation="horizontal"
+    tools:showIn="@layout/dashboard_fragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+    <LinearLayout
+        android:id="@id/cabinComfortFunctionIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="159dp"
+        android:background="@color/disabled"
+        android:gravity="center_horizontal"
+        android:visibility="visible"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@id/coldWeatherGuardFunctionIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="159dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/disabled"
+        android:gravity="center_horizontal"
+        android:visibility="visible"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@id/batteryProtectFunctionIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="159dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/disabled"
+        android:gravity="center_horizontal"
+        android:visibility="visible"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+
+    </LinearLayout>
+
+    <!--TODO Display 3 fragment(Cabin Comfort, ColdWeather Guard, Battery Protect), removed running_fragment from function_status to dashboard_fragment-->
+   <!-- <include layout="@layout/running_fragment" />-->
+
+    <!--TODO Display Cabin Comfort detail -> removed cabin_comfort_fragment from here to -->
+   <!--  <include layout="@layout/cabin_comfort_fragment" />-->
+
+    <!--TODO Display Cold Weather Guard detail -> removed cold_weather_guard_fragment from here to dashboard_fragment-->
+   <!-- <include layout="@layout/cold_weather_guard_fragment" />-->
+
+    <!--TODO Display Battery Protect detail -> removed battery_protect_fragment from here to dashboard_fragment-->
+    <!--<include layout="@layout/battery_protect_fragment" />-->
+</LinearLayout>

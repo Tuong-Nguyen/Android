@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/batteryProtectFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/enabledFunction"
+    android:clickable="true"
+    android:orientation="horizontal"
+    android:visibility="gone"
+    android:weightSum="1.0"
+    tools:showIn="@layout/dashboard_fragment">
+
+    <LinearLayout
+        android:layout_width="560dp"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:weightSum="1.0">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="87dp"
+            android:gravity="center_horizontal"
+            android:text="Time Remaining"
+            android:textColor="#848484"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@id/bpFragTimeRemainingValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-15dp"
+            android:gravity="center_horizontal"
+            android:text="18:36"
+            android:textColor="#4a4a4a"
+            android:textSize="144dp" />
+
+        <Button
+            android:id="@id/bpFragStopButton"
+            android:layout_width="226dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="47dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/active_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="STOP ENGINE"
+            android:textColor="#4a4a4a"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:layout_width="256dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/round_button_shape"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:weightSum="1.0">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:text="Battery Voltage Set Point"
+                android:textColor="#717171"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@id/bpFragSetpointValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:gravity="center_horizontal"
+                android:text="12.2v"
+                android:textColor="#717171"
+                android:textSize="72dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="190dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="74dp"
+            android:layout_marginTop="0dp"
+            android:background="#eeeeee"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <Button
+                android:id="@id/bpFragSetpointDecrButton"
+                android:layout_width="94dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="-20dp"
+                android:background="#717171"
+                android:clickable="true"
+                android:text="-"
+                android:textColor="#eeeeee"
+                android:textSize="60dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@id/bpFragSetpointIncrButton"
+                android:layout_width="94dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="-12dp"
+                android:background="#717171"
+                android:clickable="true"
+                android:text="+"
+                android:textColor="#eeeeee"
+                android:textSize="50dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="256dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/round_button_shape"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:weightSum="1.0">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:text="Engine Run Time"
+                android:textColor="#717171"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@id/bpEngineRuntimeValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:gravity="center_horizontal"
+                android:text="20min"
+                android:textColor="#717171"
+                android:textSize="72dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="190dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="74dp"
+            android:layout_marginTop="0dp"
+            android:background="#eeeeee"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <Button
+                android:id="@id/bpEngineRuntimeDecrButton"
+                android:layout_width="94dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="-20dp"
+                android:background="#717171"
+                android:clickable="true"
+                android:text="-"
+                android:textColor="#eeeeee"
+                android:textSize="60dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@id/bpEngineRuntimeIncrButton"
+                android:layout_width="94dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="-12dp"
+                android:background="#717171"
+                android:clickable="true"
+                android:text="+"
+                android:textColor="#eeeeee"
+                android:textSize="50dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

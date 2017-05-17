@@ -1,0 +1,146 @@
+package vn.com.tma.idlesmart;
+
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.io.IOException;
+
+import vn.com.tma.idlesmart.Utils.LogFile;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
+/**
+ * Created by ntmhanh on 4/14/2017.
+ */
+@RunWith(AndroidJUnit4.class)
+public class LogFileInstrumentTest {
+
+    private Context context;
+    private LogFile logFile;
+    private String fileNamePath = "Logs";
+    private String filename = "Log.bin";
+    private String tag = "Test";
+    @Before
+    public void setUp() {
+        //Arrange
+        context = InstrumentationRegistry.getTargetContext();
+        logFile = new LogFile(context, filename, fileNamePath, tag);
+    }
+
+    @Test
+    public void deleteFile_deleteExistFile_returnTrue() throws Exception {
+        //Arrange
+         logFile.openBufferOutPutStream();
+
+        // Action
+        boolean isDelete = logFile.deleteFile(filename);
+
+        // Assert
+        assertEquals("File was deleted ", true, isDelete);
+        }
+    @Test
+    public void deleteFile_deleteNotExistFile_returnFalse() throws Exception {
+        // Action
+        boolean isDelete = logFile.deleteFile(filename);
+
+        // Assert
+        assertEquals("File isn't exist", false, isDelete);
+    }
+    @Test
+    public void writeLogFile_inputStringDataIntoANewFile_returnTheDataExistInThatFileWithRightFormat() throws IOException {
+            //Arrange
+            logFile.deleteFile(filename);// Ensure this is new file
+            String input = "This is instrument test";
+
+            // Action
+            logFile.write(input);
+            String data = logFile.read();
+
+            boolean result = data.matches(".*\\s"+input+"\\n");
+
+            // Assert
+            assertTrue(result);
+    }
+    @Test
+    public void writeLogFile_inputStringDataIntoExistFile_returnOldAndNewDataInThatFileWithRightFormat() throws IOException {
+        //Arrange
+        String input1 = "This is the first input";
+        String input2 = "This is the second input";
+
+        logFile.deleteFile(filename);// Ensure this is a new file
+
+        // Action
+        logFile.write(input1);
+        logFile.write(input2);
+        String data = logFile.read();
+
+        boolean result = data.matches(".*\\sThis is the first input\\n.*\\sThis is the second input\\n");
+
+        // Assert
+        assertTrue(result);
+    }
+
+    @Test
+    public void readLogFile_readDataInExistFileEmptyData_return0() throws IOException {
+        //Arrange
+        logFile.deleteFile(filename);// Ensure that this is new file
+        // Action
+        logFile.openBufferOutPutStream(); //Create a new file with empty data
+        String data = logFile.read();
+        int size = data.length();
+        // Assert
+        assertEquals(0, size);
+    }
+
+    @Test
+    public void readLogFile_readDataInNotExistFile_returnNullData(){
+        //Arrange
+        logFile.deleteFile(filename);// Ensure that this is a new file
+        // Action
+        String data;
+        data = logFile.read();
+        // Assert
+        assertNull(data);
+    }
+    @Test
+    public void writeByteArrayInLogFile_InputByteArrayIntoFile_returnTrueForCheckingTheseByteArrayExistInThatFile(){
+        // Arrange
+       byte[] input = new byte[7];
+        char a = 'a';
+        char b = 'b';
+        char c = 'c';
+        char d = 'd';
+        int head1 = 1;
+        int head2 = 5;
+        int ID = 1;
+
+        //length
+        input[0] = (byte) head1;
+        input[1] = (byte) head2;
+        //ID
+        input[2] = (byte) ID;
+        //data
+        input[3] = (byte) a;
+        input[4] = (byte) b;
+        input[5] = (byte) c;
+        input[6] = (byte) d;
+
+        logFile.deleteFile(filename);// Ensure that this is a new file
+
+        //Action
+        logFile.write(input,4);
+        String data = logFile.read();
+
+        boolean result = data.matches(".*\\sabcd\\n.*");
+
+        // Assert
+        assertTrue(result);
+    }
+}

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/runningFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:inputType="numberDecimal"
+    android:orientation="horizontal"
+    tools:showIn="@layout/dashboard_fragment">
+
+    <LinearLayout
+        android:id="@id/cabinComfortControl"
+        android:layout_width="294dp"
+        android:layout_height="match_parent"
+        android:background="@color/enabledFunction"
+        android:clickable="true"
+        android:visibility="visible"
+        android:weightSum="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/cabinComfortLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="Cabin Comfort"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:id="@id/cabinComfortIndicator"
+            android:layout_width="64dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="118dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/disabled_indicator_shape"
+            android:gravity="center_horizontal"
+            android:visibility="visible"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@id/cabinComfortStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_horizontal"
+            android:text="RUNNING ENGINE"
+            android:textColor="#4a4a4a"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@id/cabinComfortValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:gravity="center_horizontal"
+            android:text="68°"
+            android:textColor="#4a4a4a"
+            android:textSize="100dp" />
+
+        <TextView
+            android:id="@id/cabinComfortDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center_horizontal"
+            android:text="Cabin Temperature"
+            android:textColor="#848484"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@id/cabinComfortEnableButton"
+            android:layout_width="226dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="67dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/active_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="STOP ENGINE"
+            android:textColor="#4a4a4a"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/coldWeatherGuardControl"
+        android:layout_width="298dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:background="@color/enabledFunction"
+        android:clickable="true"
+        android:visibility="visible"
+        android:weightSum="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/coldWeatherGuardLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="Cold Weather Guard"
+            android:textColor="#717171"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:id="@id/coldWeatherGuardIndicator"
+            android:layout_width="64dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="118dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/disabled_indicator_shape"
+            android:gravity="center_horizontal"
+            android:visibility="visible"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@id/coldWeatherGuardStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_horizontal"
+            android:text="MONITORING"
+            android:textColor="#4a4a4a"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@id/coldWeatherGuardValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:gravity="center_horizontal"
+            android:text="101°"
+            android:textColor="#4a4a4a"
+            android:textSize="100dp" />
+
+        <TextView
+            android:id="@id/coldWeatherGuardDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center_horizontal"
+            android:text="Coolant Temperature"
+            android:textColor="#848484"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@id/coldWeatherGuardEnableButton"
+            android:layout_width="226dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="67dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/enabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="DISABLE"
+            android:textColor="#4a4a4a"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/batteryProtectControl"
+        android:layout_width="294dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:background="@color/disabledFunction"
+        android:clickable="true"
+        android:visibility="visible"
+        android:weightSum="1.0"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/batteryProtectLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="Battery Protect"
+            android:textColor="#717171"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:id="@id/batteryProtectIndicator"
+            android:layout_width="64dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="118dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/disabled_indicator_shape"
+            android:gravity="center_horizontal"
+            android:visibility="visible"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@id/batteryProtectStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_horizontal"
+            android:text="DISABLED"
+            android:textColor="#4a4a4a"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@id/batteryProtectValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:gravity="center_horizontal"
+            android:text="12.2v"
+            android:textColor="#4a4a4a"
+            android:textSize="100dp" />
+
+        <TextView
+            android:id="@id/batteryProtectDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center_horizontal"
+            android:text="Battery Voltage"
+            android:textColor="#848484"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@id/batteryProtectEnableButton"
+            android:layout_width="226dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="67dp"
+            android:layout_weight="0.09"
+            android:background="@drawable/disabled_button_shape"
+            android:clickable="true"
+            android:enabled="true"
+            android:text="ENABLE"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
