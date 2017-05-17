@@ -212,22 +212,6 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
         static final int POWER_OFF = 3; // The accessory do not monitor the truck.
     }
 
-    class AlertDialogListener implements OnClickListener {
-        final int faultId;
-
-        AlertDialogListener(int i) {
-            this.faultId = i;
-        }
-
-        public void onClick(View v) {
-            MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, this.faultId);
-            MainActivity.this.alertDialog.dismiss();
-            if (MainActivity.this.mTempWakeLock.isHeld()) {
-                MainActivity.this.mTempWakeLock.release();
-            }
-        }
-    }
-
     /**
      * Runnable which check the usb connection and try to connect (if not connected) every 3 seconds
      */
@@ -2778,7 +2762,10 @@ public class MainActivity extends KioskModeActivity implements OnClickListener, 
 
     @Override
     public void onFreshListener(int faultId) {
-        new AlertDialogListener(faultId);
+        MainActivity.this.accessoryControl.writeCommand(AccessoryControl.APICMD_ALERT_ACK, 0, faultId);
+        if (MainActivity.this.mTempWakeLock.isHeld()) {
+            MainActivity.this.mTempWakeLock.release();
+        }
     }
 
     public void openAlertDialog(int faultId) {
